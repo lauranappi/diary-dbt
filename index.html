@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Diary DBT">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
@@ -570,6 +571,52 @@ textarea:focus,input:focus,select:focus{
   padding:5px 14px;font-size:13px;font-weight:500;
 }
 
+
+
+
+/* ── SLOT BUTTONS ── */
+.slot-btn{
+  background:var(--surface);border:2px solid var(--border);
+  border-radius:var(--r);padding:1rem .75rem;cursor:pointer;
+  font-family:var(--font-ui);text-align:center;
+  transition:all .15s;box-shadow:var(--shadow-sm);
+}
+.slot-btn:hover{border-color:var(--teal);background:var(--teal-ll);transform:translateY(-2px)}
+.slot-btn.has-items{border-color:var(--teal);background:var(--teal-ll)}
+
+/* ── CAT CHIP (selectable activity) ── */
+.cat-chip{
+  padding:8px 16px;border-radius:20px;
+  border:1.5px solid var(--border);
+  background:var(--surface);color:var(--text-2);
+  font-size:13px;cursor:pointer;font-family:var(--font-ui);
+  transition:all .12s;box-shadow:var(--shadow-sm);
+}
+.cat-chip:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-ll)}
+.cat-chip.selected{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 2px 8px rgba(26,122,110,.25)}
+
+/* ── PLAN SUMMARY ── */
+.plan-summary-slot{margin-bottom:1rem}
+.plan-summary-slot-title{
+  font-size:12px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--sage);
+  display:flex;align-items:center;gap:6px;margin-bottom:8px;
+}
+.plan-summary-chips{display:flex;flex-wrap:wrap;gap:6px}
+.plan-summary-chip{
+  display:flex;align-items:center;gap:6px;
+  background:var(--teal-ll);border:1.5px solid var(--teal-l);
+  color:var(--teal-d);border-radius:20px;
+  padding:5px 8px 5px 14px;font-size:13px;font-weight:500;
+}
+.plan-summary-chip button{
+  background:none;border:none;color:var(--teal-d);
+  cursor:pointer;font-size:16px;line-height:1;
+  padding:0;opacity:.5;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+}
+.plan-summary-chip button:hover{opacity:1}
+
 /* ── RESPONSIVE ── */
 @media(max-width:700px){
   .sidebar{display:none}
@@ -605,37 +652,53 @@ textarea:focus,input:focus,select:focus{
 </head>
 <body>
 
-<!-- ONBOARDING (shown if no profile) -->
+<!-- AUTH SCREEN -->
 <div id="onboard" class="onboard" style="display:none">
 
   <!-- PANNELLO LOGIN -->
   <div id="ob-login" class="onboard-card">
     <h1>Diary Card DBT</h1>
-    <p style="margin-bottom:1.5rem">Bentornata. Inserisci il tuo username per accedere.</p>
+    <p style="margin-bottom:1.5rem">Bentornata. Accedi con la tua email.</p>
     <div class="ob-field">
-      <label>Username</label>
-      <input type="text" id="ob-restore-code" placeholder="es. laura.nappi" autocapitalize="none" autocomplete="username"/>
+      <label>Email</label>
+      <input type="email" id="ob-email" placeholder="es. laura@email.com" autocapitalize="none" autocomplete="email"/>
     </div>
-    <div id="ob-restore-msg" style="font-size:12px;margin-top:-4px;margin-bottom:8px;color:var(--muted);min-height:16px"></div>
-    <button class="bpri" style="width:100%;margin-top:.25rem" onclick="restoreFromCode()">Accedi →</button>
+    <div class="ob-field">
+      <label>Password</label>
+      <input type="password" id="ob-password" placeholder="••••••••" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <div id="ob-login-msg" style="font-size:12px;margin-bottom:8px;color:var(--muted);min-height:16px"></div>
+    <button class="bpri" style="width:100%;margin-top:.25rem" onclick="doLogin()">Accedi →</button>
     <div class="ob-flip-link">
       Prima volta? <button onclick="switchToRegister()">Registrati</button>
+    </div>
+    <div style="text-align:center;margin-top:.75rem">
+      <button onclick="doResetPassword()" style="background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;font-family:var(--font-ui);text-decoration:underline">Password dimenticata?</button>
     </div>
   </div>
 
   <!-- PANNELLO REGISTRAZIONE -->
   <div id="ob-register" class="onboard-card" style="display:none">
     <h1>Diary Card DBT</h1>
-    <p style="margin-bottom:1.5rem">Crea il tuo profilo per iniziare.</p>
+    <p style="margin-bottom:1.5rem">Crea il tuo account.</p>
     <div class="ob-field">
       <label>Come ti chiami?</label>
       <input type="text" id="ob-nome" placeholder="Nome"/>
       <input type="text" id="ob-cognome" placeholder="Cognome" style="margin-top:8px"/>
     </div>
     <div class="ob-field">
-      <label>Scegli uno username</label>
+      <label>Email</label>
+      <input type="email" id="ob-reg-email" placeholder="es. laura@email.com" autocapitalize="none" autocomplete="email"/>
+    </div>
+    <div class="ob-field">
+      <label>Scegli una password</label>
+      <input type="password" id="ob-reg-password" placeholder="Min. 6 caratteri" autocomplete="new-password"/>
+    </div>
+    <div class="ob-field">
+      <label>Scegli uno username (visibile alla terapeuta)</label>
       <input type="text" id="ob-username" placeholder="es. laura.nappi" autocomplete="off" autocapitalize="none"/>
-      <div style="font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5">Solo lettere minuscole, numeri, punti e trattini. Min 3 caratteri. Sarà visibile alla terapeuta.</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5">Solo lettere minuscole, numeri, punti e trattini. Min 3 caratteri.</div>
       <div id="ob-username-msg" style="font-size:12px;margin-top:4px"></div>
     </div>
     <div style="font-size:13px;font-weight:600;margin-bottom:8px">Sei una paziente o una terapeuta?</div>
@@ -651,10 +714,11 @@ textarea:focus,input:focus,select:focus{
     </div>
     <div id="ob-pcode-wrap" style="display:block" class="ob-field">
       <label>Username della tua terapeuta (opzionale)</label>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5">Se la tua terapeuta è già registrata, inserisci il suo username per condividere i dati. Puoi farlo anche dopo dalle impostazioni.</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5">Puoi aggiungerlo anche dopo dalle impostazioni.</div>
       <input type="text" id="ob-pcode" placeholder="es. dott.bianchi" autocomplete="off" autocapitalize="none"/>
     </div>
-    <button class="bpri" style="width:100%;margin-top:.5rem" onclick="saveProfile()">Inizia →</button>
+    <div id="ob-reg-msg" style="font-size:12px;margin-bottom:8px;color:var(--muted);min-height:16px"></div>
+    <button class="bpri" style="width:100%;margin-top:.5rem" onclick="doRegister()">Registrati →</button>
     <div class="ob-flip-link">
       Hai già un account? <button onclick="switchToLogin()">Accedi</button>
     </div>
@@ -854,95 +918,72 @@ textarea:focus,input:focus,select:focus{
     <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%"></div>
     <div style="position:relative">
       <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Attività & Giornata</div>
-      <div style="font-size:13px;opacity:.85">Pianifica la tua giornata e scopri nuove attività</div>
+      <div style="font-size:13px;opacity:.85" id="planner-day-label">Pianifica la tua giornata</div>
     </div>
   </div>
 
-  <!-- Main tabs: Pianifica / Esplora -->
-  <div class="act-tabs" style="margin-bottom:1.25rem">
-    <button class="act-tab active" id="at-plan-btn" onclick="switchMainActTab('piano',this)">Pianifica giornata</button>
-    <button class="act-tab" id="at-lib-btn" onclick="switchMainActTab('libreria',this)">Esplora attività</button>
-  </div>
-
-  <!-- TAB: PIANIFICA -->
-  <div id="act-tab-piano">
-    <div id="suggest-box"></div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:1rem;line-height:1.5">
-      Organizza le tue attività per <strong id="planner-day-label">oggi</strong>. Vengono salvate con la giornata e visibili alla tua terapeuta.
+  <!-- STEP 1: scegli slot -->
+  <div id="act-step-slot">
+    <div style="font-size:13px;color:var(--muted);margin-bottom:1rem">In quale momento vuoi aggiungere un'attività?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem">
+      <button class="slot-btn" id="slotbtn-mattina" onclick="selectSlot('mattina')">
+        <span style="font-size:28px;display:block;margin-bottom:6px">🌅</span>
+        <span style="font-size:13px;font-weight:700">Mattina</span>
+        <span id="slot-count-mattina" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
+      </button>
+      <button class="slot-btn" id="slotbtn-pomeriggio" onclick="selectSlot('pomeriggio')">
+        <span style="font-size:28px;display:block;margin-bottom:6px">☀️</span>
+        <span style="font-size:13px;font-weight:700">Pomeriggio</span>
+        <span id="slot-count-pomeriggio" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
+      </button>
+      <button class="slot-btn" id="slotbtn-sera" onclick="selectSlot('sera')">
+        <span style="font-size:28px;display:block;margin-bottom:6px">🌙</span>
+        <span style="font-size:13px;font-weight:700">Sera</span>
+        <span id="slot-count-sera" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
+      </button>
     </div>
 
-    <div class="planner-slot" id="slot-mattina">
-      <div class="planner-slot-title"><span>🌅</span> Mattina</div>
-      <div class="planner-items" id="plan-items-mattina"></div>
-      <div class="planner-add-row">
-        <select id="plan-sel-mattina" onchange="plannerSelChange('mattina')">
-          <option value="">+ Scegli attività...</option>
-        </select>
-        <button class="planner-add-btn" onclick="addPlannerItem('mattina')">Aggiungi</button>
+    <!-- Piano riepilogo -->
+    <div id="plan-summary" style="display:none">
+      <div class="slbl" style="margin-bottom:10px">Il tuo piano di oggi</div>
+      <div id="plan-summary-body"></div>
+      <div class="abar">
+        <button class="bpri" onclick="savePlanner()">⤓ Salva piano</button>
+        <span class="toast" id="t-plan">✓ Salvato</span>
       </div>
-      <button class="planner-custom-toggle" onclick="togglePlannerCustom('mattina')">+ Scrivi attività personalizzata</button>
-      <div id="plan-custom-mattina" style="display:none;margin-top:8px;display:none">
-        <div style="display:flex;gap:6px">
-          <input type="text" id="plan-custom-input-mattina" placeholder="Es. chiamata con amica..." style="flex:1;padding:7px 10px;font-size:13px"/>
-          <button class="planner-add-btn" onclick="addPlannerCustom('mattina')">+</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="planner-slot" id="slot-pomeriggio">
-      <div class="planner-slot-title"><span>☀️</span> Pomeriggio</div>
-      <div class="planner-items" id="plan-items-pomeriggio"></div>
-      <div class="planner-add-row">
-        <select id="plan-sel-pomeriggio" onchange="plannerSelChange('pomeriggio')">
-          <option value="">+ Scegli attività...</option>
-        </select>
-        <button class="planner-add-btn" onclick="addPlannerItem('pomeriggio')">Aggiungi</button>
-      </div>
-      <button class="planner-custom-toggle" onclick="togglePlannerCustom('pomeriggio')">+ Scrivi attività personalizzata</button>
-      <div id="plan-custom-pomeriggio" style="display:none">
-        <div style="display:flex;gap:6px;margin-top:8px">
-          <input type="text" id="plan-custom-input-pomeriggio" placeholder="Es. passeggiata al parco..." style="flex:1;padding:7px 10px;font-size:13px"/>
-          <button class="planner-add-btn" onclick="addPlannerCustom('pomeriggio')">+</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="planner-slot" id="slot-sera">
-      <div class="planner-slot-title"><span>🌙</span> Sera</div>
-      <div class="planner-items" id="plan-items-sera"></div>
-      <div class="planner-add-row">
-        <select id="plan-sel-sera" onchange="plannerSelChange('sera')">
-          <option value="">+ Scegli attività...</option>
-        </select>
-        <button class="planner-add-btn" onclick="addPlannerItem('sera')">Aggiungi</button>
-      </div>
-      <button class="planner-custom-toggle" onclick="togglePlannerCustom('sera')">+ Scrivi attività personalizzata</button>
-      <div id="plan-custom-sera" style="display:none">
-        <div style="display:flex;gap:6px;margin-top:8px">
-          <input type="text" id="plan-custom-input-sera" placeholder="Es. lettura prima di dormire..." style="flex:1;padding:7px 10px;font-size:13px"/>
-          <button class="planner-add-btn" onclick="addPlannerCustom('sera')">+</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="abar">
-      <button class="bpri" onclick="savePlanner()">⤓ Salva giornata</button>
-      <span class="toast" id="t-plan">✓ Salvato</span>
     </div>
   </div>
 
-  <!-- TAB: ESPLORA -->
-  <div id="act-tab-libreria" style="display:none">
-    <div class="act-tabs" style="margin-bottom:1rem">
-      <button class="act-tab active" onclick="switchActTab('vista',this)">Vista</button>
-      <button class="act-tab" onclick="switchActTab('udito',this)">Udito</button>
-      <button class="act-tab" onclick="switchActTab('olfatto',this)">Olfatto</button>
-      <button class="act-tab" onclick="switchActTab('gusto',this)">Gusto</button>
-      <button class="act-tab" onclick="switchActTab('tatto',this)">Tatto</button>
-      <button class="act-tab" onclick="switchActTab('distrarsi',this)">Distrarsi</button>
-      <button class="act-tab" onclick="switchActTab('migliora',this)">Migliora</button>
+  <!-- STEP 2: scegli attività (appare dopo aver selezionato lo slot) -->
+  <div id="act-step-pick" style="display:none">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+      <button onclick="backToSlots()" style="background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--rs);padding:7px 14px;font-size:13px;cursor:pointer;font-family:var(--font-ui)">← Indietro</button>
+      <div style="font-size:15px;font-weight:700" id="pick-slot-label">Mattina</div>
     </div>
-    <div id="act-content"></div>
+
+    <!-- Categorie chips -->
+    <div class="act-tabs" style="margin-bottom:1rem" id="cat-tabs">
+      <button class="act-tab active" onclick="switchCatTab('vista',this)">Vista</button>
+      <button class="act-tab" onclick="switchCatTab('udito',this)">Udito</button>
+      <button class="act-tab" onclick="switchCatTab('olfatto',this)">Olfatto</button>
+      <button class="act-tab" onclick="switchCatTab('gusto',this)">Gusto</button>
+      <button class="act-tab" onclick="switchCatTab('tatto',this)">Tatto</button>
+      <button class="act-tab" onclick="switchCatTab('distrarsi',this)">Distrarsi</button>
+      <button class="act-tab" onclick="switchCatTab('migliora',this)">Migliora</button>
+    </div>
+
+    <div id="cat-chips-content" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem"></div>
+
+    <!-- Personalizzata -->
+    <div style="border-top:1px solid var(--border-l);padding-top:1rem;margin-top:.5rem">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">Aggiungi attività personalizzata</div>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="custom-act-input" placeholder="Es. chiamata con amica..."
+          style="flex:1;padding:9px 12px;font-size:13px;border-radius:var(--rs);border:1.5px solid var(--border)"
+          onkeydown="if(event.key==='Enter')addCustomAct()"/>
+        <button class="planner-add-btn" onclick="addCustomAct()">+</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1412,7 +1453,7 @@ function validateUsername(u){
 async function checkUsernameAvailable(username){
   try{
     const r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(username)+'&select=code',{
-      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+      headers:getAuthHeaders()
     });
     if(!r.ok)return {ok:false,error:'Errore di rete: '+r.status};
     const rows=await r.json();
@@ -1943,7 +1984,7 @@ async function renderPatients(){
     const url=SUPA_URL+'/rest/v1/diary_data?select=code,data,updated_at&data->profile->>terapeutaCode=eq.'+encodeURIComponent(profile.code);
     console.log('Querying patients for terapeuta:',profile.code,'URL:',url);
     const r=await fetch(url,{
-      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+      headers:getAuthHeaders()
     });
     if(!r.ok){pl.innerHTML='<div style="color:var(--red);padding:1rem">Errore '+r.status+'</div>';return;}
     const rows=await r.json();
@@ -2234,7 +2275,7 @@ async function saveSettings(){
       const payload={code:newCode,data:{entries:allData,actTried:actTried,profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null},therapistNotes:profile.therapistNotes||{},patientNotes:profile.patientNotes||{},ts:Date.now()},updated_at:new Date().toISOString()};
       const ri=await fetch(SUPA_URL+'/rest/v1/diary_data',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Prefer':'return=minimal'},body:JSON.stringify(payload)});
       if(!ri.ok&&ri.status!==201){alert('Errore: '+ri.status);return;}
-      await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(oldCode),{method:'DELETE',headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}});
+      await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(oldCode),{method:'DELETE',headers:getAuthHeaders()});
       localStorage.removeItem('dbt_user_'+oldCode);
       profile.code=newCode;channel=newCode;
       setSt('ok','Username aggiornato');
@@ -2263,13 +2304,7 @@ function toggleNotif(cb){
     });
   }else{settings.notifOn=false;svLS()}
 }
-function doLogout(){
-  if(confirm('Esci dal profilo? I dati rimangono salvati sul dispositivo.')){
-    profile={};channel=null;
-    svProfile();
-    location.reload();
-  }
-}
+// doLogout moved to auth section above
 function confirmReset(){
   if(confirm('Sei sicura di voler cancellare TUTTI i dati di questo profilo? Questa operazione è irreversibile.')){
     if(profile.code)localStorage.removeItem('dbt_user_'+profile.code);
@@ -2317,12 +2352,7 @@ async function pushChan(){
       // Fallback: try PATCH if row exists
       r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(channel),{
         method:'PATCH',
-        headers:{
-          'Content-Type':'application/json',
-          'apikey':SUPA_KEY,
-          'Authorization':'Bearer '+SUPA_KEY,
-          'Prefer':'return=minimal'
-        },
+        headers:{...getAuthHeaders(),'Prefer':'return=minimal'},
         body:JSON.stringify({data:payload.data,updated_at:payload.updated_at})
       });
     }
@@ -2360,7 +2390,7 @@ async function silentPull(){
   if(!channel||!SUPA_URL||!SUPA_KEY)return;
   try{
     const r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(channel)+'&select=data,updated_at',{
-      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+      headers:getAuthHeaders()
     });
     if(!r.ok){console.error('Pull error',r.status);return;}
     const rows=await r.json();
@@ -2442,91 +2472,140 @@ function switchToLogin(){
 }
 
 // ══════════════════════════════════════════
-// PLANNER
+// PLANNER (chip-based)
 // ══════════════════════════════════════════
 const PLANNER_SLOTS=['mattina','pomeriggio','sera'];
-// All leisure activities flat list for select
-function getAllActOptions(){
-  const opts=[];
-  Object.entries(LEISURE_CATS).forEach(([cat,obj])=>{
-    obj.items.forEach(item=>opts.push({cat:obj.label,label:item}));
+let plannerData={mattina:[],pomeriggio:[],sera:[]};
+let currentPickSlot='mattina';
+let currentCatTab='vista';
+
+function selectSlot(slot){
+  currentPickSlot=slot;
+  document.getElementById('act-step-slot').style.display='none';
+  document.getElementById('act-step-pick').style.display='block';
+  const slotLabels={mattina:'🌅 Mattina',pomeriggio:'☀️ Pomeriggio',sera:'🌙 Sera'};
+  document.getElementById('pick-slot-label').textContent=slotLabels[slot];
+  // activate first cat tab
+  const firstBtn=document.querySelector('#cat-tabs .act-tab');
+  if(firstBtn)switchCatTab('vista',firstBtn);
+}
+
+function backToSlots(){
+  document.getElementById('act-step-pick').style.display='none';
+  document.getElementById('act-step-slot').style.display='block';
+  renderPlanSummary();
+}
+
+function switchCatTab(cat,btn){
+  currentCatTab=cat;
+  document.querySelectorAll('#cat-tabs .act-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderCatChips(cat);
+}
+
+function renderCatChips(cat){
+  const el=document.getElementById('cat-chips-content');
+  el.innerHTML='';
+  const catData=LEISURE_CATS[cat];
+  if(!catData)return;
+  const selected=plannerData[currentPickSlot]||[];
+  catData.items.forEach(item=>{
+    const chip=document.createElement('button');
+    chip.className='cat-chip'+(selected.includes(item)?' selected':'');
+    chip.textContent=(selected.includes(item)?'✓ ':'')+item;
+    chip.onclick=()=>toggleCatChip(item,chip);
+    el.appendChild(chip);
   });
-  return opts;
 }
-function buildPlannerSelects(){
-  const opts=getAllActOptions();
-  PLANNER_SLOTS.forEach(slot=>{
-    const sel=document.getElementById('plan-sel-'+slot);
-    if(!sel)return;
-    sel.innerHTML='<option value="">+ Scegli attività...</option>';
-    let curCat='';
-    opts.forEach(o=>{
-      if(o.cat!==curCat){
-        const og=document.createElement('optgroup');og.label=o.cat;sel.appendChild(og);curCat=o.cat;
-      }
-      const op=document.createElement('option');op.value=o.label;op.textContent=o.label;
-      sel.querySelector('optgroup:last-child').appendChild(op);
-    });
-  });
+
+function toggleCatChip(item,chip){
+  const arr=plannerData[currentPickSlot]||(plannerData[currentPickSlot]=[]);
+  const idx=arr.indexOf(item);
+  if(idx===-1){
+    arr.push(item);
+    chip.classList.add('selected');
+    chip.textContent='✓ '+item;
+  } else {
+    arr.splice(idx,1);
+    chip.classList.remove('selected');
+    chip.textContent=item;
+  }
+  updateSlotCounts();
 }
-function plannerSelChange(slot){}
-function togglePlannerCustom(slot){
-  const d=document.getElementById('plan-custom-'+slot);
-  d.style.display=d.style.display==='none'?'block':'none';
-}
-function addPlannerItem(slot){
-  const sel=document.getElementById('plan-sel-'+slot);
-  const val=sel.value.trim();
-  if(!val)return;
-  addPlannerChip(slot,val);
-  sel.value='';
-  savePlanner();
-}
-function addPlannerCustom(slot){
-  const inp=document.getElementById('plan-custom-input-'+slot);
+
+function addCustomAct(){
+  const inp=document.getElementById('custom-act-input');
   const val=inp.value.trim();
   if(!val)return;
-  addPlannerChip(slot,val);
+  const arr=plannerData[currentPickSlot]||(plannerData[currentPickSlot]=[]);
+  if(!arr.includes(val)){arr.push(val);}
   inp.value='';
-  savePlanner();
+  updateSlotCounts();
+  // show feedback
+  inp.placeholder='✓ Aggiunta!';
+  setTimeout(()=>{inp.placeholder='Es. chiamata con amica...';},1200);
 }
-function addPlannerChip(slot,label){
-  const container=document.getElementById('plan-items-'+slot);
-  // avoid duplicates
-  const existing=[...container.querySelectorAll('.planner-item')].map(el=>el.dataset.val);
-  if(existing.includes(label))return;
-  const chip=document.createElement('div');chip.className='planner-item';chip.dataset.val=label;
-  chip.innerHTML=label+' <button onclick="removePlannerChip(this)" title="Rimuovi">×</button>';
-  container.appendChild(chip);
-}
-function removePlannerChip(btn){
-  btn.closest('.planner-item').remove();
-  savePlanner();
-}
-function getPlannerData(){
-  const plan={};
+
+function updateSlotCounts(){
   PLANNER_SLOTS.forEach(slot=>{
-    const container=document.getElementById('plan-items-'+slot);
-    if(!container)return;
-    plan[slot]=[...container.querySelectorAll('.planner-item')].map(el=>el.dataset.val);
+    const n=(plannerData[slot]||[]).length;
+    const el=document.getElementById('slot-count-'+slot);
+    if(el)el.textContent=n>0?n+' '+(n===1?'attività':'attività'):'';
+    const btn=document.getElementById('slotbtn-'+slot);
+    if(btn)btn.classList.toggle('has-items',n>0);
   });
-  return plan;
 }
+
+function renderPlanSummary(){
+  const slotLabels={mattina:'🌅 Mattina',pomeriggio:'☀️ Pomeriggio',sera:'🌙 Sera'};
+  const summaryEl=document.getElementById('plan-summary');
+  const bodyEl=document.getElementById('plan-summary-body');
+  const hasAny=PLANNER_SLOTS.some(s=>(plannerData[s]||[]).length>0);
+  summaryEl.style.display=hasAny?'block':'none';
+  if(!hasAny){bodyEl.innerHTML='';return;}
+  bodyEl.innerHTML='';
+  PLANNER_SLOTS.forEach(slot=>{
+    const items=plannerData[slot]||[];
+    if(!items.length)return;
+    const slotDiv=document.createElement('div');slotDiv.className='plan-summary-slot';
+    const title=document.createElement('div');title.className='plan-summary-slot-title';
+    title.textContent=slotLabels[slot];slotDiv.appendChild(title);
+    const chips=document.createElement('div');chips.className='plan-summary-chips';
+    items.forEach((item,idx)=>{
+      const chip=document.createElement('div');chip.className='plan-summary-chip';
+      const txt=document.createElement('span');txt.textContent=item;
+      const btn=document.createElement('button');btn.textContent='×';btn.title='Rimuovi';
+      const s=slot,ix=idx;
+      btn.onclick=()=>{plannerData[s].splice(ix,1);updateSlotCounts();renderPlanSummary();};
+      chip.appendChild(txt);chip.appendChild(btn);chips.appendChild(chip);
+    });
+    slotDiv.appendChild(chips);bodyEl.appendChild(slotDiv);
+  });
+}
+
+function removeSummaryItem(slot,idx){
+  if(plannerData[slot])plannerData[slot].splice(idx,1);
+  updateSlotCounts();
+  renderPlanSummary();
+}
+
+function getPlannerData(){return {...plannerData};}
+
 function setPlannerData(plan){
-  PLANNER_SLOTS.forEach(slot=>{
-    const container=document.getElementById('plan-items-'+slot);
-    if(!container)return;
-    container.innerHTML='';
-    const items=(plan&&plan[slot])||[];
-    items.forEach(label=>addPlannerChip(slot,label));
-  });
+  plannerData={mattina:[],pomeriggio:[],sera:[]};
+  if(plan){
+    PLANNER_SLOTS.forEach(s=>{if(plan[s])plannerData[s]=[...plan[s]];});
+  }
+  updateSlotCounts();
+  renderPlanSummary();
 }
+
 function clearPlanner(){
-  PLANNER_SLOTS.forEach(slot=>{
-    const container=document.getElementById('plan-items-'+slot);
-    if(container)container.innerHTML='';
-  });
+  plannerData={mattina:[],pomeriggio:[],sera:[]};
+  updateSlotCounts();
+  renderPlanSummary();
 }
+
 async function savePlanner(){
   const key=dk(cur);
   if(!allData[key])allData[key]={scales:{},toggles:{},texts:{},skills:{}};
@@ -2535,25 +2614,16 @@ async function savePlanner(){
   svLS();updPill(key);showToast('t-plan');
   if(channel)await pushChan();
 }
+
 function renderPlanner(){
-  buildPlannerSelects();
-  document.getElementById('planner-day-label').textContent=dk(cur)===today()?'oggi':fmtS(dk(cur));
+  const dayLabel=dk(cur)===today()?'Pianifica la tua giornata':'Piano del '+fmtS(dk(cur));
+  document.getElementById('planner-day-label').textContent=dayLabel;
   const data=allData[dk(cur)];
+  // reset to slot view
+  document.getElementById('act-step-slot').style.display='block';
+  document.getElementById('act-step-pick').style.display='none';
   clearPlanner();
   if(data&&data.planner)setPlannerData(data.planner);
-}
-
-// Main act tab switch (Piano / Esplora)
-function switchMainActTab(tab,btn){
-  document.querySelectorAll('#at-plan-btn,#at-lib-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  document.getElementById('act-tab-piano').style.display=tab==='piano'?'block':'none';
-  document.getElementById('act-tab-libreria').style.display=tab==='libreria'?'block':'none';
-  if(tab==='libreria'){
-    // activate first leisure tab
-    const firstTab=document.querySelector('#act-tab-libreria .act-tab');
-    if(firstTab)switchActTab('vista',firstTab);
-  }
 }
 
 // ══════════════════════════════════════════
@@ -2680,46 +2750,103 @@ function renderPatientPlanner(){
   if(!el.innerHTML)el.innerHTML='<div style="color:var(--muted);padding:1rem">Nessuna giornata pianificata.</div>';
 }
 
-// ── INIT ──
-ldLS();
-// Check if already logged in
-if(profile.nome && profile.code){
-  document.getElementById('onboard').style.display='none';
-  document.getElementById('app').style.display='flex';
-  initApp();
-} else if(profile.nome && !profile.code){
-  profile.code=genCode(profile.nome,profile.cognome||'');
-  channel=profile.code;svLS();
-  document.getElementById('onboard').style.display='none';
-  document.getElementById('app').style.display='flex';
-  initApp();
-} else {
-  document.getElementById('onboard').style.display='flex';
-  document.getElementById('app').style.display='none';
-  document.getElementById('ob-login').style.display='block';
-  document.getElementById('ob-register').style.display='none';
-  selectRole('paziente');
+// ══════════════════════════════════════════
+// SUPABASE AUTH
+// ══════════════════════════════════════════
+const supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+let supaSession = null;
+
+function getAuthHeaders(){
+  const token = supaSession?.access_token || SUPA_KEY;
+  return {
+    'apikey': SUPA_KEY,
+    'Authorization': 'Bearer ' + token,
+    'Content-Type': 'application/json'
+  };
 }
 
-async function restoreFromCode(){
-  const code=document.getElementById('ob-restore-code').value.trim().toLowerCase();
-  const msg=document.getElementById('ob-restore-msg');
-  if(!code){msg.style.color='var(--red)';msg.textContent='Inserisci il tuo username.';return;}
+async function doLogin(){
+  const email = document.getElementById('ob-email').value.trim();
+  const pwd = document.getElementById('ob-password').value;
+  const msg = document.getElementById('ob-login-msg');
+  if(!email||!pwd){msg.style.color='var(--red)';msg.textContent='Inserisci email e password.';return;}
   msg.style.color='var(--muted)';msg.textContent='Accesso in corso...';
-  try{
-    const r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(code)+'&select=*',{
-      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
-    });
-    if(!r.ok){msg.style.color='var(--red)';msg.textContent='Errore di rete.';return;}
-    const rows=await r.json();
-    if(!rows||!rows.length){msg.style.color='var(--red)';msg.textContent='Account non trovato.';return;}
-    const remote=rows[0].data;
-    if(!remote||!remote.profile){msg.style.color='var(--red)';msg.textContent='Account non trovato.';return;}
-    // FULL LOGIN — restore everything and enter directly
+  const {data,error} = await supabase.auth.signInWithPassword({email,password:pwd});
+  if(error){msg.style.color='var(--red)';msg.textContent=error.message==='Invalid login credentials'?'Email o password errati.':error.message;return;}
+  supaSession=data.session;
+  await loadUserData(data.user);
+}
+
+async function doRegister(){
+  const nome = document.getElementById('ob-nome').value.trim();
+  const cognome = document.getElementById('ob-cognome').value.trim();
+  const email = document.getElementById('ob-reg-email').value.trim();
+  const pwd = document.getElementById('ob-reg-password').value;
+  const username = document.getElementById('ob-username').value.trim().toLowerCase();
+  const pcode = document.getElementById('ob-pcode').value.trim().toLowerCase()||null;
+  const role = document.querySelector('.ob-role-btn.selected')?.id==='rb-terapeuta'?'terapeuta':'paziente';
+  const msg = document.getElementById('ob-reg-msg');
+
+  if(!nome||!email||!pwd||!username){msg.style.color='var(--red)';msg.textContent='Compila tutti i campi obbligatori.';return;}
+  const vErr=validateUsername(username);
+  if(vErr){msg.style.color='var(--red)';msg.textContent=vErr;return;}
+  if(pwd.length<6){msg.style.color='var(--red)';msg.textContent='Password minimo 6 caratteri.';return;}
+
+  msg.style.color='var(--muted)';msg.textContent='Controllo username...';
+  const chk=await checkUsernameAvailable(username);
+  if(!chk.ok){msg.style.color='var(--red)';msg.textContent='Errore di rete.';return;}
+  if(chk.taken){msg.style.color='var(--red)';msg.textContent='Username già in uso.';return;}
+
+  msg.textContent='Creazione account...';
+  const {data,error}=await supabase.auth.signUp({email,password:pwd});
+  if(error){msg.style.color='var(--red)';msg.textContent=error.message;return;}
+  supaSession=data.session;
+
+  // Create profile in diary_data
+  profile={nome,cognome,code:username,role,terapeutaCode:pcode,therapistNotes:{},patientNotes:{}};
+  allData={};actTried={};channel=username;
+  const payload={
+    code:username,
+    user_id:data.user.id,
+    data:{entries:{},actTried:{},profile:{nome,cognome,role,terapeutaCode:pcode},therapistNotes:{},patientNotes:{},ts:Date.now()},
+    updated_at:new Date().toISOString()
+  };
+  const r=await fetch(SUPA_URL+'/rest/v1/diary_data',{
+    method:'POST',
+    headers:{...getAuthHeaders(),'Prefer':'resolution=merge-duplicates,return=minimal'},
+    body:JSON.stringify(payload)
+  });
+  if(!r.ok&&r.status!==201){msg.style.color='var(--red)';msg.textContent='Errore salvataggio profilo.';return;}
+  svLS();
+  msg.style.color='var(--teal)';msg.textContent='✓ Account creato!';
+  setTimeout(()=>{enterApp();},400);
+}
+
+async function doResetPassword(){
+  const email=document.getElementById('ob-email').value.trim();
+  const msg=document.getElementById('ob-login-msg');
+  if(!email){msg.style.color='var(--red)';msg.textContent='Inserisci prima la tua email.';return;}
+  const {error}=await supabase.auth.resetPasswordForEmail(email);
+  if(error){msg.style.color='var(--red)';msg.textContent=error.message;return;}
+  msg.style.color='var(--teal)';msg.textContent='✓ Email di reset inviata!';
+}
+
+async function loadUserData(user){
+  const r=await fetch(SUPA_URL+'/rest/v1/diary_data?select=*',{headers:getAuthHeaders()});
+  if(!r.ok){document.getElementById('ob-login-msg').style.color='var(--red)';document.getElementById('ob-login-msg').textContent='Errore caricamento dati.';return;}
+  const rows=await r.json();
+  if(!rows||!rows.length){
+    // New user with no data yet
+    enterApp();return;
+  }
+  // Find row matching this user (by user_id or by code stored in localStorage)
+  let row=rows.find(r=>r.user_id===user.id)||rows[0];
+  const remote=row.data;
+  if(remote&&remote.profile){
     profile={
       nome:remote.profile.nome||'',
       cognome:remote.profile.cognome||'',
-      code:code,
+      code:row.code,
       role:remote.profile.role||'paziente',
       terapeutaCode:remote.profile.terapeutaCode||null,
       therapistNotes:remote.therapistNotes||{},
@@ -2727,16 +2854,51 @@ async function restoreFromCode(){
     };
     allData=remote.entries||{};
     actTried=remote.actTried||{};
-    channel=code;
-    msg.style.color='var(--teal)';msg.textContent='✓ Account trovato. Accesso...';
-    svProfile();svData();
-    setTimeout(()=>{
-      document.getElementById('onboard').style.display='none';
-      document.getElementById('app').style.display='flex';
-      initApp();
-    },400);
-  }catch(e){msg.style.color='var(--red)';msg.textContent='Errore di rete.';}
+    channel=row.code;
+  }
+  svLS();
+  enterApp();
 }
+
+function enterApp(){
+  document.getElementById('onboard').style.display='none';
+  document.getElementById('app').style.display='flex';
+  initApp();
+}
+
+async function doLogout(){
+  if(confirm('Esci dal profilo?')){
+    await supabase.auth.signOut();
+    supaSession=null;
+    profile={};channel=null;
+    svProfile();
+    location.reload();
+  }
+}
+
+// ── INIT ──
+ldLS();
+
+// Listen for auth state changes
+supabase.auth.onAuthStateChange((event,session)=>{
+  supaSession=session;
+});
+
+// Check existing session
+supabase.auth.getSession().then(({data:{session}})=>{
+  supaSession=session;
+  if(session){
+    // Already logged in — load data and enter
+    loadUserData(session.user);
+  } else {
+    // Not logged in — show auth screen
+    document.getElementById('onboard').style.display='flex';
+    document.getElementById('app').style.display='none';
+    document.getElementById('ob-login').style.display='block';
+    document.getElementById('ob-register').style.display='none';
+    selectRole('paziente');
+  }
+});
 
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
