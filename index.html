@@ -2290,7 +2290,7 @@ async function saveSettings(){
     if(!confirm('Cambiare username in "'+newCode+'"? Comunicalo alla terapeuta.'))return;
     setSt('spin','Aggiornamento username...');
     try{
-      const payload={code:newCode,data:{entries:allData,actTried:actTried,profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null},therapistNotes:profile.therapistNotes||{},patientNotes:profile.patientNotes||{},ts:Date.now()},updated_at:new Date().toISOString()};
+      const payload={code:newCode,data:{entries:allData,actTried:actTried,profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null,customActs:profile.customActs||[]},therapistNotes:profile.therapistNotes||{},patientNotes:profile.patientNotes||{},ts:Date.now()},updated_at:new Date().toISOString()};
       const ri=await fetch(SUPA_URL+'/rest/v1/diary_data',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Prefer':'return=minimal'},body:JSON.stringify(payload)});
       if(!ri.ok&&ri.status!==201){alert('Errore: '+ri.status);return;}
       await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(oldCode),{method:'DELETE',headers:getAuthHeaders()});
@@ -2349,7 +2349,7 @@ async function pushChan(){
       data:{
         entries:allData,
         actTried:actTried,
-        profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null},
+        profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null,customActs:profile.customActs||[]},
         therapistNotes:profile.therapistNotes||{},
         patientNotes:profile.patientNotes||{},
         ts:lastPushTs
@@ -2650,11 +2650,9 @@ async function savePlanner(){
   const key=dk(cur);
   if(!allData[key])allData[key]={scales:{},toggles:{},texts:{},skills:{}};
   const plan=getPlannerData();
-  console.log('[PLANNER] saving key:', key, 'plan:', JSON.stringify(plan));
   allData[key].planner=plan;
   allData[key].savedAt=new Date().toISOString();
   svData();svProfile();updPill(key);showToast('t-plan');
-  console.log('[PLANNER] allData after save:', JSON.stringify(allData[key]?.planner));
   if(channel)await pushChan();
 }
 
@@ -2667,7 +2665,6 @@ function renderPlanner(){
   if(stepSlot)stepSlot.style.display='block';
   if(stepPick)stepPick.style.display='none';
   const data=allData[dk(cur)];
-  console.log('[PLANNER] renderPlanner key:', dk(cur), 'data:', data?JSON.stringify(data.planner):'null');
   plannerData={mattina:[],pomeriggio:[],sera:[]};
   if(data&&data.planner){
     PLANNER_SLOTS.forEach(s=>{if(data.planner[s])plannerData[s]=[...data.planner[s]];});
@@ -3037,6 +3034,7 @@ async function loadUserData(user){
       code:row.code,
       role:remote.profile.role||'paziente',
       terapeutaCode:remote.profile.terapeutaCode||null,
+      customActs:remote.profile.customActs||[],
       therapistNotes:remote.therapistNotes||{},
       patientNotes:remote.patientNotes||{}
     };
