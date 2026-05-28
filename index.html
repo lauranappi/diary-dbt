@@ -1080,7 +1080,7 @@ textarea:focus,input:focus,select:focus{
 
     <!-- TAB: PANORAMICA -->
     <div class="pat-tab-content active" id="ptab-overview">
-      <div class="sgrid" id="pat-stats"></div>
+      <div id="pat-stats" style="margin-bottom:.5rem"></div>
       <div id="pat-flags-today"></div>
       <div class="card" style="margin-top:.75rem">
         <div class="slbl">Le tue note (private)</div>
@@ -1664,7 +1664,7 @@ function updDL(){
 }
 function updPill(k){
   const p=document.getElementById('dayPill');
-  if(allData[k]){p.className='pill saved';p.textContent='✓ Compilata';}
+  if(allData[k]&&!isDayEmpty(allData[k])){p.className='pill saved';p.textContent='✓ Compilata';}
   else{p.className='pill unsaved';p.textContent='Non compilata';}
 }
 
@@ -1676,10 +1676,10 @@ function goPage(name,btn){
   const bnb=document.getElementById('bn-'+name);if(bnb)bnb.classList.add('active');
   const nib=document.querySelector('.ni[onclick*="\''+name+'\'"]');if(nib)nib.classList.add('active');
   // hide topheader on settings, pazienti
-  const noHeader=['impostazioni','pazienti'];
-  document.getElementById('topheader').style.display=noHeader.includes(name)?'none':'';
+  // topheader visibility handled above per page
   window.scrollTo({top:0,behavior:'smooth'});
   if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
+  document.getElementById('topheader').style.display=name==='oggi'?'':'none';
   if(name==='home')buildHome();
   if(name==='storico')renderHist();
   if(name==='trend')renderTrend();
@@ -2755,7 +2755,7 @@ function renderPatientOverview(){
   });
 
   let wHtml='<div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px">📊 Ultimi 7 giorni</div>';
-  wHtml+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem">';
+  wHtml+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;width:100%">';
   stats.forEach(c=>{
     const active=(c.danger||c.warn||c.ok)&&c.v>0;
     const bg=c.danger&&c.v>0?'#FEF0F0':c.warn&&c.v>0?'#FEF6E4':c.ok&&c.v>0?'#EDFAF4':'var(--surface)';
