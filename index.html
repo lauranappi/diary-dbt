@@ -2356,17 +2356,18 @@ async function pushChan(){
       },
       updated_at:new Date().toISOString()
     };
-    let r=await fetch(SUPA_URL+'/rest/v1/diary_data',{
-      method:'POST',
-      headers:{...getAuthHeaders(),'Prefer':'resolution=merge-duplicates,return=minimal'},
-      body:JSON.stringify(payload)
+    // Always PATCH — row is created at registration, always exists
+    let r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(channel),{
+      method:'PATCH',
+      headers:{...getAuthHeaders(),'Prefer':'return=minimal'},
+      body:JSON.stringify({data:payload.data,updated_at:payload.updated_at})
     });
-    if(r.status===409||(!r.ok&&r.status>=400&&r.status<500)){
-      // Fallback: try PATCH if row exists
-      r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(channel),{
-        method:'PATCH',
+    // If no row found (first time), create it with POST
+    if(r.status===404||r.status===0){
+      r=await fetch(SUPA_URL+'/rest/v1/diary_data',{
+        method:'POST',
         headers:{...getAuthHeaders(),'Prefer':'return=minimal'},
-        body:JSON.stringify({data:payload.data,updated_at:payload.updated_at})
+        body:JSON.stringify(payload)
       });
     }
     if(r.ok||r.status===201||r.status===200||r.status===204)setSt('ok','Sincronizzato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
