@@ -2754,18 +2754,22 @@ function renderPatientOverview(){
     return w(a)-w(b);
   });
 
-  let wHtml='<div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px">📊 Ultimi 7 giorni</div>';
-  wHtml+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;width:100%">';
+  // Wide giorni compilati bar
+  let wHtml='<div style="width:100%;background:var(--teal-ll);border:1.5px solid var(--teal-l);border-radius:var(--rs);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;box-sizing:border-box">'
+    +'<div><div style="font-size:13px;font-weight:700;color:var(--teal-d)">📅 Giorni compilati</div><div style="font-size:11px;color:var(--muted);margin-top:1px">ultimi 30 giorni</div></div>'
+    +'<span style="font-size:30px;font-weight:800;color:var(--teal)">'+realKeys.length+'</span>'
+    +'</div>';
+  wHtml+='<div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:10px">📊 Ultimi 7 giorni</div>';
+  wHtml+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem">';
   stats.forEach(c=>{
-    const active=(c.danger||c.warn||c.ok)&&c.v>0;
     const bg=c.danger&&c.v>0?'#FEF0F0':c.warn&&c.v>0?'#FEF6E4':c.ok&&c.v>0?'#EDFAF4':'var(--surface)';
     const border=c.danger&&c.v>0?'#EFC0BF':c.warn&&c.v>0?'#F0D898':c.ok&&c.v>0?'#A8DFC7':'var(--border-l)';
     const col=c.danger&&c.v>0?'#C85250':c.warn&&c.v>0?'#7A5010':c.ok&&c.v>0?'#0A6647':'var(--text-2)';
-    wHtml+='<div style="background:'+bg+';border:1.5px solid '+border+';border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;gap:10px">'
-      +'<span style="font-size:22px">'+c.icon+'</span>'
-      +'<div style="min-width:0">'
-      +'<div style="font-size:11px;color:var(--muted);line-height:1.2">'+c.label+'</div>'
-      +'<div style="font-size:20px;font-weight:800;color:'+col+'">'+c.v+'</div>'
+    wHtml+='<div style="background:'+bg+';border:1.5px solid '+border+';border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;gap:8px">'
+      +'<span style="font-size:20px;flex-shrink:0">'+c.icon+'</span>'
+      +'<div style="min-width:0;flex:1">'
+      +'<div style="font-size:11px;color:var(--muted);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+c.label+'</div>'
+      +'<div style="font-size:22px;font-weight:800;color:'+col+'">'+c.v+'</div>'
       +'</div></div>';
   });
   wHtml+='</div>';
