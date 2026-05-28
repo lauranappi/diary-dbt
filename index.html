@@ -434,8 +434,8 @@ textarea:focus,input:focus,select:focus{
 
 /* ── ONBOARDING ── */
 .onboard{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:2rem;
+  min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;
+  padding:2rem 2rem calc(2rem + env(safe-area-inset-bottom));
   background:linear-gradient(160deg,var(--teal-3) 0%,var(--teal) 50%,var(--teal-2) 100%);
 }
 .ob-view{animation:slideInRight .3s ease}
