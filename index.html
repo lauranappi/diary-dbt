@@ -2627,6 +2627,7 @@ function removeSummaryItem(slot,idx){
   if(plannerData[slot])plannerData[slot].splice(idx,1);
   updateSlotCounts();
   renderPlanSummary();
+  savePlanner();
 }
 
 function getPlannerData(){return {...plannerData};}
