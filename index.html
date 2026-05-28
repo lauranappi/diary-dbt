@@ -434,8 +434,8 @@ textarea:focus,input:focus,select:focus{
 
 /* ── ONBOARDING ── */
 .onboard{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:2rem;
+  min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;
+  padding:2rem 2rem calc(2rem + env(safe-area-inset-bottom));
   background:linear-gradient(160deg,var(--teal-3) 0%,var(--teal) 50%,var(--teal-2) 100%);
 }
 .ob-view{animation:slideInRight .3s ease}
@@ -1080,7 +1080,7 @@ textarea:focus,input:focus,select:focus{
 
     <!-- TAB: PANORAMICA -->
     <div class="pat-tab-content active" id="ptab-overview">
-      <div class="sgrid" id="pat-stats"></div>
+      <div id="pat-stats" style="margin-bottom:.5rem"></div>
       <div id="pat-flags-today"></div>
       <div class="card" style="margin-top:.75rem">
         <div class="slbl">Le tue note (private)</div>
@@ -1664,7 +1664,7 @@ function updDL(){
 }
 function updPill(k){
   const p=document.getElementById('dayPill');
-  if(allData[k]){p.className='pill saved';p.textContent='✓ Compilata';}
+  if(allData[k]&&!isDayEmpty(allData[k])){p.className='pill saved';p.textContent='✓ Compilata';}
   else{p.className='pill unsaved';p.textContent='Non compilata';}
 }
 
@@ -1676,13 +1676,14 @@ function goPage(name,btn){
   const bnb=document.getElementById('bn-'+name);if(bnb)bnb.classList.add('active');
   const nib=document.querySelector('.ni[onclick*="\''+name+'\'"]');if(nib)nib.classList.add('active');
   // hide topheader on settings, pazienti
-  const noHeader=['impostazioni','pazienti'];
-  document.getElementById('topheader').style.display=noHeader.includes(name)?'none':'';
+  // topheader visibility handled above per page
   window.scrollTo({top:0,behavior:'smooth'});
+  if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
+  document.getElementById('topheader').style.display=name==='oggi'?'':'none';
   if(name==='home')buildHome();
   if(name==='storico')renderHist();
   if(name==='trend')renderTrend();
-  if(name==='attivita'){buildSuggest();renderActTab();renderPlanner();}
+  if(name==='attivita'){buildSuggest();renderPlanner();}
   if(name==='pazienti')renderPatients();
 }
 
@@ -2289,7 +2290,7 @@ async function saveSettings(){
     if(!confirm('Cambiare username in "'+newCode+'"? Comunicalo alla terapeuta.'))return;
     setSt('spin','Aggiornamento username...');
     try{
-      const payload={code:newCode,data:{entries:allData,actTried:actTried,profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null},therapistNotes:profile.therapistNotes||{},patientNotes:profile.patientNotes||{},ts:Date.now()},updated_at:new Date().toISOString()};
+      const payload={code:newCode,data:{entries:allData,actTried:actTried,profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null,customActs:profile.customActs||[]},therapistNotes:profile.therapistNotes||{},patientNotes:profile.patientNotes||{},ts:Date.now()},updated_at:new Date().toISOString()};
       const ri=await fetch(SUPA_URL+'/rest/v1/diary_data',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Prefer':'return=minimal'},body:JSON.stringify(payload)});
       if(!ri.ok&&ri.status!==201){alert('Errore: '+ri.status);return;}
       await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(oldCode),{method:'DELETE',headers:getAuthHeaders()});
@@ -2348,24 +2349,25 @@ async function pushChan(){
       data:{
         entries:allData,
         actTried:actTried,
-        profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null},
+        profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null,customActs:profile.customActs||[]},
         therapistNotes:profile.therapistNotes||{},
         patientNotes:profile.patientNotes||{},
         ts:lastPushTs
       },
       updated_at:new Date().toISOString()
     };
-    let r=await fetch(SUPA_URL+'/rest/v1/diary_data',{
-      method:'POST',
-      headers:{...getAuthHeaders(),'Prefer':'resolution=merge-duplicates,return=minimal'},
-      body:JSON.stringify(payload)
+    // Always PATCH — row is created at registration, always exists
+    let r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(channel),{
+      method:'PATCH',
+      headers:{...getAuthHeaders(),'Prefer':'return=minimal'},
+      body:JSON.stringify({data:payload.data,updated_at:payload.updated_at})
     });
-    if(r.status===409||(!r.ok&&r.status>=400&&r.status<500)){
-      // Fallback: try PATCH if row exists
-      r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(channel),{
-        method:'PATCH',
+    // If no row found (first time), create it with POST
+    if(r.status===404||r.status===0){
+      r=await fetch(SUPA_URL+'/rest/v1/diary_data',{
+        method:'POST',
         headers:{...getAuthHeaders(),'Prefer':'return=minimal'},
-        body:JSON.stringify({data:payload.data,updated_at:payload.updated_at})
+        body:JSON.stringify(payload)
       });
     }
     if(r.ok||r.status===201||r.status===200||r.status===204)setSt('ok','Sincronizzato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
@@ -2498,8 +2500,9 @@ function selectSlot(slot){
   const slotLabels={mattina:'🌅 Mattina',pomeriggio:'☀️ Pomeriggio',sera:'🌙 Sera'};
   document.getElementById('pick-slot-label').textContent=slotLabels[slot];
   // activate first cat tab
-  const firstBtn=document.querySelector('#cat-tabs .act-tab');
-  if(firstBtn)switchCatTab('vista',firstBtn);
+  // Default to 'vista' tab, not 'mie'
+  const vistaBtn=document.querySelector('#cat-tabs .act-tab[onclick*="vista"]');
+  if(vistaBtn)switchCatTab('vista',vistaBtn);
 }
 
 function backToSlots(){
@@ -2564,6 +2567,7 @@ function toggleCatChip(item,chip){
     chip.textContent=item;
   }
   updateSlotCounts();
+  savePlanner();
 }
 
 function addCustomAct(){
@@ -2625,6 +2629,7 @@ function removeSummaryItem(slot,idx){
   if(plannerData[slot])plannerData[slot].splice(idx,1);
   updateSlotCounts();
   renderPlanSummary();
+  savePlanner();
 }
 
 function getPlannerData(){return {...plannerData};}
@@ -2647,7 +2652,8 @@ function clearPlanner(){
 async function savePlanner(){
   const key=dk(cur);
   if(!allData[key])allData[key]={scales:{},toggles:{},texts:{},skills:{}};
-  allData[key].planner=getPlannerData();
+  const plan=getPlannerData();
+  allData[key].planner=plan;
   allData[key].savedAt=new Date().toISOString();
   svData();svProfile();updPill(key);showToast('t-plan');
   if(channel)await pushChan();
@@ -2748,18 +2754,22 @@ function renderPatientOverview(){
     return w(a)-w(b);
   });
 
-  let wHtml='<div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px">📊 Ultimi 7 giorni</div>';
-  wHtml+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem">';
+  // Wide giorni compilati bar
+  let wHtml='<div style="width:100%;background:var(--teal-ll);border:1.5px solid var(--teal-l);border-radius:var(--rs);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;box-sizing:border-box">'
+    +'<div><div style="font-size:13px;font-weight:700;color:var(--teal-d)">📅 Giorni compilati</div><div style="font-size:11px;color:var(--muted);margin-top:1px">ultimi 30 giorni</div></div>'
+    +'<span style="font-size:30px;font-weight:800;color:var(--teal)">'+realKeys.length+'</span>'
+    +'</div>';
+  wHtml+='<div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:10px">📊 Ultimi 7 giorni</div>';
+  wHtml+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem">';
   stats.forEach(c=>{
-    const active=(c.danger||c.warn||c.ok)&&c.v>0;
     const bg=c.danger&&c.v>0?'#FEF0F0':c.warn&&c.v>0?'#FEF6E4':c.ok&&c.v>0?'#EDFAF4':'var(--surface)';
     const border=c.danger&&c.v>0?'#EFC0BF':c.warn&&c.v>0?'#F0D898':c.ok&&c.v>0?'#A8DFC7':'var(--border-l)';
     const col=c.danger&&c.v>0?'#C85250':c.warn&&c.v>0?'#7A5010':c.ok&&c.v>0?'#0A6647':'var(--text-2)';
-    wHtml+='<div style="background:'+bg+';border:1.5px solid '+border+';border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;gap:10px">'
-      +'<span style="font-size:22px">'+c.icon+'</span>'
-      +'<div style="min-width:0">'
-      +'<div style="font-size:11px;color:var(--muted);line-height:1.2">'+c.label+'</div>'
-      +'<div style="font-size:20px;font-weight:800;color:'+col+'">'+c.v+'</div>'
+    wHtml+='<div style="background:'+bg+';border:1.5px solid '+border+';border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;gap:8px">'
+      +'<span style="font-size:20px;flex-shrink:0">'+c.icon+'</span>'
+      +'<div style="min-width:0;flex:1">'
+      +'<div style="font-size:11px;color:var(--muted);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+c.label+'</div>'
+      +'<div style="font-size:22px;font-weight:800;color:'+col+'">'+c.v+'</div>'
       +'</div></div>';
   });
   wHtml+='</div>';
@@ -3031,6 +3041,7 @@ async function loadUserData(user){
       code:row.code,
       role:remote.profile.role||'paziente',
       terapeutaCode:remote.profile.terapeutaCode||null,
+      customActs:remote.profile.customActs||[],
       therapistNotes:remote.therapistNotes||{},
       patientNotes:remote.patientNotes||{}
     };
