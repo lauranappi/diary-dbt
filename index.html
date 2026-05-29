@@ -1831,7 +1831,7 @@ function goPage(name,btn){
   // hide topheader on settings, pazienti
   // topheader visibility handled above per page
   window.scrollTo({top:0,behavior:'smooth'});
-  if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
+  if(name==='oggi'){cur=new Date();setForm(allData[dk(cur)]||null);updDL();}
   if(name==='guida'){setTimeout(()=>renderGuide(),50);}
   const showTopheader=name==='oggi'||name==='attivita'||name==='abilita';
   document.getElementById('topheader').style.display=showTopheader?'':'none';
@@ -1931,14 +1931,14 @@ function renderTrend(){
   });
 
   const BASE_OPTS={
-    chart:{type:'area',height:220,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    chart:{type:'area',height:240,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
     stroke:{curve:'smooth',width:2.5},
     fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
     grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
     xaxis:{categories:labels,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},rotate:0,trim:false},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
     yaxis:{min:0,max:5,tickAmount:5,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},formatter:v=>Math.round(v)}},
     tooltip:{theme:'dark',x:{show:true},shared:true,intersect:false,style:{fontSize:'12px'}},
-    legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:8},offsetY:4},
+    legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:8,vertical:4}},
     markers:{size:0,hover:{size:5,sizeOffset:2}},
     dataLabels:{enabled:false},
   };
@@ -2432,7 +2432,7 @@ function renderPatientCharts(){
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}));
 
   const BASE={
-    chart:{type:'area',height:220,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    chart:{type:'area',height:240,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
     stroke:{curve:'smooth',width:2.5},
     fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
     grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
