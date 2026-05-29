@@ -1720,6 +1720,9 @@ function goPage(name,btn){
   if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
   if(name==='guida')renderGuide();
   document.getElementById('topheader').style.display=name==='oggi'?'':'none';
+  // hide sidebar header on guida
+  const sidebarEl=document.getElementById('sidebar');
+  if(sidebarEl)sidebarEl.style.display=name==='guida'?'none':'';
   if(name==='home')buildHome();
   if(name==='storico')renderHist();
   if(name==='trend')renderTrend();
