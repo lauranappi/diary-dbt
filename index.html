@@ -1747,7 +1747,7 @@ function goPage(name,btn){
   if(name==='trend')renderTrend();
   if(name==='abilita'){currentActTab='dbt';renderActTab();}
   if(name==='abilita'){renderActTab();}
-  if(name==='attivita'){buildSuggest();curPlan=new Date();updPlanDL();renderPlanner();}
+  if(name==='attivita'){buildSuggest();curPlan=new Date();plannerData={mattina:[],pomeriggio:[],sera:[]};updPlanDL();renderPlanner();}
   if(name==='pazienti')renderPatients();
 }
 
@@ -2522,7 +2522,9 @@ async function silentPull(){
         ||Object.keys(live.skills||{}).length>0;
       if(!isDirty)setForm(allData[k]||null);
       updDL();
-      if(document.getElementById('page-attivita')?.classList.contains('active'))renderPlanner();
+      // Always refresh planner after pull, not just when on attivita
+      const attActive=document.getElementById('page-attivita')?.classList.contains('active');
+      if(attActive)renderPlanner();
       setSt('ok','Sincronizzato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
     }
   }catch(e){}
