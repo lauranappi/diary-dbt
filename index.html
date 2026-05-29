@@ -932,18 +932,8 @@ textarea:focus,input:focus,select:focus{
     </div>
   </div>
 
-  <!-- Tabs: Guida / Usate oggi -->
-  <div class="act-tabs" style="margin-bottom:1.25rem">
-    <button class="act-tab active" id="abt-oggi" onclick="switchAbiTab('oggi',this)">✓ Usate oggi</button>
-  </div>
-
-  <!-- TAB: GUIDA -->
-  <div id="abt-tab-guida">
-    <div id="act-content"></div>
-  </div>
-
-  <!-- TAB: USATE OGGI -->
-  <div id="abt-tab-oggi" style="display:none">
+  <!-- TAB: USATE OGGI (only tab) -->
+  <div id="abt-tab-oggi">
     <div class="card">
       <div class="slbl">Abilità DBT usate oggi</div>
       <div style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">Tocca le abilità che hai usato oggi. Vengono salvate con la giornata corrente.</div>
@@ -1027,6 +1017,7 @@ textarea:focus,input:focus,select:focus{
       <button class="act-tab" onclick="switchCatTab('migliora',this)">Migliora</button>
     </div>
 
+    <div id="act-content" style="display:none"></div>
     <div id="cat-chips-content" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem"></div>
 
     <!-- Personalizzata -->
@@ -1727,6 +1718,7 @@ function goPage(name,btn){
   if(name==='storico')renderHist();
   if(name==='trend')renderTrend();
   if(name==='abilita'){currentActTab='dbt';renderActTab();}
+  if(name==='abilita'){renderActTab();}
   if(name==='attivita'){buildSuggest();renderPlanner();}
   if(name==='pazienti')renderPatients();
 }
@@ -1803,9 +1795,11 @@ let currentActTab='dbt';
 function switchAbiTab(tab,btn){
   document.querySelectorAll('#page-abilita .act-tab').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  document.getElementById('abt-tab-guida').style.display=tab==='guida'?'block':'none';
-  document.getElementById('abt-tab-oggi').style.display=tab==='oggi'?'block':'none';
-  if(tab==='guida'){currentActTab='dbt';renderActTab();}
+  const guida=document.getElementById('abt-tab-guida');
+  const oggi=document.getElementById('abt-tab-oggi');
+  if(guida)guida.style.display=tab==='guida'?'block':'none';
+  if(oggi)oggi.style.display=tab==='oggi'?'block':'none';
+  if(tab==='oggi')renderActTab();
 }
 function switchActTab(tab,btn){
   currentActTab=tab;
