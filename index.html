@@ -1894,14 +1894,14 @@ function renderTrend(){
   });
 
   const BASE_OPTS={
-    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    chart:{type:'area',height:220,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
     stroke:{curve:'smooth',width:2.5},
     fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
-    grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}}},
-    xaxis:{categories:labels,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},rotate:0},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
+    grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
+    xaxis:{categories:labels,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},rotate:0,trim:false},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
     yaxis:{min:0,max:5,tickAmount:5,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},formatter:v=>Math.round(v)}},
     tooltip:{theme:'dark',x:{show:true},shared:true,intersect:false,style:{fontSize:'12px'}},
-    legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:8}},
+    legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:8},offsetY:4},
     markers:{size:0,hover:{size:5,sizeOffset:2}},
     dataLabels:{enabled:false},
   };
@@ -2067,7 +2067,7 @@ function buildHome(){
     if(matching.length){
       const idx=parseInt(localStorage.getItem('sg_'+k)||'0');
       const pick=matching[idx%matching.length];
-      const action=pick.skill?"openDbtSkill('"+pick.skill+"')":`switchToActTab('${pick.tab}')`;
+      const action=pick.guide?`openGuideSkill('${pick.guide}')`:pick.skill?"openDbtSkill('"+pick.skill+"')":`switchToActTab('${pick.tab}')`;
       homeBox.innerHTML='<div class="suggest-card"><div class="s-icon">'+pick.icon+'</div><div style="flex:1"><h3>'+pick.title+'</h3><p>'+pick.desc+'</p><div style="margin-top:10px"><button class="s-btn" onclick="'+action+'">Scopri →</button></div></div></div>';
     }
   }
@@ -2078,19 +2078,19 @@ const SPOOL=[
   {cond:d=>d.scales&&(d.scales.se>=4||d.scales.sp>=3||d.scales.ai>=3),icon:'◇',
    title:'TIP — cambia la chimica del corpo',
    desc:"La tua sofferenza sembra alta oggi. L'abilità TIP può aiutarti a calmarti rapidamente, anche in pochi minuti.",
-   tab:'dbt',skill:'tip'},
+   tab:'dbt',skill:'tip',guide:'tol'},
   {cond:d=>d.scales&&(d.scales.se>=3||d.scales.sf>=3),icon:'◍',
    title:'Acqua fredda sul viso',
    desc:'Un rimedio semplice: immergi il viso in acqua fredda per 15-30 secondi trattenendo il fiato. Funziona davvero.',
-   tab:'dbt',skill:'acqua'},
+   tab:'dbt',skill:'acqua',guide:'tol'},
   {cond:d=>d.scales&&(d.scales.rab>=3||d.scales.ai>=2),icon:'⊘',
    title:'STOP prima di agire',
    desc:'Quando senti un forte impulso, fermarti anche solo 5 secondi può cambiare tutto.',
-   tab:'dbt',skill:'stop'},
+   tab:'dbt',skill:'stop',guide:'tol'},
   {cond:d=>d.texts&&d.texts.rim&&d.texts.rim.trim(),icon:'≈',
    title:'Accettazione radicale',
    desc:"Stai rimuginando su qualcosa. L'accettazione radicale significa smettere di lottare contro ciò che non puoi cambiare.",
-   tab:'dbt',skill:'accettazione'},
+   tab:'dbt',skill:'accettazione',guide:'tol'},
   {cond:d=>d.scales&&(d.scales.tri>=3||d.scales.vuo>=3),icon:'✦',
    title:'Migliora il momento presente',
    desc:'Quando si sente tristezza o vuoto, anche un piccolo gesto può fare differenza.',
@@ -2098,11 +2098,11 @@ const SPOOL=[
   {cond:d=>d.scales&&(d.scales.ver>=3||d.scales.col>=3),icon:'◉',
    title:'Rilassamento muscolare progressivo',
    desc:'Vergogna e colpa si tengono spesso nel corpo. Il rilassamento muscolare aiuta a sciogliere quella tensione.',
-   tab:'dbt',skill:'rilassamento'},
+   tab:'dbt',skill:'rilassamento',guide:'tol'},
   {cond:d=>d.scales&&d.scales.pau>=3,icon:'◐',
    title:'Respira: 5 sec dentro, 7 fuori',
    desc:'Quando hai paura, il corpo entra in allerta. Rallentare il respiro attiva il sistema di calma del cervello.',
-   tab:'dbt',skill:'tip'},
+   tab:'dbt',skill:'tip',guide:'tol'},
   {cond:d=>d.scales&&(d.scales.ser||5)<=2&&(d.scales.gio||5)<=2,icon:'◉',
    title:'Coccola i tuoi sensi',
    desc:'Serenità e gioia sono basse oggi. Piccoli gesti sensoriali possono ricaricarti.',
@@ -2284,11 +2284,11 @@ function renderPatientCharts(){
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}));
 
   const BASE={
-    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    chart:{type:'area',height:220,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
     stroke:{curve:'smooth',width:2.5},
     fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
-    grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}}},
-    xaxis:{categories:labels,labels:{style:{fontSize:'9px',colors:'rgba(120,140,135,.7)'},rotate:0},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
+    grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
+    xaxis:{categories:labels,labels:{style:{fontSize:'9px',colors:'rgba(120,140,135,.7)'},rotate:0,trim:false},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
     yaxis:{min:0,max:5,tickAmount:5,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},formatter:v=>Math.round(v)}},
     tooltip:{theme:'dark',shared:true,intersect:false,style:{fontSize:'12px'}},
     legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:8}},
@@ -3608,6 +3608,21 @@ function showDaySummary(k,d){
   modal.style.display='flex';
   modal.style.alignItems='center';
   modal.style.justifyContent='center';
+}
+
+
+function openGuideSkill(moduleId){
+  goPage('guida',null);
+  setTimeout(()=>{
+    // Open the right module
+    const body=document.getElementById('body-'+moduleId);
+    const arr=document.getElementById('arr-'+moduleId);
+    if(body&&!body.classList.contains('open')){
+      body.classList.add('open');
+      if(arr)arr.classList.add('open');
+      body.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  },200);
 }
 
 // ── INIT ──
