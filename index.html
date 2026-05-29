@@ -2742,7 +2742,9 @@ function renderPlanner(){
   const stepPick=document.getElementById('act-step-pick');
   if(stepSlot)stepSlot.style.display='block';
   if(stepPick)stepPick.style.display='none';
-  const data=allData[dkD(curPlan)];
+  const key=dkD(curPlan);
+  console.log('[PLANNER] key='+key+' data='+JSON.stringify(allData[key]?.planner)+' allData keys='+Object.keys(allData).join(','));
+  const data=allData[key];
   plannerData={mattina:[],pomeriggio:[],sera:[]};
   if(data&&data.planner){
     PLANNER_SLOTS.forEach(s=>{if(data.planner[s])plannerData[s]=[...data.planner[s]];});
