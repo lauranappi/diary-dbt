@@ -1,4 +1,4 @@
-const CACHE = 'diary-dbt-v34';
+const CACHE = 'diary-dbt-v35';
 const STATIC = [
   './manifest.json',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'
@@ -20,14 +20,15 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
-  
-  // Network-first for HTML (always get latest)
+
+  // Network-first for HTML
   if (e.request.mode === 'navigate' || url.pathname.endsWith('.html')) {
     e.respondWith(
-      fetch(e.request)
+      fetch(e.request.clone())
         .then(res => {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
+          if (res.ok) {
+            caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+          }
           return res;
         })
         .catch(() => caches.match('./index.html'))
@@ -35,7 +36,7 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Cache-first for static assets
+  // Cache-first for everything else
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
