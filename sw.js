@@ -1,4 +1,4 @@
-const CACHE = 'diary-dbt-v35';
+const CACHE = 'diary-dbt-v36';
 const STATIC = [
   './manifest.json',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'
