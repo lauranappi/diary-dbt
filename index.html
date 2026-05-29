@@ -1737,17 +1737,36 @@ function clearForm(){
 
 // ── SAVE / NAV ──
 async function saveDay(){
-  const key=dk(cur);allData[key]=getForm();allData[key].savedAt=new Date().toISOString();
+  const key=dk(cur);
+  const existing=allData[key]||{};
+  allData[key]={...existing,...getForm()};
+  if(existing.planner)allData[key].planner=existing.planner;
+  allData[key].savedAt=new Date().toISOString();
   svLS();updPill(key);showToast('t1');showToast('t2');
   if(channel)await pushChan();
 }
 function showToast(id){const t=document.getElementById(id);if(!t)return;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
 
 function chDay(d){
-  const currentData=getForm();
-  const hasData=Object.values(currentData.scales||{}).some(v=>v!=null)||Object.values(currentData.toggles||{}).some(v=>v!=null)||Object.values(currentData.texts||{}).some(v=>v&&v.trim())||Object.keys(currentData.skills||{}).length>0;
-  if(hasData){const key=dk(cur);allData[key]=currentData;allData[key].savedAt=new Date().toISOString();svLS();updPill(key);}
-  const nd=new Date(cur);nd.setDate(nd.getDate()+d);if(isFut(nd))return;cur=nd;updDL();setForm(allData[dk(cur)]||null);
+  // Only auto-save if on diary page to avoid overwriting data from abilita navigation
+  const onOggi=document.getElementById('page-oggi')?.classList.contains('active');
+  if(onOggi){
+    const currentData=getForm();
+    const hasData=Object.values(currentData.scales||{}).some(v=>v!=null)
+      ||Object.values(currentData.toggles||{}).some(v=>v!=null)
+      ||Object.values(currentData.texts||{}).some(v=>v&&v.trim())
+      ||Object.keys(currentData.skills||{}).length>0;
+    if(hasData){
+      const key=dk(cur);
+      const existing=allData[key]||{};
+      allData[key]={...existing,...currentData};
+      if(existing.planner)allData[key].planner=existing.planner;
+      allData[key].savedAt=new Date().toISOString();
+      svLS();updPill(key);
+    }
+  }
+  const nd=new Date(cur);nd.setDate(nd.getDate()+d);if(isFut(nd))return;
+  cur=nd;updDL();setForm(allData[dk(cur)]||null);
   if(document.getElementById('page-abilita')?.classList.contains('active')){updAbiPill();renderActTab();}
 }
 function updDL(){
