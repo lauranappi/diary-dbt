@@ -2067,7 +2067,7 @@ function buildHome(){
     if(matching.length){
       const idx=parseInt(localStorage.getItem('sg_'+k)||'0');
       const pick=matching[idx%matching.length];
-      const action=pick.guide?`openGuideSkill('${pick.guide}')`:pick.skill?"openDbtSkill('"+pick.skill+"')":`switchToActTab('${pick.tab}')`;
+      const action=pick.guide?`openGuideSkill('${pick.guide}','${pick.skill||''}')`:pick.skill?"openDbtSkill('"+pick.skill+"')":`switchToActTab('${pick.tab}')`;
       homeBox.innerHTML='<div class="suggest-card"><div class="s-icon">'+pick.icon+'</div><div style="flex:1"><h3>'+pick.title+'</h3><p>'+pick.desc+'</p><div style="margin-top:10px"><button class="s-btn" onclick="'+action+'">Scopri →</button></div></div></div>';
     }
   }
@@ -2082,7 +2082,7 @@ const SPOOL=[
   {cond:d=>d.scales&&(d.scales.se>=3||d.scales.sf>=3),icon:'◍',
    title:'Acqua fredda sul viso',
    desc:'Un rimedio semplice: immergi il viso in acqua fredda per 15-30 secondi trattenendo il fiato. Funziona davvero.',
-   tab:'dbt',skill:'acqua',guide:'tol'},
+   tab:'dbt',skill:'sensi',guide:'tol'},
   {cond:d=>d.scales&&(d.scales.rab>=3||d.scales.ai>=2),icon:'⊘',
    title:'STOP prima di agire',
    desc:'Quando senti un forte impulso, fermarti anche solo 5 secondi può cambiare tutto.',
@@ -2090,7 +2090,7 @@ const SPOOL=[
   {cond:d=>d.texts&&d.texts.rim&&d.texts.rim.trim(),icon:'≈',
    title:'Accettazione radicale',
    desc:"Stai rimuginando su qualcosa. L'accettazione radicale significa smettere di lottare contro ciò che non puoi cambiare.",
-   tab:'dbt',skill:'accettazione',guide:'tol'},
+   tab:'dbt',skill:'accept',guide:'tol'},
   {cond:d=>d.scales&&(d.scales.tri>=3||d.scales.vuo>=3),icon:'✦',
    title:'Migliora il momento presente',
    desc:'Quando si sente tristezza o vuoto, anche un piccolo gesto può fare differenza.',
@@ -2098,7 +2098,7 @@ const SPOOL=[
   {cond:d=>d.scales&&(d.scales.ver>=3||d.scales.col>=3),icon:'◉',
    title:'Rilassamento muscolare progressivo',
    desc:'Vergogna e colpa si tengono spesso nel corpo. Il rilassamento muscolare aiuta a sciogliere quella tensione.',
-   tab:'dbt',skill:'rilassamento',guide:'tol'},
+   tab:'dbt',skill:'tip',guide:'tol'},
   {cond:d=>d.scales&&d.scales.pau>=3,icon:'◐',
    title:'Respira: 5 sec dentro, 7 fuori',
    desc:'Quando hai paura, il corpo entra in allerta. Rallentare il respiro attiva il sistema di calma del cervello.',
@@ -3611,16 +3611,27 @@ function showDaySummary(k,d){
 }
 
 
-function openGuideSkill(moduleId){
+function openGuideSkill(moduleId,skillId){
   goPage('guida',null);
   setTimeout(()=>{
-    // Open the right module
     const body=document.getElementById('body-'+moduleId);
     const arr=document.getElementById('arr-'+moduleId);
     if(body&&!body.classList.contains('open')){
       body.classList.add('open');
       if(arr)arr.classList.add('open');
-      body.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    if(skillId){
+      setTimeout(()=>{
+        const steps=document.getElementById('steps-'+skillId);
+        const sarr=document.getElementById('sarr-'+skillId);
+        if(steps&&!steps.classList.contains('open')){
+          steps.classList.add('open');
+          if(sarr)sarr.style.transform='rotate(90deg)';
+        }
+        if(steps)steps.scrollIntoView({behavior:'smooth',block:'center'});
+      },150);
+    } else if(body){
+      setTimeout(()=>body.scrollIntoView({behavior:'smooth',block:'start'}),150);
     }
   },200);
 }
