@@ -3131,6 +3131,164 @@ async function doLogout(){
   }
 }
 
+
+// ── GUIDA DBT ──
+function toggleGuideModule(id){
+  const body=document.getElementById('body-'+id);
+  const arr=document.getElementById('arr-'+id);
+  if(!body)return;
+  const open=body.classList.toggle('open');
+  if(arr)arr.classList.toggle('open',open);
+}
+function toggleGuideSkill(id){
+  const steps=document.getElementById('steps-'+id);
+  const arr=document.getElementById('sarr-'+id);
+  if(!steps)return;
+  const open=steps.classList.toggle('open');
+  if(arr)arr.style.transform=open?'rotate(90deg)':'';
+}
+function renderGuide(){
+  const el=document.getElementById('guida-content');
+  if(!el)return;
+  if(el.innerHTML.trim())return;
+  const MODULES=[
+    {id:'tol',icon:'🌊',bg:'#FEF0F0',
+     title:'Tolleranza della sofferenza',
+     sub:'Sopravvivere alle crisi senza peggiorare la situazione',
+     when:'Usala quando provi dolore intenso che non riesci ad alleviare subito, quando stai per agire sull\'impulso di un\'emozione e questo peggiorerebbe la situazione.',
+     skills:[
+       {id:'stop',badge:'STOP',name:'Interrompi la reazione impulsiva',
+        desc:'Fermati prima di agire sotto impulso',
+        steps:['<b>S — Stop.</b> Non reagire. Congelati. Mantieni il controllo.',
+               '<b>T — fai un passo indietro.</b> Prendi distanza. Respira. Non lasciare che i sentimenti ti spingano.',
+               '<b>O — Osserva.</b> Cosa sta succedendo dentro e fuori di te?',
+               '<b>P — Procedi mindfully.</b> Agisci con consapevolezza. Quale azione migliorerebbe la situazione?']},
+       {id:'tip',badge:'TIP',name:'Cambia la chimica del corpo',
+        desc:'Riduci rapidamente le emozioni intense',
+        steps:['<b>T — Temperatura.</b> Viso in acqua fredda (min 10°C) per 30 sec. Attiva il riflesso da immersione.',
+               '<b>I — esercizio Intenso.</b> Corri, salta, fai squat. Scarica l\'energia fisica.',
+               '<b>P — Placa la respirazione.</b> Inspira 5 sec, espira 7 sec. Ripeti.',
+               '<b>P — rilassamento Progressivo.</b> Contrai ogni muscolo 5-6 sec poi rilascia, dai piedi al viso.',
+               '<b>Attenzione:</b> consulta il medico se hai problemi cardiaci o prendi betabloccanti.']},
+       {id:'accept',badge:'ACCETTA',name:'Distrarsi con mente saggia',
+        desc:'Sette modi per spostare l\'attenzione dalla sofferenza',
+        steps:['<b>A — Attività.</b> Fai qualcosa che assorba la mente: sport, hobby, pulizie.',
+               '<b>C — Contribuire.</b> Aiuta qualcun altro. Uscire da se stesse aiuta.',
+               '<b>C — Confronti.</b> Confrontati con periodi peggiori per trovare prospettiva.',
+               '<b>E — Emozioni opposte.</b> Commedie quando sei triste.',
+               '<b>T — Tieni le distanze.</b> Allontanati fisicamente o mentalmente.',
+               '<b>T — Thoughts.</b> Conta, fai un puzzle, recita qualcosa a memoria.',
+               '<b>A — Azioni intense.</b> Qualcosa che richieda concentrazione totale.']},
+       {id:'sensi',badge:'5 SENSI',name:'Autoconsolati attraverso i 5 sensi',
+        desc:'Usa i sensi per portare calma',
+        steps:['<b>Vista.</b> Cerca qualcosa di bello — un fiore, un tramonto.',
+               '<b>Udito.</b> Musica che ti calma, suoni della natura.',
+               '<b>Olfatto.</b> Candela, fiore, aria fresca.',
+               '<b>Gusto.</b> Qualcosa di piacevole assaporato lentamente.',
+               '<b>Tatto.</b> Bagno caldo, coperta morbida, accarezzare un animale.']}
+     ]},
+    {id:'mind',icon:'🧘',bg:'#E6F5F3',
+     title:'Mindfulness',
+     sub:'Vivere consapevolmente nel momento presente',
+     when:'Ridurre la sofferenza, aumentare il controllo della mente, vivere la realtà senza pilota automatico e senza giudicare.',
+     skills:[
+       {id:'mstati',badge:'STATI',name:'I tre stati della mente',
+        desc:'Razionale, emotiva e saggia',
+        steps:['<b>Mente razionale.</b> Fredda, logica. Ignora le emozioni.',
+               '<b>Mente emotiva.</b> Impulsiva, governata dai sentimenti. Pericolosa nelle crisi.',
+               '<b>Mente saggia.</b> Integrazione delle due. Si raggiunge con la mindfulness.']},
+       {id:'mcosa',badge:'COSA',name:'Osservare, Descrivere, Partecipare',
+        desc:'Cosa fare durante la mindfulness',
+        steps:['<b>Osservare.</b> Nota l\'esperienza senza aggrapparti. I pensieri sono nuvole.',
+               '<b>Descrivere.</b> "Noto tensione nel petto." Descrivere crea distanza.',
+               '<b>Partecipare.</b> Buttati completamente nell\'attività del momento.']},
+       {id:'mcome',badge:'COME',name:'Non giudicare, Una cosa, Efficacia',
+        desc:'Come praticare la mindfulness',
+        steps:['<b>Non giudicare.</b> Invece di "è terribile" prova "questo sta succedendo".',
+               '<b>Una cosa per volta.</b> Tutta l\'attenzione sull\'attività del momento.',
+               '<b>Essere efficaci.</b> Fai ciò che funziona nella situazione.']}
+     ]},
+    {id:'reg',icon:'🎛️',bg:'#FEF6E4',
+     title:'Regolazione emotiva',
+     sub:'Capire, ridurre e gestire le emozioni intense',
+     when:'Identificare le emozioni, ridurre quelle indesiderate, diminuire la vulnerabilità, ridurre la sofferenza quando le emozioni ti sopraffanno.',
+     skills:[
+       {id:'rperche',badge:'PERCHÉ',name:'A cosa servono le emozioni',
+        desc:'Capire le emozioni aiuta a regolarle',
+        steps:['<b>Motivano all\'azione.</b> La paura fa fuggire, la rabbia fa difendere.',
+               '<b>Comunicano agli altri.</b> Espressioni e tono trasmettono emozioni involontariamente.',
+               '<b>Comunicano a noi stesse.</b> Le emozioni sono segnali importanti.',
+               '<b>Attenzione:</b> le emozioni non sono fatti. Controlla sempre la realtà.']},
+       {id:'rcheck',badge:'CHECK',name:'Controllare i fatti',
+        desc:'Le emozioni rispondono ai pensieri, non solo ai fatti',
+        steps:['Qual è l\'evento scatenante? Descrivilo in modo neutro.',
+               'Sto assumendo cose che non so per certo?',
+               'L\'emozione corrisponde ai fatti reali?',
+               'Se no: agisci in modo <b>opposto</b> a ciò che l\'emozione ti spinge a fare.']},
+       {id:'rplease',badge:'PLEASE',name:'Ridurre la vulnerabilità emotiva',
+        desc:'Cura il corpo per stabilizzare le emozioni',
+        steps:['<b>PL — malattie Fisiche.</b> Vai dal medico, prendi le medicine.',
+               '<b>E — alimentazione Equilibrata.</b> Non saltare pasti.',
+               '<b>A — evita Alteranti.</b> Alcol e sostanze aumentano la reattività.',
+               '<b>S — Sonno bilanciato.</b> Ritmo regolare.',
+               '<b>E — Esercizio fisico.</b> Anche 20 min al giorno fanno la differenza.']}
+     ]},
+    {id:'inter',icon:'🤝',bg:'#EEF2FF',
+     title:'Efficacia interpersonale',
+     sub:'Ottenere ciò che vuoi mantenendo relazioni e rispetto di sé',
+     when:'Tre obiettivi in equilibrio: ottenere ciò che vuoi, mantenere la relazione, rispettare te stessa.',
+     skills:[
+       {id:'ideare',badge:'IDEARE',name:'Come fare richieste efficaci',
+        desc:'Per ottenere ciò che vuoi mantenendo la relazione',
+        steps:['<b>I — Identifica i desideri.</b> Cosa vuoi esattamente?',
+               '<b>D — Descrivi la situazione.</b> Attieniti ai fatti.',
+               '<b>E — Esprimi i sentimenti.</b> "Mi sento..." Non "Tu mi fai...".',
+               '<b>A — Afferma i desideri.</b> Chiedi chiaramente.',
+               '<b>R — Rinforza.</b> Spiega i benefici per l\'altra persona.',
+               '<b>E — sii mindful.</b> Mantieni il focus sull\'obiettivo.']},
+       {id:'imiti',badge:'MITI',name:'Credenze che ostacolano',
+        desc:'Riconosci i pensieri che ti impediscono di essere efficace',
+        steps:['"Non mi merito ciò che desidero." — Falso.',
+               '"Fare domande dimostra debolezza." — Falso.',
+               '"Rifiutare è da egoisti." — Falso.',
+               '"Dovrebbero sapere cosa voglio." — Falso.',
+               '"Non posso sopportare che si arrabbino." — Si può tollerare.']}
+     ]}
+  ];
+  MODULES.forEach(function(mod){
+    const mDiv=document.createElement('div');mDiv.className='guide-module';
+    const hdr=document.createElement('div');hdr.className='guide-module-header';
+    hdr.onclick=function(){toggleGuideModule(mod.id);};
+    hdr.innerHTML='<div class="guide-module-icon" style="background:'+mod.bg+'">'+mod.icon+'</div>'
+      +'<div style="flex:1"><div class="guide-module-title">'+mod.title+'</div>'
+      +'<div class="guide-module-sub">'+mod.sub+'</div></div>'
+      +'<span class="guide-module-arrow" id="arr-'+mod.id+'">›</span>';
+    mDiv.appendChild(hdr);
+    const body=document.createElement('div');body.className='guide-module-body';body.id='body-'+mod.id;
+    const when=document.createElement('div');when.className='guide-when';
+    when.innerHTML='<strong>Quando:</strong> '+mod.when;
+    body.appendChild(when);
+    mod.skills.forEach(function(sk){
+      const skDiv=document.createElement('div');skDiv.className='guide-skill';
+      const skHdr=document.createElement('div');skHdr.className='guide-skill-header';
+      skHdr.onclick=function(){toggleGuideSkill(sk.id);};
+      skHdr.innerHTML='<div class="guide-skill-badge">'+sk.badge+'</div>'
+        +'<div style="flex:1"><div class="guide-skill-name">'+sk.name+'</div>'
+        +'<div class="guide-skill-desc">'+sk.desc+'</div></div>'
+        +'<span style="color:var(--muted);font-size:18px;margin-left:8px;transition:transform .2s" id="sarr-'+sk.id+'">›</span>';
+      skDiv.appendChild(skHdr);
+      const steps=document.createElement('div');steps.className='guide-skill-steps';steps.id='steps-'+sk.id;
+      sk.steps.forEach(function(step,i){
+        const row=document.createElement('div');row.className='guide-step';
+        row.innerHTML='<div class="guide-step-n">'+(i+1)+'</div><div class="guide-step-text">'+step+'</div>';
+        steps.appendChild(row);
+      });
+      skDiv.appendChild(steps);body.appendChild(skDiv);
+    });
+    mDiv.appendChild(body);el.appendChild(mDiv);
+  });
+}
+
 // ── INIT ──
 ldLS();
 
