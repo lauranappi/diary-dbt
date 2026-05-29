@@ -2656,10 +2656,12 @@ async function savePlanner(){
   const key=dk(cur);
   if(!allData[key])allData[key]={scales:{},toggles:{},texts:{},skills:{}};
   const plan=getPlannerData();
+  console.log('[SAVE] key:',key,'plan:',JSON.stringify(plan),'channel:',channel);
   allData[key].planner=plan;
   allData[key].savedAt=new Date().toISOString();
   svData();svProfile();updPill(key);showToast('t-plan');
   if(channel)await pushChan();
+  else console.log('[SAVE] channel is null — not pushing');
 }
 
 function renderPlanner(){
