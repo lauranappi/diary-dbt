@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
 <style>
 :root{
   /* Palette petrolio */
@@ -1102,12 +1102,12 @@ textarea:focus,input:focus,select:focus{
     <button class="chart-range-btn" onclick="setTrendRange(14,this)">14gg</button>
     <button class="chart-range-btn" onclick="setTrendRange(0,this)">Tutti</button>
   </div>
-  <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="position:relative;height:180px"><canvas id="cSuic1"></canvas></div></div>
-  <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="position:relative;height:200px"><canvas id="cSuic2"></canvas></div></div>
-  <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="position:relative;height:200px"><canvas id="cSost"></canvas></div></div>
-  <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="position:relative;height:200px"><canvas id="cEmoPos"></canvas></div></div>
-  <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="position:relative;height:200px"><canvas id="cEmoNeg1"></canvas></div></div>
-  <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="position:relative;height:200px"><canvas id="cEmoNeg2"></canvas></div></div>
+  <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="position:relative;height:180px"><div id="cSuic1" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="position:relative;height:200px"><div id="cSuic2" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="position:relative;height:200px"><div id="cSost" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="position:relative;height:200px"><div id="cEmoPos" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="position:relative;height:200px"><div id="cEmoNeg1" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="position:relative;height:200px"><div id="cEmoNeg2" style="min-height:200px"></div></div></div>
 </div>
 
 <!-- ══ PAGE: PAZIENTI (terapeuta) ══ -->
@@ -1173,12 +1173,12 @@ textarea:focus,input:focus,select:focus{
       <button class="chart-range-btn" onclick="setPatRange(14,this)">14gg</button>
       <button class="chart-range-btn" onclick="setPatRange(0,this)">Tutti</button>
     </div>
-    <div class="cwrap"><div class="ctitle">⚠ Comportamenti suicidari</div><div style="position:relative;height:200px"><canvas id="pc4"></canvas></div></div>
-      <div class="cwrap"><div class="ctitle">⚠ Autolesività</div><div style="position:relative;height:200px"><canvas id="pc5"></canvas></div></div>
-      <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="position:relative;height:200px"><canvas id="pc6"></canvas></div></div>
-      <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="position:relative;height:200px"><canvas id="pc1"></canvas></div></div>
-      <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="position:relative;height:200px"><canvas id="pc2"></canvas></div></div>
-      <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="position:relative;height:200px"><canvas id="pc3"></canvas></div></div>
+    <div class="cwrap"><div class="ctitle">⚠ Comportamenti suicidari</div><div style="position:relative;height:200px"><div id="pc4" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">⚠ Autolesività</div><div style="position:relative;height:200px"><div id="pc5" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="position:relative;height:200px"><div id="pc6" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="position:relative;height:200px"><div id="pc1" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="position:relative;height:200px"><div id="pc2" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="position:relative;height:200px"><div id="pc3" style="min-height:200px"></div></div></div>
     </div>
 
     <!-- TAB: GIORNATA -->
@@ -1494,7 +1494,7 @@ const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 
 let cur=new Date(), allData={}, profile={}, settings={}, actTried={}, lastPushTs=0;
 let channel=null;
-let cEmoPos=null,cEmoNeg1=null,cEmoNeg2=null,cSuic1=null,cSuic2=null,cSost=null;
+
 
 const dk=d=>(d instanceof Date?d:new Date(d)).toISOString().split('T')[0];
 const today=()=>dk(new Date());
@@ -1884,17 +1884,48 @@ function setTrendRange(n,btn){
 function renderTrend(){
   const allKeys=Object.keys(allData).filter(k=>!isDayEmpty(allData[k])).sort();
   const keys=trendRange===0?allKeys:allKeys.slice(-trendRange);
+  if(!keys.length)return;
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric'}));
-  const opt=(ymax)=>({responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11,family:'-apple-system,sans-serif'},boxWidth:12,boxHeight:12,padding:12,usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'rgba(20,95,86,.95)',titleFont:{size:12,weight:'700'},bodyFont:{size:12},padding:10,cornerRadius:8,displayColors:true,boxPadding:4}},scales:{y:{min:0,max:ymax,ticks:{stepSize:1,font:{size:10,family:'-apple-system,sans-serif'},color:'#7A9490'},grid:{color:'rgba(143,181,176,.15)',drawBorder:false}},x:{ticks:{font:{size:10,family:'-apple-system,sans-serif'},color:'#7A9490',autoSkip:false,maxRotation:0},grid:{display:false}}}});
-  const dsS=(f,c,l)=>({label:l,data:keys.map(k=>allData[k]?.scales?.[f]??null),borderColor:c,backgroundColor:c+'15',tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,spanGaps:true,fill:true});
-  const dsT=(f,c,l)=>({label:l,data:keys.map(k=>{const d=allData[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0}),borderColor:c,backgroundColor:c+'15',tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,spanGaps:true,fill:true});
-  const mk=(id,datasets,ymax,prev)=>{if(prev)prev.destroy();return new Chart(document.getElementById(id),{type:'line',data:{labels,datasets},options:opt(ymax)})};
-  cEmoPos=mk('cEmoPos',[dsS('ser','#0EA86B','Serenità'),dsS('gio','#F5A623','Gioia')],5,cEmoPos);
-  cEmoNeg1=mk('cEmoNeg1',[dsS('tri','#4A90D9','Tristezza'),dsS('pau','#E0567A','Paura'),dsS('rab','#E53935','Rabbia')],5,cEmoNeg1);
-  cEmoNeg2=mk('cEmoNeg2',[dsS('ver','#888780','Vergogna'),dsS('col','#5F5E5A','Colpa'),dsS('vuo','#2C2C2A','Vuoto'),dsS('se','#1A7A6E','Sof. emotiva')],5,cEmoNeg2);
-  cSuic1=mk('cSuic1',[dsS('sp','#E24B4A','Pensieri suicidari (0-5)'),dsT('sa','#7A0000','Azione suicidaria (0/1)')],5,cSuic1);
-  cSuic2=mk('cSuic2',[dsS('ai','#D4537E','Intenzione autolesività (0-5)'),dsT('aa','#72243E','Azione autolesività (0/1)')],5,cSuic2);
-  cSost=mk('cSost',[dsS('alci','#EF9F27','Intenzione alcol'),dsS('cbdi','#1D9E75','Intenzione CBD')],5,cSost);
+
+  // Destroy existing charts
+  ['cSuic1','cSuic2','cSost','cEmoPos','cEmoNeg1','cEmoNeg2'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el._apexCharts){el._apexCharts.destroy();el._apexCharts=null;}
+  });
+
+  const BASE_OPTS={
+    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    stroke:{curve:'smooth',width:2.5},
+    fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
+    grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}}},
+    xaxis:{categories:labels,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},rotate:0},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
+    yaxis:{min:0,max:5,tickAmount:5,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},formatter:v=>Math.round(v)}},
+    tooltip:{theme:'dark',x:{show:true},shared:true,intersect:false,style:{fontSize:'12px'}},
+    legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:8}},
+    markers:{size:0,hover:{size:5,sizeOffset:2}},
+    dataLabels:{enabled:false},
+  };
+
+  function mkApex(id,series,colors,ymax){
+    const el=document.getElementById(id);if(!el)return;
+    const opts={...BASE_OPTS,series,colors,
+      yaxis:{...BASE_OPTS.yaxis,max:ymax||5},
+      chart:{...BASE_OPTS.chart,id}
+    };
+    const chart=new ApexCharts(el,opts);
+    chart.render();
+    el._apexCharts=chart;
+  }
+
+  function sv(f){return keys.map(k=>allData[k]?.scales?.[f]??null);}
+  function tv(f){return keys.map(k=>{const d=allData[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0});}
+
+  mkApex('cSuic1',[{name:'Pensieri suicidari',data:sv('sp')},{name:'Azione suicidaria',data:tv('sa')}],['#EF5350','#B71C1C']);
+  mkApex('cSuic2',[{name:'Intenzione autolesività',data:sv('ai')},{name:'Azione autolesività',data:tv('aa')}],['#EC407A','#880E4F']);
+  mkApex('cSost',[{name:'Intenzione alcol',data:sv('alci')},{name:'Intenzione CBD',data:sv('cbdi')}],['#FFA726','#66BB6A']);
+  mkApex('cEmoPos',[{name:'Serenità',data:sv('ser')},{name:'Gioia',data:sv('gio')}],['#26A69A','#FFA726']);
+  mkApex('cEmoNeg1',[{name:'Tristezza',data:sv('tri')},{name:'Paura',data:sv('pau')},{name:'Rabbia',data:sv('rab')}],['#42A5F5','#EC407A','#EF5350']);
+  mkApex('cEmoNeg2',[{name:'Vergogna',data:sv('ver')},{name:'Colpa',data:sv('col')},{name:'Vuoto',data:sv('vuo')},{name:'Sof. emotiva',data:sv('se')}],['#9E9E9E','#757575','#424242','#26A69A']);
 }
 
 // ── ATTIVITÀ ──
@@ -2241,75 +2272,45 @@ function setPatRange(n,btn){
 }
 function renderPatientCharts(){
   if(!currentPatient)return;
-  Object.values(patCharts).forEach(c=>{if(c)try{c.destroy()}catch(e){}});
-  patCharts={};
+  // Destroy existing
+  ['pc1','pc2','pc3','pc4','pc5','pc6'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el._apexCharts){el._apexCharts.destroy();el._apexCharts=null;}
+  });
   const entries=currentPatient.entries;
   const allEntryKeys=Object.keys(entries).filter(k=>!isDayEmpty(entries[k])).sort();
   const keys=patRange===0?allEntryKeys:allEntryKeys.slice(-patRange);
   if(!keys.length)return;
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}));
-  const PFONT='-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
-  const opt=ymax=>({
-    responsive:true,maintainAspectRatio:false,
-    interaction:{intersect:false,mode:'index'},
-    plugins:{
-      legend:{display:true,position:'bottom',labels:{font:{size:11,family:PFONT,weight:'500'},boxWidth:8,boxHeight:8,padding:14,usePointStyle:true,pointStyle:'circle'}},
-      tooltip:{
-        backgroundColor:'rgba(15,15,20,.88)',
-        titleFont:{size:12,weight:'700',family:PFONT},
-        bodyFont:{size:12,family:PFONT},
-        padding:12,cornerRadius:10,
-        displayColors:true,boxPadding:4,
-        borderColor:'rgba(255,255,255,.08)',borderWidth:1
-      }
-    },
-    scales:{
-      y:{min:0,max:ymax,
-        ticks:{stepSize:1,font:{size:10,family:PFONT},color:'rgba(120,140,135,.7)',padding:6},
-        grid:{color:'rgba(120,160,155,.08)',drawBorder:false},
-        border:{display:false}
-      },
-      x:{
-        ticks:{font:{size:9,family:PFONT},color:'rgba(120,140,135,.7)',autoSkip:false,maxRotation:0,padding:4},
-        grid:{display:false},
-        border:{display:false}
-      }
-    }
-  });
-  const dsS=(f,c,l)=>({
-    label:l,data:keys.map(k=>entries[k]?.scales?.[f]??null),
-    borderColor:c,
-    backgroundColor:(ctx)=>{
-      if(!ctx.chart.chartArea)return c+'10';
-      const {top,bottom}=ctx.chart.chartArea;
-      const grad=ctx.chart.ctx.createLinearGradient(0,top,0,bottom);
-      grad.addColorStop(0,c+'28');grad.addColorStop(1,c+'02');return grad;
-    },
-    tension:.4,pointRadius:0,pointHoverRadius:6,
-    pointBackgroundColor:'#fff',pointBorderColor:c,pointBorderWidth:2,
-    borderWidth:2.5,spanGaps:true,fill:true
-  });
-  const dsT=(f,c,l)=>({
-    label:l,data:keys.map(k=>{const d=entries[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0}),
-    borderColor:c,
-    backgroundColor:(ctx)=>{
-      if(!ctx.chart.chartArea)return c+'10';
-      const {top,bottom}=ctx.chart.chartArea;
-      const grad=ctx.chart.ctx.createLinearGradient(0,top,0,bottom);
-      grad.addColorStop(0,c+'28');grad.addColorStop(1,c+'02');return grad;
-    },
-    tension:.4,pointRadius:0,pointHoverRadius:6,
-    pointBackgroundColor:'#fff',pointBorderColor:c,pointBorderWidth:2,
-    borderWidth:2.5,spanGaps:true,fill:true
-  });
-  const mk=(id,ds,ymax)=>new Chart(document.getElementById(id),{type:'line',data:{labels,datasets:ds},options:opt(ymax)});
-  patCharts.pc1=mk('pc1',[dsS('ser','#1D9E75','Serenità'),dsS('gio','#EF9F27','Gioia')],5);
-  patCharts.pc2=mk('pc2',[dsS('tri','#378ADD','Tristezza'),dsS('pau','#D4537E','Paura'),dsS('rab','#C85250','Rabbia')],5);
-  patCharts.pc3=mk('pc3',[dsS('ver','#888780','Vergogna'),dsS('col','#5F5E5A','Colpa'),dsS('vuo','#2C2C2A','Vuoto'),dsS('se','#1A7A6E','Sof. emotiva')],5);
-  patCharts.pc4=mk('pc4',[dsS('sp','#C85250','Pensieri suicidari'),dsT('sa','#7A0000','Azione (0/1)')],5);
-  patCharts.pc5=mk('pc5',[dsS('ai','#D4537E','Intenzione autoles.'),dsT('aa','#72243E','Azione (0/1)')],5);
-  patCharts.pc6=mk('pc6',[dsS('alci','#EF9F27','Intenzione alcol'),dsS('cbdi','#1D9E75','Intenzione CBD')],5);
-  // pc7 removed — skills shown as chips in tab Abilità
+
+  const BASE={
+    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    stroke:{curve:'smooth',width:2.5},
+    fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
+    grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}}},
+    xaxis:{categories:labels,labels:{style:{fontSize:'9px',colors:'rgba(120,140,135,.7)'},rotate:0},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
+    yaxis:{min:0,max:5,tickAmount:5,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},formatter:v=>Math.round(v)}},
+    tooltip:{theme:'dark',shared:true,intersect:false,style:{fontSize:'12px'}},
+    legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:8}},
+    markers:{size:0,hover:{size:5}},
+    dataLabels:{enabled:false},
+  };
+
+  function mkP(id,series,colors){
+    const el=document.getElementById(id);if(!el)return;
+    const chart=new ApexCharts(el,{...BASE,series,colors,chart:{...BASE.chart,id}});
+    chart.render();el._apexCharts=chart;
+  }
+
+  function sv(f){return keys.map(k=>entries[k]?.scales?.[f]??null);}
+  function tv(f){return keys.map(k=>{const d=entries[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0});}
+
+  mkP('pc4',[{name:'Pensieri suicidari',data:sv('sp')},{name:'Azione (0/1)',data:tv('sa')}],['#EF5350','#B71C1C']);
+  mkP('pc5',[{name:'Intenzione autoles.',data:sv('ai')},{name:'Azione (0/1)',data:tv('aa')}],['#EC407A','#880E4F']);
+  mkP('pc6',[{name:'Intenzione alcol',data:sv('alci')},{name:'Intenzione CBD',data:sv('cbdi')}],['#FFA726','#66BB6A']);
+  mkP('pc1',[{name:'Serenità',data:sv('ser')},{name:'Gioia',data:sv('gio')}],['#26A69A','#FFA726']);
+  mkP('pc2',[{name:'Tristezza',data:sv('tri')},{name:'Paura',data:sv('pau')},{name:'Rabbia',data:sv('rab')}],['#42A5F5','#EC407A','#EF5350']);
+  mkP('pc3',[{name:'Vergogna',data:sv('ver')},{name:'Colpa',data:sv('col')},{name:'Vuoto',data:sv('vuo')},{name:'Sof. emotiva',data:sv('se')}],['#9E9E9E','#757575','#424242','#26A69A']);
 }
 
 function renderPatientHistory(){
