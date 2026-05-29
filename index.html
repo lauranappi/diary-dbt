@@ -2356,19 +2356,22 @@ async function pushChan(){
       },
       updated_at:new Date().toISOString()
     };
-    // Always PATCH — row is created at registration, always exists
+    // PATCH existing row
     let r=await fetch(SUPA_URL+'/rest/v1/diary_data?code=eq.'+encodeURIComponent(channel),{
       method:'PATCH',
-      headers:{...getAuthHeaders(),'Prefer':'return=minimal'},
+      headers:{...getAuthHeaders(),'Prefer':'return=minimal,return=representation'},
       body:JSON.stringify({data:payload.data,updated_at:payload.updated_at})
     });
-    // If no row found (first time), create it with POST
-    if(r.status===404||r.status===0){
+    const rText=await r.text();
+    console.log('[PUSH] status:',r.status,'body:',rText,'channel:',channel,'uid:',supaSession?.user?.id);
+    if(r.status===404||r.status===0||rText==='[]'||rText===''){
+      console.log('[PUSH] no row found, trying POST...');
       r=await fetch(SUPA_URL+'/rest/v1/diary_data',{
         method:'POST',
         headers:{...getAuthHeaders(),'Prefer':'return=minimal'},
         body:JSON.stringify(payload)
       });
+      console.log('[PUSH] POST status:',r.status);
     }
     if(r.ok||r.status===201||r.status===200||r.status===204)setSt('ok','Sincronizzato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
     else{const err=await r.text();console.error('Push error:',r.status,err);setSt('err','Errore '+r.status+': '+err.slice(0,80));}
