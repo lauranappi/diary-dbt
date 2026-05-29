@@ -2160,10 +2160,61 @@ function renderPatientCharts(){
   const keys=last14();
   const entries=currentPatient.entries;
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}));
-  const opt=ymax=>({responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:12,boxHeight:12,padding:10,usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'rgba(20,95,86,.95)',titleFont:{size:12,weight:'700'},bodyFont:{size:12},padding:10,cornerRadius:8}},scales:{y:{min:0,max:ymax,ticks:{stepSize:1,font:{size:10},color:'#7A9490'},grid:{color:'rgba(143,181,176,.15)',drawBorder:false}},x:{ticks:{font:{size:9},color:'#7A9490',autoSkip:false,maxRotation:30,minRotation:0},grid:{display:false}}}});
-  const dsS=(f,c,l)=>({label:l,data:keys.map(k=>entries[k]?.scales?.[f]??null),borderColor:c,backgroundColor:c+'15',tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,spanGaps:true,fill:true});
-  const dsT=(f,c,l)=>({label:l,data:keys.map(k=>{const d=entries[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0}),borderColor:c,backgroundColor:c+'15',tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,spanGaps:true,fill:true});
-  const mk=(id,datasets,ymax)=>new Chart(document.getElementById(id),{type:'line',data:{labels,datasets},options:opt(ymax)});
+  const PFONT='-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
+  const opt=ymax=>({
+    responsive:true,maintainAspectRatio:false,
+    interaction:{intersect:false,mode:'index'},
+    plugins:{
+      legend:{display:true,position:'bottom',labels:{font:{size:11,family:PFONT,weight:'500'},boxWidth:8,boxHeight:8,padding:14,usePointStyle:true,pointStyle:'circle'}},
+      tooltip:{
+        backgroundColor:'rgba(15,15,20,.88)',
+        titleFont:{size:12,weight:'700',family:PFONT},
+        bodyFont:{size:12,family:PFONT},
+        padding:12,cornerRadius:10,
+        displayColors:true,boxPadding:4,
+        borderColor:'rgba(255,255,255,.08)',borderWidth:1
+      }
+    },
+    scales:{
+      y:{min:0,max:ymax,
+        ticks:{stepSize:1,font:{size:10,family:PFONT},color:'rgba(120,140,135,.7)',padding:6},
+        grid:{color:'rgba(120,160,155,.08)',drawBorder:false},
+        border:{display:false}
+      },
+      x:{
+        ticks:{font:{size:9,family:PFONT},color:'rgba(120,140,135,.7)',autoSkip:false,maxRotation:0,padding:4},
+        grid:{display:false},
+        border:{display:false}
+      }
+    }
+  });
+  const dsS=(f,c,l)=>({
+    label:l,data:keys.map(k=>entries[k]?.scales?.[f]??null),
+    borderColor:c,
+    backgroundColor:(ctx)=>{
+      if(!ctx.chart.chartArea)return c+'10';
+      const {top,bottom}=ctx.chart.chartArea;
+      const grad=ctx.chart.ctx.createLinearGradient(0,top,0,bottom);
+      grad.addColorStop(0,c+'28');grad.addColorStop(1,c+'02');return grad;
+    },
+    tension:.45,pointRadius:0,pointHoverRadius:5,
+    pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,
+    borderWidth:2,spanGaps:true,fill:true
+  });
+  const dsT=(f,c,l)=>({
+    label:l,data:keys.map(k=>{const d=entries[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0}),
+    borderColor:c,
+    backgroundColor:(ctx)=>{
+      if(!ctx.chart.chartArea)return c+'10';
+      const {top,bottom}=ctx.chart.chartArea;
+      const grad=ctx.chart.ctx.createLinearGradient(0,top,0,bottom);
+      grad.addColorStop(0,c+'28');grad.addColorStop(1,c+'02');return grad;
+    },
+    tension:.45,pointRadius:0,pointHoverRadius:5,
+    pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,
+    borderWidth:2,spanGaps:true,fill:true
+  });
+  const mk=(id,ds,ymax)=>new Chart(document.getElementById(id),{type:'line',data:{labels,datasets:ds},options:opt(ymax)});
   patCharts.pc1=mk('pc1',[dsS('ser','#1D9E75','Serenità'),dsS('gio','#EF9F27','Gioia')],5);
   patCharts.pc2=mk('pc2',[dsS('tri','#378ADD','Tristezza'),dsS('pau','#D4537E','Paura'),dsS('rab','#C85250','Rabbia')],5);
   patCharts.pc3=mk('pc3',[dsS('ver','#888780','Vergogna'),dsS('col','#5F5E5A','Colpa'),dsS('vuo','#2C2C2A','Vuoto'),dsS('se','#1A7A6E','Sof. emotiva')],5);
