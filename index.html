@@ -2157,8 +2157,13 @@ function renderPatientCharts(){
   if(!currentPatient)return;
   Object.values(patCharts).forEach(c=>{if(c)try{c.destroy()}catch(e){}});
   patCharts={};
-  const keys=last14();
   const entries=currentPatient.entries;
+  // Only show days with actual data, sorted, last 14
+  const keys=Object.keys(entries)
+    .filter(k=>!isDayEmpty(entries[k]))
+    .sort()
+    .slice(-14);
+  if(!keys.length)return;
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}));
   const PFONT='-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
   const opt=ymax=>({
