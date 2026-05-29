@@ -2362,17 +2362,16 @@ async function pushChan(){
       headers:{...getAuthHeaders(),'Prefer':'return=minimal,return=representation'},
       body:JSON.stringify({data:payload.data,updated_at:payload.updated_at})
     });
-    const rText=await r.text();
-    console.log('[PUSH] status:',r.status,'body:',rText,'channel:',channel,'uid:',supaSession?.user?.id);
-    if(r.status===404||r.status===0||rText==='[]'||rText===''){
-      console.log('[PUSH] no row found, trying POST...');
+    console.log('[PUSH] status:',r.status,'channel:',channel,'uid:',supaSession?.user?.id);
+    if(r.status===404||r.status===0){
+      // Row doesn't exist yet — create it
       r=await fetch(SUPA_URL+'/rest/v1/diary_data',{
         method:'POST',
         headers:{...getAuthHeaders(),'Prefer':'return=minimal'},
         body:JSON.stringify(payload)
       });
-      console.log('[PUSH] POST status:',r.status);
     }
+    // 204 = success (PATCH with no body is normal)
     if(r.ok||r.status===201||r.status===200||r.status===204)setSt('ok','Sincronizzato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
     else{const err=await r.text();console.error('Push error:',r.status,err);setSt('err','Errore '+r.status+': '+err.slice(0,80));}
   }catch(e){setSt('err','Errore di rete')}
@@ -2656,12 +2655,10 @@ async function savePlanner(){
   const key=dk(cur);
   if(!allData[key])allData[key]={scales:{},toggles:{},texts:{},skills:{}};
   const plan=getPlannerData();
-  console.log('[SAVE] key:',key,'plan:',JSON.stringify(plan),'channel:',channel);
   allData[key].planner=plan;
   allData[key].savedAt=new Date().toISOString();
   svData();svProfile();updPill(key);showToast('t-plan');
   if(channel)await pushChan();
-  else console.log('[SAVE] channel is null — not pushing');
 }
 
 function renderPlanner(){
