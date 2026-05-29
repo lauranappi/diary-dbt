@@ -821,6 +821,14 @@ textarea:focus,input:focus,select:focus{
 <button class="dbn" onclick="chPlanDay(1)" id="planNxtBtn">›</button>
 <span class="pill unsaved" id="planPill">Non pianificata</span>
 </div>
+<div class="datebar" id="datebar-abi" style="display:none">
+<button class="dbn" onclick="chDay(-1)">‹</button>
+<div style="flex:1;text-align:center">
+<div class="dlabel" id="abi-dlabel"></div>
+</div>
+<button class="dbn" onclick="chDay(1)" id="abiNxtBtn">›</button>
+<span class="pill unsaved" id="abiPill">Nessuna abilità</span>
+</div>
 </div>
 
 <div class="main-inner">
@@ -1740,6 +1748,7 @@ function chDay(d){
   const hasData=Object.values(currentData.scales||{}).some(v=>v!=null)||Object.values(currentData.toggles||{}).some(v=>v!=null)||Object.values(currentData.texts||{}).some(v=>v&&v.trim())||Object.keys(currentData.skills||{}).length>0;
   if(hasData){const key=dk(cur);allData[key]=currentData;allData[key].savedAt=new Date().toISOString();svLS();updPill(key);}
   const nd=new Date(cur);nd.setDate(nd.getDate()+d);if(isFut(nd))return;cur=nd;updDL();setForm(allData[dk(cur)]||null);
+  if(document.getElementById('page-abilita')?.classList.contains('active')){updAbiPill();renderActTab();}
 }
 function updDL(){
   const k=dk(cur);
@@ -1766,18 +1775,18 @@ function goPage(name,btn){
   window.scrollTo({top:0,behavior:'smooth'});
   if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
   if(name==='guida'){setTimeout(()=>renderGuide(),50);}
-  const showTopheader=name==='oggi'||name==='attivita';
+  const showTopheader=name==='oggi'||name==='attivita'||name==='abilita';
   document.getElementById('topheader').style.display=showTopheader?'':'none';
   document.getElementById('datebar-diary').style.display=name==='oggi'?'flex':'none';
   document.getElementById('datebar-plan').style.display=name==='attivita'?'flex':'none';
+  document.getElementById('datebar-abi').style.display=name==='abilita'?'flex':'none';
   // hide sidebar header on guida
   const sidebarEl=document.getElementById('sidebar');
   if(sidebarEl)sidebarEl.style.display=name==='guida'?'none':'';
   if(name==='home')buildHome();
   if(name==='storico')renderHist();
   if(name==='trend')renderTrend();
-  if(name==='abilita'){currentActTab='dbt';renderActTab();}
-  if(name==='abilita'){renderActTab();}
+  if(name==='abilita'){updDL();updAbiPill();renderActTab();}
   if(name==='attivita'){buildSuggest();curPlan=new Date();plannerData={mattina:[],pomeriggio:[],sera:[]};updPlanDL();renderPlanner();}
   if(name==='pazienti')renderPatients();
 }
@@ -3481,6 +3490,22 @@ function updPlanDL(){
   const hasP=d&&d.planner&&Object.values(d.planner).some(a=>a&&a.length>0);
   pill.className='pill '+(hasP?'saved':'unsaved');
   pill.textContent=hasP?'✓ Pianificata':'Non pianificata';
+}
+
+
+function updAbiPill(){
+  const k=dk(cur);
+  const el=document.getElementById('abi-dlabel');
+  const pill=document.getElementById('abiPill');
+  const nxt=document.getElementById('abiNxtBtn');
+  if(el)el.textContent=k===today()?'Oggi':fmtL(cur);
+  if(nxt)nxt.disabled=isFut(new Date(cur.getTime()+86400000));
+  if(pill){
+    const d=allData[k];
+    const hasSkill=d&&d.skills&&Object.keys(d.skills).some(s=>d.skills[s]);
+    pill.className='pill '+(hasSkill?'saved':'unsaved');
+    pill.textContent=hasSkill?'✓ Compilata':'Nessuna abilità';
+  }
 }
 
 // ── INIT ──
