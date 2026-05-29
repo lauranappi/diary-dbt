@@ -2828,7 +2828,7 @@ function renderPlanSummary(){
       const txt=document.createElement('span');txt.textContent=item;
       const btn=document.createElement('button');btn.textContent='×';btn.title='Rimuovi';
       const s=slot,ix=idx;
-      btn.onclick=()=>{plannerData[s].splice(ix,1);updateSlotCounts();renderPlanSummary();};
+      btn.onclick=()=>{plannerData[s].splice(ix,1);updateSlotCounts();renderPlanSummary();savePlanner();};
       chip.appendChild(txt);chip.appendChild(btn);chips.appendChild(chip);
     });
     slotDiv.appendChild(chips);bodyEl.appendChild(slotDiv);
