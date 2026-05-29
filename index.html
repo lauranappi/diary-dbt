@@ -948,15 +948,6 @@ textarea:focus,input:focus,select:focus{
 
 <!-- ══ PAGE: ATTIVITÀ ══ -->
 <div id="page-attivita" class="page">
-  <!-- Datebar propria (stile topheader) -->
-  <div class="datebar" style="margin-bottom:1rem">
-    <button class="dbn" onclick="chPlanDay(-1)">‹</button>
-    <div style="flex:1;text-align:center">
-      <div class="dlabel" id="plan-dlabel"></div>
-    </div>
-    <button class="dbn" onclick="chPlanDay(1)" id="planNxtBtn">›</button>
-    <span class="pill unsaved" id="planPill">Non pianificata</span>
-  </div>
   <!-- Hero -->
   <div style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%"></div>
@@ -1736,7 +1727,10 @@ function goPage(name,btn){
   window.scrollTo({top:0,behavior:'smooth'});
   if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
   if(name==='guida'){setTimeout(()=>renderGuide(),50);}
-  document.getElementById('topheader').style.display=name==='oggi'?'':'none';
+  const showTopheader=name==='oggi'||name==='attivita';
+  document.getElementById('topheader').style.display=showTopheader?'':'none';
+  document.getElementById('datebar-diary').style.display=name==='oggi'?'flex':'none';
+  document.getElementById('datebar-plan').style.display=name==='attivita'?'flex':'none';
   // hide sidebar header on guida
   const sidebarEl=document.getElementById('sidebar');
   if(sidebarEl)sidebarEl.style.display=name==='guida'?'none':'';
@@ -3370,7 +3364,7 @@ function dkD(d){
 function updPlanDL(){
   const k=dkD(curPlan);
   const isToday=k===today();
-  document.getElementById('plan-dlabel').textContent=isToday?'Oggi — '+fmtL(curPlan):fmtL(curPlan);
+  document.getElementById('plan-dlabel').textContent=isToday?'Oggi':fmtL(curPlan);
   document.getElementById('planNxtBtn').disabled=new Date(curPlan.getTime()+86400000)>new Date();
   // pill
   const pill=document.getElementById('planPill');
