@@ -1,4 +1,4 @@
-const CACHE = 'diary-dbt-v32';
+const CACHE = 'diary-dbt-v33';
 const ASSETS = [
   './index.html',
   './manifest.json',
