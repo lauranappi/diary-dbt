@@ -783,15 +783,23 @@ textarea:focus,input:focus,select:focus{
 
 <!-- TOP HEADER (only on diary pages) -->
 <div class="topheader" id="topheader">
-  <div class="datebar">
-    <button class="dbn" onclick="chDay(-1)">‹</button>
-    <div style="flex:1;text-align:center">
-      <div class="dlabel" id="dlabel"></div>
-      <div class="dsub" id="dsub"></div>
-    </div>
-    <button class="dbn" onclick="chDay(1)" id="nxtBtn">›</button>
-    <span class="pill unsaved" id="dayPill">Non compilata</span>
-  </div>
+<div class="datebar" id="datebar-diary">
+<button class="dbn" onclick="chDay(-1)">‹</button>
+<div style="flex:1;text-align:center">
+<div class="dlabel" id="dlabel"></div>
+<div class="dsub" id="dsub"></div>
+</div>
+<button class="dbn" onclick="chDay(1)" id="nxtBtn">›</button>
+<span class="pill unsaved" id="dayPill">Non compilata</span>
+</div>
+<div class="datebar" id="datebar-plan" style="display:none">
+<button class="dbn" onclick="chPlanDay(-1)">‹</button>
+<div style="flex:1;text-align:center">
+<div class="dlabel" id="plan-dlabel"></div>
+</div>
+<button class="dbn" onclick="chPlanDay(1)" id="planNxtBtn">›</button>
+<span class="pill unsaved" id="planPill">Non pianificata</span>
+</div>
 </div>
 
 <div class="main-inner">
