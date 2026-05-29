@@ -2492,7 +2492,12 @@ async function silentPull(){
       else{
         const lts=local.savedAt?new Date(local.savedAt).getTime():0;
         const rts=r2.savedAt?new Date(r2.savedAt).getTime():0;
-        if(rts>lts){allData[k]=r2;changed=true;}
+        if(rts>lts){
+          const merged2={...r2};
+          if(!merged2.planner&&local.planner)merged2.planner=local.planner;
+          if((!merged2.skills||!Object.keys(merged2.skills).length)&&local.skills)merged2.skills=local.skills;
+          allData[k]=merged2;changed=true;
+        }
       }
     });
     if(remote.actTried){
@@ -2743,7 +2748,6 @@ function renderPlanner(){
   if(stepSlot)stepSlot.style.display='block';
   if(stepPick)stepPick.style.display='none';
   const key=dkD(curPlan);
-  console.log('[PLANNER] key='+key+' data='+JSON.stringify(allData[key]?.planner)+' allData keys='+Object.keys(allData).join(','));
   const data=allData[key];
   plannerData={mattina:[],pomeriggio:[],sera:[]};
   if(data&&data.planner){
@@ -3123,6 +3127,7 @@ async function loadUserData(user){
       patientNotes:remote.patientNotes||{}
     };
     // Merge remote entries with local — keep most recent by savedAt
+    // but always preserve planner and skills from whichever version has them
     const localData=allData||{};
     const remoteEntries=remote.entries||{};
     const merged={...remoteEntries};
@@ -3132,7 +3137,12 @@ async function loadUserData(user){
       else{
         const lts=loc.savedAt?new Date(loc.savedAt).getTime():0;
         const rts=rem.savedAt?new Date(rem.savedAt).getTime():0;
-        merged[k]=lts>rts?loc:rem;
+        const base=lts>rts?loc:rem;
+        const other=lts>rts?rem:loc;
+        // Always preserve planner and skills from whichever has them
+        merged[k]={...base};
+        if(!merged[k].planner&&other.planner)merged[k].planner=other.planner;
+        if((!merged[k].skills||!Object.keys(merged[k].skills).length)&&other.skills)merged[k].skills=other.skills;
       }
     });
     allData=merged;
