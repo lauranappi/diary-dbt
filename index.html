@@ -662,11 +662,11 @@ textarea:focus,input:focus,select:focus{
   background:var(--surface);
   border:1px solid var(--border-l);
   border-radius:var(--r);
-  padding:1.25rem;
-  margin-bottom:1rem;
-  box-shadow:var(--shadow-sm);
+  padding:1.25rem 1.25rem .75rem;
+  margin-bottom:.75rem;
+  box-shadow:0 1px 3px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
 }
-.ctitle{font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:12px;letter-spacing:.01em}
+.ctitle{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase}
 
 /* ── RESPONSIVE ── */
 @media(max-width:700px){
@@ -1084,16 +1084,7 @@ textarea:focus,input:focus,select:focus{
   <div class="slbl">Giorni compilati</div>
   <div id="hlist"></div>
 
-  <!-- Day summary modal -->
-  <div id="day-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);align-items:flex-end;justify-content:center">
-    <div style="background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:85vh;overflow-y:auto;padding:1.5rem">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-        <div id="day-modal-title" style="font-size:17px;font-weight:700"></div>
-        <button onclick="document.getElementById('day-modal').style.display='none'" style="background:var(--surface-2);border:none;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--muted)">×</button>
-      </div>
-      <div id="day-modal-body"></div>
-    </div>
-  </div>
+
 </div>
 
 <!-- ══ PAGE: TREND ══ -->
@@ -1111,7 +1102,7 @@ textarea:focus,input:focus,select:focus{
     <button class="chart-range-btn" onclick="setTrendRange(14,this)">14gg</button>
     <button class="chart-range-btn" onclick="setTrendRange(0,this)">Tutti</button>
   </div>
-  <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="position:relative;height:200px"><canvas id="cSuic1"></canvas></div></div>
+  <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="position:relative;height:180px"><canvas id="cSuic1"></canvas></div></div>
   <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="position:relative;height:200px"><canvas id="cSuic2"></canvas></div></div>
   <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="position:relative;height:200px"><canvas id="cSost"></canvas></div></div>
   <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="position:relative;height:200px"><canvas id="cEmoPos"></canvas></div></div>
@@ -1898,8 +1889,8 @@ function renderTrend(){
   const dsS=(f,c,l)=>({label:l,data:keys.map(k=>allData[k]?.scales?.[f]??null),borderColor:c,backgroundColor:c+'15',tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,spanGaps:true,fill:true});
   const dsT=(f,c,l)=>({label:l,data:keys.map(k=>{const d=allData[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0}),borderColor:c,backgroundColor:c+'15',tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,spanGaps:true,fill:true});
   const mk=(id,datasets,ymax,prev)=>{if(prev)prev.destroy();return new Chart(document.getElementById(id),{type:'line',data:{labels,datasets},options:opt(ymax)})};
-  cEmoPos=mk('cEmoPos',[dsS('ser','#1D9E75','Serenità'),dsS('gio','#EF9F27','Gioia')],5,cEmoPos);
-  cEmoNeg1=mk('cEmoNeg1',[dsS('tri','#378ADD','Tristezza'),dsS('pau','#D4537E','Paura'),dsS('rab','#E24B4A','Rabbia')],5,cEmoNeg1);
+  cEmoPos=mk('cEmoPos',[dsS('ser','#0EA86B','Serenità'),dsS('gio','#F5A623','Gioia')],5,cEmoPos);
+  cEmoNeg1=mk('cEmoNeg1',[dsS('tri','#4A90D9','Tristezza'),dsS('pau','#E0567A','Paura'),dsS('rab','#E53935','Rabbia')],5,cEmoNeg1);
   cEmoNeg2=mk('cEmoNeg2',[dsS('ver','#888780','Vergogna'),dsS('col','#5F5E5A','Colpa'),dsS('vuo','#2C2C2A','Vuoto'),dsS('se','#1A7A6E','Sof. emotiva')],5,cEmoNeg2);
   cSuic1=mk('cSuic1',[dsS('sp','#E24B4A','Pensieri suicidari (0-5)'),dsT('sa','#7A0000','Azione suicidaria (0/1)')],5,cSuic1);
   cSuic2=mk('cSuic2',[dsS('ai','#D4537E','Intenzione autolesività (0-5)'),dsT('aa','#72243E','Azione autolesività (0/1)')],5,cSuic2);
@@ -3646,6 +3637,17 @@ if('serviceWorker' in navigator){
       <button onclick="closePatientDay()" style="background:var(--bg);border:none;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--muted)">×</button>
     </div>
     <div id="pat-day-body" style="padding:1.5rem;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- Day summary modal (body level) -->
+<div id="day-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);align-items:flex-end;justify-content:center">
+  <div style="background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:88vh;overflow-y:auto;padding:1.5rem;box-shadow:0 -4px 40px rgba(0,0,0,.2)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+      <div id="day-modal-title" style="font-size:17px;font-weight:700"></div>
+      <button onclick="document.getElementById('day-modal').style.display='none'" style="background:var(--surface-2);border:none;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--muted)">×</button>
+    </div>
+    <div id="day-modal-body"></div>
   </div>
 </div>
 </body>
