@@ -2444,6 +2444,7 @@ async function silentPull(){
         ||Object.keys(live.skills||{}).length>0;
       if(!isDirty)setForm(allData[k]||null);
       updDL();
+      if(document.getElementById('page-attivita')?.classList.contains('active'))renderPlanner();
       setSt('ok','Sincronizzato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
     }
   }catch(e){}
