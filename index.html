@@ -3054,6 +3054,10 @@ async function loadUserData(user){
   }
   svLS();
   enterApp();
+  // Re-render planner after remote load if needed
+  setTimeout(()=>{
+    if(document.getElementById('page-attivita')?.classList.contains('active'))renderPlanner();
+  },200);
 }
 
 function showLoginScreen(){
