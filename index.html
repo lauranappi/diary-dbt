@@ -647,6 +647,27 @@ textarea:focus,input:focus,select:focus{
 .guide-step-text{font-size:13px;color:var(--text-2);line-height:1.5;flex:1}
 .guide-when{background:var(--amber-l);border-left:3px solid #D4882A;border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;margin:10px 0;font-size:13px;color:var(--text-2);line-height:1.5}
 
+
+/* ── CHART RANGE SELECTOR ── */
+.chart-range{display:flex;gap:4px;margin-bottom:10px;justify-content:flex-end}
+.chart-range-btn{
+  padding:4px 10px;font-size:11px;font-weight:600;
+  border-radius:20px;border:1.5px solid var(--border);
+  background:var(--surface-2);color:var(--muted);
+  cursor:pointer;font-family:var(--font-ui);transition:all .12s;
+}
+.chart-range-btn.active{background:var(--teal);border-color:var(--teal);color:#fff}
+/* ── MODERN CHART CARD ── */
+.cwrap{
+  background:var(--surface);
+  border:1px solid var(--border-l);
+  border-radius:var(--r);
+  padding:1.25rem;
+  margin-bottom:1rem;
+  box-shadow:var(--shadow-sm);
+}
+.ctitle{font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:12px;letter-spacing:.01em}
+
 /* ── RESPONSIVE ── */
 @media(max-width:700px){
   .sidebar{display:none}
@@ -1066,6 +1087,11 @@ textarea:focus,input:focus,select:focus{
     </div>
   </div>
 
+  <div class="chart-range" id="trend-range">
+    <button class="chart-range-btn active" onclick="setTrendRange(7,this)">7gg</button>
+    <button class="chart-range-btn" onclick="setTrendRange(14,this)">14gg</button>
+    <button class="chart-range-btn" onclick="setTrendRange(0,this)">Tutti</button>
+  </div>
   <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="position:relative;height:200px"><canvas id="cSuic1"></canvas></div></div>
   <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="position:relative;height:200px"><canvas id="cSuic2"></canvas></div></div>
   <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="position:relative;height:200px"><canvas id="cSost"></canvas></div></div>
@@ -1132,7 +1158,12 @@ textarea:focus,input:focus,select:focus{
 
     <!-- TAB: TREND -->
     <div class="pat-tab-content" id="ptab-trend">
-      <div class="cwrap"><div class="ctitle">⚠ Comportamenti suicidari</div><div style="position:relative;height:200px"><canvas id="pc4"></canvas></div></div>
+      <div class="chart-range" id="pat-range">
+      <button class="chart-range-btn active" onclick="setPatRange(7,this)">7gg</button>
+      <button class="chart-range-btn" onclick="setPatRange(14,this)">14gg</button>
+      <button class="chart-range-btn" onclick="setPatRange(0,this)">Tutti</button>
+    </div>
+    <div class="cwrap"><div class="ctitle">⚠ Comportamenti suicidari</div><div style="position:relative;height:200px"><canvas id="pc4"></canvas></div></div>
       <div class="cwrap"><div class="ctitle">⚠ Autolesività</div><div style="position:relative;height:200px"><canvas id="pc5"></canvas></div></div>
       <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="position:relative;height:200px"><canvas id="pc6"></canvas></div></div>
       <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="position:relative;height:200px"><canvas id="pc1"></canvas></div></div>
@@ -1803,8 +1834,16 @@ function renderHist(){
 
 // ── TREND ──
 function last7(){const r=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);r.push(dk(d))}return r}
+let trendRange=7;
+function setTrendRange(n,btn){
+  trendRange=n;
+  document.querySelectorAll('#trend-range .chart-range-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderTrend();
+}
 function renderTrend(){
-  const keys=last7();
+  const allKeys=Object.keys(allData).filter(k=>!isDayEmpty(allData[k])).sort();
+  const keys=trendRange===0?allKeys:allKeys.slice(-trendRange);
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric'}));
   const opt=(ymax)=>({responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11,family:'-apple-system,sans-serif'},boxWidth:12,boxHeight:12,padding:12,usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'rgba(20,95,86,.95)',titleFont:{size:12,weight:'700'},bodyFont:{size:12},padding:10,cornerRadius:8,displayColors:true,boxPadding:4}},scales:{y:{min:0,max:ymax,ticks:{stepSize:1,font:{size:10,family:'-apple-system,sans-serif'},color:'#7A9490'},grid:{color:'rgba(143,181,176,.15)',drawBorder:false}},x:{ticks:{font:{size:10,family:'-apple-system,sans-serif'},color:'#7A9490',autoSkip:false,maxRotation:0},grid:{display:false}}}});
   const dsS=(f,c,l)=>({label:l,data:keys.map(k=>allData[k]?.scales?.[f]??null),borderColor:c,backgroundColor:c+'15',tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,spanGaps:true,fill:true});
@@ -2153,16 +2192,20 @@ function renderPatientStats(){
 
 function last14(){const r=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);r.push(dk(d))}return r}
 
+let patRange=7;
+function setPatRange(n,btn){
+  patRange=n;
+  document.querySelectorAll('#pat-range .chart-range-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderPatientCharts();
+}
 function renderPatientCharts(){
   if(!currentPatient)return;
   Object.values(patCharts).forEach(c=>{if(c)try{c.destroy()}catch(e){}});
   patCharts={};
   const entries=currentPatient.entries;
-  // Only show days with actual data, sorted, last 14
-  const keys=Object.keys(entries)
-    .filter(k=>!isDayEmpty(entries[k]))
-    .sort()
-    .slice(-14);
+  const allEntryKeys=Object.keys(entries).filter(k=>!isDayEmpty(entries[k])).sort();
+  const keys=patRange===0?allEntryKeys:allEntryKeys.slice(-patRange);
   if(!keys.length)return;
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}));
   const PFONT='-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
@@ -2202,9 +2245,9 @@ function renderPatientCharts(){
       const grad=ctx.chart.ctx.createLinearGradient(0,top,0,bottom);
       grad.addColorStop(0,c+'28');grad.addColorStop(1,c+'02');return grad;
     },
-    tension:.45,pointRadius:0,pointHoverRadius:5,
-    pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,
-    borderWidth:2,spanGaps:true,fill:true
+    tension:.4,pointRadius:0,pointHoverRadius:6,
+    pointBackgroundColor:'#fff',pointBorderColor:c,pointBorderWidth:2,
+    borderWidth:2.5,spanGaps:true,fill:true
   });
   const dsT=(f,c,l)=>({
     label:l,data:keys.map(k=>{const d=entries[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0}),
@@ -2215,9 +2258,9 @@ function renderPatientCharts(){
       const grad=ctx.chart.ctx.createLinearGradient(0,top,0,bottom);
       grad.addColorStop(0,c+'28');grad.addColorStop(1,c+'02');return grad;
     },
-    tension:.45,pointRadius:0,pointHoverRadius:5,
-    pointBackgroundColor:c,pointBorderColor:'#fff',pointBorderWidth:2,
-    borderWidth:2,spanGaps:true,fill:true
+    tension:.4,pointRadius:0,pointHoverRadius:6,
+    pointBackgroundColor:'#fff',pointBorderColor:c,pointBorderWidth:2,
+    borderWidth:2.5,spanGaps:true,fill:true
   });
   const mk=(id,ds,ymax)=>new Chart(document.getElementById(id),{type:'line',data:{labels,datasets:ds},options:opt(ymax)});
   patCharts.pc1=mk('pc1',[dsS('ser','#1D9E75','Serenità'),dsS('gio','#EF9F27','Gioia')],5);
