@@ -3102,7 +3102,8 @@ async function loadUserData(user){
   // Re-render planner after remote load if needed
   setTimeout(()=>{
     if(document.getElementById('page-attivita')?.classList.contains('active'))renderPlanner();
-  },200);
+    if(document.getElementById('page-guida')?.classList.contains('active'))renderGuide();
+  },300);
 }
 
 function showLoginScreen(){
