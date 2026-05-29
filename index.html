@@ -2075,63 +2075,82 @@ function buildHome(){
 
 // ── SUGGEST ──
 const SPOOL=[
-  {cond:d=>d.scales&&(d.scales.se>=4||d.scales.sp>=3||d.scales.ai>=3),icon:'◇',
-   title:'TIP — cambia la chimica del corpo',
-   desc:"La tua sofferenza sembra alta oggi. L'abilità TIP può aiutarti a calmarti rapidamente, anche in pochi minuti.",
-   tab:'dbt',skill:'tip',guide:'tol'},
-  {cond:d=>d.scales&&(d.scales.se>=3||d.scales.sf>=3),icon:'◍',
-   title:'Acqua fredda sul viso',
-   desc:'Un rimedio semplice: immergi il viso in acqua fredda per 15-30 secondi trattenendo il fiato. Funziona davvero.',
-   tab:'dbt',skill:'sensi',guide:'tol'},
-  {cond:d=>d.scales&&(d.scales.rab>=3||d.scales.ai>=2),icon:'⊘',
-   title:'STOP prima di agire',
-   desc:'Quando senti un forte impulso, fermarti anche solo 5 secondi può cambiare tutto.',
-   tab:'dbt',skill:'stop',guide:'tol'},
-  {cond:d=>d.texts&&d.texts.rim&&d.texts.rim.trim(),icon:'≈',
-   title:'Accettazione radicale',
-   desc:"Stai rimuginando su qualcosa. L'accettazione radicale significa smettere di lottare contro ciò che non puoi cambiare.",
-   tab:'dbt',skill:'accept',guide:'tol'},
-  {cond:d=>d.scales&&(d.scales.tri>=3||d.scales.vuo>=3),icon:'✦',
-   title:'Migliora il momento presente',
-   desc:'Quando si sente tristezza o vuoto, anche un piccolo gesto può fare differenza.',
-   tab:'migliora',skill:null},
-  {cond:d=>d.scales&&(d.scales.ver>=3||d.scales.col>=3),icon:'◉',
-   title:'Rilassamento muscolare progressivo',
-   desc:'Vergogna e colpa si tengono spesso nel corpo. Il rilassamento muscolare aiuta a sciogliere quella tensione.',
-   tab:'dbt',skill:'tip',guide:'tol'},
-  {cond:d=>d.scales&&d.scales.pau>=3,icon:'◐',
-   title:'Respira: 5 sec dentro, 7 fuori',
-   desc:'Quando hai paura, il corpo entra in allerta. Rallentare il respiro attiva il sistema di calma del cervello.',
-   tab:'dbt',skill:'tip',guide:'tol'},
-  {cond:d=>d.scales&&(d.scales.ser||5)<=2&&(d.scales.gio||5)<=2,icon:'◉',
-   title:'Coccola i tuoi sensi',
-   desc:'Serenità e gioia sono basse oggi. Piccoli gesti sensoriali possono ricaricarti.',
-   tab:'tatto',skill:null},
-  {cond:d=>d.scales&&d.scales.abb>=3,icon:'♥',
-   title:'È normale avere dubbi sulla terapia',
-   desc:'Avere pensieri di abbandonare il percorso fa parte del percorso stesso.',
-   tab:'distrarsi',skill:null},
-  {cond:()=>true,icon:'❀',
-   title:'Cosa potresti fare di bello oggi?',
-   desc:"Esplorare attività nuove costruisce la vita che vale la pena vivere. Dai un'occhiata alle attività dei sensi.",
-   tab:'vista',skill:null},
-  {cond:()=>true,icon:'⬢',
-   title:'Hai 10 minuti liberi?',
-   desc:"Distrarsi non è evitare — è dare spazio alla mente. Scegli qualcosa dalla lista ACCETTA.",
-   tab:'distrarsi',skill:null},
-  {cond:()=>true,icon:'◉',
+  // PRIORITÀ 1 — Crisi acute (scala >= 4 o azioni Sì)
+  {prio:1,cond:d=>(d.scales?.sp>=3||d.scales?.ai>=3),icon:'◇',
+   title:'TIP — cambia la chimica del corpo\',
+   desc:\'La tua sofferenza sembra alta. TIP può calmarti rapidamente: acqua fredda sul viso, esercizio intenso, respirazione lenta.',
+   guide:'tol',skill:'tip'},
+  {prio:1,cond:d=>(d.scales?.se>=4||d.scales?.sf>=4),icon:'◍',
+   title:\'Acqua fredda sul viso\',
+   desc:\'Immergi il viso in acqua fredda per 15-30 sec trattenendo il fiato. Il riflesso da immersione calma il sistema nervoso in pochi secondi.',
+   guide:'tol',skill:'sensi'},
+  {prio:1,cond:d=>(d.scales?.rab>=4||d.scales?.ai>=3),icon:'⊘',
+   title:'STOP prima di agire\',
+   desc:'Quando senti un forte impulso, fermarti anche solo 5 secondi può cambiare tutto. STOP — fai un passo indietro — Osserva — Procedi mindfully.',
+   guide:'tol',skill:'stop'},
+
+  // PRIORITÀ 2 — Emozioni difficili (scala 2-3)
+  {prio:2,cond:d=>(d.scales?.tri>=2||d.scales?.vuo>=2),icon:'✦',
+   title:'Migliora il momento presente\',
+   desc:'Quando tristezza o vuoto sono presenti, MIGLIORA aiuta a rendere il momento più tollerabile con 7 strategie pratiche.',
+   guide:'tol',skill:'migliora'},
+  {prio:2,cond:d=>(d.scales?.ver>=2||d.scales?.col>=2),icon:'◉',
+   title:'Rilassamento muscolare progressivo\',
+   desc:'Vergogna e colpa si tengono spesso nel corpo. Il rilassamento muscolare scioglie quella tensione e riduce l\'intensità emotiva.',
+   guide:'tol',skill:'tip'},
+  {prio:2,cond:d=>(d.scales?.pau>=2),icon:'◐',
+   title:'Respira: 5 sec dentro, 7 fuori\',
+   desc:'Quando hai paura, rallentare il respiro attiva il sistema parasimpatico. Inspira 5 sec, espira 7 sec. Ripeti per 5 minuti.',
+   guide:'tol',skill:'tip'},
+  {prio:2,cond:d=>(d.scales?.rab>=2),icon:'⊘',
+   title:\'Controlla i fatti della rabbia\',
+   desc:\'La rabbia spesso nasce da interpretazioni, non dai fatti. Chiediti: la situazione è davvero come la vedo? Ci sono spiegazioni alternative?',
+   guide:'reg',skill:'rcheck'},
+  {prio:2,cond:d=>(d.scales?.abb>=2),icon:'♥',
+   title:\'È normale avere dubbi sulla terapia\',
+   desc:\'Avere pensieri di abbandonare il percorso fa parte del percorso stesso. L\'accettazione radicale può aiutarti a stare con questo disagio.',
+   guide:'tol',skill:'accrad'},
+  {prio:2,cond:d=>(d.texts?.rim&&d.texts?.rim.trim()),icon:'≈',
+   title:\'Accettazione radicale\',
+   desc:'Stai rimuginando su qualcosa. L\'accettazione radicale non significa approvare — significa smettere di lottare contro ciò che non puoi cambiare ora.',
+   guide:'tol',skill:'accrad'},
+  {prio:2,cond:d=>((d.scales?.ser||5)<=1&&(d.scales?.gio||5)<=1),icon:'◉',
+   title:\'Costruisci emozioni positive oggi\',
+   desc:'Serenità e gioia sono molto basse. Non aspettare che le emozioni positive arrivino — costruiscile attivamente con una piccola azione piacevole.',
+   guide:'reg',skill:'rpositivo'},
+
+  // PRIORITÀ 3 — Stato discreto, suggerimenti di crescita
+  {prio:3,cond:d=>((d.scales?.ser||5)<=2||(d.scales?.gio||5)<=2),icon:'◉',
+   title:\'Coccola i tuoi sensi\',
+   desc:'Piccoli gesti sensoriali possono ricaricarti. L\'autoconsolazione attraverso i 5 sensi è semplice e immediata.',
+   guide:'tol',skill:'sensi'},
+  {prio:3,cond:d=>(d.scales?.fid<=2&&d.scales?.fid!=null),icon:'◐',
+   title:'Mindfulness — mente saggia\',
+   desc:'Quando la fiducia nel cambiamento è bassa, connettiti con la tua mente saggia. Lei sa cose che la mente razionale ed emotiva da sole non vedono.',
+   guide:'mind',skill:'msaggio'},
+
+  // SUGGERIMENTI GENERALI (sempre mostrati come fallback)
+  {prio:4,cond:()=>true,icon:'❀',
+   title:\'Cosa potresti fare di bello oggi?',
+   desc:\'Esplorare attività nuove costruisce la vita che vale la pena di essere vissuta. Dai un\'occhiata alle attività dei sensi o di MIGLIORA.',
+   guide:'tol',skill:'sensi'},
+  {prio:4,cond:()=>true,icon:'⬢',
+   title:\'Hai 10 minuti liberi?',
+   desc:\'Distrarsi non è evitare — è dare spazio alla mente. ACCETTA offre 7 strategie per spostare l\'attenzione dalla sofferenza.',
+   guide:'tol',skill:'accept'},
+  {prio:4,cond:()=>true,icon:'◉',
    title:'Ripassi le abilità DBT?',
-   desc:'Usare le abilità anche nei momenti tranquilli le rende più accessibili quando servono davvero.',
-   tab:'dbt',skill:null},
-  {cond:()=>true,icon:'✦',
-   title:'MIGLIORA — prova una strategia',
-   desc:'MIGLIORA ti offre 7 strategie per rendere il momento presente più tollerabile.',
-   tab:'migliora',skill:null},
-  {cond:()=>true,icon:'◐',
-   title:'Un suono che ti calma',
-   desc:'Musica, natura, silenzio. I suoni possono cambiare il tono emotivo di tutta una giornata.',
-   tab:'udito',skill:null},
-];
+   desc:'Usare le abilità anche nei momenti tranquilli le rende più accessibili quando servono davvero. Esplora la Guida DBT.',
+   guide:'mind',skill:'mstati'},
+  {prio:4,cond:()=>true,icon:'◐',
+   title:'Un suono che ti calma\',
+   desc:'Musica, natura, silenzio. I suoni possono cambiare il tono emotivo di tutta una giornata. Provare per credere.',
+   guide:'tol',skill:'sensi'},
+  {prio:4,cond:()=>true,icon:'✦',
+   title:\'DEAR MAN — chiedi ciò che vuoi\',
+   desc:\'Imparare a fare richieste e dire no efficacemente è una delle abilità più trasformative. Scopri la tecnica DEAR MAN.',
+   guide:'inter',skill:'dearman'},
+];'
 function openDbtSkill(id){
   goPage('attivita',null);
   setTimeout(()=>{
@@ -2156,7 +2175,9 @@ function buildSuggest(){
   const box=document.getElementById('suggest-box');if(!box)return;
   const k=today();
   const d=allData[k]||{scales:{},toggles:{},texts:{}};
-  const matching=SPOOL.filter(s=>{try{return s.cond(d)}catch(e){return false}});
+  // Sort by priority: lower number = higher priority
+  const matching=SPOOL.filter(s=>{try{return s.cond(d)}catch(e){return false}})
+    .sort((a,b)=>(a.prio||4)-(b.prio||4));
   if(!matching.length){box.innerHTML='';return;}
   const idx=parseInt(localStorage.getItem('sg_'+k)||'0');
   const pick=matching[idx%matching.length];
@@ -3353,110 +3374,210 @@ function renderGuide(){
   const el=document.getElementById('guida-content');
   if(!el)return;
   if(el.innerHTML.trim())return;
+
   const MODULES=[
     {id:'tol',icon:'🌊',bg:'#FEF0F0',
      title:'Tolleranza della sofferenza',
      sub:'Sopravvivere alle crisi senza peggiorare la situazione',
-     when:'Usala quando provi dolore intenso che non riesci ad alleviare subito, quando stai per agire sull\'impulso di un\'emozione e questo peggiorerebbe la situazione.',
+     intro:'Queste abilità servono quando provi un dolore intenso che non puoi alleviare subito, quando agiresti sulla spinta delle emozioni ma questo peggiorerebbe la situazione, o quando la mente emotiva minaccia di prendere il sopravvento. Non sono per i problemi quotidiani — sono per le crisi.',
      skills:[
        {id:'stop',badge:'STOP',name:'Interrompi la reazione impulsiva',
-        desc:'Fermati prima di agire sotto impulso',
-        steps:['<b>S — Stop.</b> Non reagire. Congelati. Mantieni il controllo.',
-               '<b>T — fai un passo indietro.</b> Prendi distanza. Respira. Non lasciare che i sentimenti ti spingano.',
-               '<b>O — Osserva.</b> Cosa sta succedendo dentro e fuori di te?',
-               '<b>P — Procedi mindfully.</b> Agisci con consapevolezza. Quale azione migliorerebbe la situazione?']},
+        desc:'Fermati prima di agire. Per ogni situazione in cui stai per reagire d\'impulso.',
+        steps:[
+          '<b>S — Stop.</b> Non reagire. Congelati. Non muovere un muscolo. Le emozioni vogliono farti agire senza pensare — non lasciarle.',
+          '<b>T — fai un passo indieT​ro.</b> Prendi distanza fisica o mentale. Fai un respiro profondo. Non lasciare che i sentimenti ti spingano ad agire impulsivamente.',
+          '<b>O — Osserva.</b> Cosa sta succedendo dentro di te (pensieri, emozioni, sensazioni) e fuori (situazione, altre persone)?',
+          '<b>P — Procedi in maniera mindful.</b> Agisci con consapevolezza. Considera la situazione, le emozioni tue e altrui. Chiedi alla mente saggia: quale azione migliorerebbe la situazione? Quale la peggiorerebbe?'
+        ]},
        {id:'tip',badge:'TIP',name:'Cambia la chimica del corpo',
-        desc:'Riduci rapidamente le emozioni intense',
-        steps:['<b>T — Temperatura.</b> Viso in acqua fredda (min 10°C) per 30 sec. Attiva il riflesso da immersione.',
-               '<b>I — esercizio Intenso.</b> Corri, salta, fai squat. Scarica l\'energia fisica.',
-               '<b>P — Placa la respirazione.</b> Inspira 5 sec, espira 7 sec. Ripeti.',
-               '<b>P — rilassamento Progressivo.</b> Contrai ogni muscolo 5-6 sec poi rilascia, dai piedi al viso.',
-               '<b>Attenzione:</b> consulta il medico se hai problemi cardiaci o prendi betabloccanti.']},
+        desc:'Per ridurre rapidamente emozioni intense che dominano la mente. Cambia la fisiologia del corpo in pochi minuti.',
+        steps:[
+          '<b>T — Temperatura.</b> Immergi il viso in acqua fredda (min 10°C) trattenendo il fiato per 30 secondi, oppure applica un impacco freddo sugli occhi e guance. Il "riflesso da immersione" rallenta il battito cardiaco e calma il sistema nervoso.',
+          '<b>I — esercizio fisico Intenso.</b> Corri, salta, fai squat per almeno 20 minuti. Consuma l\'energia fisica accumulata dalle emozioni intense.',
+          '<b>P — Placa la respirazione.</b> Respira profondamente con la pancia. Inspira per 5 secondi, espira per 7 secondi. L\'espirazione più lunga attiva il sistema parasimpatico (calma).',
+          '<b>P — rilassamento muscolare Progressivo.</b> Contrai ogni gruppo muscolare per 5-6 sec inspirando, poi rilascia espirando e dì "Rilassati". Inizia dai piedi e sali fino al viso.',
+          '⚠ <b>Attenzione:</b> consulta il medico prima di usare TIP se hai problemi cardiaci, prendi farmaci betabloccanti, o hai disturbi alimentari.'
+        ]},
+       {id:'procontro',badge:'PRO/CONTRO',name:'Valuta pro e contro',
+        desc:'Quando senti un forte impulso a fare qualcosa di potenzialmente dannoso, fai una lista prima.',
+        steps:[
+          '<b>Scrivi i pro</b> del cedere all\'impulso: cosa otterresti nel breve termine?',
+          '<b>Scrivi i contro</b> del cedere all\'impulso: quali sarebbero le conseguenze a lungo termine?',
+          '<b>Scrivi i pro</b> del resistere all\'impulso: cosa guadagneresti?',
+          '<b>Scrivi i contro</b> del resistere: cosa ti costerebbe?',
+          'Conserva la lista con te. Rileggila quando senti l\'impulso. Ricorda le conseguenze passate di quando hai ceduto impulsivamente.'
+        ]},
        {id:'accept',badge:'ACCETTA',name:'Distrarsi con mente saggia',
-        desc:'Sette modi per spostare l\'attenzione dalla sofferenza',
-        steps:['<b>A — Attività.</b> Fai qualcosa che assorba la mente: sport, hobby, pulizie.',
-               '<b>C — Contribuire.</b> Aiuta qualcun altro. Uscire da se stesse aiuta.',
-               '<b>C — Confronti.</b> Confrontati con periodi peggiori per trovare prospettiva.',
-               '<b>E — Emozioni opposte.</b> Commedie quando sei triste.',
-               '<b>T — Tieni le distanze.</b> Allontanati fisicamente o mentalmente.',
-               '<b>T — Thoughts.</b> Conta, fai un puzzle, recita qualcosa a memoria.',
-               '<b>A — Azioni intense.</b> Qualcosa che richieda concentrazione totale.']},
+        desc:'Sette strategie per spostare l\'attenzione dalla sofferenza senza negarla.',
+        steps:[
+          '<b>A — Attività.</b> Fai qualcosa che assorba l\'attenzione: sport, hobby, pulizie, film. Qualsiasi cosa che occupi mente e corpo.',
+          '<b>C — Contribuire.</b> Aiuta qualcun altro: chiama un\'amica, fai volontariato, scrivi un messaggio incoraggiante. Uscire da se stesse aiuta.',
+          '<b>C — Confronti.</b> Confrontati con momenti in cui stavi peggio, o con persone in situazioni più difficili — non per sminuire il dolore, ma per trovare prospettiva.',
+          '<b>E — Emozioni diverse.</b> Suscita emozioni opposte: commedie quando sei triste, film emozionanti quando ti senti vuota, musica che ti attiva.',
+          '<b>T — Tieni le distanze.</b> Allontanati fisicamente o mentalmente dalla situazione per un po\'. Costruisci un muro immaginario. "Metti in pausa" il problema.',
+          '<b>T — Thoughts (pensieri).</b> Distrai la mente: conta fino a 10, fai un puzzle, recita qualcosa a memoria, conta i colori intorno a te.',
+          '<b>A — Azioni intense.</b> Qualcosa che richieda concentrazione totale: sport, videogiochi impegnativi, suonare uno strumento, cantare.'
+        ]},
        {id:'sensi',badge:'5 SENSI',name:'Autoconsolati attraverso i 5 sensi',
-        desc:'Usa i sensi per portare calma',
-        steps:['<b>Vista.</b> Cerca qualcosa di bello — un fiore, un tramonto.',
-               '<b>Udito.</b> Musica che ti calma, suoni della natura.',
-               '<b>Olfatto.</b> Candela, fiore, aria fresca.',
-               '<b>Gusto.</b> Qualcosa di piacevole assaporato lentamente.',
-               '<b>Tatto.</b> Bagno caldo, coperta morbida, accarezzare un animale.']}
+        desc:'Usa i sensi per portare calma e conforto nel momento presente.',
+        steps:[
+          '<b>Vista.</b> Guarda le stelle nel cielo notturno. Osserva la natura. Guarda immagini che ti piacciono. Trova qualcosa di bello nell\'ambiente intorno a te.',
+          '<b>Udito.</b> Ascolta musica che ti calma o ti piace. I suoni della natura. Il silenzio consapevole. Nota ogni suono senza giudicarlo.',
+          '<b>Olfatto.</b> Odora una candela, un fiore, aria fresca. Prepara qualcosa di buono da mangiare. Il profumo ha un effetto diretto sulle emozioni.',
+          '<b>Gusto.</b> Mangia o bevi qualcosa di piacevole lentamente, assaporando ogni sfumatura. Un tè caldo, del cioccolato, un frutto.',
+          '<b>Tatto.</b> Fai un bagno caldo. Avvolgiti in una coperta morbida. Accarezza un animale. Il contatto fisico confortante regola il sistema nervoso.'
+        ]},
+       {id:'migliora',badge:'MIGLIORA',name:'Migliora il momento presente',
+        desc:'Sette strategie per rendere il momento presente più tollerabile quando stai soffrendo.',
+        steps:[
+          '<b>M — Immagini mentali (Meaning).</b> Usa immagini mentali che ti calmano: un posto sicuro, la natura, un ricordo felice. Oppure dai un senso alla sofferenza — cosa ti sta insegnando?',
+          '<b>I — Intenzione (Intention).</b> Focalizzati su un\'intenzione per il momento: "Voglio superare questa ora". Un\'intenzione piccola e concreta.',
+          '<b>G — Gioia (Gentleness).</b> Sii gentile con te stessa. Pensa a cosa diresti a un\'amica nella tua situazione — dillo a te stessa.',
+          '<b>L — Lasciati andare (Letting go).</b> Rilascia temporaneamente pensieri e preoccupazioni. Non devi risolvere tutto ora.',
+          '<b>I — Incoraggiamento (Incentive).</b> Ricorda le ragioni per cui vale la pena andare avanti. Cosa c\'è di bello nella tua vita? Cosa ti aspetti con piacere?',
+          '<b>O — Orientamento (One thing).</b> Fai una cosa sola alla volta. Concentra tutta l\'attenzione solo su questo momento, su questa attività.',
+          '<b>R — Riposo e relax (Relaxation).</b> Rilassamento muscolare, respirazione lenta, musica rilassante, doccia calda, tisana.'
+        ]},
+       {id:'accrad',badge:'ACCETT. RADICALE',name:'Accettazione radicale',
+        desc:'Smettere di combattere contro la realtà per uscire dalla sofferenza — non significa approvare, ma accettare i fatti così come sono.',
+        steps:[
+          '<b>Cos\'è:</b> accettazione radicale significa accettare completamente — con mente, cuore e corpo — la realtà così com\'è. Non è arrendersi, è smettere di lottare contro ciò che non si può cambiare ora.',
+          '<b>Perché:</b> rifiutare la realtà non la cambia, ma trasforma il dolore in sofferenza. Il dolore è inevitabile; la sofferenza è opzionale.',
+          '<b>Come praticarla:</b> osserva il pensiero "questa cosa non dovrebbe essere così". Nota la lotta interiore. Di\' a te stessa: "La realtà è questa, anche se non mi piace". Ripetilo finché senti un piccolo allentamento.',
+          '<b>Orienta la mente:</b> ogni volta che la mente torna a combattere la realtà, riorientala gentilmente verso l\'accettazione. Non è un\'azione unica — è una pratica continua.',
+          '💡 L\'accettazione porta spesso prima alla tristezza, poi a una profonda calma.'
+        ]}
      ]},
     {id:'mind',icon:'🧘',bg:'#E6F5F3',
      title:'Mindfulness',
      sub:'Vivere consapevolmente nel momento presente',
-     when:'Ridurre la sofferenza, aumentare il controllo della mente, vivere la realtà senza pilota automatico e senza giudicare.',
+     intro:'La mindfulness è la pratica di prestare attenzione intenzionalmente al momento presente, senza giudicarlo. Non è meditazione formale — puoi praticarla mentre fai qualsiasi cosa. Le abilità di mindfulness sono la base di tutta la DBT.',
      skills:[
-       {id:'mstati',badge:'STATI',name:'I tre stati della mente',
-        desc:'Razionale, emotiva e saggia',
-        steps:['<b>Mente razionale.</b> Fredda, logica. Ignora le emozioni.',
-               '<b>Mente emotiva.</b> Impulsiva, governata dai sentimenti. Pericolosa nelle crisi.',
-               '<b>Mente saggia.</b> Integrazione delle due. Si raggiunge con la mindfulness.']},
+       {id:'mstati',badge:'STATI MENTE',name:'I tre stati della mente',
+        desc:'Comprendere in quale stato ti trovi aiuta a scegliere come rispondere.',
+        steps:[
+          '<b>Mente razionale.</b> Fredda, logica, guidata da fatti e ragione. Utile per risolvere problemi pratici. Ignora emozioni e valori — può portare a decisioni corrette ma vuote di significato.',
+          '<b>Mente emotiva.</b> Calda, impulsiva, governata dai sentimenti. Le emozioni controllano pensieri e azioni. Utile per amore, creatività, connessione — pericolosa nelle crisi e per decisioni importanti.',
+          '<b>Mente saggia.</b> L\'integrazione delle due. Conosce sia i fatti sia le emozioni, e sa quando seguire l\'una o l\'altra. È la voce interiore più profonda e "giusta". Puoi accedervi con la pratica della mindfulness.',
+          '💡 Come trovare la mente saggia: fai un respiro profondo. Chiediti: "Nel profondo, so cosa è giusto fare?" Aspetta la risposta che sale dal centro, non dalla testa né dal cuore.'
+        ]},
        {id:'mcosa',badge:'COSA',name:'Osservare, Descrivere, Partecipare',
-        desc:'Cosa fare durante la mindfulness',
-        steps:['<b>Osservare.</b> Nota l\'esperienza senza aggrapparti. I pensieri sono nuvole.',
-               '<b>Descrivere.</b> "Noto tensione nel petto." Descrivere crea distanza.',
-               '<b>Partecipare.</b> Buttati completamente nell\'attività del momento.']},
+        desc:'Le tre abilità del "cosa" — cosa fare quando pratichi la mindfulness.',
+        steps:[
+          '<b>Osservare.</b> Nota l\'esperienza senza aggrapparti ad essa o respingerla. I pensieri sono come nuvole che passano, le emozioni come onde. Osserva senza reagire. "Sto notando una sensazione di tensione."',
+          '<b>Descrivere.</b> Metti in parole l\'esperienza — "Sto avendo il pensiero che...", "Sento una stretta al petto". Descrivere crea distanza dall\'emozione e riduce la sua intensità.',
+          '<b>Partecipare.</b> Buttati completamente nell\'attività del momento, senza autoconsapevolezza. Diventa una con ciò che fai — ballare, cucinare, parlare. Non osservare da fuori: entra dentro l\'esperienza.'
+        ]},
        {id:'mcome',badge:'COME',name:'Non giudicare, Una cosa, Efficacia',
-        desc:'Come praticare la mindfulness',
-        steps:['<b>Non giudicare.</b> Invece di "è terribile" prova "questo sta succedendo".',
-               '<b>Una cosa per volta.</b> Tutta l\'attenzione sull\'attività del momento.',
-               '<b>Essere efficaci.</b> Fai ciò che funziona nella situazione.']}
+        desc:'Le tre abilità del "come" — come praticare la mindfulness.',
+        steps:[
+          '<b>Astenersi dal giudizio.</b> Osserva senza valutare come buono/cattivo, giusto/sbagliato. Invece di "questo è terribile", prova "questo è quello che sta succedendo". Nota quando giudichi e lascia andare il giudizio — senza giudicarti per aver giudicato.',
+          '<b>Una cosa per volta.</b> Concentra tutta l\'attenzione sull\'attività del momento. Se la mente vaga, riportala gentilmente. Non fare più cose contemporaneamente — né fisicamente né mentalmente.',
+          '<b>Essere efficaci.</b> Fai ciò che funziona nella situazione reale, non ciò che è "giusto" in assoluto o ciò che vorresti dover fare. Lascia perdere l\'orgoglio e i principi astratti — fai quello che serve per raggiungere i tuoi obiettivi.'
+        ]},
+       {id:'msaggio',badge:'MENTE SAGGIA',name:'Come praticare la mente saggia',
+        desc:'Esercizi concreti per accedere alla propria mente saggia.',
+        steps:[
+          '<b>Respira con la mente saggia.</b> Inspira e scendi con l\'attenzione al centro del corpo. All\'espirazione, focalizzati sulla parola "saggia". Ripeti finché senti stabilità.',
+          '<b>Domanda alla pietra nel lago.</b> Immagina di essere una pietra che affonda lentamente in un lago calmo. Raggiungi il fondo — un luogo tranquillo. Chiediti cosa sa la mente saggia in questo momento.',
+          '<b>Allarga la consapevolezza.</b> Siedi in silenzio. Nota tutti i pensieri, le emozioni e le sensazioni. Espandi la consapevolezza finché riesci a tenerli tutti insieme senza identificarti con nessuno.',
+          '<b>Chiediti nel quotidiano:</b> "Cosa sa la mia mente saggia su questa situazione?" Aspetta la risposta — di solito arriva come un senso di certezza tranquilla, non come urlo.'
+        ]}
      ]},
     {id:'reg',icon:'🎛️',bg:'#FEF6E4',
      title:'Regolazione emotiva',
      sub:'Capire, ridurre e gestire le emozioni intense',
-     when:'Identificare le emozioni, ridurre quelle indesiderate, diminuire la vulnerabilità, ridurre la sofferenza quando le emozioni ti sopraffanno.',
+     intro:'Le emozioni non sono nemiche — ci motivano, comunicano agli altri e ci danno informazioni. Il problema è quando sono troppo intense, durano troppo, o ci spingono ad azioni che peggiorano la situazione. Queste abilità aiutano a capire, accettare e modificare le emozioni.',
      skills:[
-       {id:'rperche',badge:'PERCHÉ',name:'A cosa servono le emozioni',
-        desc:'Capire le emozioni aiuta a regolarle',
-        steps:['<b>Motivano all\'azione.</b> La paura fa fuggire, la rabbia fa difendere.',
-               '<b>Comunicano agli altri.</b> Espressioni e tono trasmettono emozioni involontariamente.',
-               '<b>Comunicano a noi stesse.</b> Le emozioni sono segnali importanti.',
-               '<b>Attenzione:</b> le emozioni non sono fatti. Controlla sempre la realtà.']},
-       {id:'rcheck',badge:'CHECK',name:'Controllare i fatti',
-        desc:'Le emozioni rispondono ai pensieri, non solo ai fatti',
-        steps:['Qual è l\'evento scatenante? Descrivilo in modo neutro.',
-               'Sto assumendo cose che non so per certo?',
-               'L\'emozione corrisponde ai fatti reali?',
-               'Se no: agisci in modo <b>opposto</b> a ciò che l\'emozione ti spinge a fare.']},
+       {id:'rperche',badge:'EMOZIONI',name:'A cosa servono le emozioni',
+        desc:'Prima di regolare le emozioni, è utile capire perché le proviamo.',
+        steps:[
+          '<b>Ci motivano all\'azione.</b> La paura ci fa fuggire dal pericolo. La rabbia ci fa difendere. La tristezza ci fa cercare conforto. Le emozioni abbreviano i tempi di reazione in situazioni importanti.',
+          '<b>Comunicano agli altri.</b> Le espressioni facciali e il tono della voce trasmettono emozioni anche involontariamente. Influenzano chi ci sta intorno prima ancora che parliamo.',
+          '<b>Comunicano a noi stesse.</b> Le emozioni sono segnali — ci dicono che qualcosa di importante sta succedendo. Ascoltarle (senza lasciarle controllare) è utile.',
+          '⚠ <b>Attenzione:</b> le emozioni non sono fatti. "Mi sento in colpa" non significa aver sbagliato. "Ho paura" non significa che ci sia davvero un pericolo. Controlla sempre i fatti prima di agire.'
+        ]},
+       {id:'rcheck',badge:'CONTROLLA',name:'Controllare i fatti',
+        desc:'Le emozioni rispondono ai pensieri e alle interpretazioni, non solo agli eventi reali.',
+        steps:[
+          '<b>Identifica l\'emozione</b> che vuoi cambiare. Come si chiama? Quanto è intensa (0-5)?',
+          '<b>Identifica l\'evento scatenante.</b> Cosa è successo esattamente? Descrivi i fatti puri, senza interpretazioni.',
+          '<b>Controlla le interpretazioni.</b> Stai assumendo cose che non sai per certo? Stai leggendo la mente degli altri? Considera interpretazioni alternative.',
+          '<b>Valuta la minaccia.</b> Stai ipotizzando una catastrofe? Qual è la probabilità reale che accada?',
+          '<b>L\'emozione corrisponde ai fatti?</b> Se sì: agisci o accetta. Se no: agisci in modo <b>opposto</b> a ciò che l\'emozione ti spinge a fare.'
+        ]},
+       {id:'razione',badge:'AZIONE OPP.',name:'Azione opposta',
+        desc:'Quando un\'emozione non corrisponde ai fatti, agire in modo opposto riduce l\'emozione stessa.',
+        steps:[
+          '<b>Paura ingiustificata:</b> avvicinati all\'oggetto temuto invece di fuggire. Fai la cosa che temi (in modo sicuro). Ripeti finché la paura diminuisce.',
+          '<b>Tristezza/depressione:</b> agisci invece di isolarti. Esci. Partecipa ad attività. Alzati. Muoviti. Non aspettare di "avere voglia" — agisci e la voglia arriva dopo.',
+          '<b>Rabbia ingiustificata:</b> evita la persona o la situazione temporaneamente. Immagina comprensione per l\'altra persona. Fai qualcosa di gentile.',
+          '<b>Vergogna/colpa ingiustificate:</b> non nasconderti o scusarti. Fai ciò di cui ti vergogni (se non è realmente sbagliato). Condividi con persone di fiducia.',
+          '💡 L\'azione opposta deve essere <b>completa</b> — non solo esterna ma anche interna (postura, espressione, pensieri).'
+        ]},
        {id:'rplease',badge:'PLEASE',name:'Ridurre la vulnerabilità emotiva',
-        desc:'Cura il corpo per stabilizzare le emozioni',
-        steps:['<b>PL — malattie Fisiche.</b> Vai dal medico, prendi le medicine.',
-               '<b>E — alimentazione Equilibrata.</b> Non saltare pasti.',
-               '<b>A — evita Alteranti.</b> Alcol e sostanze aumentano la reattività.',
-               '<b>S — Sonno bilanciato.</b> Ritmo regolare.',
-               '<b>E — Esercizio fisico.</b> Anche 20 min al giorno fanno la differenza.']}
+        desc:'Prendersi cura del corpo riduce quanto facilmente le emozioni ci sopraffanno.',
+        steps:[
+          '<b>PL — tratta le malattie Fisiche (PHysicaL).</b> Vai dal medico. Prendi le medicine. Non ignorare sintomi fisici — il corpo influenza direttamente le emozioni.',
+          '<b>E — alimentazione Equilibrata.</b> Non saltare pasti. Evita cibi che alterano l\'umore. L\'ipoglicemia rende emotivamente reattive.',
+          '<b>A — evita le sostanze che Alterano la mente.</b> Alcol e droghe aumentano la reattività emotiva e interferiscono con le abilità DBT.',
+          '<b>S — Sonno bilanciato.</b> Troppo poco o troppo sonno aumenta la vulnerabilità emotiva. Mantieni un ritmo regolare.',
+          '<b>E — Esercizio fisico.</b> Almeno 20 minuti al giorno di attività aerobica riduce stress, ansia e reattività emotiva.'
+        ]},
+       {id:'rpositivo',badge:'POSITIVO',name:'Costruire emozioni positive',
+        desc:'Non aspettare che le emozioni positive arrivino da sole — costruiscile attivamente.',
+        steps:[
+          '<b>Breve termine:</b> ogni giorno fai almeno una cosa piacevole. Non aspettare di "avere voglia". Scegli attività che di solito ti piacciono e falle, anche se non ne hai voglia in questo momento.',
+          '<b>Lungo termine:</b> lavora verso obiettivi che ti stanno a cuore. Costruisci una vita che vale la pena di essere vissuta — relazioni, lavoro, valori, salute.',
+          '<b>Sii consapevole degli eventi positivi.</b> Nota quando qualcosa di bello accade. Non allontanarla. Non dire "sì, ma...". Lascia che entri.',
+          '<b>Sii consapevole delle emozioni positive.</b> Quando provi gioia, gratitudine, pace — nota di provarle. Non preoccuparti che finiscano. Stai semplicemente nell\'emozione positiva.'
+        ]}
      ]},
     {id:'inter',icon:'🤝',bg:'#EEF2FF',
      title:'Efficacia interpersonale',
-     sub:'Ottenere ciò che vuoi mantenendo relazioni e rispetto di sé',
-     when:'Tre obiettivi in equilibrio: ottenere ciò che vuoi, mantenere la relazione, rispettare te stessa.',
+     sub:'Ottenere ciò che si vuole mantenendo le relazioni e il rispetto di sé',
+     intro:'L\'efficacia interpersonale è la capacità di raggiungere i propri obiettivi nelle relazioni. Tre obiettivi spesso in tensione tra loro: ottenere ciò che vuoi (DEAR MAN), mantenere la relazione (GIVE), mantenere il rispetto di te stessa (FAST).',
      skills:[
-       {id:'ideare',badge:'IDEARE',name:'Come fare richieste efficaci',
-        desc:'Per ottenere ciò che vuoi mantenendo la relazione',
-        steps:['<b>I — Identifica i desideri.</b> Cosa vuoi esattamente?',
-               '<b>D — Descrivi la situazione.</b> Attieniti ai fatti.',
-               '<b>E — Esprimi i sentimenti.</b> "Mi sento..." Non "Tu mi fai...".',
-               '<b>A — Afferma i desideri.</b> Chiedi chiaramente.',
-               '<b>R — Rinforza.</b> Spiega i benefici per l\'altra persona.',
-               '<b>E — sii mindful.</b> Mantieni il focus sull\'obiettivo.']},
-       {id:'imiti',badge:'MITI',name:'Credenze che ostacolano',
-        desc:'Riconosci i pensieri che ti impediscono di essere efficace',
-        steps:['"Non mi merito ciò che desidero." — Falso.',
-               '"Fare domande dimostra debolezza." — Falso.',
-               '"Rifiutare è da egoisti." — Falso.',
-               '"Dovrebbero sapere cosa voglio." — Falso.',
-               '"Non posso sopportare che si arrabbino." — Si può tollerare.']}
+       {id:'dearman',badge:'DEAR MAN',name:'Ottenere ciò che vuoi',
+        desc:'Una sequenza per fare richieste o dire no in modo efficace.',
+        steps:[
+          '<b>D — Descrivi.</b> Descrivi la situazione attuale. Attieniti ai fatti puri. "Mi avevi detto che saresti tornata per cena, ma sei arrivata alle 23."',
+          '<b>E — Esprimi.</b> Esprimi le tue emozioni e opinioni. "Quando succede, mi preoccupo." Non dare per scontato che gli altri sappiano come ti senti.',
+          '<b>A — Afferma.</b> Chiedi ciò che vuoi o di\' no chiaramente. "Preferirei che tu mi avvisassi quando pensi di fare tardi." Usa "Vorrei" non "Tu dovresti".',
+          '<b>R — Rinforza.</b> Spiega le conseguenze positive del soddisfare la tua richiesta. "Sarei molto più tranquilla." Rinforza l\'altra persona anche dopo.',
+          '<b>M — sii Mindful.</b> Mantieni la concentrazione sull\'obiettivo. Non distrarti da attacchi, cambi di argomento o provocazioni. Ripeti la richiesta serenamente se necessario.',
+          '<b>A — Agisci in modo sicuro.</b> Comportati con sicurezza, anche se non la senti. Contatto visivo, voce calma, postura dritta.',
+          '<b>N — Negozia.</b> Sii disposta a dare per ricevere. Chiedi all\'altra persona cosa farebbe. Proponi soluzioni alternative.'
+        ]},
+       {id:'give',badge:'GIVE',name:'Mantenere le relazioni',
+        desc:'Come comportarsi con gli altri per mantenere e rafforzare i legami.',
+        steps:[
+          '<b>G — sii Gentile.</b> Non attaccare, non minacciare, non giudicare, non mostrarti superiore. Tollera un no. Esprimi la rabbia con le parole, non con le azioni.',
+          '<b>I — mostrati Interessata.</b> Ascolta davvero. Guarda negli occhi. Non interrompere. Sii curiosa del punto di vista dell\'altra persona, anche quando non sei d\'accordo.',
+          '<b>V — Valida.</b> Con parole e azioni, mostra di comprendere le emozioni e il punto di vista dell\'altra persona. "Capisco che per te sia difficile." Non devi essere d\'accordo per validare.',
+          '<b>E — comportati in modo Educato.</b> Usa un tono leggero quando possibile. Sorridi. Mostra interesse genuino. Evita l\'umorismo che ferisce.'
+        ]},
+       {id:'fast',badge:'FAST',name:'Mantenere il rispetto di sé',
+        desc:'Come comportarsi per non perdere la stima di te stessa nelle relazioni.',
+        steps:[
+          '<b>F — sii Franca.</b> Sii giusta con te stessa e con l\'altra persona. Valida i tuoi sentimenti e desideri come validi tanto quanto quelli degli altri.',
+          '<b>A — sii Assertiva.</b> Non scusarti di esistere o di avere bisogni. Non scusarti di avere opinioni. Non assumere posture di inferiorità.',
+          '<b>S — Segui i tuoi valori.</b> Non rinunciare ai tuoi valori per ragioni che non sono davvero importanti. Spiega il tuo punto di vista etico e mantienilo.',
+          '<b>T — sii Trasparente.</b> Non mentire, non fingere di essere d\'accordo quando non lo sei, non recitare. L\'onestà protegge il rispetto di sé a lungo termine.'
+        ]},
+       {id:'imiti',badge:'CREDENZE',name:'Credenze che ostacolano le relazioni',
+        desc:'Riconosci i pensieri automatici che ti impediscono di essere efficace nelle relazioni.',
+        steps:[
+          '"Non mi merito ciò che desidero o di cui ho bisogno." → Le tue necessità sono valide quanto quelle degli altri.',
+          '"Se faccio una domanda, dimostro di essere debole." → Chiedere è un atto di rispetto — verso te stessa e verso l\'altra persona.',
+          '"Rifiutare una richiesta è da egoisti." → Dire no è un diritto. Non puoi aiutare gli altri svuotandoti.',
+          '"Dovrebbero sapere cosa voglio senza che io lo dica." → Gli altri non possono leggere nella tua mente. Comunicare è tuo compito.',
+          '"Non posso sopportare che qualcuno si arrabbi con me." → Puoi tollerarlo. Il disappunto altrui non ti definisce.',
+          '💡 Riconoscere queste credenze è già metà del lavoro. Non devi credere ai tuoi pensieri automatici.'
+        ]}
      ]}
   ];
+
   MODULES.forEach(function(mod){
     const mDiv=document.createElement('div');mDiv.className='guide-module';
     const hdr=document.createElement('div');hdr.className='guide-module-header';
@@ -3467,9 +3588,9 @@ function renderGuide(){
       +'<span class="guide-module-arrow" id="arr-'+mod.id+'">›</span>';
     mDiv.appendChild(hdr);
     const body=document.createElement('div');body.className='guide-module-body';body.id='body-'+mod.id;
-    const when=document.createElement('div');when.className='guide-when';
-    when.innerHTML='<strong>Quando:</strong> '+mod.when;
-    body.appendChild(when);
+    const intro=document.createElement('div');intro.className='guide-when';
+    intro.innerHTML='<strong>Quando usarla:</strong> '+mod.intro;
+    body.appendChild(intro);
     mod.skills.forEach(function(sk){
       const skDiv=document.createElement('div');skDiv.className='guide-skill';
       const skHdr=document.createElement('div');skHdr.className='guide-skill-header';
@@ -3490,7 +3611,6 @@ function renderGuide(){
     mDiv.appendChild(body);el.appendChild(mDiv);
   });
 }
-
 
 function chPlanDay(d){
   // Auto-save current planner if dirty
