@@ -906,14 +906,28 @@ textarea:focus,input:focus,select:focus{
     </div>
   </div>
 
-  <div class="card">
-    <div class="slbl">Abilità DBT usate oggi</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">Tocca le abilità che hai usato oggi. Vengono salvate con la giornata corrente.</div>
-    <div id="skwrap"></div>
+  <!-- Tabs: Guida / Usate oggi -->
+  <div class="act-tabs" style="margin-bottom:1.25rem">
+    <button class="act-tab active" id="abt-guida" onclick="switchAbiTab('guida',this)">📖 Guida DBT</button>
+    <button class="act-tab" id="abt-oggi" onclick="switchAbiTab('oggi',this)">✓ Usate oggi</button>
   </div>
-  <div class="abar">
-    <button class="bpri" onclick="saveDay()">⤓ Salva</button>
-    <span class="toast" id="t2">✓ Salvato</span>
+
+  <!-- TAB: GUIDA -->
+  <div id="abt-tab-guida">
+    <div id="act-content"></div>
+  </div>
+
+  <!-- TAB: USATE OGGI -->
+  <div id="abt-tab-oggi" style="display:none">
+    <div class="card">
+      <div class="slbl">Abilità DBT usate oggi</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">Tocca le abilità che hai usato oggi. Vengono salvate con la giornata corrente.</div>
+      <div id="skwrap"></div>
+    </div>
+    <div class="abar">
+      <button class="bpri" onclick="saveDay()">⤓ Salva</button>
+      <span class="toast" id="t2">✓ Salvato</span>
+    </div>
   </div>
 </div>
 
@@ -1683,6 +1697,7 @@ function goPage(name,btn){
   if(name==='home')buildHome();
   if(name==='storico')renderHist();
   if(name==='trend')renderTrend();
+  if(name==='abilita'){currentActTab='dbt';renderActTab();}
   if(name==='attivita'){buildSuggest();renderPlanner();}
   if(name==='pazienti')renderPatients();
 }
@@ -1756,6 +1771,13 @@ function renderTrend(){
 
 // ── ATTIVITÀ ──
 let currentActTab='dbt';
+function switchAbiTab(tab,btn){
+  document.querySelectorAll('#page-abilita .act-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('abt-tab-guida').style.display=tab==='guida'?'block':'none';
+  document.getElementById('abt-tab-oggi').style.display=tab==='oggi'?'block':'none';
+  if(tab==='guida'){currentActTab='dbt';renderActTab();}
+}
 function switchActTab(tab,btn){
   currentActTab=tab;
   document.querySelectorAll('.act-tab').forEach(b=>b.classList.remove('active'));
