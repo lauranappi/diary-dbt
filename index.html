@@ -948,23 +948,23 @@ textarea:focus,input:focus,select:focus{
 
 <!-- ══ PAGE: ATTIVITÀ ══ -->
 <div id="page-attivita" class="page">
-  <!-- Hero + datebar separata -->
-  <div style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:0;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+  <!-- Datebar propria (stile topheader) -->
+  <div class="datebar" style="margin-bottom:1rem">
+    <button class="dbn" onclick="chPlanDay(-1)">‹</button>
+    <div style="flex:1;text-align:center">
+      <div class="dlabel" id="plan-dlabel"></div>
+    </div>
+    <button class="dbn" onclick="chPlanDay(1)" id="planNxtBtn">›</button>
+    <span class="pill unsaved" id="planPill">Non pianificata</span>
+  </div>
+  <!-- Hero -->
+  <div style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%"></div>
     <div style="position:absolute;bottom:-40px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.04);border-radius:50%"></div>
     <div style="position:relative">
       <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">🎯 Attività & Giornata</div>
       <div style="font-size:13px;opacity:.85" id="planner-day-label">Pianifica la tua giornata</div>
     </div>
-  </div>
-  <!-- Datebar propria per il planner -->
-  <div class="datebar" style="background:var(--surface);border:1px solid var(--border-l);border-radius:0 0 var(--rs) var(--rs);margin-bottom:1.25rem;padding:8px 14px">
-    <button class="dbn" onclick="chPlanDay(-1)">‹</button>
-    <div style="flex:1;text-align:center">
-      <div class="dlabel" id="plan-dlabel"></div>
-    </div>
-    <button class="dbn" onclick="chPlanDay(1)" id="planNxtBtn">›</button>
-    <span class="pill unsaved" id="planPill" style="font-size:11px">Non pianificata</span>
   </div>
 
   <!-- STEP 1: scegli slot -->
@@ -1745,7 +1745,7 @@ function goPage(name,btn){
   if(name==='trend')renderTrend();
   if(name==='abilita'){currentActTab='dbt';renderActTab();}
   if(name==='abilita'){renderActTab();}
-  if(name==='attivita'){buildSuggest();curPlan=new Date();renderPlanner();}
+  if(name==='attivita'){buildSuggest();curPlan=new Date();updPlanDL();renderPlanner();}
   if(name==='pazienti')renderPatients();
 }
 
@@ -2739,7 +2739,7 @@ async function savePlanner(){
 }
 
 function renderPlanner(){
-  curPlan=new Date(); // always reset to today when page opens
+  // curPlan is set by goPage or chPlanDay, don't reset here
   updPlanDL();
   const el=document.getElementById('planner-day-label');
   // label handled by updPlanDL
