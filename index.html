@@ -662,7 +662,7 @@ textarea:focus,input:focus,select:focus{
   background:var(--surface);
   border:1px solid var(--border-l);
   border-radius:var(--r);
-  padding:1.25rem 1.25rem .75rem;
+  padding:1.25rem 1.25rem 0;
   margin-bottom:.75rem;
   box-shadow:0 1px 3px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
 }
@@ -1102,12 +1102,12 @@ textarea:focus,input:focus,select:focus{
     <button class="chart-range-btn" onclick="setTrendRange(14,this)">14gg</button>
     <button class="chart-range-btn" onclick="setTrendRange(0,this)">Tutti</button>
   </div>
-  <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="position:relative;height:180px"><div id="cSuic1" style="min-height:200px"></div></div></div>
-  <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="position:relative;height:200px"><div id="cSuic2" style="min-height:200px"></div></div></div>
-  <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="position:relative;height:200px"><div id="cSost" style="min-height:200px"></div></div></div>
-  <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="position:relative;height:200px"><div id="cEmoPos" style="min-height:200px"></div></div></div>
-  <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="position:relative;height:200px"><div id="cEmoNeg1" style="min-height:200px"></div></div></div>
-  <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="position:relative;height:200px"><div id="cEmoNeg2" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="height:260px"><div id="cSuic1" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="height:260px"><div id="cSuic2" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="height:260px"><div id="cSost" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="height:260px"><div id="cEmoPos" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="height:260px"><div id="cEmoNeg1" style="min-height:200px"></div></div></div>
+  <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="height:260px"><div id="cEmoNeg2" style="min-height:200px"></div></div></div>
 </div>
 
 <!-- ══ PAGE: PAZIENTI (terapeuta) ══ -->
@@ -1173,12 +1173,12 @@ textarea:focus,input:focus,select:focus{
       <button class="chart-range-btn" onclick="setPatRange(14,this)">14gg</button>
       <button class="chart-range-btn" onclick="setPatRange(0,this)">Tutti</button>
     </div>
-    <div class="cwrap"><div class="ctitle">⚠ Comportamenti suicidari</div><div style="position:relative;height:200px"><div id="pc4" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">⚠ Autolesività</div><div style="position:relative;height:200px"><div id="pc5" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="position:relative;height:200px"><div id="pc6" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="position:relative;height:200px"><div id="pc1" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="position:relative;height:200px"><div id="pc2" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="position:relative;height:200px"><div id="pc3" style="min-height:200px"></div></div></div>
+    <div class="cwrap"><div class="ctitle">⚠ Comportamenti suicidari</div><div style="height:260px"><div id="pc4" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">⚠ Autolesività</div><div style="height:260px"><div id="pc5" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="height:260px"><div id="pc6" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="height:260px"><div id="pc1" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="height:260px"><div id="pc2" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="height:260px"><div id="pc3" style="min-height:200px"></div></div></div>
     </div>
 
     <!-- TAB: GIORNATA -->
@@ -1931,14 +1931,14 @@ function renderTrend(){
   });
 
   const BASE_OPTS={
-    chart:{type:'area',height:240,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
     stroke:{curve:'smooth',width:2.5},
     fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
     grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
     xaxis:{categories:labels,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},rotate:0,trim:false},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
     yaxis:{min:0,max:5,tickAmount:5,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},formatter:v=>Math.round(v)}},
     tooltip:{theme:'dark',x:{show:true},shared:true,intersect:false,style:{fontSize:'12px'}},
-    legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:8,vertical:4}},
+    legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:6,vertical:0},offsetY:0},
     markers:{size:0,hover:{size:5,sizeOffset:2}},
     dataLabels:{enabled:false},
   };
@@ -2308,7 +2308,7 @@ function buildSuggest(){
   if(!matching.length){box.innerHTML='';return;}
   const idx=parseInt(localStorage.getItem('sg_'+k)||'0');
   const pick=matching[idx%matching.length];
-  const action=pick.skill?"openDbtSkill('"+pick.skill+"')":`switchToActTab('${pick.tab}')`;
+  const action=pick.guide?`openGuideSkill('${pick.guide}','${pick.skill||''}')`:(pick.skill?`openDbtSkill('${pick.skill}')`:'goPage("attivita",null)');
   const rotBtn=matching.length>1?`<button style="background:none;border:none;font-size:12px;color:var(--amber);cursor:pointer;text-decoration:underline;font-family:inherit" onclick="rotateSuggest('${k}',${matching.length})">Altro ↻</button>`:'';
   box.innerHTML='<div class="suggest-card"><div class="s-icon">'+pick.icon+'</div><div style="flex:1"><h3>'+pick.title+'</h3><p>'+pick.desc+'</p><div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap"><button class="s-btn" onclick="'+action+'">Scopri →</button>'+rotBtn+'</div></div></div>';
 }
@@ -2432,7 +2432,7 @@ function renderPatientCharts(){
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}));
 
   const BASE={
-    chart:{type:'area',height:240,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
     stroke:{curve:'smooth',width:2.5},
     fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
     grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
