@@ -622,6 +622,31 @@ textarea:focus,input:focus,select:focus{
 }
 .plan-summary-chip button:hover{opacity:1}
 
+
+/* ── GUIDA DBT ── */
+.guide-module{background:var(--surface);border:1.5px solid var(--border-l);border-radius:var(--r);margin-bottom:1rem;overflow:hidden;box-shadow:var(--shadow-sm)}
+.guide-module-header{padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+.guide-module-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.guide-module-title{font-size:15px;font-weight:700;color:var(--text);flex:1}
+.guide-module-sub{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4}
+.guide-module-arrow{font-size:18px;color:var(--muted);transition:transform .2s}
+.guide-module-arrow.open{transform:rotate(90deg)}
+.guide-module-body{display:none;border-top:1px solid var(--border-l);padding:0}
+.guide-module-body.open{display:block}
+.guide-skill{border-bottom:1px solid var(--border-l);padding:14px 16px}
+.guide-skill:last-child{border-bottom:none}
+.guide-skill-header{display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:0}
+.guide-skill-badge{background:var(--teal-ll);color:var(--teal-d);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;flex-shrink:0}
+.guide-skill-name{font-size:14px;font-weight:700;color:var(--text);flex:1}
+.guide-skill-desc{font-size:12px;color:var(--muted);margin:4px 0 0 0;line-height:1.5}
+.guide-skill-steps{display:none;margin-top:10px;background:var(--surface-2);border-radius:var(--rs);padding:10px 12px}
+.guide-skill-steps.open{display:block}
+.guide-step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.guide-step:last-child{margin-bottom:0}
+.guide-step-n{background:var(--teal);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.guide-step-text{font-size:13px;color:var(--text-2);line-height:1.5;flex:1}
+.guide-when{background:var(--amber-l);border-left:3px solid #D4882A;border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;margin:10px 0;font-size:13px;color:var(--text-2);line-height:1.5}
+
 /* ── RESPONSIVE ── */
 @media(max-width:700px){
   .sidebar{display:none}
@@ -3103,6 +3128,21 @@ async function doLogout(){
     svProfile();
     location.reload();
   }
+}
+
+
+// ── GUIDA DBT ──
+function toggleGuideModule(id){
+  const body=document.getElementById('body-'+id);
+  const arr=document.getElementById('arr-'+id);
+  const open=body.classList.toggle('open');
+  arr.classList.toggle('open',open);
+}
+function toggleGuideSkill(id){
+  const steps=document.getElementById('steps-'+id);
+  const arr=document.getElementById('sarr-'+id);
+  const open=steps.classList.toggle('open');
+  if(arr)arr.style.transform=open?'rotate(90deg)':'';
 }
 
 // ── INIT ──
