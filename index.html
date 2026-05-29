@@ -1709,7 +1709,7 @@ function goPage(name,btn){
   // topheader visibility handled above per page
   window.scrollTo({top:0,behavior:'smooth'});
   if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
-  if(name==='guida')renderGuide();
+  if(name==='guida'){setTimeout(()=>renderGuide(),50);}
   document.getElementById('topheader').style.display=name==='oggi'?'':'none';
   // hide sidebar header on guida
   const sidebarEl=document.getElementById('sidebar');
@@ -3093,17 +3093,36 @@ async function loadUserData(user){
       therapistNotes:remote.therapistNotes||{},
       patientNotes:remote.patientNotes||{}
     };
-    allData=remote.entries||{};
-    actTried=remote.actTried||{};
+    // Merge remote entries with local — keep most recent by savedAt
+    const localData=allData||{};
+    const remoteEntries=remote.entries||{};
+    const merged={...remoteEntries};
+    Object.keys(localData).forEach(k=>{
+      const loc=localData[k];const rem=remoteEntries[k];
+      if(!rem){merged[k]=loc;}
+      else{
+        const lts=loc.savedAt?new Date(loc.savedAt).getTime():0;
+        const rts=rem.savedAt?new Date(rem.savedAt).getTime():0;
+        merged[k]=lts>rts?loc:rem;
+      }
+    });
+    allData=merged;
+    actTried=remote.actTried||actTried||{};
     channel=row.code;
   }
   svLS();
-  enterApp();
-  // Re-render planner after remote load if needed
+  // Re-render active page after remote data loads
   setTimeout(()=>{
-    if(document.getElementById('page-attivita')?.classList.contains('active'))renderPlanner();
-    if(document.getElementById('page-guida')?.classList.contains('active'))renderGuide();
-  },300);
+    const attEl=document.getElementById('page-attivita');
+    const guidaEl=document.getElementById('page-guida');
+    if(attEl&&attEl.classList.contains('active'))renderPlanner();
+    if(guidaEl&&guidaEl.classList.contains('active')){
+      const gc=document.getElementById('guida-content');
+      if(gc)gc.innerHTML=''; // force re-render
+      renderGuide();
+    }
+  },500);
+  enterApp();
 }
 
 function showLoginScreen(){
