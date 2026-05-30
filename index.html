@@ -2413,7 +2413,7 @@ function buildFlags(d){
   return flags.map(f=>'<span class="flag '+f.cls+'">'+f.label+'</span>').join('');
 }
 function renderHist(){
-  const keys=Object.keys(allData).sort().reverse().slice(0,60);
+  const keys=Object.keys(allData).filter(k=>!isDayEmpty(allData[k])).sort().reverse().slice(0,60);
   const sg=document.getElementById('sgrid');sg.innerHTML='';
   const cF=(fn)=>keys.filter(k=>fn(allData[k])).length;
   const nSuic=cF(d=>d.toggles?.sa==='Sì'),nAuto=cF(d=>d.toggles?.aa==='Sì');
@@ -2624,7 +2624,7 @@ function buildHome(){
 
   // Streak
   let streak=0;const check=new Date();check.setHours(0,0,0,0);
-  while(allData[dk(check)]){streak++;check.setDate(check.getDate()-1);}
+  while(allData[dk(check)]&&!isDayEmpty(allData[dk(check)])){streak++;check.setDate(check.getDate()-1);}
   document.getElementById('streak-num').textContent=streak;
   document.getElementById('streak-sub').textContent=streak===0?'Inizia oggi!':streak===1?'Ottimo inizio — vai avanti!':streak<7?'Continua così!':'Fantastico streak! ';
 
@@ -2634,7 +2634,7 @@ function buildHome(){
     dotsEl.innerHTML='';
     for(let i=6;i>=0;i--){
       const dd=new Date();dd.setDate(dd.getDate()-i);
-      const filled=!!allData[dk(dd)];
+      const filled=!!allData[dk(dd)]&&!isDayEmpty(allData[dk(dd)]);
       const dot=document.createElement('div');
       dot.style.cssText='width:10px;height:10px;border-radius:50%;background:'+(filled?'var(--teal)':'var(--border)')+';border:1.5px solid '+(filled?'var(--teal)':'var(--border-l)');
       dotsEl.appendChild(dot);
