@@ -2095,19 +2095,7 @@ function buildHome(){
   }
 
   // Suggestion in home
-  const homeBox=document.getElementById('home-suggest-box');
-  if(homeBox){
-    const orig=document.getElementById('suggest-box');
-    // Reuse buildSuggest logic but target home box
-    const d2=allData[k]||{scales:{},toggles:{},texts:{}};
-    const matching=SPOOL.filter(s=>{try{return s.cond(d2)}catch(e){return false}});
-    if(matching.length){
-      const idx=parseInt(localStorage.getItem('sg_'+k)||'0');
-      const pick=matching[idx%matching.length];
-      const action=pick.guide?`openGuideSkill('${pick.guide}','${pick.skill||''}')`:pick.skill?"openDbtSkill('"+pick.skill+"')":`switchToActTab('${pick.tab}')`;
-      homeBox.innerHTML='<div class="suggest-card"><div class="s-icon">'+pick.icon+'</div><div style="flex:1"><h3>'+pick.title+'</h3><p>'+pick.desc+'</p><div style="margin-top:10px"><button class="s-btn" onclick="'+action+'">Scopri →</button></div></div></div>';
-    }
-  }
+  buildSuggest(); // home uses same widget
 }
 
 // ── SUGGEST ──
