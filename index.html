@@ -4295,7 +4295,8 @@ function togglePlease(dateKey,itemId){
 
 function renderEmozioni(){
   const el=document.getElementById('emozioni-content');
-  if(!el||el.innerHTML.trim())return;
+  if(!el)return;
+  el.innerHTML='';
   
   const EMOS=[
     {id:'epau',emoji:'😰',label:'Paura',color:'#E6F1FB',border:'#4A90D9',
