@@ -1517,6 +1517,22 @@ textarea:focus,input:focus,select:focus{
     </div>
   </div>
 
+  <div class="card" style="margin-bottom:1rem">
+    <div class="settings-section">
+      <h3>Aspetto</h3>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0">
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--text)">Tema</div>
+          <div style="font-size:12px;color:var(--muted)">Chiaro, scuro o segui il sistema</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button id="theme-light" onclick="setTheme('light')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">☀️</button>
+          <button id="theme-dark" onclick="setTheme('dark')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">🌙</button>
+          <button id="theme-auto" onclick="setTheme('auto')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">⚙️ Auto</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="card">
     <div class="settings-section">
       <h3>Profilo</h3>
