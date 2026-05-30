@@ -1,17 +1,5 @@
 <!DOC
-<div id="tab-sessioni" class="pat-tab-content" style="display:none">
-  <div class="card" style="margin-bottom:.75rem">
-    <div class="slbl">Aggiungi nota sessione</div>
-    <div style="margin-bottom:8px">
-      <input id="sess-data" type="date" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text)">
-    </div>
-    <textarea id="sess-temi" rows="2" placeholder="Temi principali della sessione..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:8px"></textarea>
-    <textarea id="sess-abilita" rows="2" placeholder="Abilità lavorate o assegnate..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:8px"></textarea>
-    <textarea id="sess-note" rows="2" placeholder="Osservazioni cliniche, progressi, difficoltà..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:10px"></textarea>
-    <button onclick="sessAdd()" style="padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-ui)">Aggiungi nota</button>
-  </div>
-  <div id="sess-lista"></div>
-</div>TYPE html>
+TYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -1422,6 +1410,7 @@ textarea:focus,input:focus,select:focus{
       <button class="pat-tab" onclick="switchPatTab('giornata',this)">Giornata</button>
       <button class="pat-tab" onclick="switchPatTab('abilita',this)">Abilità</button>
       <button class="pat-tab" onclick="switchPatTab('storico',this)">Storico</button>
+      <button class="pat-tab" onclick="switchPatTab('sessioni',this)">Note sessione</button>
     </div>
 
     <!-- TAB: PANORAMICA -->
@@ -1474,6 +1463,18 @@ textarea:focus,input:focus,select:focus{
     <!-- TAB: STORICO -->
     <div class="pat-tab-content" id="ptab-storico">
       <div class="slbl">Storico giornaliero</div>
+    <!-- TAB: NOTE SESSIONE -->
+    <div class="pat-tab-content" id="ptab-sessioni" style="display:none">
+      <div class="card" style="margin-bottom:.75rem">
+        <div class="slbl">Aggiungi nota sessione</div>
+        <input id="sess-data" type="date" style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;margin-bottom:8px">
+        <textarea id="sess-temi" rows="2" placeholder="Temi principali della sessione..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:8px"></textarea>
+        <textarea id="sess-abilita" rows="2" placeholder="Abilit&#224; lavorate o assegnate..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:8px"></textarea>
+        <textarea id="sess-note" rows="3" placeholder="Osservazioni cliniche, progressi, difficolt&#224;..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:10px"></textarea>
+        <button onclick="sessAdd()" style="padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-ui)">Aggiungi</button>
+      </div>
+      <div id="sess-lista"></div>
+    </div>
       <div id="pat-hist"></div>
     </div>
   </div>
