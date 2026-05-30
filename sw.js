@@ -1,4 +1,4 @@
-const CACHE = 'diary-dbt-v38';
+const CACHE = 'diary-dbt-v39';
 const STATIC = [
   './manifest.json',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'
@@ -41,4 +41,9 @@ self.addEventListener('fetch', e => {
       });
     })
   );
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(clients.openWindow('./'));
 });
