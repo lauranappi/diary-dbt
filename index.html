@@ -943,6 +943,10 @@ textarea:focus,input:focus,select:focus{
     <button class="ni" onclick="goPage('please',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4 M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> PLEASE</button>
     <button class="ni" onclick="goPage('eventi',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span> Att. piacevoli</button>
   <div style="height:1px;background:rgba(255,255,255,.1);margin:6px 0"></div>
+    <button class="ni" onclick="goPage('give',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> GIVE</button>
+    <button class="ni" onclick="goPage('fast',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> FAST</button>
+    <button class="ni" onclick="goPage('abc',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z M12 6v6l4 2"/></svg></span> ABC</button>
+    <button class="ni" onclick="goPage('sentiero',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></span> Sentiero di mezzo</button>
     <button class="ni" onclick="goPage('guida',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span> Guida DBT</button>
   <div style="margin-top:auto;padding-top:1rem;border-top:1px solid rgba(255,255,255,.15)">
     <button class="user-menu-btn" onclick="openUserMenu()">
@@ -1316,6 +1320,26 @@ textarea:focus,input:focus,select:focus{
       <span class="sc-name">Scheda eventi</span>
       <span class="sc-desc">Registra eventi piacevoli</span>
     </div>
+    <div class="strumenti-card" onclick="goPage('give',null)">
+      <span class="sc-icon">🤝</span>
+      <span class="sc-name">GIVE</span>
+      <span class="sc-desc">Mantieni relazioni positive</span>
+    </div>
+    <div class="strumenti-card" onclick="goPage('fast',null)">
+      <span class="sc-icon">🛡</span>
+      <span class="sc-name">FAST</span>
+      <span class="sc-desc">Mantieni il rispetto di te stessa</span>
+    </div>
+    <div class="strumenti-card" onclick="goPage('abc',null)">
+      <span class="sc-icon">🌱</span>
+      <span class="sc-name">ABC</span>
+      <span class="sc-desc">Costruisci emozioni positive</span>
+    </div>
+    <div class="strumenti-card" onclick="goPage('sentiero',null)">
+      <span class="sc-icon">⚖️</span>
+      <span class="sc-name">Sentiero di mezzo</span>
+      <span class="sc-desc">Pensiero dialettico</span>
+    </div>
   </div>
 </div>
 
@@ -1439,6 +1463,219 @@ textarea:focus,input:focus,select:focus{
   </div>
 </div>
 
+
+<!-- ══ PAGE: GIVE ══ -->
+<div id="page-give" class="page">
+  <div style="background:linear-gradient(135deg,#2E7D32,#43A047);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+    <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%"></div>
+    <div style="position:relative">
+      <div style="font-size:22px;font-weight:800;margin-bottom:4px">Relazione — GIVE</div>
+      <div style="font-size:13px;opacity:.85">Mantieni relazioni positive e fai sentire bene l'altro</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">Le 4 abilità GIVE</div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#2E7D32;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">G</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Gentile — Sii cortese e rispettosa</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Non attaccare verbalmente. Non minacciare. Non moralizzare ("Dovresti…"). Non fare l'occhiolino o alzare gli occhi al cielo. Tollera un no — esci dalla discussione elegantemente se necessario.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#2E7D32;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">I</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Interessata — Ascolta davvero</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Guarda negli occhi. Non interrompere. Avvicinati invece di allontanarti. Sii comprensiva se vuole rimandare la discussione. Ascolta il suo punto di vista e le ragioni del rifiuto.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#2E7D32;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">V</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Valida — Mostra che capisci</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Con parole e azioni mostra di comprendere le emozioni e opinioni dell'altro. Guarda le cose dal suo punto di vista: <em>"Mi rendo conto che sia difficile per te"</em>, <em>"So che sei impegnato, ma…"</em>. Se è a disagio, trovate un posto tranquillo.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#2E7D32;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">E</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Educata — Usa il senso dell'umorismo</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Sorridi. Metti l'altro a proprio agio, sdrammatizza. Usa la persuasione più che l'insistenza. Sii diplomatica. Evita un atteggiamento negativo o polemico.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem;border-left:3px solid #2E7D32">
+    <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">I 6 livelli di validazione (V di GIVE)</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="background:var(--teal-l);color:var(--teal-d);font-size:11px;font-weight:800;padding:2px 7px;border-radius:12px;flex-shrink:0;margin-top:1px">1</span>
+        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Presta attenzione</div><div style="font-size:12px;color:var(--text-2);line-height:1.5">Mostra attenzione, non apparire distratta o impegnata in altro. Niente multitasking.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="background:var(--teal-l);color:var(--teal-d);font-size:11px;font-weight:800;padding:2px 7px;border-radius:12px;flex-shrink:0;margin-top:1px">2</span>
+        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Rispecchia</div><div style="font-size:12px;color:var(--text-2);line-height:1.5">Riformula ciò che l'altra persona ha detto per essere sicura di aver capito bene. Senza tono giudicante.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="background:var(--teal-l);color:var(--teal-d);font-size:11px;font-weight:800;padding:2px 7px;border-radius:12px;flex-shrink:0;margin-top:1px">3</span>
+        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Leggi la mente</div><div style="font-size:12px;color:var(--text-2);line-height:1.5">Cerca di comprendere anche ciò che non è stato detto. Presta attenzione alle espressioni, al linguaggio del corpo. Mostra la tua attenzione con parole e gesti.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="background:var(--teal-l);color:var(--teal-d);font-size:11px;font-weight:800;padding:2px 7px;border-radius:12px;flex-shrink:0;margin-top:1px">4</span>
+        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Mostra comprensione</div><div style="font-size:12px;color:var(--text-2);line-height:1.5">Osserva come i sentimenti e le azioni dell'altro hanno senso alla luce della sua storia, situazione o stato mentale.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="background:var(--teal-l);color:var(--teal-d);font-size:11px;font-weight:800;padding:2px 7px;border-radius:12px;flex-shrink:0;margin-top:1px">5</span>
+        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Riconosci il senso</div><div style="font-size:12px;color:var(--text-2);line-height:1.5">Evidenzia come i sentimenti, pensieri o azioni dell'altro siano risposte comprensibili e logiche alla situazione.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="background:var(--teal-l);color:var(--teal-d);font-size:11px;font-weight:800;padding:2px 7px;border-radius:12px;flex-shrink:0;margin-top:1px">6</span>
+        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Poniti allo stesso livello</div><div style="font-size:12px;color:var(--text-2);line-height:1.5">Sii te stessa. Tratta l'altro alla pari — non come se fosse fragile o incompetente, né più importante di te.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: FAST ══ -->
+<div id="page-fast" class="page">
+  <div style="background:linear-gradient(135deg,#5C6BC0,#7986CB);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+    <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%"></div>
+    <div style="position:relative">
+      <div style="font-size:22px;font-weight:800;margin-bottom:4px">Rispetto di sé — FAST</div>
+      <div style="font-size:13px;opacity:.85">Agisci in modo da mantenere il rispetto di te stessa</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">Le 4 abilità FAST</div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#5C6BC0;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">F</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Franca — Sii giusta con te stessa e con l'altra</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Ricordati di validare i tuoi sentimenti e desideri quanto quelli degli altri. Non scusarti di esistere o di avere bisogni. <em>Non mostrare vergogna</em>: non assumere una postura curva, non abbassare lo sguardo.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#5C6BC0;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">A</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Assertiva — Non scusarti di avere opinioni</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Non scusarti di non essere d'accordo. Non invalida ciò che ha valore per te. Non agire come se fossi impotente quando non lo sei. Non esagerare, non cercare scuse.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#5C6BC0;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">S</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Segui i tuoi valori — Non tradirli per cose poco importanti</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Rimani fedele ai tuoi valori. Non rinunciare a ciò che è importante per te solo per accontentare. Spiega chiaramente qual è il modo corretto di pensare e agire secondo te — e mantieni la tua posizione.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#5C6BC0;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">T</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Trasparente — Non mentire</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Non mentire. Non fingere. Non manipolare. Esprimi ciò che pensi davvero in modo diretto e rispettoso.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid #5C6BC0">
+    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">Quando usare GIVE vs FAST</div>
+    <div style="font-size:13px;color:var(--text-2);line-height:1.6">
+      Usa <b>GIVE</b> quando la relazione è la priorità — vuoi che l'altro si senta bene e mantenere il legame.<br><br>
+      Usa <b>FAST</b> quando il rispetto di te stessa è la priorità — non vuoi cedere su qualcosa di importante o comportarti in modo di cui poi vergognarti.<br><br>
+      Spesso si usano <b>insieme</b>: puoi essere gentile (GIVE) E non cedere sui tuoi valori (FAST) allo stesso tempo.
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: ABC ══ -->
+<div id="page-abc" class="page">
+  <div style="background:linear-gradient(135deg,#E0567A,#EC407A);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+    <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%"></div>
+    <div style="position:relative">
+      <div style="font-size:22px;font-weight:800;margin-bottom:4px">ABC — Costruisci emozioni positive</div>
+      <div style="font-size:13px;opacity:.85">Regolazione emotiva a lungo termine</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:16px">
+      <span style="background:#E0567A;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">A</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">Accumula emozioni positive</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:10px"><b>A breve termine:</b> fai oggi almeno una cosa piacevole. Non aspettare di sentirtelo dire — programmala.</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:10px"><b>A lungo termine:</b> costruisci una vita in cui capitano più spesso eventi positivi. Identifica cosa è importante per te e fai piccoli passi in quella direzione ogni settimana.</div>
+        <div style="background:var(--teal-ll);border-radius:var(--rs);padding:10px 12px;font-size:12px;color:var(--text-2);line-height:1.5">
+          <b>Attenzione:</b> sii consapevole dell'esperienza positiva mentre accade. Non fare più cose insieme. Rifocalizza se la mente va verso la negatività. Evita di preoccuparti se dura poco o se lo meriti.
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:16px">
+      <span style="background:#E0567A;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">B</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">Bravo nella Mastery — Diventa brava in qualcosa</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Fai ogni giorno una cosa che ti faccia sentire competente ed efficace. Non deve essere grande — anche qualcosa di piccolo ma sfidante. La mastery combatte la disperazione e il senso di impotenza.</div>
+        <div style="background:var(--teal-ll);border-radius:var(--rs);padding:10px 12px;margin-top:8px;font-size:12px;color:var(--text-2)">
+          Esempi: imparare qualcosa di nuovo, completare un compito rimandato, cucinare qualcosa, fare esercizio fisico, finire un libro.
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;align-items:flex-start">
+      <span style="background:#E0567A;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">C</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">Cope ahead — Prepara un piano in anticipo</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:10px">Identifica una situazione emotiva difficile che potrebbe capitare. Prepara un piano su come gestirla <em>prima</em> che accada. Immagina la situazione in dettaglio e fai le prove mentali di come risponderai.</div>
+        <div style="background:var(--amber-l);border:1px solid var(--amber);border-radius:var(--rs);padding:10px 12px;font-size:12px;color:var(--text-2);line-height:1.5">
+          <b>Come fare:</b><br>
+          1. Descrivi la situazione che temi con i fatti puri<br>
+          2. Identifica le emozioni e i pensieri che potrebbero emergere<br>
+          3. Decidi in anticipo come userai le abilità DBT<br>
+          4. Immagina la scena in dettaglio — fai le prove mentali<br>
+          5. Rilassati dopo l'esercizio
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: SENTIERO DI MEZZO ══ -->
+<div id="page-sentiero" class="page">
+  <div style="background:linear-gradient(135deg,#FF7043,#FF8A65);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+    <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%"></div>
+    <div style="position:relative">
+      <div style="font-size:22px;font-weight:800;margin-bottom:4px">Sentiero di mezzo</div>
+      <div style="font-size:13px;opacity:.85">Pensare e agire in modo dialettico</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:14px">Il pensiero dialettico significa che <b>due cose opposte possono essere vere allo stesso tempo</b>. Non c'è un solo modo giusto di vedere le cose — ogni posizione ha il suo nocciolo di verità.</div>
+
+    <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Come pensare e agire in modo dialettico</div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:var(--surface-2);border-radius:var(--rs);padding:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">1. Cerca entrambi i lati</div>
+        <div style="font-size:12px;color:var(--text-2);line-height:1.5">Chiedi alla mente saggia: cosa sto tralasciando? Cambia gli "o-o" in "sia-sia", i "sempre/mai" in "talvolta". Trova un equilibrio tra opposti.</div>
+      </div>
+      <div style="background:var(--surface-2);border-radius:var(--rs);padding:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">2. Sii consapevole della connessione</div>
+        <div style="font-size:12px;color:var(--text-2);line-height:1.5">Comportati con gli altri come vorresti facessero con te. Cerca le somiglianze tra le persone piuttosto che le differenze.</div>
+      </div>
+      <div style="background:var(--surface-2);border-radius:var(--rs);padding:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">3. Accogli il cambiamento</div>
+        <div style="font-size:12px;color:var(--text-2);line-height:1.5">Buttati nel cambiamento: concediti di cambiare, accoglilo. Pratica l'accettazione radicale del cambiamento. Fai piccoli cambiamenti intenzionali per fare pratica.</div>
+      </div>
+      <div style="background:var(--surface-2);border-radius:var(--rs);padding:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">4. Il cambiamento è transazionale</div>
+        <div style="font-size:12px;color:var(--text-2);line-height:1.5">Tu influenzi l'ambiente e l'ambiente influenza te. Smetti di cercare di chi è la colpa — i comportamenti sono causati da molte interazioni nel tempo.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem;border-left:3px solid #FF7043">
+    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">Cose che possono essere entrambe vere</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="font-size:13px;color:var(--text-2);padding:6px 0;border-bottom:1px solid var(--border-l)">Puoi voler cambiare <b>E</b> avere ancora bisogno di fare meglio</div>
+      <div style="font-size:13px;color:var(--text-2);padding:6px 0;border-bottom:1px solid var(--border-l)">Puoi accettarti così come sei <b>E</b> volere cambiare</div>
+      <div style="font-size:13px;color:var(--text-2);padding:6px 0;border-bottom:1px solid var(--border-l)">Puoi essere furiosa con qualcuno <b>E</b> amarlo e rispettarlo</div>
+      <div style="font-size:13px;color:var(--text-2);padding:6px 0;border-bottom:1px solid var(--border-l)">Puoi essere indipendente <b>E</b> cercare aiuto</div>
+      <div style="font-size:13px;color:var(--text-2);padding:6px 0;border-bottom:1px solid var(--border-l)">Puoi avere validi motivi per credere qualcosa <b>E</b> potresti comunque sbagliarti</div>
+      <div style="font-size:13px;color:var(--text-2);padding:6px 0">Accettare la realtà <b>E</b> adoperarsi per cambiarla</div>
+    </div>
+  </div>
+</div>
 
 <!-- ══ PAGE: PLEASE ══ -->
 <div id="page-please" class="page">
@@ -3368,14 +3605,19 @@ async function silentPull(){
 let notifTimer=null;
 function scheduleNotif(){
   if(!('Notification' in window)||Notification.permission!=='granted')return;
-  if(notifTimer){clearTimeout(notifTimer);notifTimer=null}
+  if(notifTimer){clearTimeout(notifTimer);notifTimer=null;}
   const [hh,mm]=(settings.notifTime||'21:00').split(':').map(Number);
   const now=new Date();const target=new Date();
   target.setHours(hh,mm,0,0);
   if(target<=now)target.setDate(target.getDate()+1);
   notifTimer=setTimeout(()=>{
-    if(!allData[today()]){
-      new Notification('Diary Card DBT ▤',{body:'Non dimenticare di compilare la tua diary card di oggi!',icon:'icon-192.png',tag:'daily'});
+    if(!allData[today()]||isDayEmpty(allData[today()])){
+      const opts={body:'Non dimenticare di compilare la tua diary card di oggi! 📓',icon:'icon-192.png',badge:'icon-192.png',tag:'daily',renotify:false};
+      if(navigator.serviceWorker&&navigator.serviceWorker.controller){
+        navigator.serviceWorker.ready.then(reg=>reg.showNotification('Diary Card DBT',opts));
+      } else {
+        new Notification('Diary Card DBT',opts);
+      }
     }
     scheduleNotif();
   },target-now);
