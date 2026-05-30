@@ -1091,7 +1091,7 @@ textarea:focus,input:focus,select:focus{
 
 
 <!-- ══ PAGE: DEAR MAN COPIONE ══ -->
-<div id="page-dearman" class="page" style="display:none">
+<div id="page-dearman" class="page">
   <div style="background:linear-gradient(135deg,#4F6BED,#6B8EF0);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Copione DEAR MAN</div>
     <div style="font-size:13px;opacity:.85">Prepara una conversazione difficile passo per passo</div>
@@ -1199,7 +1199,7 @@ textarea:focus,input:focus,select:focus{
 
 
 <!-- ══ PAGE: PLEASE ══ -->
-<div id="page-please" class="page" style="display:none">
+<div id="page-please" class="page">
   <div style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Checklist PLEASE</div>
     <div style="font-size:13px;opacity:.85">Prenditi cura del corpo per ridurre la vulnerabilità emotiva</div>
@@ -1420,6 +1420,12 @@ textarea:focus,input:focus,select:focus{
     </div>
   </div>
   <div id="guida-content"></div>
+
+<!-- Emozioni widget — separate from guide modules -->
+<div style="margin-top:1.5rem">
+  <div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Schede emozioni</div>
+  <div id="emozioni-content"></div>
+</div>
   <div style="font-size:11px;color:var(--muted);text-align:center;padding:1rem 0;line-height:1.6">
     Basata su: Marsha M. Linehan, <em>DBT Skills Training. Schede e fogli di lavoro</em>, 2a ed.
   </div>
@@ -3835,58 +3841,6 @@ function renderGuide(){
           '<b>Step 3 — Abilità di regolazione emotiva:</b> solo quando sei più stabile, torna a usare le abilità più complesse (controlla i fatti, azione opposta ecc.).',
           '⚠ Non cercare di usare abilità complesse al punto di rottura — non funzionerà e ti farà sentire più in fallimento. Prima calma il sistema nervoso.'
         ]},
-       {id:'emozioni_schema',badge:'SCHEDE EMOZIONI',name:'Capire le proprie emozioni',
-        desc:'Le emozioni hanno una struttura: eventi scatenanti, interpretazioni, sensazioni fisiche, azioni tipiche, conseguenze.',
-        steps:[
-          '<b>Perché conoscere la struttura delle emozioni?</b> Riconoscere dove sei nella sequenza emotiva ti dà potere di intervento. Puoi cambiare l’evento, l’interpretazione, la postura, l’azione — ognuno influenza l’emozione.',
-          'Ogni emozione segue questo schema: <b>Evento scatenante → Interpretazione → Sensazioni fisiche → Spinte all’azione → Conseguenze</b>.',
-          'Apri la scheda dell’emozione che stai vivendo qui sotto per capire come funziona e cosa fare.',
-          '&#x1F4A1; Le emozioni non sono fatti. "Ho paura" non significa che ci sia davvero un pericolo. Controlla sempre i fatti prima di agire.'
-        ]},
-       {id:'epau',badge:'PAURA',name:'Paura — come funziona e cosa fare',
-        desc:'Nervosismo, preoccupazione, panico, terrore. La paura ci avvisa di una minaccia — reale o percepita.',
-        steps:[
-          '<b>Quando corrisponde ai fatti:</b> quando c’è una minaccia reale alla tua vita, salute o benessere. In quel caso — agisci o cerca aiuto.',
-          '<b>Scatenanti tipici:</b> situazioni nuove o sconosciute, stare sola, flashback, dover fare qualcosa in pubblico, perseguire i propri sogni.',
-          '<b>Interpretazioni tipiche:</b> "Potrei essere ferita." "Non avrò aiuto." "Fallirò." "Perderò qualcuno di importante."',
-          '<b>Sensazioni fisiche:</b> tachicardia, mancanza di respiro, nodo in gola, tensione muscolare, sudore freddo, nausea, impulso a scappare.',
-          '<b>Azioni tipiche:</b> fuggire, evitare, immobilizzarsi, chiedere aiuto in modo caotico, parlare nervosamente.',
-          '<b>Conseguenze:</b> diminuzione dell’attenzione, isolamento, rimuginazione su altre minacce.',
-          '<b>Azione opposta (paura ingiustificata):</b> avvicinati a ciò che temi. Fallo ancora e ancora. Tieni gli occhi aperti invece di evitare. Postura assertiva — testa alta, spalle indietro. Cambia la chimica del corpo con la respirazione.'
-        ]},
-       {id:'erab',badge:'RABBIA',name:'Rabbia — come funziona e cosa fare',
-        desc:'Frustrazione, irritazione, collera, furia. La rabbia ci segnala che qualcosa di importante è stato bloccato o minacciato.',
-        steps:[
-          '<b>Quando corrisponde ai fatti:</b> un obiettivo viene bloccato, qualcuno ti attacca o minaccia, viene offesa la tua integrità.',
-          '<b>Scatenanti tipici:</b> impossibilità di raggiungere un obiettivo, dolore fisico o emotivo, attacchi, perdita di rispetto o status.',
-          '<b>Interpretazioni tipiche:</b> "Sono stata trattata ingiustamente." "Non avrebbe dovuto farlo." "Ho ragione io."',
-          '<b>Sensazioni fisiche:</b> tensione muscolare, denti serrati, pugni stretti, faccia che avvampa, senso di esplosione imminente.',
-          '<b>Azioni tipiche:</b> attacchi verbali o fisici, colpire oggetti, alzare la voce, sarcasmo, andarsene, covare rancore.',
-          '<b>Conseguenze:</b> diminuzione dell’attenzione, rimuginazione, dissociazione, conflitti.',
-          '<b>Azione opposta (rabbia ingiustificata):</b> evita con grazia invece di attaccare. Sii gentile. Immaginati comprensiva verso l’altra persona. Apri le mani, palmi verso l’alto. Abbozza un sorriso. Respira lentamente.'
-        ]},
-       {id:'etri',badge:'TRISTEZZA',name:'Tristezza — come funziona e cosa fare',
-        desc:'Dispiacere, malinconia, solitudine, disperazione. La tristezza segnala una perdita.',
-        steps:[
-          '<b>Quando corrisponde ai fatti:</b> hai perso qualcosa o qualcuno per sempre. Le cose non sono andate come speravi.',
-          '<b>Scatenanti tipici:</b> perdita, morte, rifiuto, separazione, delusione, isolamento, confronto con ciò che non si ha.',
-          '<b>Interpretazioni tipiche:</b> "Non otterrò mai ciò che voglio." "Sono inutile." "La situazione non cambierà mai."',
-          '<b>Sensazioni fisiche:</b> stanchezza, letargia, vuoto nel petto, difficoltà a deglutire, sentirsi senza energie.',
-          '<b>Azioni tipiche:</b> ritirarsi, evitare, stare a letto, parlare poco, piangere, darsi per vinti.',
-          '<b>Conseguenze:</b> insonnia, appetite disturbato, prospettiva negativa, rimuginazione, irritabilità.',
-          '<b>Azione opposta (tristezza ingiustificata):</b> attivati invece di isolarti. Evita di evitare. Fai cose che ti diano senso di competenza. Aumenta gli eventi positivi. Testa alta, occhi aperti, postura aperta. Aumenta l’attività fisica.'
-        ]},
-       {id:'ever',badge:'VERGOGNA',name:'Vergogna — come funziona e cosa fare',
-        desc:'Mortificazione, umiliazione, imbarazzo. La vergogna ci dice che potremmo essere rifiutati.',
-        steps:[
-          '<b>Quando corrisponde ai fatti:</b> verrai davvero rifiutata da persone cui tieni se certe cose si venissero a sapere.',
-          '<b>Scatenanti tipici:</b> essere rifiutata, criticata in pubblico, fallire dove ci si sente competenti, rivelare aspetti privati, confrontarsi con uno standard.',
-          '<b>Interpretazioni tipiche:</b> "Sono difettosa." "Non sono abbastanza." "Sono una brutta persona." "Gli altri mi rifiuteranno."',
-          '<b>Sensazioni fisiche:</b> dolore allo stomaco, senso di terrore, impulso a nascondersi o scomparire.',
-          '<b>Azioni tipiche:</b> nascondersi, evitare le persone, abbassare lo sguardo, postura curva, scusarsi ripetutamente.',
-          '<b>Conseguenze:</b> isolamento, conflitti, blocco del problem solving, dissociazione, comportamenti impulsivi per distrarsi.',
-          '<b>Azione opposta (vergogna ingiustificata):</b> esponi ciò di cui ti vergogni con persone di fiducia invece di nasconderti. Partecipa invece di isolarti. Testa alta, contatto visivo, postura diritta. Ripeti finché la vergogna si riduce.'
-        ]},
        {id:'rpositivo',badge:'POSITIVO',name:'Costruire emozioni positive',
         desc:'Non aspettare che le emozioni positive arrivino da sole — costruiscile attivamente.',
         steps:[
@@ -4336,6 +4290,88 @@ function togglePlease(dateKey,itemId){
   stored[dateKey][itemId]=!stored[dateKey][itemId];
   localStorage.setItem('please_data',JSON.stringify(stored));
   renderPlease();
+}
+
+
+function renderEmozioni(){
+  const el=document.getElementById('emozioni-content');
+  if(!el||el.innerHTML.trim())return;
+  
+  const EMOS=[
+    {id:'epau',emoji:'😰',label:'Paura',color:'#E6F1FB',border:'#4A90D9',
+     quando:'Quando c\'è una minaccia reale alla tua vita, salute o benessere.',
+     scatenanti:'Situazioni nuove, stare sola, flashback, dover fare cose in pubblico, perseguire i propri sogni.',
+     interpretazioni:'"Potrei essere ferita." "Non avrò aiuto." "Fallirò." "Perderò qualcuno."',
+     fisico:'Tachicardia, mancanza di respiro, nodo in gola, tensione muscolare, sudore freddo, nausea.',
+     azioni:'Fuggire, evitare, immobilizzarsi, chiedere aiuto in modo caotico.',
+     opposta:'Avvicinati a ciò che temi, fallo ancora e ancora. Tieni gli occhi aperti. Postura assertiva — testa alta, spalle indietro. Respira lentamente.'
+    },
+    {id:'erab',emoji:'😠',label:'Rabbia',color:'#FEF0F0',border:'#EF5350',
+     quando:'Un obiettivo viene bloccato, qualcuno ti attacca o minaccia, viene offesa la tua integrità.',
+     scatenanti:'Impossibilità di raggiungere un obiettivo, attacchi, perdita di rispetto, dolore fisico o emotivo.',
+     interpretazioni:'"Sono stata trattata ingiustamente." "Non avrebbe dovuto." "Ho ragione io."',
+     fisico:'Tensione muscolare, denti serrati, pugni stretti, faccia che avvampa, senso di esplosione.',
+     azioni:'Attacchi verbali, alzare la voce, sarcasmo, sbattere le porte, covare rancore.',
+     opposta:'Evita con grazia invece di attaccare. Sii gentile. Immaginati comprensiva. Apri le mani, palmi verso l\'alto. Abbozza un sorriso.'
+    },
+    {id:'etri',emoji:'😢',label:'Tristezza',color:'#EEF2FF',border:'#4A90D9',
+     quando:'Hai perso qualcosa o qualcuno. Le cose non sono andate come speravi.',
+     scatenanti:'Perdita, morte, rifiuto, separazione, delusione, isolamento.',
+     interpretazioni:'"Non otterrò mai ciò che voglio." "Sono inutile." "La situazione non cambierà mai."',
+     fisico:'Stanchezza, letargia, vuoto nel petto, difficoltà a deglutire, mancanza di energie.',
+     azioni:'Ritirarsi, evitare, stare a letto, parlare poco, darsi per vinti.',
+     opposta:'Attivati invece di isolarti. Evita di evitare. Fai cose che ti diano senso di competenza. Testa alta, postura aperta. Aumenta l\'attività fisica.'
+    },
+    {id:'ever',emoji:'😶',label:'Vergogna',color:'#F5F3FF',border:'#9E9E9E',
+     quando:'Potresti essere rifiutata da persone cui tieni se certe caratteristiche si venissero a sapere.',
+     scatenanti:'Essere rifiutata, criticata in pubblico, fallire dove ci si sente competenti, confrontarsi con uno standard.',
+     interpretazioni:'"Sono difettosa." "Non sono abbastanza." "Gli altri mi rifiuteranno."',
+     fisico:'Dolore allo stomaco, senso di terrore, impulso a nascondersi o scomparire.',
+     azioni:'Nascondersi, abbassare lo sguardo, postura curva, scusarsi ripetutamente.',
+     opposta:'Esponi ciò di cui ti vergogni con persone di fiducia. Partecipa invece di isolarti. Testa alta, contatto visivo, postura diritta.'
+    },
+  ];
+  
+  EMOS.forEach(emo=>{
+    const card=document.createElement('div');
+    card.style.cssText=`background:${emo.color};border:1.5px solid ${emo.border};border-radius:var(--r);margin-bottom:10px;overflow:hidden`;
+    
+    const hdr=document.createElement('div');
+    hdr.style.cssText='padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer';
+    hdr.innerHTML=`<span style="font-size:26px">${emo.emoji}</span><div style="flex:1"><div style="font-size:15px;font-weight:700">${emo.label}</div></div><span id="earr-${emo.id}" style="font-size:20px;color:var(--muted);transition:transform .2s">›</span>`;
+    hdr.onclick=()=>{
+      const body=document.getElementById('ebody-'+emo.id);
+      const arr=document.getElementById('earr-'+emo.id);
+      const open=body.style.display!=='none';
+      body.style.display=open?'none':'block';
+      arr.style.transform=open?'':'rotate(90deg)';
+    };
+    card.appendChild(hdr);
+    
+    const body=document.createElement('div');
+    body.id='ebody-'+emo.id;
+    body.style.display='none';
+    body.style.cssText='display:none;padding:0 16px 16px;border-top:1px solid rgba(0,0,0,.08)';
+    
+    const rows=[
+      {label:'Quando corrisponde ai fatti',val:emo.quando},
+      {label:'Scatenanti tipici',val:emo.scatenanti},
+      {label:'Interpretazioni tipiche',val:emo.interpretazioni},
+      {label:'Sensazioni fisiche',val:emo.fisico},
+      {label:'Azioni tipiche',val:emo.azioni},
+      {label:'Azione opposta',val:emo.opposta,highlight:true},
+    ];
+    
+    rows.forEach(row=>{
+      const div=document.createElement('div');
+      div.style.cssText=`margin-top:12px;padding:10px 12px;background:${row.highlight?'rgba(255,255,255,.7)':'rgba(255,255,255,.5)'};border-radius:var(--rs)`;
+      div.innerHTML=`<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${row.label}</div><div style="font-size:13px;color:var(--text);line-height:1.55">${row.val}</div>`;
+      body.appendChild(div);
+    });
+    
+    card.appendChild(body);
+    el.appendChild(card);
+  });
 }
 
 // ── INIT ──
