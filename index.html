@@ -347,7 +347,7 @@ textarea:focus,input:focus,select:focus{
 .suggest-card h3{font-size:14px;font-weight:700;margin-bottom:4px;color:#5A3A00}
 .suggest-card p{font-size:13px;color:#7A5510;line-height:1.55}
 .suggest-card .s-btn{
-  margin-top:10px;padding:8px 16px;
+  padding:8px 16px;margin-top:0;
   background:var(--amber);color:#fff;border:none;
   border-radius:var(--rs);font-size:13px;font-weight:700;
   cursor:pointer;font-family:var(--font-ui);
@@ -2079,7 +2079,7 @@ function buildHome(){
   let streak=0;const check=new Date();check.setHours(0,0,0,0);
   while(allData[dk(check)]){streak++;check.setDate(check.getDate()-1);}
   document.getElementById('streak-num').textContent=streak;
-  document.getElementById('streak-sub').textContent=streak===0?'Inizia oggi!':streak===1?'Ottimo inizio — vai avanti!':streak<7?'Continua così!':'Fantastico streak! ▲';
+  document.getElementById('streak-sub').textContent=streak===0?'Inizia oggi!':streak===1?'Ottimo inizio — vai avanti!':streak<7?'Continua così!':'Fantastico streak! ';
 
   // Streak dots (last 7 days)
   const dotsEl=document.getElementById('streak-dots');
@@ -2297,7 +2297,7 @@ function buildSuggest(){
   const idx=parseInt(localStorage.getItem('sg_'+k)||'0');
   const pick=matching[idx%matching.length];
   const action=pick.guide?`openGuideSkill('${pick.guide}','${pick.skill||''}')`:(pick.skill?`openDbtSkill('${pick.skill}')`:'goPage("attivita",null)');
-  const rotBtn=matching.length>1?`<button style="background:none;border:none;font-size:12px;color:#7A5010;cursor:pointer;font-family:inherit;padding:0;text-decoration:none;font-weight:600;opacity:.8" onclick="rotateSuggest('${k}',${matching.length})">↻ Altro</button>`:'';
+  const rotBtn=matching.length>1?`<button style="background:none;border:none;font-size:12px;color:#7A5010;cursor:pointer;font-family:inherit;padding:4px 0;text-decoration:none;font-weight:600" onclick="rotateSuggest('${k}',${matching.length})">↻ Altro</button>`:'';
   box.innerHTML='<div class="suggest-card"><div class="s-icon">'+pick.icon+'</div><div style="flex:1"><h3>'+pick.title+'</h3><p>'+pick.desc+'</p><div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap"><button class="s-btn" onclick="'+action+'">Scopri →</button>'+rotBtn+'</div></div></div>';
 }
 function rotateSuggest(k,total){
