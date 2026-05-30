@@ -2385,17 +2385,7 @@ function goPage(name,btn){
   if(name==='home')buildHome();
   if(name==='storico'){renderHist();switchStoricoTab('storico');}
   if(name==='abilita'){updDL();updAbiPill();renderActTab();}
-  if(name==='attivita'){
-    buildSuggest();
-    const alreadyOnAttivita=document.getElementById('page-attivita')?.classList.contains('active');
-    if(!alreadyOnAttivita){
-      curPlan=new Date();plannerData={mattina:[],pomeriggio:[],sera:[]};
-      // reset to slot selection step
-      const ss=document.getElementById('act-step-slot');const sp=document.getElementById('act-step-pick');
-      if(ss)ss.style.display='block';if(sp)sp.style.display='none';
-    }
-    updPlanDL();renderPlanner();
-  }
+  if(name==='attivita'){buildSuggest();curPlan=new Date();plannerData={mattina:[],pomeriggio:[],sera:[]};updPlanDL();renderPlanner();}
   if(name==='pazienti')renderPatients();
   if(name==='please'){renderPlease();}
   if(name==='diarioemo'){deRenderLista();}
@@ -3363,12 +3353,7 @@ async function silentPull(){
       updDL();
       // Always refresh planner after pull, not just when on attivita
       const attActive=document.getElementById('page-attivita')?.classList.contains('active');
-      if(attActive){
-        // Only re-render slot summary, don't reset current step
-        const onSlot=document.getElementById('act-step-slot')?.style.display!=='none';
-        if(onSlot)renderPlanner();
-        else renderPlanSummary();
-      }
+      if(attActive)renderPlanner();
       setSt('ok','Sincronizzato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
     }
   }catch(e){}
