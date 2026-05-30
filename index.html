@@ -3353,7 +3353,10 @@ async function silentPull(){
       updDL();
       // Always refresh planner after pull, not just when on attivita
       const attActive=document.getElementById('page-attivita')?.classList.contains('active');
-      if(attActive)renderPlanner();
+      if(attActive){
+        const pickVisible=document.getElementById('act-step-pick')?.style.display==='block';
+        if(pickVisible)renderPlanSummary(); else renderPlanner();
+      }
       setSt('ok','Sincronizzato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
     }
   }catch(e){}
