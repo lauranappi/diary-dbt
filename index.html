@@ -1202,6 +1202,22 @@ textarea:focus,input:focus,select:focus{
 
     <div style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">M</span>
+        <span style="font-size:13px;font-weight:600">Mantieni la posizione — come gestirai le resistenze?</span>
+      </div>
+      <textarea id="dm-m" rows="2" placeholder="Es. Se cambia argomento dirò: capisco, ma vorrei prima finire questo discorso." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">A</span>
+        <span style="font-size:13px;font-weight:600">Appari sicura — come ti presenterai?</span>
+      </div>
+      <textarea id="dm-a2" rows="2" placeholder="Es. Guarderò negli occhi, parlerò con voce calma e terrò la schiena dritta." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
         <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">N</span>
         <span style="font-size:13px;font-weight:600">Negozia — cosa potresti offrire in cambio?</span>
       </div>
@@ -1216,25 +1232,25 @@ textarea:focus,input:focus,select:focus{
       <div style="text-align:center">
         <div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:6px">OBIETTIVO</div>
         <div style="display:flex;justify-content:center;gap:4px">
-          <button class="dm-pri" data-key="obj" data-val="1" onclick="dmPri('obj',1)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">1</button>
-          <button class="dm-pri" data-key="obj" data-val="2" onclick="dmPri('obj',2)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">2</button>
-          <button class="dm-pri" data-key="obj" data-val="3" onclick="dmPri('obj',3)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">3</button>
+          <button class="dm-pri" data-key="obj" data-val="1" onclick="dmPri('obj',1)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">1</button>
+          <button class="dm-pri" data-key="obj" data-val="2" onclick="dmPri('obj',2)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">2</button>
+          <button class="dm-pri" data-key="obj" data-val="3" onclick="dmPri('obj',3)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">3</button>
         </div>
       </div>
       <div style="text-align:center">
         <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:6px">RELAZIONE</div>
         <div style="display:flex;justify-content:center;gap:4px">
-          <button class="dm-pri" data-key="rel" data-val="1" onclick="dmPri('rel',1)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">1</button>
-          <button class="dm-pri" data-key="rel" data-val="2" onclick="dmPri('rel',2)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">2</button>
-          <button class="dm-pri" data-key="rel" data-val="3" onclick="dmPri('rel',3)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">3</button>
+          <button class="dm-pri" data-key="rel" data-val="1" onclick="dmPri('rel',1)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">1</button>
+          <button class="dm-pri" data-key="rel" data-val="2" onclick="dmPri('rel',2)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">2</button>
+          <button class="dm-pri" data-key="rel" data-val="3" onclick="dmPri('rel',3)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">3</button>
         </div>
       </div>
       <div style="text-align:center">
         <div style="font-size:11px;font-weight:700;color:#E0567A;margin-bottom:6px">RISPETTO DI SÉ</div>
         <div style="display:flex;justify-content:center;gap:4px">
-          <button class="dm-pri" data-key="ris" data-val="1" onclick="dmPri('ris',1)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">1</button>
-          <button class="dm-pri" data-key="ris" data-val="2" onclick="dmPri('ris',2)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">2</button>
-          <button class="dm-pri" data-key="ris" data-val="3" onclick="dmPri('ris',3)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer">3</button>
+          <button class="dm-pri" data-key="ris" data-val="1" onclick="dmPri('ris',1)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">1</button>
+          <button class="dm-pri" data-key="ris" data-val="2" onclick="dmPri('ris',2)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">2</button>
+          <button class="dm-pri" data-key="ris" data-val="3" onclick="dmPri('ris',3)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">3</button>
         </div>
       </div>
     </div>
@@ -4474,14 +4490,18 @@ function dmGenera(){
   const E=document.getElementById('dm-e').value.trim();
   const A=document.getElementById('dm-a').value.trim();
   const R=document.getElementById('dm-r').value.trim();
+  const M=document.getElementById('dm-m').value.trim();
+  const A2=document.getElementById('dm-a2').value.trim();
   const N=document.getElementById('dm-n').value.trim();
   if(!D&&!E&&!A){alert('Compila almeno D, E e A per generare il copione.');return;}
   let script='';
-  if(D) script+='[Descrivi] '+D+'\n\n';
-  if(E) script+='[Esprimi] '+E+'\n\n';
-  if(A) script+='[Afferma] '+A+'\n\n';
-  if(R) script+='[Rinforza] '+R+'\n\n';
-  if(N) script+='[Negozia] '+N;
+  if(D) script+='[D — Descrivi] '+D+'\n\n';
+  if(E) script+='[E — Esprimi] '+E+'\n\n';
+  if(A) script+='[A — Afferma] '+A+'\n\n';
+  if(R) script+='[R — Rinforza] '+R+'\n\n';
+  if(M) script+='[M — Mantieni] '+M+'\n\n';
+  if(A2) script+='[A — Appari sicura] '+A2+'\n\n';
+  if(N) script+='[N — Negozia] '+N;
   document.getElementById('dm-script').textContent=script.trim();
   document.getElementById('dm-output').style.display='block';
   document.getElementById('dm-output').scrollIntoView({behavior:'smooth',block:'start'});
