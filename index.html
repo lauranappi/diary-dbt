@@ -2882,7 +2882,7 @@ async function renderPatients(){
     rows.forEach(row=>{
       const p=row.data?.profile||{};
       const entries=row.data?.entries||{};
-      const numDays=Object.keys(entries).length;
+      const numDays=Object.keys(entries).filter(k=>!isDayEmpty(entries[k])).length;
       const lastUpdate=row.updated_at?new Date(row.updated_at):null;
       const lastStr=lastUpdate?lastUpdate.toLocaleDateString('it-IT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'mai';
       const card=document.createElement('div');
@@ -2901,7 +2901,7 @@ async function openPatient(code,row){
   window.scrollTo({top:0,behavior:'smooth'});
   const p=currentPatient.profile;
   document.getElementById('pat-detail-name').textContent=(p.nome||'?')+' '+(p.cognome||'');
-  document.getElementById('pat-detail-meta').textContent='@'+code+' • '+Object.keys(currentPatient.entries).length+' giorni compilati';
+  document.getElementById('pat-detail-meta').textContent='@'+code+' • '+Object.keys(currentPatient.entries).filter(k=>!isDayEmpty(currentPatient.entries[k])).length+' giorni compilati';
   profile.patientNotes=profile.patientNotes||{};
   document.getElementById('pat-notes').value=profile.patientNotes[code]||'';
   renderPatientOverview();
@@ -2919,7 +2919,7 @@ function renderPatientStats(){
   if(!currentPatient)return;
   const sg=document.getElementById('pat-stats');sg.innerHTML='';
   const entries=currentPatient.entries;
-  const keys=Object.keys(entries).sort().reverse().slice(0,30);
+  const keys=Object.keys(entries).filter(k=>!isDayEmpty(entries[k])).sort().reverse().slice(0,30);
   const cF=fn=>keys.filter(k=>fn(entries[k])).length;
   const nSuic=cF(d=>d.toggles?.sa==='Sì');
   const nAuto=cF(d=>d.toggles?.aa==='Sì');
@@ -2999,7 +2999,7 @@ function renderPatientCharts(){
 function renderPatientHistory(){
   if(!currentPatient)return;
   const entries=currentPatient.entries;
-  const keys=Object.keys(entries).sort().reverse().slice(0,60);
+  const keys=Object.keys(entries).filter(k=>!isDayEmpty(entries[k])).sort().reverse().slice(0,60);
   const ph=document.getElementById('pat-hist');ph.innerHTML='';
   if(!keys.length){ph.innerHTML='<div style="color:var(--muted);padding:1rem">Nessuna giornata.</div>';return;}
   keys.forEach(k=>{
