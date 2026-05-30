@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+<!DOC
+<div id="tab-sessioni" class="pat-tab-content" style="display:none">
+  <div class="card" style="margin-bottom:.75rem">
+    <div class="slbl">Aggiungi nota sessione</div>
+    <div style="margin-bottom:8px">
+      <input id="sess-data" type="date" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text)">
+    </div>
+    <textarea id="sess-temi" rows="2" placeholder="Temi principali della sessione..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:8px"></textarea>
+    <textarea id="sess-abilita" rows="2" placeholder="Abilità lavorate o assegnate..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:8px"></textarea>
+    <textarea id="sess-note" rows="2" placeholder="Osservazioni cliniche, progressi, difficoltà..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:10px"></textarea>
+    <button onclick="sessAdd()" style="padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-ui)">Aggiungi nota</button>
+  </div>
+  <div id="sess-lista"></div>
+</div>TYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -955,6 +968,8 @@ textarea:focus,input:focus,select:focus{
     <div class="g2" style="margin-top:1rem">
       <div class="field"><span class="flbl">Attività piacevoli / sociali</span><textarea id="tx-att" placeholder="Cosa, con chi..."></textarea></div>
       <div class="field"><span class="flbl">Note libere</span><textarea id="tx-note" placeholder="Qualsiasi pensiero..."></textarea></div>
+      <div class="field"><span class="flbl">Emozione principale del giorno</span><input type="text" id="tx-emoprinc" placeholder="Es. tristezza, ansia, gratitudine..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:14px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box"></div>
+      <div class="field"><span class="flbl">Cosa ha funzionato oggi</span><textarea id="tx-cosafunz" placeholder="Anche piccole cose... un momento di calma, un&#39;abilit&#224; usata, qualcosa di piacevole."></textarea></div>
     </div>
   </div>
 
@@ -4723,6 +4738,40 @@ function epSalva(){
   localStorage.setItem('dbt_profile',JSON.stringify(prof));
   const t=document.getElementById('ep-toast');
   if(t){t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
+}
+
+
+function sessRender(){
+  const el=document.getElementById('sess-lista');if(!el)return;
+  const key='sess_'+currentPatient?.code;
+  const list=JSON.parse(localStorage.getItem(key)||'[]');
+  el.innerHTML='';
+  if(!list.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;padding:1rem">Nessuna nota ancora.</div>';return;}
+  list.slice().reverse().forEach(s=>{
+    const d=document.createElement('div');
+    d.className='card';d.style.marginBottom='.5rem';
+    d.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px">${s.data||''}</div>`+
+      (s.temi?`<div style="font-size:13px;margin-bottom:4px"><b>Temi:</b> ${s.temi}</div>`:'')+ 
+      (s.abilita?`<div style="font-size:13px;margin-bottom:4px"><b>Abilità:</b> ${s.abilita}</div>`:'')+ 
+      (s.note?`<div style="font-size:13px;color:var(--text-2)">${s.note}</div>`:'');
+    el.appendChild(d);
+  });
+}
+function sessAdd(){
+  if(!currentPatient)return;
+  const entry={
+    data:document.getElementById('sess-data').value||today(),
+    temi:document.getElementById('sess-temi').value.trim(),
+    abilita:document.getElementById('sess-abilita').value.trim(),
+    note:document.getElementById('sess-note').value.trim(),
+    id:Date.now()
+  };
+  const key='sess_'+currentPatient.code;
+  const list=JSON.parse(localStorage.getItem(key)||'[]');
+  list.push(entry);
+  localStorage.setItem(key,JSON.stringify(list));
+  ['sess-temi','sess-abilita','sess-note'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  sessRender();
 }
 
 // ── INIT ──
