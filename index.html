@@ -3032,12 +3032,14 @@ function scaleBar(val,max,color){
     +'<span style="font-size:15px;font-weight:700;color:'+color+';min-width:18px;text-align:right">'+val+'</span>'
     +'</div>';
 }
-function scaleColor(val){
+function scaleColor(val,positive){
+  if(positive) return val>=4?'#1A7A6E':val>=2?'#26A69A':val>=1?'#D4882A':'#bbb';
   return val>=4?'#C85250':val>=3?'#D4882A':val>=1?'#1A7A6E':'#bbb';
 }
-function mkScaleRow(label,val){
+const POSITIVE_SCALES=new Set(['ser','gio','fid','sf']);
+function mkScaleRow(label,val,key){
   if(val==null)return'';
-  const c=scaleColor(val);
+  const c=scaleColor(val,POSITIVE_SCALES.has(key));
   return'<div class="modal-stat" style="flex-direction:column;align-items:flex-start;gap:2px">'
     +'<div class="ms-label">'+label+'</div>'
     +scaleBar(val,5,c)
@@ -3097,7 +3099,7 @@ function showPatientDay(k){
   if(emoRows.length){
     html+='<div class="modal-section"><div class="modal-section-title">Emozioni e benessere</div>';
     html+='<div class="modal-grid">';
-    emoRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2]);});
+    emoRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2],k2);});
     html+='</div></div>';
   }
 
@@ -3743,7 +3745,7 @@ function renderPatientOverview(){
   if(emoRows.length){
     html+='<div class="modal-section-title" style="margin-top:14px;margin-bottom:10px">Emozioni e benessere</div>';
     html+='<div class="modal-grid">';
-    emoRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2]);});
+    emoRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2],k2);});
     html+='</div>';
   }
 
@@ -4587,7 +4589,7 @@ function showDaySummary(k,d){
   const emoRows=emoScales.filter(k2=>s[k2]!=null);
   if(emoRows.length){
     html+='<div class="modal-section"><div class="modal-section-title">Emozioni e benessere</div><div class="modal-grid">';
-    emoRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2]);});
+    emoRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2],k2);});
     html+='</div></div>';
   }
 
