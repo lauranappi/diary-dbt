@@ -2100,7 +2100,16 @@ function clearForm(){
 async function saveDay(){
   const key=dk(cur);
   const existing=allData[key]||{};
-  allData[key]={...existing,...getForm()};
+  const currentData=getForm();
+  const hasData=Object.values(currentData.scales||{}).some(v=>v!=null)
+    ||Object.values(currentData.toggles||{}).some(v=>v!=null)
+    ||Object.values(currentData.texts||{}).some(v=>v&&v.trim())
+    ||Object.keys(currentData.skills||{}).length>0;
+  if(!hasData&&Object.keys(existing).length>0){
+    showToast('t1');showToast('t2');
+    return;
+  }
+  allData[key]={...existing,...currentData};
   if(existing.planner)allData[key].planner=existing.planner;
   allData[key].savedAt=new Date().toISOString();
   svLS();updPill(key);showToast('t1');showToast('t2');
@@ -2153,7 +2162,7 @@ function goPage(name,btn){
   // hide topheader on settings, pazienti
   // topheader visibility handled above per page
   window.scrollTo({top:0,behavior:'smooth'});
-  if(name==='oggi'){cur=new Date();setForm(allData[dk(cur)]||null);updDL();}
+  if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
 
   const showTopheader=name==='oggi'||name==='attivita'||name==='abilita';
   document.getElementById('topheader').style.display=showTopheader?'':'none';
@@ -4895,3 +4904,4 @@ if('serviceWorker' in navigator){
 </div>
 </body>
 </html>
+
