@@ -135,7 +135,7 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--text);line-heig
 .dbn{
   width:34px;height:34px;border-radius:10px;
   border:1.5px solid var(--border);
-  background:var(--surface);cursor:pointer;
+  background:var(--surface-2);cursor:pointer;
   font-size:18px;color:var(--teal);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
   transition:all .12s;box-shadow:var(--shadow-sm);
@@ -145,8 +145,8 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--text);line-heig
 .dlabel{font-size:17px;font-weight:700;flex:1;text-align:center;color:var(--text);letter-spacing:-.01em}
 .dsub{font-size:11px;color:var(--muted);text-align:center;margin-top:1px}
 .pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600;white-space:nowrap;letter-spacing:.01em}
-.pill.saved{background:var(--green-l);color:#0A6647}
-.pill.unsaved{background:var(--amber-l);color:#7A5010}
+.pill.saved{background:var(--green-l);color:var(--green)}
+.pill.unsaved{background:var(--amber-l);color:var(--amber)}
 
 /* ── BOTTOM NAV ── */
 .bottom-nav{
@@ -366,14 +366,14 @@ textarea:focus,input:focus,select:focus{
 .act-hero p{font-size:13px;opacity:.85;line-height:1.65}
 .suggest-card{
   background:linear-gradient(135deg,var(--sand),var(--amber-l));
-  border:1px solid #F0D898;border-radius:var(--r);
+  border:1px solid var(--amber);border-radius:var(--r);
   padding:1.25rem;margin-bottom:1.25rem;
   display:flex;align-items:flex-start;gap:14px;
   box-shadow:0 2px 10px rgba(212,136,42,.1);
 }
 .suggest-card .s-icon{font-size:32px;flex-shrink:0;margin-top:2px}
-.suggest-card h3{font-size:14px;font-weight:700;margin-bottom:4px;color:#5A3A00}
-.suggest-card p{font-size:13px;color:#7A5510;line-height:1.55}
+.suggest-card h3{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text)}
+.suggest-card p{font-size:13px;color:var(--text-2);line-height:1.55}
 .suggest-card .s-btn{
   padding:8px 16px;margin-top:0;
   background:var(--amber);color:#fff;border:none;
@@ -729,6 +729,15 @@ textarea:focus,input:focus,select:focus{
 }
 
 /* ── DARK MODE OVERRIDES ── */
+
+[data-theme="dark"] .suggest-card{background:linear-gradient(135deg,var(--sand-d),var(--amber-l))!important;border-color:var(--amber)!important}
+[data-theme="dark"] .suggest-card h3{color:var(--text)!important}
+[data-theme="dark"] .suggest-card p{color:var(--text-2)!important}
+[data-theme="dark"] .pill.saved{color:var(--green)!important}
+[data-theme="dark"] .pill.unsaved{color:var(--amber)!important}
+[data-theme="dark"] .dbn{background:var(--surface-2)!important;border-color:var(--border)!important}
+[data-theme="dark"] .home-hero-sub{color:rgba(255,255,255,.9)!important}
+
 [data-theme="dark"] .topheader{background:rgba(23,34,32,.95)!important}
 [data-theme="dark"] .bottom-nav{background:rgba(23,34,32,.97)!important}
 [data-theme="dark"] .flag-card.danger{background:var(--red-l)!important;border-color:var(--red)!important}
