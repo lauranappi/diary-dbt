@@ -3036,7 +3036,7 @@ function scaleColor(val,positive){
   if(positive) return val>=4?'#1A7A6E':val>=2?'#26A69A':val>=1?'#D4882A':'#bbb';
   return val>=4?'#C85250':val>=3?'#D4882A':val>=1?'#1A7A6E':'#bbb';
 }
-const POSITIVE_SCALES=new Set(['ser','gio','fid','sf']);
+const POSITIVE_SCALES=new Set(['ser','gio','fid','sf','atti']);
 function mkScaleRow(label,val,key){
   if(val==null)return'';
   const c=scaleColor(val,POSITIVE_SCALES.has(key));
