@@ -3888,6 +3888,17 @@ function renderGuide(){
           '<b>Non bloccare o sopprimere i pensieri.</b> Chiediti: "Quali sensazioni cerco di evitare con questi pensieri?" Poi sposta la mente sulle sensazioni, poi torna ai pensieri.',
           '<b>Gioca con i tuoi pensieri.</b> Ripetili ad alta voce più volte velocemente. Cantali. Immagina i pensieri come parole di un clown o come un bel colore che attraversa la mente. Prova ad amarli.'
         ]},
+       {id:'mrespiro',badge:'RESPIRO',name:'Mindfulness del respiro',
+        desc:'Il respiro come ancora al momento presente — un esercizio pratico in qualsiasi momento.',
+        steps:[
+          '<b>Posizione:</b> siediti comodamente o sdraiati. Chiudi gli occhi o abbassa lo sguardo. Rilassa le spalle.',
+          '<b>Osserva il ventre:</b> quando inspiri, lascia che il ventre si sollevi. Quando espiri, nota prima il ventre, poi il petto scendere. Non forzare.',
+          '<b>Nota le pause:</b> c’è una pausa naturale quando i polmoni sono pieni, e una quando sono vuoti. Osservale senza trattenerle.',
+          '<b>Naso:</b> chiudi la bocca e respira dal naso. Nota la sensazione dell’aria nelle narici — più fresca in entrata, più calda in uscita.',
+          '<b>Se la mente vaga:</b> è normale. Nota che sei andata altrove, e riporta gentilmente l’attenzione al respiro — senza giudicarti.',
+          '<b>Durata:</b> anche solo 3-5 respirazioni consapevoli cambiano lo stato del sistema nervoso. 5-10 minuti al giorno costruiscono l’abilità nel tempo.',
+          '&#x1F4A1; Non si tratta di svuotare la mente — si tratta di notare quando vaga e tornare. Questo è il muscolo che si allena.'
+        ]},
        {id:'msaggio',badge:'MENTE SAGGIA',name:'Come praticare la mente saggia',
         desc:'Esercizi concreti per accedere alla propria mente saggia.',
         steps:[
@@ -4137,6 +4148,28 @@ function renderGuide(){
           '<b>Passo 5:</b> Conseguenze immediate e a lungo termine.',
           '<b>Passo 6:</b> Punti di intervento. Dove nella catena avresti potuto fare diversamente? Quale abilit\u00e0 usare?',
           '\U0001f4a1 Non serve a colpevolizzarti \u2014 serve a capire e pianificare come fare meglio.'
+        ]},
+       {id:'gcheck',badge:'CONTROLLA I FATTI',name:'Foglio di lavoro — Controlla i fatti',
+        desc:'Usa questo schema quando senti un’emozione intensa e vuoi capire se corrisponde ai fatti.',
+        steps:[
+          '<b>Passo 1:</b> Qual è l’emozione che voglio cambiare? Quanto è intensa (0-5)?',
+          '<b>Passo 2:</b> Qual è l’evento che l’ha attivata? Descrivi solo i fatti osservabili — senza interpretazioni.',
+          '<b>Passo 3:</b> Quali sono i miei pensieri e interpretazioni? Considera almeno 2 interpretazioni alternative.',
+          '<b>Passo 4:</b> Sto ipotizzando una minaccia? Qual è la probabilità reale che accada?',
+          '<b>Passo 5:</b> Qual è la catastrofe che temo? Immagina di affrontarla bene.',
+          '<b>Passo 6:</b> L’emozione e la sua intensità sono commisurate ai fatti? Chiedi alla mente saggia.',
+          'Usa la pagina "Diario emozioni" nell’app per compilare questo schema in modo strutturato.'
+        ]},
+       {id:'gprocontro',badge:'PRO/CONTRO ABILITÀ',name:'Foglio di lavoro — Usare le abilità?',
+        desc:'Quando non sei sicura se usare le abilità o cedere all’impulso in una situazione.',
+        steps:[
+          '<b>Descrivi la situazione:</b> cosa sta succedendo? Qual è il tuo obiettivo?',
+          '<b>PRO del praticare le abilità:</b> cosa otterresti a breve e lungo termine?',
+          '<b>CONTRO del praticare le abilità:</b> cosa ti costerebbe ora?',
+          '<b>PRO del NON praticarle:</b> cosa otterresti cedendo all’impulso?',
+          '<b>CONTRO del NON praticarle:</b> quali sarebbero le conseguenze?',
+          '<b>Decisione:</b> cosa hai deciso di fare? La tua mente saggia è d’accordo?',
+          'Usa questa struttura ogni volta che senti di voler rinunciare alle abilità.'
         ]},
        {id:'gvita',badge:'VITA DEGNA',name:'Costruire una vita degna di essere vissuta',
         desc:'L\u2019obiettivo finale della DBT: una vita che vale la pena, basata sui propri valori.',
@@ -4465,6 +4498,30 @@ function renderEmozioni(){
      fisico:'Stanchezza, letargia, vuoto nel petto, difficoltà a deglutire, mancanza di energie.',
      azioni:'Ritirarsi, evitare, stare a letto, parlare poco, darsi per vinti.',
      opposta:'Attivati invece di isolarti. Evita di evitare. Fai cose che ti diano senso di competenza. Testa alta, postura aperta. Aumenta l\'attività fisica.'
+    },
+    {id:'ecol',emoji:'😔',label:'Colpa',color:'#FFF8F0',border:'#FFA726',
+     quando:'Quando il tuo comportamento viola davvero i tuoi valori o il tuo codice morale.',
+     scatenanti:'Fare o pensare qualcosa che ritieni sbagliato. Non mantenere una promessa. Causare un danno a qualcuno.',
+     interpretazioni:'"Avrei dovuto comportarmi diversamente." "Mi sono comportata male." "Devo essere incolpata."',
+     fisico:'Faccia rossa e calda, tensione, nervosismo, senso di soffocamento.',
+     azioni:'Chiedere perdono, scusarsi, fare regali per rimediare, piegarsi su se stessi.',
+     opposta:'Se la colpa è giustificata: scusati, rimedia al danno, impegnati a non ripetere, perdonati. Se non è giustificata: non scusarti, raccogli le informazioni, postura dignitosa, valida il tuo comportamento.'
+    },
+    {id:'ejal',emoji:'💚',label:'Gelosia',color:'#F1F8E9',border:'#66BB6A',
+     quando:'Una relazione importante è minacciata o in pericolo. Qualcuno minaccia di portarti via qualcosa di prezioso.',
+     scatenanti:'Partner che dà attenzione ad altri, possibile rivale, sentirsi ignorati, scoprire tradimenti.',
+     interpretazioni:'"Il mio partner non tiene più a me." "Non sono all\'altezza." "Mi lascerà." "Sono stata imbrogliata."',
+     fisico:'Tachicardia, nodo in gola, muscoli tesi, sospettosità, bisogno di controllo, sentirsi feriti.',
+     azioni:'Interrogatori, controllare il telefono, accuse, comportamenti appiccicosi, gelosia, inseguimenti.',
+     opposta:'Smetti di spiare e controllare. Condividi invece di trattenere. Ascolta senza fare domande indagatorie. Tieni gli occhi aperti sui fatti reali. Postura aperta, mani rilassate.'
+    },
+    {id:'einv',emoji:'😒',label:'Invidia',color:'#FEF9E7',border:'#F9A825',
+     quando:'Una persona o un gruppo ha qualcosa che vuoi o di cui hai bisogno.',
+     scatenanti:'Qualcuno ottiene ciò che volevi tu. Non fare parte del gruppo giusto. Qualcuno si vanta di qualcosa.',
+     interpretazioni:'"Non è giusto." "Dovrei avere anch\'io quello." "Sono inferiore." "Sono stata sfortunata."',
+     fisico:'Muscoli tesi, denti stretti, dolore allo stomaco, voglia che l\'altro perda ciò che ha.',
+     azioni:'Sminuire l\'altro, comportarsi in modo passivo-aggressivo, confrontarsi ossessivamente.',
+     opposta:'Impedisciti di distruggere ciò che ha l\'altra persona. Pensa alle tue fortune — fai una lista. Smetti di esagerare il valore di ciò che non hai. Postura aperta, mani rilassate, respiro lento.'
     },
     {id:'ever',emoji:'😶',label:'Vergogna',color:'#F5F3FF',border:'#9E9E9E',
      quando:'Potresti essere rifiutata da persone cui tieni se certe caratteristiche si venissero a sapere.',
