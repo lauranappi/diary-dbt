@@ -3337,6 +3337,7 @@ function switchPatTab(tab,btn){
   document.getElementById('ptab-'+tab).classList.add('active');
   if(tab==='trend')renderPatientCharts();
   if(tab==='abilita')renderPatientSkillsAndActs();
+  if(tab==='sessioni'){sessInit();sessRender();}
   if(tab==='giornata')renderPatientPlanner();
   if(tab==='storico')renderPatientHistory();
 }
@@ -4758,6 +4759,7 @@ function sessRender(){
     el.appendChild(d);
   });
 }
+function sessInit(){const d=document.getElementById('sess-data');if(d&&!d.value)d.value=today();}
 function sessAdd(){
   if(!currentPatient)return;
   const entry={
