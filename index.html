@@ -2902,7 +2902,7 @@ function buildHome(){
   if(pillRow){
     const pills=[];
     if(compiled) pills.push('<span style="background:rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;backdrop-filter:blur(4px)">✓ Compilata oggi</span>');
-    else pills.push('<span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer" onclick="goPage('oggi',null)">+ Compila adesso</span>');
+    else pills.push('<span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer" onclick="goPage(&apos;oggi&apos;,null)">+ Compila adesso</span>');
     // skills today
     const todaySkills=d&&d.skills?Object.keys(d.skills).filter(s=>d.skills[s]).length:0;
     if(todaySkills>0) pills.push('<span style="background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">✨ '+todaySkills+' abilit'+(todaySkills===1?'à':'à')+'</span>');
@@ -2913,21 +2913,30 @@ function buildHome(){
   const dc=document.getElementById('home-diary-card');
   if(dc){
     if(!compiled){
-      dc.innerHTML='<div onclick="goPage('oggi',null)" style="background:linear-gradient(135deg,var(--amber-l),var(--sand));border:1.5px solid var(--amber);border-radius:var(--r);padding:1rem 1.25rem;display:flex;align-items:center;gap:12px;cursor:pointer;transition:box-shadow .15s" onmouseover="this.style.boxShadow='var(--shadow)'" onmouseout="this.style.boxShadow='none'"><span style="font-size:32px">📓</span><div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text)">Diary card di oggi non compilata</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Tocca per compilare — ci vogliono 2 minuti</div></div><span style="font-size:20px;color:var(--amber)">›</span></div>';
+      const el=document.createElement('div');
+      el.style.cssText='background:linear-gradient(135deg,var(--amber-l),var(--sand));border:1.5px solid var(--amber);border-radius:var(--r);padding:1rem 1.25rem;display:flex;align-items:center;gap:12px;cursor:pointer';
+      el.onclick=()=>goPage('oggi',null);
+      el.innerHTML='<span style="font-size:32px">📓</span><div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text)">Diary card di oggi non compilata</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Tocca per compilare</div></div><span style="font-size:20px;color:var(--amber)">›</span>';
+      dc.innerHTML='';dc.appendChild(el);
     } else {
-      // Show mini summary of today
       const s=d.scales||{};
       const hiEmo=Object.entries({Tristezza:s.tri,Rabbia:s.rab,Paura:s.pau,Vergogna:s.ver,Vuoto:s.vuo}).filter(([,v])=>v>=3).sort(([,a],[,b])=>b-a);
-      const loPos=Object.entries({Serenità:s.ser,Gioia:s.gio}).filter(([,v])=>v!=null);
       let summary='';
       if(hiEmo.length) summary='Emozioni elevate: '+hiEmo.map(([n,v])=>n+' '+v).join(', ');
-      else if(loPos.length) summary='Serenità '+( s.ser||'—')+' · Gioia '+(s.gio||'—');
-      else summary='Diary compilata';
-      dc.innerHTML='<div style="background:var(--green-l);border:1.5px solid var(--green);border-radius:var(--r);padding:1rem 1.25rem;display:flex;align-items:center;gap:12px"><span style="font-size:28px">✅</span><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--text)">Diary compilata</div><div style="font-size:11px;color:var(--muted);margin-top:2px">'+summary+'</div></div><button onclick="goPage('oggi',null)" style="background:var(--green);color:#fff;border:none;border-radius:var(--rs);padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-ui)">Modifica</button></div>';
+      else summary='Serenità '+(s.ser||'—')+' · Gioia '+(s.gio||'—');
+      const el2=document.createElement('div');
+      el2.style.cssText='background:var(--green-l);border:1.5px solid var(--green);border-radius:var(--r);padding:1rem 1.25rem;display:flex;align-items:center;gap:12px';
+      el2.innerHTML='<span style="font-size:28px">✅</span><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--text)">Diary compilata</div><div style="font-size:11px;color:var(--muted);margin-top:2px">'+summary+'</div></div>';
+      const btn=document.createElement('button');
+      btn.textContent='Modifica';
+      btn.style.cssText='background:var(--green);color:#fff;border:none;border-radius:var(--rs);padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-ui)';
+      btn.onclick=()=>goPage('oggi',null);
+      el2.appendChild(btn);
+      dc.innerHTML='';dc.appendChild(el2);
     }
   }
 
-  // ── Streak ──
+    // ── Streak ──
   let streak=0;const check=new Date();check.setHours(0,0,0,0);
   while(allData[dk(check)]&&!isDayEmpty(allData[dk(check)])){streak++;check.setDate(check.getDate()-1);}
   document.getElementById('streak-num').textContent=streak;
@@ -2975,8 +2984,13 @@ function buildHome(){
   // ── Mini timeline ultimi 7 giorni ──
   const tl=document.getElementById('home-timeline');
   if(tl){
-    let tlHtml='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Ultimi 7 giorni</div>';
-    tlHtml+='<div style="display:flex;flex-direction:column;gap:4px">';
+    const tlWrap=document.createElement('div');
+    const lbl=document.createElement('div');
+    lbl.style.cssText='font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px';
+    lbl.textContent='Ultimi 7 giorni';
+    tlWrap.appendChild(lbl);
+    const list=document.createElement('div');
+    list.style.cssText='display:flex;flex-direction:column;gap:4px';
     for(let i=6;i>=0;i--){
       const dd=new Date();dd.setDate(dd.getDate()-i);
       const dk2=dk(dd);
@@ -2984,28 +2998,31 @@ function buildHome(){
       const isComp=entry&&!isDayEmpty(entry);
       const isToday2=i===0;
       const label=isToday2?'Oggi':dd.toLocaleDateString('it-IT',{weekday:'short',day:'numeric'});
+      const row=document.createElement('div');
       if(!isComp){
-        tlHtml+='<div style="display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:var(--rs);background:var(--surface-2);opacity:.5"><div style="width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0"></div><div style="font-size:12px;color:var(--muted);flex:1">'+label+'</div><div style="font-size:11px;color:var(--muted)">—</div></div>';
+        row.style.cssText='display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:var(--rs);background:var(--surface-2);opacity:.5';
+        row.innerHTML='<div style="width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0"></div><div style="font-size:12px;color:var(--muted);flex:1">'+label+'</div><div style="font-size:11px;color:var(--muted)">—</div>';
       } else {
         const s=entry.scales||{};
-        // dominant emotion
         const emos=[['😔',s.tri,'tri'],['😠',s.rab,'rab'],['😰',s.pau,'pau'],['😶',s.ver,'ver'],['😌',s.ser,'ser'],['😊',s.gio,'gio']];
         const dominant=emos.filter(([,v])=>v!=null&&v>0).sort(([,a],[,b])=>b-a)[0];
-        const emoStr=dominant?dominant[0]+' '+dominant[2]+' '+dominant[1]:'';
-        // flags
+        const emoStr=dominant?dominant[0]+' '+dominant[1]:'';
         const flags=[];
-        if(entry.toggles?.sa==='Sì')flags.push('<span style="background:var(--red-l);color:var(--red);font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700">⚠ SA</span>');
-        if(entry.toggles?.aa==='Sì')flags.push('<span style="background:var(--red-l);color:var(--red);font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700">⚠ AA</span>');
+        if(entry.toggles&&entry.toggles.sa==='Sì')flags.push('<span style="background:var(--red-l);color:var(--red);font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700">⚠ SA</span>');
+        if(entry.toggles&&entry.toggles.aa==='Sì')flags.push('<span style="background:var(--red-l);color:var(--red);font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700">⚠ AA</span>');
         const nSkills=entry.skills?Object.keys(entry.skills).filter(sk=>entry.skills[sk]).length:0;
         if(nSkills>0)flags.push('<span style="background:var(--teal-l);color:var(--teal-d);font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700">✨ '+nSkills+'</span>');
-        tlHtml+='<div onclick="goPage('storico',null)" style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--rs);background:var(--surface);border:1px solid var(--border-l);cursor:pointer;transition:background .1s" onmouseover="this.style.background='var(--surface-2)'" onmouseout="this.style.background='var(--surface)'"><div style="width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0"></div><div style="font-size:12px;font-weight:600;color:var(--text);min-width:80px">'+label+'</div><div style="font-size:11px;color:var(--muted);flex:1">'+emoStr+'</div><div style="display:flex;gap:4px">'+flags.join('')+'</div></div>';
+        row.style.cssText='display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--rs);background:var(--surface);border:1px solid var(--border-l);cursor:pointer';
+        row.onclick=()=>goPage('storico',null);
+        row.innerHTML='<div style="width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0"></div><div style="font-size:12px;font-weight:600;color:var(--text);min-width:80px">'+label+'</div><div style="font-size:11px;color:var(--muted);flex:1">'+emoStr+'</div><div style="display:flex;gap:4px">'+flags.join('')+'</div>';
       }
+      list.appendChild(row);
     }
-    tlHtml+='</div>';
-    tl.innerHTML=tlHtml;
+    tlWrap.appendChild(list);
+    tl.innerHTML='';tl.appendChild(tlWrap);
   }
 
-  // ── Emozioni di ieri ──
+    // ── Emozioni di ieri ──
   const yDay=new Date();yDay.setDate(yDay.getDate()-1);
   const yEntry=allData[dk(yDay)];
   const yEl=document.getElementById('home-emo-yesterday');
