@@ -1959,7 +1959,7 @@ function goPage(name,btn){
   // topheader visibility handled above per page
   window.scrollTo({top:0,behavior:'smooth'});
   if(name==='oggi'){cur=new Date();setForm(allData[dk(cur)]||null);updDL();}
-  if(name==='guida'){setTimeout(()=>renderGuide(),50);}
+
   const showTopheader=name==='oggi'||name==='attivita'||name==='abilita';
   document.getElementById('topheader').style.display=showTopheader?'':'none';
   document.getElementById('datebar-diary').style.display=name==='oggi'?'flex':'none';
@@ -1974,6 +1974,9 @@ function goPage(name,btn){
   if(name==='abilita'){updDL();updAbiPill();renderActTab();}
   if(name==='attivita'){buildSuggest();curPlan=new Date();plannerData={mattina:[],pomeriggio:[],sera:[]};updPlanDL();renderPlanner();}
   if(name==='pazienti')renderPatients();
+  if(name==='please'){renderPlease();}
+  if(name==='guida'){setTimeout(()=>{renderGuide();renderEmozioni();},50);}
+  if(name==='dearman'){/* nothing needed */}
 }
 
 // ── STORICO ──
@@ -4230,7 +4233,7 @@ function renderPlease(){
   if(!el)return;
   // Get last 7 days
   const days=[];
-  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d);}
+  for(let i=0;i<=6;i++){const d=new Date();d.setDate(d.getDate()-i);days.push(d);}
   
   const stored=JSON.parse(localStorage.getItem('please_data')||'{}');
   
