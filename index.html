@@ -1202,22 +1202,6 @@ textarea:focus,input:focus,select:focus{
 
     <div style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">M</span>
-        <span style="font-size:13px;font-weight:600">Mantieni la posizione — come gestirai le resistenze?</span>
-      </div>
-      <textarea id="dm-m" rows="2" placeholder="Es. Se cambia argomento dirò: capisco, ma vorrei prima finire questo discorso." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
-    </div>
-
-    <div style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">A</span>
-        <span style="font-size:13px;font-weight:600">Appari sicura — come ti presenterai?</span>
-      </div>
-      <textarea id="dm-a2" rows="2" placeholder="Es. Guarderò negli occhi, parlerò con voce calma e terrò la schiena dritta." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
-    </div>
-
-    <div style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
         <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">N</span>
         <span style="font-size:13px;font-weight:600">Negozia — cosa potresti offrire in cambio?</span>
       </div>
@@ -1259,17 +1243,30 @@ textarea:focus,input:focus,select:focus{
 
   <button onclick="dmGenera()" style="width:100%;padding:14px;background:var(--teal);color:#fff;border:none;border-radius:var(--r);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font-ui);margin-bottom:1rem">Genera il copione →</button>
 
+  <!-- M e A — sempre visibili -->
+  <div class="card" style="margin-bottom:1rem;border-left:3px solid #4F6BED">
+    <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Durante la conversazione</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:1px">M</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Mantieni la posizione (Mindful)</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.5">Rimani sull'obiettivo. Non distrarti da provocazioni o cambi di argomento. Ripeti il disco rotto se necessario: <em>"Capisco, ma vorrei prima finire questo discorso."</em></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:1px">A</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Appari sicura di te</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.5">Contatto visivo diretto. Voce calma e ferma. Postura dritta, spalle aperte. Non scusarti per il fatto di chiedere.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="dm-output" style="display:none" class="card">
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Il tuo copione</div>
     <div id="dm-script" style="font-size:14px;line-height:1.7;color:var(--text);white-space:pre-wrap"></div>
-    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border-l)">
-      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px">Ricorda durante la conversazione</div>
-      <div style="font-size:13px;color:var(--text-2);line-height:1.6">
-        <div style="margin-bottom:4px"><b>M — Mindful:</b> rimani sull'obiettivo, non distrarti da provocazioni.</div>
-        <div style="margin-bottom:4px"><b>A — Appari sicura:</b> contatto visivo, voce calma, postura dritta.</div>
-        <div><b>Se l'altro cambia argomento:</b> "Capisco, ma vorrei prima finire questo discorso."</div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -4490,8 +4487,6 @@ function dmGenera(){
   const E=document.getElementById('dm-e').value.trim();
   const A=document.getElementById('dm-a').value.trim();
   const R=document.getElementById('dm-r').value.trim();
-  const M=document.getElementById('dm-m').value.trim();
-  const A2=document.getElementById('dm-a2').value.trim();
   const N=document.getElementById('dm-n').value.trim();
   if(!D&&!E&&!A){alert('Compila almeno D, E e A per generare il copione.');return;}
   let script='';
@@ -4499,8 +4494,6 @@ function dmGenera(){
   if(E) script+='[E — Esprimi] '+E+'\n\n';
   if(A) script+='[A — Afferma] '+A+'\n\n';
   if(R) script+='[R — Rinforza] '+R+'\n\n';
-  if(M) script+='[M — Mantieni] '+M+'\n\n';
-  if(A2) script+='[A — Appari sicura] '+A2+'\n\n';
   if(N) script+='[N — Negozia] '+N;
   document.getElementById('dm-script').textContent=script.trim();
   document.getElementById('dm-output').style.display='block';
