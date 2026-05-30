@@ -31,7 +31,7 @@ TYPE html>
   --red:#C85250;--red-l:#FCEAEA;
   --amber:#D4882A;--amber-l:#FEF6E4;
   --muted-red:#E07070;
-  /* Neutrals */
+  /* Neutrals — Light mode */
   --bg:#F6F3EE;
   --surface:#FFFFFF;
   --surface-2:#FAFAF8;
@@ -50,6 +50,33 @@ TYPE html>
   --shadow-sm:0 1px 4px rgba(26,122,110,.07);
   --shadow:0 2px 12px rgba(26,122,110,.09);
   --shadow-lg:0 6px 28px rgba(26,122,110,.12);
+}
+
+/* ── DARK MODE ── */
+[data-theme="dark"]{
+  --bg:#0E1614;
+  --surface:#172220;
+  --surface-2:#1E2E2B;
+  --border:#2A3D39;
+  --border-l:#243530;
+  --text:#E8F0EE;
+  --text-2:#A8C4BF;
+  --muted:#5A8A84;
+  --teal:#2AB89E;
+  --teal-l:#1A3530;
+  --teal-ll:#152B28;
+  --teal-d:#3DD4BB;
+  --teal-2:#23A08A;
+  --teal-3:#4ECFB8;
+  --sand:#1E2A28;
+  --sand-d:#192320;
+  --warm:#121A18;
+  --green:#2DB88A;--green-l:#1A3028;
+  --red:#E06060;--red-l:#2A1A1A;
+  --amber:#E09840;--amber-l:#2A2010;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.3);
+  --shadow:0 2px 12px rgba(0,0,0,.35);
+  --shadow-lg:0 6px 28px rgba(0,0,0,.45);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow-x:hidden;touch-action:pan-y}
@@ -4777,8 +4804,36 @@ function sessAdd(){
   sessRender();
 }
 
+
+function setTheme(mode){
+  localStorage.setItem('theme',mode);
+  applyTheme(mode);
+  document.querySelectorAll('#theme-light,#theme-dark,#theme-auto').forEach(b=>{
+    b.style.background='var(--surface-2)';
+    b.style.borderColor='var(--border)';
+    b.style.fontWeight='400';
+  });
+  const active=document.getElementById('theme-'+mode);
+  if(active){active.style.background='var(--teal)';active.style.borderColor='var(--teal)';active.style.color='#fff';active.style.fontWeight='600';}
+}
+function applyTheme(mode){
+  const dark=mode==='dark'||(mode==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+}
+function initTheme(){
+  const mode=localStorage.getItem('theme')||'auto';
+  applyTheme(mode);
+  // Update button states after DOM ready
+  setTimeout(()=>setTheme(mode),100);
+}
+// Listen to system preference changes
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
+  if(localStorage.getItem('theme')==='auto')applyTheme('auto');
+});
+
 // ── INIT ──
 ldLS();
+initTheme();
 
 // Listen for auth state changes
 supabase.auth.onAuthStateChange((event,session)=>{
