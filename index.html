@@ -3664,7 +3664,7 @@ function renderPatientOverview(){
     {icon:'🍽',label:'Emotional eating',v:cF(d=>d.toggles?.ee==='Sì'),warn:true},
     {icon:'🎯',label:'Con attività',v:cF(d=>d.planner&&Object.values(d.planner).some(a=>a&&a.length>0)),ok:true},
     {icon:'✨',label:'Abilità DBT',v:weekKeys.reduce((a,k)=>{const sk=entries[k]?.skills||{};return a+Object.keys(sk).filter(s=>sk[s]).length},0),ok:true},
-    {icon:'📅',label:'Giorni compilati',v:realKeys.length,neutral:true},
+    {icon:'💊',label:'Giorni farmaci',v:cF(d=>d.toggles?.farm==='Sì'),ok:true},
   ];
   // sort: active colored first
   stats.sort((a,b)=>{
