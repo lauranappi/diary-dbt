@@ -1317,9 +1317,9 @@ textarea:focus,input:focus,select:focus{
     <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="height:220px"><div id="cSuic2" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="height:220px"><div id="cSost" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="height:220px"><div id="cEmoPos" style="min-height:200px"></div></div></div>
+    <div class="cwrap"><div class="ctitle">Emotional eating</div><div style="height:220px"><div id="cEmoEat" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="height:220px"><div id="cEmoNeg1" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="height:220px"><div id="cEmoNeg2" style="min-height:200px"></div></div></div>
-    <div class="cwrap"><div class="ctitle">Emotional eating</div><div style="height:220px"><div id="cEmoEat" style="min-height:200px"></div></div></div>
   </div>
 
 </div>
@@ -2764,7 +2764,7 @@ function renderTrend(){
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric'}));
 
   // Destroy existing charts
-  ['cSuic1','cSuic2','cSost','cEmoPos','cEmoNeg1','cEmoNeg2'].forEach(id=>{
+  ['cSuic1','cSuic2','cSost','cEmoPos','cEmoNeg1','cEmoNeg2','cEmoEat'].forEach(id=>{
     const el=document.getElementById(id);
     if(el&&el._apexCharts){el._apexCharts.destroy();el._apexCharts=null;}
   });
@@ -2801,8 +2801,8 @@ function renderTrend(){
   mkApex('cSost',[{name:'Intenzione alcol',data:sv('alci')},{name:'Intenzione CBD',data:sv('cbdi')}],['#FFA726','#66BB6A']);
   mkApex('cEmoPos',[{name:'Serenità',data:sv('ser')},{name:'Gioia',data:sv('gio')}],['#26A69A','#FFA726']);
   mkApex('cEmoNeg1',[{name:'Tristezza',data:sv('tri')},{name:'Paura',data:sv('pau')},{name:'Rabbia',data:sv('rab')}],['#42A5F5','#EC407A','#EF5350']);
+  mkApex('cEmoEat',[{name:'Emotional eating',data:sv('ee')}],['#FF7043']);
   mkApex('cEmoNeg2',[{name:'Vergogna',data:sv('ver')},{name:'Colpa',data:sv('col')},{name:'Vuoto',data:sv('vuo')},{name:'Sof. emotiva',data:sv('se')}],['#9E9E9E','#757575','#424242','#26A69A']);
-  renderChart('cEmoEat',[{name:'Em.eating',data:sv('ee')}],['#FF7043']);
 }
 
 // ── ATTIVITÀ ──
