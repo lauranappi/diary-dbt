@@ -824,9 +824,8 @@ textarea:focus,input:focus,select:focus{
 }
 .si-header:hover{background:rgba(255,255,255,.08)}
 .si-arrow{font-size:10px;transition:transform .2s;opacity:.6}
-.si-body{display:flex;flex-direction:column;gap:2px;
-  max-height:0;overflow:hidden;transition:max-height .25s ease}
-.si-body.open{max-height:800px}
+.si-body{display:none;flex-direction:column;gap:2px}
+.si-body.open{display:flex}
 
 /* ── DARK MODE OVERRIDES ── */
 
@@ -978,7 +977,7 @@ textarea:focus,input:focus,select:focus{
     </div>
   </div>
 
-    <div style="margin-top:auto;padding-top:1rem;border-top:1px solid rgba(255,255,255,.15)">
+    <div style="padding-top:1rem;margin-top:.5rem;border-top:1px solid rgba(255,255,255,.15)">
     <button class="user-menu-btn" onclick="openUserMenu()">
       <div class="user-avatar" id="sidebar-avatar">?</div>
       <div style="min-width:0;flex:1">
