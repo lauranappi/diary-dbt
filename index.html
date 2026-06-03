@@ -5439,23 +5439,13 @@ function epRender(){
 }
 function epSalva(){
   const selected=JSON.parse(localStorage.getItem('ep_selected')||'[]');
-  if(!selected.length)return;
-  // Add to profile.customActs
-  if(allData&&allData['__profile']){
-    const prof=allData['__profile']||{};
-    const custom=prof.customActs||[];
-    selected.forEach(item=>{if(!custom.includes(item))custom.push(item);});
-    prof.customActs=custom;
-    allData['__profile']=prof;
-  }
-  // Also save to profile in channel
-  const prof=JSON.parse(localStorage.getItem('dbt_profile')||'{}');
-  const custom=prof.customActs||[];
-  selected.forEach(item=>{if(!custom.includes(item))custom.push(item);});
-  prof.customActs=custom;
-  localStorage.setItem('dbt_profile',JSON.stringify(prof));
+  if(!selected.length){alert('Seleziona almeno una attività prima di salvare.');return;}
+  const custom=getCustomActs();
+  let added=0;
+  selected.forEach(item=>{if(!custom.includes(item)){custom.push(item);added++;}});
+  saveCustomActs(custom);
   const t=document.getElementById('ep-toast');
-  if(t){t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
+  if(t){t.style.display='block';t.textContent='✓ '+added+' attività aggiunte alle tue preferite';setTimeout(()=>t.style.display='none',2500);}
 }
 
 
