@@ -1,4 +1,4 @@
-const CACHE = 'diary-dbt-v40';
+const CACHE = 'diary-dbt-v41';
 const STATIC = [
   './',
   './index.html',
@@ -36,13 +36,11 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
-      return fetch(e.request)
-        .then(res => {
-          if (e.request.method === 'GET' && res.status === 200)
-            caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-          return res;
-        })
-        .catch(() => cached || Response.error());
+      return fetch(e.request).then(res => {
+        if (e.request.method === 'GET' && res.status === 200)
+          caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        return res;
+      });
     })
   );
 });
