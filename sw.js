@@ -1,5 +1,7 @@
-const CACHE = 'diary-dbt-v39';
+const CACHE = 'diary-dbt-v40';
 const STATIC = [
+  './',
+  './index.html',
   './manifest.json',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'
 ];
@@ -34,11 +36,13 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
-      return fetch(e.request).then(res => {
-        if (e.request.method === 'GET' && res.status === 200)
-          caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-        return res;
-      });
+      return fetch(e.request)
+        .then(res => {
+          if (e.request.method === 'GET' && res.status === 200)
+            caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+          return res;
+        })
+        .catch(() => cached || Response.error());
     })
   );
 });
