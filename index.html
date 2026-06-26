@@ -4311,6 +4311,15 @@ function getAuthHeaders(){
   };
 }
 
+function friendlyNetMsg(m){
+  if(!m)return 'Errore imprevisto. Riprova.';
+  const netErrors=['Load failed','Failed to fetch','NetworkError','The network connection was lost','network request failed'];
+  if(netErrors.some(e=>m.toLowerCase().includes(e.toLowerCase()))){
+    return 'Connessione assente o instabile. Controlla la rete e riprova.';
+  }
+  return m;
+}
+
 async function doLogin(){
   const email = document.getElementById('ob-email').value.trim();
   const pwd = document.getElementById('ob-password').value;
@@ -4318,7 +4327,7 @@ async function doLogin(){
   if(!email||!pwd){msg.style.color='var(--red)';msg.textContent='Inserisci email e password.';return;}
   msg.style.color='var(--muted)';msg.textContent='Accesso in corso...';
   const {data,error} = await supabase.auth.signInWithPassword({email,password:pwd});
-  if(error){msg.style.color='var(--red)';msg.textContent=error.message==='Invalid login credentials'?'Email o password errati.':error.message;return;}
+  if(error){msg.style.color='var(--red)';msg.textContent=error.message==='Invalid login credentials'?'Email o password errati.':friendlyNetMsg(error.message);return;}
   supaSession=data.session;
   await loadUserData(data.user);
 }
@@ -4378,7 +4387,15 @@ async function doResetPassword(){
 }
 
 async function loadUserData(user){
-  const r=await fetch(SUPA_URL+'/rest/v1/diary_data?select=*',{headers:getAuthHeaders()});
+  let r;
+  try{
+    r=await fetch(SUPA_URL+'/rest/v1/diary_data?select=*',{headers:getAuthHeaders()});
+  }catch(e){
+    const msg=document.getElementById('ob-login-msg');
+    if(msg){msg.style.color='var(--red)';msg.textContent=friendlyNetMsg(e.message);}
+    showLoginScreen();
+    return;
+  }
   if(!r.ok){
     // Auth error — sign out and show login
     await supabase.auth.signOut();
