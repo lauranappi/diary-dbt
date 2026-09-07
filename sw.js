@@ -1,8 +1,7 @@
-const CACHE = 'diary-dbt-v42';
+const CACHE = 'diary-dbt-v50';
+
+// Solo asset esterni che non cambiano mai
 const STATIC = [
-  './',
-  './index.html',
-  './manifest.json',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'
 ];
 
@@ -22,43 +21,36 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+  const sameOrigin = url.origin === self.location.origin;
+  const isCDN = STATIC.includes(e.request.url);
 
-  // Only intercept GET requests for our own origin (plus the precached CDN
-  // assets). Everything else (Supabase calls, POST/PUT/PATCH, other
-  // cross-origin requests) is left untouched so the browser handles it
-  // normally instead of routing it through this SW logic.
-  const isSameOrigin = url.origin === self.location.origin;
-  const isPrecachedCDN = STATIC.includes(e.request.url);
-  if (e.request.method !== 'GET' || (!isSameOrigin && !isPrecachedCDN)) {
-    return;
-  }
+  // Supabase e altre chiamate cross-origin: lascia fare al browser
+  if (e.request.method !== 'GET' || (!sameOrigin && !isCDN)) return;
 
-  if (e.request.mode === 'navigate' || url.pathname.endsWith('.html')) {
+  // CDN: cache-first (non cambia mai)
+  if (isCDN) {
     e.respondWith(
-      fetch(e.request.clone())
-        .then(res => {
-          if (res.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-          return res;
-        })
-        .catch(() => caches.match('./index.html'))
+      caches.match(e.request).then(c => c || fetch(e.request).then(res => {
+        if (res.status === 200) caches.open(CACHE).then(ch => ch.put(e.request, res.clone()));
+        return res;
+      }))
     );
     return;
   }
 
+  // TUTTO il resto same-origin (index.html, css/, js/, icone):
+  // NETWORK-FIRST — così ogni reload prende il codice aggiornato da GitHub Pages.
+  // La cache serve solo da fallback offline.
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request)
-        .then(res => {
-          if (res.status === 200)
-            caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-          return res;
-        })
-        .catch(err => {
-          if (cached) return cached;
-          throw err;
-        });
-    })
+    fetch(e.request)
+      .then(res => {
+        if (res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, copy));
+        }
+        return res;
+      })
+      .catch(() => caches.match(e.request).then(c => c || caches.match('./index.html')))
   );
 });
 
