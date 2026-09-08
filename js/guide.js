@@ -1,3 +1,50 @@
+// Sottotitoli come nel documento di design
+const DC_SOTTO_MODULO = {"tol": "Quando la crisi è già in corso", "reg": "Ridurre la vulnerabilità", "inter": "Chiedere, dire no, restare in relazione", "mind": "Tornare a un momento per volta", "gen": "Piano di crisi, analisi della catena"};
+const DC_SOTTO_EMO = {"epau": "Quando la minaccia è reale e concreta", "erab": "Quando un obiettivo importante è bloccato", "etri": "Quando c'è una perdita", "ecol": "Quando ho agito contro un mio valore", "egel": "Quando rischio di perdere una relazione", "einv": "Quando altri hanno ciò che mi manca", "ever": "Quando l'esclusione è un rischio vero"};
+const DC_CHEV = '<svg width="11" height="19" viewBox="0 0 11 19" fill="none" class="dc-chev"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="#1B4B4A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+// Miniature disegnate: sostituiscono le emoji nelle intestazioni.
+const MINIATURA_MODULO = {
+  tol:'illustrazioni/miniature/modulo-tolleranza.svg',
+  reg:'illustrazioni/miniature/modulo-regolazione.svg',
+  inter:'illustrazioni/miniature/modulo-interpersonale.svg',
+  mind:'illustrazioni/miniature/modulo-mindfulness.svg',
+  gen:'illustrazioni/miniature/strumenti-generali.svg'
+};
+const MINIATURA_EMOZIONE = {
+  epau:'illustrazioni/miniature/emo-paura.svg',
+  erab:'illustrazioni/miniature/emo-rabbia.svg',
+  etri:'illustrazioni/miniature/emo-tristezza.svg',
+  ecol:'illustrazioni/miniature/emo-colpa.svg',
+  egel:'illustrazioni/miniature/emo-gelosia.svg',
+  einv:'illustrazioni/miniature/emo-invidia.svg',
+  ever:'illustrazioni/miniature/emo-vergogna.svg'
+};
+
+// Ogni abilita' che ha una scheda dedicata la richiama da qui: e' il
+// modo per non avere lo stesso contenuto in due posti del menu.
+// FOGLI DI LAVORO: solo le schede che si COMPILANO. Stanno in cima al
+// modulo perche' sono la parte operativa.
+const SCHEDE_PER_MODULO = {
+  tol:   [{page:'pianocrisi', label:'Piano di crisi'}],
+  reg:   [{page:'please',     label:'Checklist PLEASE'},
+          {page:'fatti',      label:'Controlla i fatti'},
+          {page:'diarioemo',  label:'Diario delle emozioni'},
+          {page:'eventi',     label:'Lista attività piacevoli'}],
+  inter: [{page:'dearman',    label:'Generatore copione DEAR MAN'}],
+  gen:   [{page:'catena',     label:'Analisi della catena'},
+          {page:'procontro',  label:"Pro e contro dell'usare le abilità"}]
+};
+
+// SCHEDE DI SOLA LETTURA: restano agganciate alla loro abilita' e si aprono
+// nella finestra quando si tocca l'abilita' stessa.
+const SCHEDA_LETTURA = {
+  'GIVE':              'give',
+  'FAST':              'fast',
+  'ABC':               'abc',
+  'SENTIERO DI MEZZO': 'sentiero'
+};
+
 // ════════════════════════════════════════════════════════════════
 // GUIDA DBT — Schede e guide
 // ════════════════════════════════════════════════════════════════
@@ -22,7 +69,7 @@ function renderGuide(){
   if(el.innerHTML.trim())return;
 
   const MODULES=[
-    {id:'tol',icon:'🌊',bg:'#FEF0F0',
+    {id:'tol',icon:'🌊',bg:'#F8E8DF',
      title:'Tolleranza della sofferenza',
      sub:'Sopravvivere alle crisi senza peggiorare la situazione',
      intro:'Queste abilità servono quando provi un dolore intenso che non puoi alleviare subito, quando agiresti sulla spinta delle emozioni ma questo peggiorerebbe la situazione, o quando la mente emotiva minaccia di prendere il sopravvento. Non sono per i problemi quotidiani — sono per le crisi.',
@@ -94,7 +141,27 @@ function renderGuide(){
           '<b>Con persone difficili:</b> siediti. Respira e abbozza un sorriso. Pensa a una persona con cui sei arrabbiata. Cerca di capire cosa la rende felice o la fa soffrire. Continua finché senti un po’ di compassione e la rabbia diminuisce.',
           '💡 Ricorda: la faccia e le mani comunicano con il cervello. Il corpo è connesso alla mente — cambiare la postura cambia davvero come ci sentiamo.'
         ]},
-       {id:'accrad',badge:'ACCETT. RADICALE',name:'Accettazione radicale',
+       {id:'disponibilita',badge:'DISPONIBILITÀ',name:'Disponibilità al posto dell\'ostinazione',
+       desc:'Quando ti accorgi di rifiutare il momento, di irrigidirti o di voler tenere tutto sotto controllo.',
+       steps:[
+         '<b>Disponibilità</b> è essere pronta a entrare e partecipare pienamente al vivere la vita: fare proprio ciò che è necessario in ogni situazione, senza trascinare i piedi.',
+         '<b>Ostinazione</b> è il contrario: rifiutarsi di tollerare il momento, rifiutare i cambiamenti necessari, arrendersi, insistere nel tenere il controllo, provare a risolvere ogni situazione.',
+         '<b>1. Osserva l\'ostinazione.</b> Etichettala. Fanne esperienza.',
+         '<b>2. Accetta radicalmente</b> che in questo momento senti — e forse agisci — l\'ostinazione. Non puoi combattere l\'ostinazione con l\'ostinazione.',
+         '<b>3. Orienta la mente</b> verso l\'accettazione e la disponibilità.',
+         '<b>4. Abbozza un mezzo sorriso</b> e assumi una postura che esprima disponibilità: mani aperte, spalle morbide.',
+         '<b>5. Quando l\'ostinazione è inamovibile</b>, chiediti qual è la minaccia che senti, e torna al passo 1.'
+       ]},
+      {id:'autoincor',badge:'AUTOINCORAGGIAMENTO',name:'Frasi che ti sostengono',
+       desc:'Nei momenti di crisi, quando la mente ripete che non ce la farai.',
+       steps:[
+         'Sostieni te stessa come faresti con una persona a cui vuoi bene: «Vai! Sei grande!», «Ce la posso fare».',
+         'Ricorda che la crisi ha una fine: «Passerà anche questo», «Non durerà per sempre», «Ne verrò fuori».',
+         'Riconosci ciò che stai facendo: «Sto facendo il meglio che posso».',
+         'Riformula i pensieri che pesano di più. Esempio dal manuale: «Il fatto che non sia venuto a prendermi non significa che non mi ami».',
+         'Scrivi le frasi che funzionano per te e tienile pronte: nel momento di crisi non si inventano.'
+       ]},
+      {id:'accrad',badge:'ACCETT. RADICALE',name:'Accettazione radicale',
         desc:'Smettere di combattere contro la realtà per uscire dalla sofferenza — non significa approvare, ma accettare i fatti così come sono.',
         steps:[
           '<b>Cos\'è:</b> accettazione radicale significa accettare completamente — con mente, cuore e corpo — la realtà così com\'è. Non è arrendersi, è smettere di lottare contro ciò che non si può cambiare ora.',
@@ -104,7 +171,7 @@ function renderGuide(){
           '💡 L\'accettazione porta spesso prima alla tristezza, poi a una profonda calma.'
         ]}
      ]},
-    {id:'mind',icon:'🧘',bg:'#E6F5F3',
+    {id:'mind',icon:'🧘',bg:'#EEF4F3',
      title:'Mindfulness',
      sub:'Vivere consapevolmente nel momento presente',
      intro:'La mindfulness è la pratica di prestare attenzione intenzionalmente al momento presente, senza giudicarlo. Non è meditazione formale — puoi praticarla mentre fai qualsiasi cosa. Le abilità di mindfulness sono la base di tutta la DBT.',
@@ -169,7 +236,7 @@ function renderGuide(){
           '<b>Chiediti nel quotidiano:</b> "Cosa sa la mia mente saggia su questa situazione?" Aspetta la risposta — di solito arriva come un senso di certezza tranquilla, non come urlo.'
         ]}
      ]},
-    {id:'reg',icon:'🎛️',bg:'#FEF6E4',
+    {id:'reg',icon:'🎛️',bg:'#FCF2D6',
      title:'Regolazione emotiva',
      sub:'Capire, ridurre e gestire le emozioni intense',
      intro:'Le emozioni non sono nemiche — ci motivano, comunicano agli altri e ci danno informazioni. Il problema è quando sono troppo intense, durano troppo, o ci spingono ad azioni che peggiorano la situazione. Queste abilità aiutano a capire, accettare e modificare le emozioni.',
@@ -265,7 +332,7 @@ function renderGuide(){
           '<b>Sii consapevole delle emozioni positive.</b> Quando provi gioia, gratitudine, pace — nota di provarle. Non preoccuparti che finiscano. Stai semplicemente nell\'emozione positiva.'
         ]}
      ]},
-    {id:'inter',icon:'🤝',bg:'#EEF2FF',
+    {id:'inter',icon:'🤝',bg:'#EEF4F3',
      title:'Efficacia interpersonale',
      sub:'Ottenere ciò che si vuole mantenendo le relazioni e il rispetto di sé',
      intro:'L\'efficacia interpersonale è la capacità di raggiungere i propri obiettivi nelle relazioni. Tre obiettivi spesso in tensione tra loro: ottenere ciò che vuoi (DEAR MAN), mantenere la relazione (GIVE), mantenere il rispetto di te stessa (FAST).',
@@ -344,7 +411,7 @@ function renderGuide(){
           '💡 Riconoscere queste credenze è già metà del lavoro. Non devi credere ai tuoi pensieri automatici.'
         ]}
      ]},
-    {id:'dip',icon:'🔗',bg:'#F3E8FF',
+    {id:'dip',icon:'🔗',bg:'#F6EFE3',
      title:'Gestire le dipendenze',
      sub:'Abbandonare comportamenti dipendenti e gestire il craving',
      intro:'Sei dipendente quando non riesci a interrompere un pattern di comportamento nonostante le conseguenze negative. Queste abilità aiutano a costruire l’astinenza, gestire il craving e prevenire le ricadute.',
@@ -393,7 +460,7 @@ function renderGuide(){
           'Reinterpreta l’impulso: "Non voglio alcol, voglio qualcosa di dolce." Funziona mentre l’impulso passa.'
         ]}
      ]},
-    {id:'gen',icon:'🔧',bg:'#F0FDF4',
+    {id:'gen',icon:'🔧',bg:'#DCE8E6',
      title:'Strumenti generali',
      sub:'Analisi dei comportamenti e costruzione di una vita degna di essere vissuta',
      intro:'Questi strumenti trasversali si applicano a tutte le aree della DBT. Servono a capire come funzionano i propri comportamenti e a costruire una vita allineata con i propri valori.',
@@ -449,34 +516,83 @@ function renderGuide(){
     const mDiv=document.createElement('div');mDiv.className='guide-module';
     const hdr=document.createElement('div');hdr.className='guide-module-header';
     hdr.onclick=function(){toggleGuideModule(mod.id);};
-    hdr.innerHTML='<div class="guide-module-icon" style="background:'+mod.bg+'">'+mod.icon+'</div>'
-      +'<div style="flex:1"><div class="guide-module-title">'+mod.title+'</div>'
-      +'<div class="guide-module-sub">'+mod.sub+'</div></div>'
-      +'<span class="guide-module-arrow" id="arr-'+mod.id+'">›</span>';
+    const miniMod = MINIATURA_MODULO[mod.id];
+    hdr.className='dc-riga';
+    hdr.innerHTML=(miniMod ? '<img class="dc-riga-ill" src="'+miniMod+'" alt="">' : '')
+      +'<div class="dc-riga-testo">'
+        +'<span class="dc-riga-tit">'+mod.title+'</span>'
+        +'<span class="dc-riga-sub">'+(DC_SOTTO_MODULO[mod.id]||mod.sub)+'</span>'
+      +'</div>'
+      +'<span id="arr-'+mod.id+'">'+DC_CHEV+'</span>';
     mDiv.appendChild(hdr);
     const body=document.createElement('div');body.className='guide-module-body';body.id='body-'+mod.id;
+    // segna il modulo, per aggiungere i suoi fogli di lavoro a fine elenco
+    body.dataset.modulo = mod.id;
     const intro=document.createElement('div');intro.className='guide-when';
     intro.innerHTML='<strong>Quando usarla:</strong> '+mod.intro;
     body.appendChild(intro);
     mod.skills.forEach(function(sk){
       const skDiv=document.createElement('div');skDiv.className='guide-skill';
       const skHdr=document.createElement('div');skHdr.className='guide-skill-header';
-      skHdr.onclick=function(){toggleGuideSkill(sk.id);};
+      const pagLettura = SCHEDA_LETTURA[sk.badge];
+      if(pagLettura){
+        // scheda di sola lettura: si apre nella finestra, senza espandere
+        skHdr.setAttribute('data-nav','');
+        skHdr.addEventListener('click', function(ev){
+          ev.preventDefault(); ev.stopPropagation();
+          openScheda(pagLettura);
+        });
+      } else {
+        skHdr.onclick=function(){toggleGuideSkill(sk.id);};
+      }
       skHdr.innerHTML='<div class="guide-skill-badge">'+sk.badge+'</div>'
         +'<div style="flex:1"><div class="guide-skill-name">'+sk.name+'</div>'
         +'<div class="guide-skill-desc">'+sk.desc+'</div></div>'
         +'<span style="color:var(--muted);font-size:18px;margin-left:8px;transition:transform .2s" id="sarr-'+sk.id+'">›</span>';
       skDiv.appendChild(skHdr);
       const steps=document.createElement('div');steps.className='guide-skill-steps';steps.id='steps-'+sk.id;
-      sk.steps.forEach(function(step,i){
-        const row=document.createElement('div');row.className='guide-step';
-        row.innerHTML='<div class="guide-step-n">'+(i+1)+'</div><div class="guide-step-text">'+step+'</div>';
-        steps.appendChild(row);
-      });
+      if(!pagLettura){
+        sk.steps.forEach(function(step,i){
+          const row=document.createElement('div');row.className='guide-step';
+          row.innerHTML='<div class="guide-step-n">'+(i+1)+'</div><div class="guide-step-text">'+step+'</div>';
+          steps.appendChild(row);
+        });
+      }
       skDiv.appendChild(steps);body.appendChild(skDiv);
     });
     mDiv.appendChild(body);el.appendChild(mDiv);
   });
+
+  // Fogli di lavoro in cima al modulo: sono la parte operativa, chi apre
+  // il modulo di solito cerca quelli prima della teoria.
+  Object.keys(SCHEDE_PER_MODULO).forEach(function(modId){
+    const body=document.getElementById('body-'+modId);
+    if(!body) return;
+    const wrap=document.createElement('div');
+    wrap.className='guide-schede-modulo';
+    wrap.innerHTML='<div class="guide-schede-titolo">Fogli di lavoro</div>';
+    SCHEDE_PER_MODULO[modId].forEach(function(sc){
+      const b=document.createElement('button');
+      b.type='button';
+      b.className='guide-scheda-link';
+      // aprire una scheda e' navigazione: resta attivo anche in sola
+      // consultazione (modalita' terapeuta)
+      b.setAttribute('data-nav','');
+      b.textContent=sc.label+' →';
+      b.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        openScheda(sc.page);
+      });
+      wrap.appendChild(b);
+    });
+    // dopo l'introduzione "Quando usarla", prima delle abilita':
+    // prima si capisce a cosa serve il modulo, poi si apre un foglio
+    const intro = body.querySelector('.guide-when');
+    if(intro && intro.nextSibling) body.insertBefore(wrap, intro.nextSibling);
+    else if(intro) body.appendChild(wrap);
+    else body.insertBefore(wrap, body.firstChild);
+  });
+
 }
 
 function chPlanDay(d){
@@ -501,16 +617,14 @@ function dkD(d){
 }
 
 function updPlanDL(){
+  // Scriveva su 'plan-dlabel'/'planNxtBtn'/'planPill', elementi che in
+  // questa pagina non sono mai esistiti: la primissima riga andava in
+  // errore, e siccome l'esecuzione si ferma li', bloccava anche tutto
+  // cio' che veniva chiamato subito dopo nella stessa catena.
   const k=dkD(curPlan);
   const isToday=k===today();
-  document.getElementById('plan-dlabel').textContent=isToday?'Oggi':fmtL(curPlan);
-  document.getElementById('planNxtBtn').disabled=new Date(curPlan.getTime()+86400000)>new Date();
-  // pill
-  const pill=document.getElementById('planPill');
-  const d=allData[k];
-  const hasP=d&&d.planner&&Object.values(d.planner).some(a=>a&&a.length>0);
-  pill.className='pill '+(hasP?'saved':'unsaved');
-  pill.textContent=hasP?'✓ Pianificata':'Non pianificata';
+  const lbl=document.getElementById('planner-day-label');
+  if(lbl) lbl.textContent = isToday ? new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'}) : fmtL(curPlan);
 }
 
 
@@ -551,7 +665,7 @@ function showDaySummary(k,d){
       const val=t[k2];
       const isDanger=val==="Sì"&&(k2==="sa"||k2==="aa");
       const color=isDanger?"var(--red)":val==="Sì"?"var(--teal)":"var(--muted)";
-      const bg=isDanger?"#FEF0F0":val==="Sì"?"var(--teal-ll)":"var(--surface-2)";
+      const bg=isDanger?"#F8E8DF":val==="Sì"?"var(--teal-ll)":"var(--surface-2)";
       html+='<div class="modal-row" style="background:'+bg+';border-radius:8px;margin-bottom:4px"><span style="font-weight:600">'+TOG_LABELS[k2]+'</span><strong style="color:'+color+'">'+val+'</strong></div>';
     });html+='</div>';}
     if(cxRows.length){html+='<div style="margin-top:8px">';cxRows.forEach(k2=>{html+='<div class="modal-text-row"><div class="ms-label">'+TEXT_LABELS[k2]+'</div><div class="ms-text">'+tx[k2]+'</div></div>';});html+='</div>';}
@@ -685,7 +799,7 @@ function renderPlease(){
       if(stored[k]&&stored[k][item.id])count++;
     });
     const pct=Math.round(count/7*100);
-    const color=pct>=80?'var(--teal)':pct>=50?'var(--amber)':'#E24B4A';
+    const color=pct>=80?'var(--teal)':pct>=50?'var(--amber)':'#C9714B';
     sumHtml+=`<div style="text-align:center"><div style="font-size:20px;margin-bottom:4px">${item.icon}</div><div style="font-size:18px;font-weight:800;color:${color}">${count}/7</div><div style="font-size:10px;color:var(--muted);line-height:1.3">${item.label}</div></div>`;
   });
   sumHtml+='</div>';
@@ -736,7 +850,7 @@ function renderEmozioni(){
   el.innerHTML='';
   
   const EMOS=[
-    {id:'epau',emoji:'😰',label:'Paura',color:'#E6F1FB',border:'#4A90D9',
+    {id:'epau',emoji:'😰',label:'Paura',color:'#EEF4F3',border:'#2A6866',
      quando:'Quando c\'è una minaccia reale alla tua vita, salute o benessere.',
      scatenanti:'Situazioni nuove, stare sola, flashback, dover fare cose in pubblico, perseguire i propri sogni.',
      interpretazioni:'"Potrei essere ferita." "Non avrò aiuto." "Fallirò." "Perderò qualcuno."',
@@ -744,7 +858,7 @@ function renderEmozioni(){
      azioni:'Fuggire, evitare, immobilizzarsi, chiedere aiuto in modo caotico.',
      opposta:'Avvicinati a ciò che temi, fallo ancora e ancora. Tieni gli occhi aperti. Postura assertiva — testa alta, spalle indietro. Respira lentamente.'
     },
-    {id:'erab',emoji:'😠',label:'Rabbia',color:'#FEF0F0',border:'#EF5350',
+    {id:'erab',emoji:'😠',label:'Rabbia',color:'#F8E8DF',border:'#D8845C',
      quando:'Un obiettivo viene bloccato, qualcuno ti attacca o minaccia, viene offesa la tua integrità.',
      scatenanti:'Impossibilità di raggiungere un obiettivo, attacchi, perdita di rispetto, dolore fisico o emotivo.',
      interpretazioni:'"Sono stata trattata ingiustamente." "Non avrebbe dovuto." "Ho ragione io."',
@@ -752,7 +866,7 @@ function renderEmozioni(){
      azioni:'Attacchi verbali, alzare la voce, sarcasmo, sbattere le porte, covare rancore.',
      opposta:'Evita con grazia invece di attaccare. Sii gentile. Immaginati comprensiva. Apri le mani, palmi verso l\'alto. Abbozza un sorriso.'
     },
-    {id:'etri',emoji:'😢',label:'Tristezza',color:'#EEF2FF',border:'#4A90D9',
+    {id:'etri',emoji:'😢',label:'Tristezza',color:'#EEF4F3',border:'#2A6866',
      quando:'Hai perso qualcosa o qualcuno. Le cose non sono andate come speravi.',
      scatenanti:'Perdita, morte, rifiuto, separazione, delusione, isolamento.',
      interpretazioni:'"Non otterrò mai ciò che voglio." "Sono inutile." "La situazione non cambierà mai."',
@@ -760,7 +874,7 @@ function renderEmozioni(){
      azioni:'Ritirarsi, evitare, stare a letto, parlare poco, darsi per vinti.',
      opposta:'Attivati invece di isolarti. Evita di evitare. Fai cose che ti diano senso di competenza. Testa alta, postura aperta. Aumenta l\'attività fisica.'
     },
-    {id:'ecol',emoji:'😔',label:'Colpa',color:'#FFF8F0',border:'#FFA726',
+    {id:'ecol',emoji:'😔',label:'Colpa',color:'#FCF2D6',border:'#C9714B',
      quando:'Quando il tuo comportamento viola davvero i tuoi valori o il tuo codice morale.',
      scatenanti:'Fare o pensare qualcosa che ritieni sbagliato. Non mantenere una promessa. Causare un danno a qualcuno.',
      interpretazioni:'"Avrei dovuto comportarmi diversamente." "Mi sono comportata male." "Devo essere incolpata."',
@@ -768,7 +882,7 @@ function renderEmozioni(){
      azioni:'Chiedere perdono, scusarsi, fare regali per rimediare, piegarsi su se stessi.',
      opposta:'Se la colpa è giustificata: scusati, rimedia al danno, impegnati a non ripetere, perdonati. Se non è giustificata: non scusarti, raccogli le informazioni, postura dignitosa, valida il tuo comportamento.'
     },
-    {id:'ejal',emoji:'💚',label:'Gelosia',color:'#F1F8E9',border:'#66BB6A',
+    {id:'ejal',emoji:'💚',label:'Gelosia',color:'#DCE8E6',border:'#1B4B4A',
      quando:'Una relazione importante è minacciata o in pericolo. Qualcuno minaccia di portarti via qualcosa di prezioso.',
      scatenanti:'Partner che dà attenzione ad altri, possibile rivale, sentirsi ignorati, scoprire tradimenti.',
      interpretazioni:'"Il mio partner non tiene più a me." "Non sono all\'altezza." "Mi lascerà." "Sono stata imbrogliata."',
@@ -776,7 +890,7 @@ function renderEmozioni(){
      azioni:'Interrogatori, controllare il telefono, accuse, comportamenti appiccicosi, gelosia, inseguimenti.',
      opposta:'Smetti di spiare e controllare. Condividi invece di trattenere. Ascolta senza fare domande indagatorie. Tieni gli occhi aperti sui fatti reali. Postura aperta, mani rilassate.'
     },
-    {id:'einv',emoji:'😒',label:'Invidia',color:'#FEF9E7',border:'#F9A825',
+    {id:'einv',emoji:'😒',label:'Invidia',color:'#FCF2D6',border:'#EFC03B',
      quando:'Una persona o un gruppo ha qualcosa che vuoi o di cui hai bisogno.',
      scatenanti:'Qualcuno ottiene ciò che volevi tu. Non fare parte del gruppo giusto. Qualcuno si vanta di qualcosa.',
      interpretazioni:'"Non è giusto." "Dovrei avere anch\'io quello." "Sono inferiore." "Sono stata sfortunata."',
@@ -784,7 +898,7 @@ function renderEmozioni(){
      azioni:'Sminuire l\'altro, comportarsi in modo passivo-aggressivo, confrontarsi ossessivamente.',
      opposta:'Impedisciti di distruggere ciò che ha l\'altra persona. Pensa alle tue fortune — fai una lista. Smetti di esagerare il valore di ciò che non hai. Postura aperta, mani rilassate, respiro lento.'
     },
-    {id:'ever',emoji:'😶',label:'Vergogna',color:'#F5F3FF',border:'#9E9E9E',
+    {id:'ever',emoji:'😶',label:'Vergogna',color:'#F5EDE1',border:'#948779',
      quando:'Potresti essere rifiutata da persone cui tieni se certe caratteristiche si venissero a sapere.',
      scatenanti:'Essere rifiutata, criticata in pubblico, fallire dove ci si sente competenti, confrontarsi con uno standard.',
      interpretazioni:'"Sono difettosa." "Non sono abbastanza." "Gli altri mi rifiuteranno."',
@@ -798,11 +912,20 @@ function renderEmozioni(){
     const card=document.createElement('div');
     card.setAttribute('data-emo-card','1');
     const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-    card.style.cssText=`background:${isDark?'var(--surface-2)':emo.color};border:1.5px solid ${isDark?'var(--border)':emo.border};border-radius:var(--r);margin-bottom:10px;overflow:hidden`;
-    
+    // stessa anatomia delle schede dei moduli qui sopra:
+    // riquadro bianco, icona in un quadrato tinto, titolo, sottotitolo, freccia
+    card.className='guide-module';
+
     const hdr=document.createElement('div');
-    hdr.style.cssText='padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer';
-    hdr.innerHTML=`<span style="font-size:26px">${emo.emoji}</span><div style="flex:1"><div style="font-size:15px;font-weight:700">${emo.label}</div></div><span id="earr-${emo.id}" style="font-size:20px;color:var(--muted);transition:transform .2s">›</span>`;
+    hdr.className='guide-module-header';
+    const miniEmo = MINIATURA_EMOZIONE[emo.id];
+    hdr.className='dc-riga';
+    hdr.innerHTML=(miniEmo ? '<img class="dc-riga-ill" src="'+miniEmo+'" alt="">' : '')
+      +'<div class="dc-riga-testo">'
+        +'<span class="dc-riga-tit">'+emo.label+'</span>'
+        +'<span class="dc-riga-sub">'+(DC_SOTTO_EMO[emo.id]||emo.quando)+'</span>'
+      +'</div>'
+      +'<span id="earr-'+emo.id+'">'+DC_CHEV+'</span>';
     hdr.onclick=()=>{
       const body=document.getElementById('ebody-'+emo.id);
       const arr=document.getElementById('earr-'+emo.id);
@@ -815,7 +938,8 @@ function renderEmozioni(){
     const body=document.createElement('div');
     body.id='ebody-'+emo.id;
     body.style.display='none';
-    body.style.cssText='display:none;padding:0 16px 16px;border-top:1px solid var(--border-l)';
+    body.className='guide-module-body';
+    body.style.cssText='display:none;padding:0 16px 16px';
     
     const rows=[
       {label:'Quando corrisponde ai fatti',val:emo.quando},

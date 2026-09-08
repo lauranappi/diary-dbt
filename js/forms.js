@@ -91,6 +91,7 @@ function pcSalva(){
     if(el)d[k]=el.value;
   });
   localStorage.setItem(ukey('piano_crisi'),JSON.stringify(d));
+  if(typeof sincronizzaFogli==='function') sincronizzaFogli();
   const t=document.getElementById('pc-toast');
   if(t){t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
 }
@@ -226,3 +227,169 @@ window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
   if(localStorage.getItem('theme')==='auto')applyTheme('auto');
 });
 
+
+
+// ════════════════════════════════════════════════════════════════
+// CONTROLLA I FATTI — Regolazione emotiva, Foglio di lavoro 5
+// ════════════════════════════════════════════════════════════════
+const CF_CAMPI=['cf-emozione','cf-int-prima','cf-int-dopo','cf-evento','cf-evento-fatti',
+  'cf-interpretazioni','cf-alternative','cf-interpretazioni-fatti','cf-minaccia','cf-esiti',
+  'cf-minaccia-fatti','cf-catastrofe','cf-affrontare','cf-verifica'];
+let cfCorr = null;   // 0-5: corrispondenza emozione/fatti
+
+function cfRenderScala(){
+  const el=document.getElementById('cf-scala'); if(!el) return;
+  el.innerHTML='';
+  for(let n=0;n<=5;n++){
+    const b=document.createElement('button');
+    b.type='button'; b.className='cf-scala-btn'+(cfCorr===n?' on':'');
+    b.textContent=n;
+    b.onclick=()=>{ cfCorr=n; cfRenderScala(); };
+    el.appendChild(b);
+  }
+}
+
+function cfSalva(){
+  const dati={id:Date.now(), data:new Date().toISOString(), corrisponde:cfCorr};
+  CF_CAMPI.forEach(id=>{ const el=document.getElementById(id); dati[id]=el?el.value.trim():''; });
+  if(!dati['cf-emozione'] && !dati['cf-evento']){
+    document.getElementById('cf-msg').textContent='Scrivi almeno l\'emozione o l\'evento prima di salvare.';
+    return;
+  }
+  const lista=JSON.parse(localStorage.getItem(ukey('cf_fogli'))||'[]');
+  lista.unshift(dati);
+  localStorage.setItem(ukey('cf_fogli'), JSON.stringify(lista.slice(0,50)));
+  document.getElementById('cf-msg').textContent='Foglio salvato.';
+  sincronizzaFogli();
+  cfRenderLista();
+}
+
+function cfNuovo(){
+  CF_CAMPI.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  cfCorr=null; cfRenderScala();
+  document.getElementById('cf-msg').textContent='';
+}
+
+function cfRenderLista(){
+  const el=document.getElementById('cf-lista'); if(!el) return;
+  // La terapeuta apre i fogli come modello vuoto: i fogli compilati
+  // dalle pazienti si leggono dalla scheda della singola paziente.
+  if(typeof profile!=='undefined' && profile.role==='terapeuta'){
+    el.innerHTML='<div style="color:var(--muted);font-size:13px">I fogli compilati dalle pazienti si trovano nella loro scheda.</div>';
+    return;
+  }
+  const lista=JSON.parse(localStorage.getItem(ukey('cf_fogli'))||'[]');
+  cfRenderScala();
+  if(!lista.length){ el.innerHTML='<div style="color:var(--muted);font-size:13px">Nessun foglio salvato.</div>'; return; }
+  el.innerHTML='';
+  lista.forEach(d=>{
+    const item=document.createElement('div'); item.className='foglio-item';
+    const quando=new Date(d.data).toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'});
+    item.innerHTML='<div style="flex:1;min-width:0">'
+      +'<div style="font-weight:700;font-size:13.5px">'+(d['cf-emozione']||'Senza titolo')
+      +(d['cf-int-prima']?' · '+d['cf-int-prima']+(d['cf-int-dopo']?'→'+d['cf-int-dopo']:''):'')+'</div>'
+      +'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+quando
+      +(d.corrisponde!=null?' · corrisponde ai fatti: '+d.corrisponde+'/5':'')+'</div></div>';
+    const apri=document.createElement('button'); apri.className='bsec'; apri.textContent='Apri';
+    apri.onclick=()=>{
+      CF_CAMPI.forEach(id=>{ const c=document.getElementById(id); if(c) c.value=d[id]||''; });
+      cfCorr=d.corrisponde; cfRenderScala();
+      document.getElementById('cf-msg').textContent='Foglio del '+quando+' caricato.';
+      window.scrollTo(0,0);
+    };
+    const del=document.createElement('button'); del.className='bsec'; del.textContent='Elimina';
+    del.onclick=()=>{
+      if(!confirm('Eliminare questo foglio?')) return;
+      const l2=JSON.parse(localStorage.getItem(ukey('cf_fogli'))||'[]').filter(x=>x.id!==d.id);
+      localStorage.setItem(ukey('cf_fogli'), JSON.stringify(l2));
+      cfRenderLista();
+    };
+    item.appendChild(apri); item.appendChild(del);
+    el.appendChild(item);
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// PRO E CONTRO DELL'USARE LE ABILITÀ — Parte generale, Foglio 1
+// ════════════════════════════════════════════════════════════════
+const PC2_CAMPI=['pc2-situazione','pc2-obiettivo','pc2-usare-pro','pc2-usare-contro',
+                 'pc2-non-pro','pc2-non-contro'];
+
+function pcbSalva(){
+  const dati={id:Date.now(), data:new Date().toISOString()};
+  PC2_CAMPI.forEach(id=>{ const el=document.getElementById(id); dati[id]=el?el.value.trim():''; });
+  if(!dati['pc2-situazione']){
+    document.getElementById('pc2-msg').textContent='Descrivi almeno la situazione prima di salvare.';
+    return;
+  }
+  const lista=JSON.parse(localStorage.getItem(ukey('pc2_fogli'))||'[]');
+  lista.unshift(dati);
+  localStorage.setItem(ukey('pc2_fogli'), JSON.stringify(lista.slice(0,50)));
+  document.getElementById('pc2-msg').textContent='Foglio salvato.';
+  sincronizzaFogli();
+  pcbRenderLista();
+}
+
+function pcbNuovo(){
+  PC2_CAMPI.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('pc2-msg').textContent='';
+}
+
+function pcbRenderLista(){
+  const el=document.getElementById('pc2-lista'); if(!el) return;
+  // La terapeuta apre i fogli come modello vuoto: i fogli compilati
+  // dalle pazienti si leggono dalla scheda della singola paziente.
+  if(typeof profile!=='undefined' && profile.role==='terapeuta'){
+    el.innerHTML='<div style="color:var(--muted);font-size:13px">I fogli compilati dalle pazienti si trovano nella loro scheda.</div>';
+    return;
+  }
+  const lista=JSON.parse(localStorage.getItem(ukey('pc2_fogli'))||'[]');
+  if(!lista.length){ el.innerHTML='<div style="color:var(--muted);font-size:13px">Nessun foglio salvato.</div>'; return; }
+  el.innerHTML='';
+  lista.forEach(d=>{
+    const item=document.createElement('div'); item.className='foglio-item';
+    const quando=new Date(d.data).toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'});
+    item.innerHTML='<div style="flex:1;min-width:0">'
+      +'<div style="font-weight:700;font-size:13.5px">'+(d['pc2-situazione']||'Senza titolo').slice(0,60)+'</div>'
+      +'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+quando+'</div></div>';
+    const apri=document.createElement('button'); apri.className='bsec'; apri.textContent='Apri';
+    apri.onclick=()=>{
+      PC2_CAMPI.forEach(id=>{ const c=document.getElementById(id); if(c) c.value=d[id]||''; });
+      document.getElementById('pc2-msg').textContent='Foglio del '+quando+' caricato.';
+      window.scrollTo(0,0);
+    };
+    const del=document.createElement('button'); del.className='bsec'; del.textContent='Elimina';
+    del.onclick=()=>{
+      if(!confirm('Eliminare questo foglio?')) return;
+      const l2=JSON.parse(localStorage.getItem(ukey('pc2_fogli'))||'[]').filter(x=>x.id!==d.id);
+      localStorage.setItem(ukey('pc2_fogli'), JSON.stringify(l2));
+      pcbRenderLista();
+    };
+    item.appendChild(apri); item.appendChild(del);
+    el.appendChild(item);
+  });
+}
+
+
+// ── Fogli di lavoro verso la terapeuta ───────────────────────────────────
+// Finora restavano solo su questo dispositivo. Vengono inclusi nel
+// salvataggio in modo che la terapeuta possa leggerli, raggruppati per giorno.
+function raccogliFogli(){
+  if(typeof profile==='undefined' || profile.role!=='paziente') return null;
+  const leggi = k => { try{ return JSON.parse(localStorage.getItem(ukey(k))||'[]'); }catch(e){ return []; } };
+  const oggetto = k => { try{ return JSON.parse(localStorage.getItem(ukey(k))||'{}'); }catch(e){ return {}; } };
+  return {
+    pianoCrisi:     oggetto('piano_crisi'),   // documento unico, non datato
+    controllaFatti: leggi('cf_fogli'),
+    proContro:      leggi('pc2_fogli'),
+    diarioEmozioni: leggi('diario_emo'),
+    catena:         leggi('catena_list')
+  };
+}
+
+// dopo aver salvato un foglio, lo si manda anche al server
+function sincronizzaFogli(){
+  if(typeof pushChan==='function' && typeof channel!=='undefined' && channel){
+    try{ pushChan(); }catch(e){ console.warn('sync fogli', e); }
+  }
+}

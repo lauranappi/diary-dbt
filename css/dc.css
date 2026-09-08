@@ -1,0 +1,1135 @@
+/* ==========================================================================
+   Diary Card DBT — design system
+   Estratto dal prototipo mobile. Palette vincolata a quattro tinte,
+   carattere unico Plus Jakarta Sans.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap');
+
+/* --------------------------------------------------------------------------
+   1. Token
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* --- Palette: quattro tinte e le loro varianti ------------------------- */
+
+  /* Petrolio — dominante */
+  --dc-petrolio:            #1B4B4A;
+  --dc-petrolio-scuro:      #123534;
+  --dc-petrolio-scurissimo: #0E2A29;
+  --dc-petrolio-chiaro:     #DCE8E6;
+
+  /* Crema — fondo */
+  --dc-crema:               #FBF3E7;
+  --dc-crema-scura:         #F0E6D6;  /* fondo fuori dallo schermo */
+
+  /* Senape — accento */
+  --dc-senape:              #F5CE47;
+  --dc-senape-chiara:       #FDF3D5;
+
+  /* Terracotta — segnale */
+  --dc-terracotta:          #C1714A;
+  --dc-terracotta-chiara:   #F7E7DC;
+
+  /* Neutri */
+  --dc-bianco:              #FFFFFF;
+  --dc-nero:                #14201F;
+
+  /* --- Ruoli: tema chiaro ----------------------------------------------- */
+  --dc-bg:            var(--dc-crema);
+  --dc-surface:       var(--dc-bianco);
+  --dc-surface-2:     var(--dc-senape-chiara);
+  --dc-ink:           var(--dc-nero);
+  --dc-muted:         var(--dc-petrolio);
+  --dc-line:          var(--dc-petrolio-chiaro);
+  --dc-acc:           var(--dc-senape);
+  --dc-terra:         var(--dc-terracotta);
+  --dc-terra-ink:     var(--dc-terracotta);
+  --dc-tint-terra:    var(--dc-terracotta-chiara);
+  --dc-hero:          var(--dc-petrolio);
+  --dc-hero-ink:      var(--dc-bianco);
+  --dc-hero-sub:      var(--dc-petrolio-chiaro);
+  --dc-barra:         var(--dc-bianco);
+  --dc-cella:         var(--dc-terracotta-chiara);
+
+  /* --- Angoli arrotondati ---------------------------------------------- */
+  --dc-radius-scheda:   26px;  /* schede e pannelli */
+  --dc-radius-riga:     22px;  /* righe di elenco */
+  --dc-radius-elemento: 20px;  /* miniature, contatori, pulsante grande */
+  --dc-radius-interno:  18px;  /* campi, avvisi, pulsante compatto */
+  --dc-radius-cella:    15px;  /* celle delle scale 0–5 */
+  --dc-radius-barra:    30px;  /* barra di navigazione in basso */
+  --dc-radius-schermo:  44px;  /* cornice del telefono */
+  --dc-radius-pill:     999px; /* capsule e pulsanti tondi */
+
+  /* --- Tipografia ------------------------------------------------------- */
+  --dc-font: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  --dc-w-regular: 400;
+  --dc-w-medium:  500;
+  --dc-w-semi:    600;
+  --dc-w-bold:    800;
+
+  --dc-size-display:   44px;  /* numero grande nello storico */
+  --dc-size-titolo-xl: 30px;  /* dato in evidenza */
+  --dc-size-titolo:    28px;  /* titolo di schermata (intestazione con onda) */
+  --dc-size-titolo-s:  24px;  /* titolo di dettaglio */
+  --dc-size-sezione:   16px;  /* titolo di scheda / riga di elenco */
+  --dc-size-riga:    14.5px;  /* etichette di riga, celle, pulsanti */
+  --dc-size-corpo:     14px;  /* corpo del testo */
+  --dc-size-corpo-s: 13.5px;  /* sottotitoli, testo di supporto */
+  --dc-size-meta:    12.5px;  /* metadati */
+  --dc-size-kicker:  11.5px;  /* soprattitoli maiuscoli */
+  --dc-size-tab:     10.5px;  /* etichette della barra in basso */
+
+  --dc-lh-titolo: 1.15;
+  --dc-lh-corpo:  1.55;
+  --dc-lh-meta:   1.35;
+
+  --dc-ls-titolo: -.03em;
+  --dc-ls-sezione: -.02em;
+  --dc-ls-kicker:  .1em;
+
+  /* --- Spazi ------------------------------------------------------------ */
+  --dc-gap-xs:      4px;  /* dentro una coppia etichetta/valore */
+  --dc-gap-s:       8px;  /* elementi affiancati stretti */
+  --dc-gap-m:      12px;  /* tra schede in colonna */
+  --dc-gap-l:      14px;  /* tra schede in elenco */
+  --dc-gap-xl:     20px;  /* tra gruppi dentro una scheda */
+  --dc-gap-sezione: 26px; /* tra sezioni di schermata */
+
+  --dc-pad-scheda:   20px;  /* interno delle schede */
+  --dc-pad-scheda-s: 18px;  /* schede compatte */
+  --dc-pad-riga:     16px 18px;
+  --dc-pad-schermo:  20px;  /* margine laterale dei contenuti */
+  --dc-pad-hero:     44px 26px 48px;
+
+  --dc-h-barra:  84px;  /* barra di navigazione in basso */
+  --dc-h-cella:  42px;  /* celle delle scale 0–5 */
+
+  /* --- Ombre ------------------------------------------------------------ */
+  --dc-shadow-schermo: 0 24px 60px rgba(27, 75, 74, .16);
+  --dc-shadow-pannello: 0 -18px 50px rgba(20, 32, 31, .22);
+}
+
+/* --- Ruoli: tema scuro --------------------------------------------------- */
+
+.dc-scuro,
+[data-tema="scuro"] {
+  --dc-bg:         var(--dc-petrolio-scurissimo);
+  --dc-surface:    var(--dc-petrolio-scuro);
+  --dc-surface-2:  var(--dc-petrolio);
+  --dc-ink:        var(--dc-crema);
+  --dc-muted:      var(--dc-petrolio-chiaro);
+  --dc-line:       var(--dc-petrolio);
+  --dc-acc:        var(--dc-senape);
+  --dc-terra:      var(--dc-terracotta);
+  --dc-terra-ink:  var(--dc-senape);
+  --dc-tint-terra: var(--dc-petrolio);
+  --dc-hero:       var(--dc-petrolio-scuro);
+  --dc-hero-ink:   var(--dc-bianco);
+  --dc-hero-sub:   var(--dc-petrolio-chiaro);
+  --dc-barra:      var(--dc-petrolio-scuro);
+  --dc-cella:      var(--dc-petrolio);
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+
+body {
+  margin: 0;
+  background: var(--dc-bg);   /* --dc-crema-scura era per la pagina dimostrativa del sistema di design, non per l'app */
+  font-family: var(--dc-font);
+  color: var(--dc-ink);
+}
+
+.dc-app {
+  background: var(--dc-bg);
+  color: var(--dc-ink);
+  font-family: var(--dc-font);
+}
+
+.dc-schermo {
+  width: 390px;
+  height: 844px;
+  border-radius: var(--dc-radius-schermo);
+  overflow: hidden;
+  position: relative;
+  flex: none;
+  background: var(--dc-bg);
+  box-shadow: var(--dc-shadow-schermo);
+}
+
+button, input, textarea, select { font-family: var(--dc-font); }
+
+a { color: var(--dc-petrolio); }
+a:hover { color: var(--dc-terracotta); }
+
+:focus-visible { outline: 2px solid var(--dc-terracotta); outline-offset: 2px; }
+
+/* --------------------------------------------------------------------------
+   3. Tipografia
+   -------------------------------------------------------------------------- */
+
+.dc-display {
+  font-size: var(--dc-size-display);
+  font-weight: var(--dc-w-bold);
+  letter-spacing: -.04em;
+  line-height: 1;
+  color: var(--dc-acc);
+}
+
+.dc-titolo {
+  margin: 0;
+  font-size: var(--dc-size-titolo);
+  font-weight: var(--dc-w-bold);
+  letter-spacing: var(--dc-ls-titolo);
+  line-height: var(--dc-lh-titolo);
+}
+
+.dc-titolo-s {
+  margin: 0;
+  font-size: var(--dc-size-titolo-s);
+  font-weight: var(--dc-w-bold);
+  letter-spacing: var(--dc-ls-titolo);
+  line-height: var(--dc-lh-titolo);
+}
+
+.dc-sezione {
+  font-size: var(--dc-size-sezione);
+  font-weight: var(--dc-w-bold);
+  letter-spacing: var(--dc-ls-sezione);
+  line-height: 1.2;
+  color: var(--dc-ink);
+}
+
+.dc-kicker {
+  font-size: var(--dc-size-kicker);
+  font-weight: var(--dc-w-semi);
+  letter-spacing: var(--dc-ls-kicker);
+  text-transform: uppercase;
+  color: var(--dc-terra);
+}
+
+.dc-corpo {
+  margin: 0;
+  font-size: var(--dc-size-corpo);
+  font-weight: var(--dc-w-regular);
+  line-height: var(--dc-lh-corpo);
+  color: var(--dc-ink);
+}
+
+.dc-sotto {
+  margin: 0;
+  font-size: var(--dc-size-corpo-s);
+  font-weight: var(--dc-w-regular);
+  line-height: 1.5;
+  color: var(--dc-muted);
+}
+
+.dc-meta {
+  font-size: var(--dc-size-meta);
+  font-weight: var(--dc-w-medium);
+  line-height: var(--dc-lh-meta);
+  color: var(--dc-muted);
+}
+
+.dc-dato {
+  font-size: var(--dc-size-titolo-xl);
+  font-weight: var(--dc-w-bold);
+  letter-spacing: var(--dc-ls-titolo);
+  color: var(--dc-muted);
+}
+
+/* --------------------------------------------------------------------------
+   4. Intestazione con onda
+   -------------------------------------------------------------------------- */
+
+.dc-hero {
+  background: var(--dc-hero);
+  padding: var(--dc-pad-hero);
+  position: relative;
+  overflow: hidden;
+}
+
+.dc-hero .dc-titolo,
+.dc-hero .dc-titolo-s { color: var(--dc-hero-ink); }
+
+.dc-hero .dc-sotto { color: var(--dc-hero-sub); }
+
+/* L'onda: un <svg> in fondo all'intestazione, riempito col colore del fondo.
+   <svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none">
+     <path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"
+           fill="var(--dc-bg)"/>
+   </svg> */
+.dc-hero-contenuto {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--dc-gap-m);
+}
+
+/* Decorazione SVG dentro l'intestazione */
+/* Pulsante tondo sull'intestazione (impostazioni) */
+.dc-hero-icona {
+  border: 0;
+  background: rgba(255, 255, 255, .14);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--dc-radius-pill);
+  cursor: pointer;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dc-hero-icona:hover { background: rgba(255, 255, 255, .24); }
+.dc-hero-icona:active { background: rgba(255, 255, 255, .3); }
+
+/* --------------------------------------------------------------------------
+   5. Schede
+   -------------------------------------------------------------------------- */
+
+.dc-scheda {
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-scheda);
+  padding: var(--dc-pad-scheda);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dc-gap-m);
+}
+
+.dc-scheda-s { padding: var(--dc-pad-scheda-s); }
+
+/* Variante tinta senape chiara, per contenuti di richiamo */
+.dc-scheda-tinta { background: var(--dc-surface-2); }
+
+/* Variante petrolio piena, per il dato principale */
+.dc-scheda-hero {
+  background: var(--dc-hero);
+  color: var(--dc-hero-ink);
+}
+.dc-scheda-hero .dc-sezione { color: var(--dc-hero-ink); }
+.dc-scheda-hero .dc-meta { color: var(--dc-hero-sub); }
+
+/* Contatore compatto in griglia */
+.dc-contatore {
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-elemento);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Avviso in linea (giornata in sola lettura) */
+.dc-avviso {
+  background: var(--dc-tint-terra);
+  border-radius: var(--dc-radius-interno);
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--dc-size-meta);
+  font-weight: var(--dc-w-semi);
+  color: var(--dc-terra-ink);
+  line-height: 1.4;
+}
+.dc-avviso::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: var(--dc-radius-pill);
+  background: var(--dc-terra);
+  flex: none;
+}
+
+/* Pila di schede e sezioni */
+.dc-pila     { display: flex; flex-direction: column; gap: var(--dc-gap-m); }
+.dc-pila-l   { display: flex; flex-direction: column; gap: var(--dc-gap-l); }
+.dc-sezioni  { display: flex; flex-direction: column; gap: var(--dc-gap-sezione); }
+.dc-contenuto { padding: var(--dc-pad-schermo); }
+
+/* --------------------------------------------------------------------------
+   6. Righe di elenco con miniatura
+   -------------------------------------------------------------------------- */
+
+.dc-riga {
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-scheda);
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  cursor: pointer;
+  border: 0;
+  width: 100%;
+  text-align: left;
+  color: var(--dc-ink);
+}
+.dc-riga:hover  { background: color-mix(in srgb, var(--dc-surface) 92%, var(--dc-petrolio)); }
+.dc-riga:active { background: color-mix(in srgb, var(--dc-surface) 86%, var(--dc-petrolio)); }
+
+/* Riga senza miniatura, più compatta (elenco giornate, fogli di lavoro) */
+.dc-riga-compatta {
+  border-radius: var(--dc-radius-riga);
+  padding: var(--dc-pad-riga);
+  gap: var(--dc-gap-l);
+}
+
+.dc-miniatura {
+  flex: none;
+  width: 66px;
+  height: 66px;
+  border-radius: var(--dc-radius-elemento);
+}
+.dc-miniatura-s { width: 52px; height: 52px; border-radius: var(--dc-radius-interno); }
+.dc-miniatura-l { width: 72px; height: 72px; border-radius: var(--dc-radius-riga); }
+
+.dc-riga-testo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dc-gap-xs);
+  flex: 1;
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7. Barra di navigazione in basso — senza icone
+   -------------------------------------------------------------------------- */
+
+.dc-barra {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--dc-h-barra);
+  background: var(--dc-barra);
+  border-radius: var(--dc-radius-barra) var(--dc-radius-barra) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 var(--dc-gap-s) 12px;
+}
+
+.dc-tab {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Il segno al posto dell'icona: un trattino che si allunga sulla voce attiva */
+.dc-tab-segno {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--dc-radius-pill);
+  background: var(--dc-line);
+  transition: width .18s ease;
+}
+.dc-tab[aria-current="page"] .dc-tab-segno {
+  width: 24px;
+  background: var(--dc-acc);
+}
+
+.dc-tab-label {
+  font-size: var(--dc-size-tab);
+  font-weight: var(--dc-w-medium);
+  color: var(--dc-ink);
+  opacity: .55;
+}
+.dc-tab[aria-current="page"] .dc-tab-label {
+  font-weight: var(--dc-w-semi);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   8. Pulsanti
+   -------------------------------------------------------------------------- */
+
+/* Principale — petrolio pieno, a piena larghezza in fondo alle schermate */
+.dc-btn {
+  border: 0;
+  background: var(--dc-hero);
+  color: var(--dc-hero-ink);
+  font-size: var(--dc-size-riga);
+  font-weight: var(--dc-w-semi);
+  padding: 15px 20px;
+  border-radius: var(--dc-radius-elemento);
+  cursor: pointer;
+  font-family: var(--dc-font);
+}
+.dc-btn:hover  { background: var(--dc-petrolio-scuro); }
+.dc-btn:active { background: var(--dc-petrolio-scurissimo); }
+.dc-btn-larga  { width: 100%; }
+
+/* Accento senape — richiamo sull'intestazione petrolio */
+.dc-btn-acc {
+  background: var(--dc-acc);
+  color: var(--dc-nero);
+  font-size: var(--dc-size-corpo);
+  padding: 12px 22px;
+  border-radius: var(--dc-radius-interno);
+}
+.dc-btn-acc:hover  { background: color-mix(in srgb, var(--dc-senape) 88%, var(--dc-terracotta)); }
+.dc-btn-acc:active { background: color-mix(in srgb, var(--dc-senape) 78%, var(--dc-terracotta)); }
+
+/* Secondario — su fondo tinta */
+.dc-btn-2 {
+  background: var(--dc-cella);
+  color: var(--dc-terra-ink);
+}
+.dc-btn-2:hover  { background: color-mix(in srgb, var(--dc-cella) 88%, var(--dc-terracotta)); }
+.dc-btn-2:active { background: color-mix(in srgb, var(--dc-cella) 78%, var(--dc-terracotta)); }
+
+.dc-btn:disabled, .dc-btn-acc:disabled, .dc-btn-2:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+/* --------------------------------------------------------------------------
+   9. Celle delle scale 0–5
+   -------------------------------------------------------------------------- */
+
+.dc-scala {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dc-scala-nome {
+  font-size: var(--dc-size-riga);
+  font-weight: var(--dc-w-semi);
+  color: var(--dc-ink);
+  line-height: 1.3;
+}
+
+.dc-celle {
+  display: flex;
+  gap: 6px;
+}
+
+.dc-cella {
+  flex: 1;
+  height: var(--dc-h-cella);
+  border: 0;
+  border-radius: var(--dc-radius-cella);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--dc-font);
+  font-size: var(--dc-size-riga);
+  font-weight: var(--dc-w-semi);
+  cursor: pointer;
+  background: var(--dc-cella);
+  color: var(--dc-terra-ink);
+}
+.dc-cella:hover  { background: color-mix(in srgb, var(--dc-cella) 88%, var(--dc-terracotta)); }
+.dc-cella:active { background: color-mix(in srgb, var(--dc-cella) 78%, var(--dc-terracotta)); }
+
+.dc-cella[aria-pressed="true"] {
+  background: var(--dc-hero);
+  color: var(--dc-hero-ink);
+}
+
+/* Giornata passata: sola consultazione */
+.dc-cella[disabled] { cursor: default; opacity: .55; }
+.dc-cella[disabled][aria-pressed="true"] { opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   10. Capsule sì/no
+   -------------------------------------------------------------------------- */
+
+.dc-sino {
+  display: flex;
+  align-items: center;
+  gap: var(--dc-gap-m);
+}
+
+.dc-sino-nome {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--dc-size-corpo);
+  font-weight: var(--dc-w-medium);
+  color: var(--dc-ink);
+  line-height: 1.3;
+}
+
+.dc-capsule { display: flex; gap: var(--dc-gap-s); }
+
+.dc-capsula {
+  border: 0;
+  padding: 11px 18px;
+  border-radius: var(--dc-radius-pill);
+  font-family: var(--dc-font);
+  font-size: var(--dc-size-corpo-s);
+  font-weight: var(--dc-w-semi);
+  cursor: pointer;
+  white-space: nowrap;
+  background: var(--dc-cella);
+  color: var(--dc-terra-ink);
+}
+.dc-capsula:hover  { background: color-mix(in srgb, var(--dc-cella) 88%, var(--dc-terracotta)); }
+.dc-capsula:active { background: color-mix(in srgb, var(--dc-cella) 78%, var(--dc-terracotta)); }
+
+.dc-capsula[aria-pressed="true"] {
+  background: var(--dc-hero);
+  color: var(--dc-hero-ink);
+}
+
+.dc-capsula[disabled] { cursor: default; opacity: .55; }
+.dc-capsula[disabled][aria-pressed="true"] { opacity: 1; }
+
+/* Capsula-filtro (periodi, linguette) — stessa forma, testo più piccolo */
+.dc-filtro {
+  flex: none;
+  padding: 11px 18px;
+  border-radius: var(--dc-radius-pill);
+  font-size: 13px;
+}
+
+/* --------------------------------------------------------------------------
+   11. Campi di testo
+   -------------------------------------------------------------------------- */
+
+.dc-campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dc-gap-s);
+}
+
+.dc-campo > span {
+  font-size: 13px;
+  font-weight: var(--dc-w-semi);
+  color: var(--dc-muted);
+}
+
+.dc-input,
+.dc-textarea {
+  border: 0;
+  background: var(--dc-bg);
+  color: var(--dc-ink);
+  border-radius: var(--dc-radius-interno);
+  padding: 13px 16px;
+  font-family: var(--dc-font);
+  font-size: var(--dc-size-corpo);
+  line-height: 1.5;
+  resize: none;
+}
+.dc-input::placeholder,
+.dc-textarea::placeholder { color: var(--dc-muted); opacity: .6; }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   PONTE — l'app usa nomi propri (#home-hero, .bn-btn, .dc-cta...)
+   diversi dalle classi generiche sopra (.dc-scheda, .dc-tab, .dc-btn-acc).
+   Ogni regola qui consuma SOLO i token dichiarati sopra: nessun valore
+   scritto a mano, nessuna stima.
+   ══════════════════════════════════════════════════════════════════ */
+
+html.app-mode,html.app-mode body{background:var(--dc-bg)}   /* stesso errore corretto per la Home: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale delle pagine */
+html[data-pagina="home"],html[data-pagina="home"] body{background:var(--dc-petrolio)!important}
+html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!important}   /* stesso colore della crema dell'onda: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale */
+
+/* ── Intestazione con onda (Home) ── */
+#home-hero{
+  background:var(--dc-hero);position:relative;overflow:hidden;
+  margin:0 -.9rem;padding:0 26px;
+}
+@media(min-width:700px){ #home-hero{margin:0;border-radius:var(--dc-radius-scheda);padding-top:34px} }
+.dc-hero-deco{position:absolute;right:-26px;top:20px;width:190px;opacity:.35;z-index:0;pointer-events:none}
+.dc-onda{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:40px;display:block;z-index:2}
+.dc-onda path{fill:var(--dc-bg)}
+.dc-hero-riga{position:relative;z-index:3;display:flex;align-items:flex-start;gap:var(--dc-gap-m)}
+.dc-hero-in{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--dc-gap-xs)}
+.dc-hero-saluto{font-size:var(--dc-size-corpo-s);font-weight:var(--dc-w-medium);color:var(--dc-hero-sub)}
+.dc-hero-nome{margin:0;font-size:var(--dc-size-titolo);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-titolo);color:var(--dc-hero-ink)}
+.dc-hero-sub{margin:2px 0 0;font-size:var(--dc-size-corpo-s);line-height:var(--dc-lh-corpo);color:var(--dc-hero-sub);max-width:230px}
+.dc-cta{
+  margin-top:var(--dc-gap-m);align-self:flex-start;
+  border:0;cursor:pointer;font-family:var(--dc-font);
+  background:var(--dc-acc);color:var(--dc-nero);
+  font-size:var(--dc-size-corpo);font-weight:var(--dc-w-semi);
+  padding:12px 22px;border-radius:var(--dc-radius-interno);
+}
+.dc-cta:active{background:color-mix(in srgb, var(--dc-senape) 78%, var(--dc-terracotta))}
+.dc-hero-imp{
+  border:0;cursor:pointer;-webkit-appearance:none;appearance:none;
+  background:rgba(255,255,255,.14);width:38px;height:38px;
+  border-radius:var(--dc-radius-pill);flex:none;
+  display:flex;align-items:center;justify-content:center;padding:0;
+}
+.dc-hero-imp:active{background:rgba(255,255,255,.3)}
+
+/* ── Schede della Home ── */
+.dc-stack{padding:16px 0 14px;display:flex;flex-direction:column;gap:var(--dc-gap-m)}
+.dc-card{background:var(--dc-surface);border-radius:var(--dc-radius-scheda);padding:var(--dc-pad-scheda);margin:0}
+.dc-card-tit{font-size:var(--dc-size-meta);font-weight:var(--dc-w-semi);color:var(--dc-muted)}
+.dc-card-riga{display:flex;align-items:center;gap:var(--dc-gap-m)}
+.dc-card-riga .dc-card-tit{flex:1}
+.dc-chev{flex:none;color:var(--dc-muted)}
+
+.dc-row{display:flex;gap:var(--dc-gap-m)}
+.dc-streak{flex:1;display:flex;flex-direction:column;gap:var(--dc-gap-xs)}
+.dc-streak-num{font-size:var(--dc-size-titolo-xl);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-titolo);color:var(--dc-muted)}
+.dc-streak-lbl{font-size:var(--dc-size-meta);font-weight:var(--dc-w-medium);color:var(--dc-muted);line-height:var(--dc-lh-meta)}
+.dc-ieri{flex:1.6;display:flex;flex-direction:column;gap:10px}
+
+.dc-bar-row{display:flex;align-items:center;gap:9px}
+.dc-bar-nome{font-size:13px;font-weight:var(--dc-w-medium);width:66px;flex:none;color:var(--dc-ink)}
+.dc-bar-track{flex:1;height:7px;border-radius:var(--dc-radius-pill);background:var(--dc-line);position:relative;overflow:hidden}
+.dc-bar-fill{position:absolute;inset:0 auto 0 0;border-radius:var(--dc-radius-pill);background:var(--dc-hero)}
+.dc-bar-val{font-size:11px;font-weight:var(--dc-w-semi);color:var(--dc-terra)}
+
+.dc-skill{background:var(--dc-surface-2);position:relative;overflow:hidden;cursor:pointer}
+.dc-skill-deco{position:absolute;right:-18px;bottom:-18px;width:96px;opacity:.10;pointer-events:none}
+.dc-skill-in{position:relative;z-index:1;display:flex;flex-direction:column;gap:6px}
+.dc-skill-nome{font-size:var(--dc-size-sezione);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-sezione);color:var(--dc-ink)}
+.dc-skill-desc{font-size:var(--dc-size-corpo-s);line-height:var(--dc-lh-corpo);color:var(--dc-muted)}
+
+.dc-week-card{display:flex;flex-direction:column;gap:var(--dc-gap-m);cursor:pointer;min-height:0}
+.dc-week{display:flex;justify-content:space-between;align-items:flex-end;height:60px}
+.dc-week-col{display:flex;flex-direction:column;align-items:center;gap:9px}
+.dc-week-bar{width:18px;border-radius:var(--dc-radius-pill);background:var(--dc-hero)}
+.dc-week-bar.vuota{background:var(--dc-line);height:8px}
+.dc-week-bar.oggi{background:var(--dc-acc)}
+.dc-week-d{font-size:11px;font-weight:var(--dc-w-medium);color:var(--dc-muted);opacity:.7}
+
+
+/* ── Diary: testata, striscia dei giorni, passi ── */
+.dc-testata{display:flex;align-items:center;gap:var(--dc-gap-s);padding:8px 0 0}
+.dc-testata-testo{flex:1;min-width:0}
+.dc-testata h2{margin:0;font-size:var(--dc-size-titolo-s);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-titolo);color:var(--dc-ink)}
+.dc-testata p{margin:4px 0 0;font-size:var(--dc-size-corpo-s);color:var(--dc-muted)}
+.dc-tondo{border:0;background:var(--dc-line);color:var(--dc-muted);width:36px;height:36px;border-radius:var(--dc-radius-pill);flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+
+.dc-strip{display:flex;gap:var(--dc-gap-s);overflow-x:auto;padding:16px 0;scrollbar-width:none}
+.dc-strip::-webkit-scrollbar{display:none}
+.dc-giorno{flex:none;width:54px;border:0;cursor:pointer;font-family:var(--dc-font);background:var(--dc-surface);border-radius:var(--dc-radius-elemento);padding:10px 0 9px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--dc-ink)}
+.dc-giorno.sel{background:var(--dc-hero);color:var(--dc-hero-ink)}
+.dc-giorno-dow{font-size:11px;font-weight:var(--dc-w-medium);opacity:.75;text-transform:uppercase;letter-spacing:.06em}
+.dc-giorno-num{font-size:17px;font-weight:var(--dc-w-bold);letter-spacing:-.02em}
+.dc-giorno-dot{width:5px;height:5px;border-radius:var(--dc-radius-pill);background:transparent}
+.dc-giorno-dot.piena{background:var(--dc-acc)}
+
+.dc-lettura{background:var(--dc-tint-terra);border-radius:var(--dc-radius-interno);padding:13px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.dc-lettura i{width:9px;height:9px;border-radius:var(--dc-radius-pill);background:var(--dc-terra);flex:none}
+.dc-lettura span{font-size:var(--dc-size-meta);font-weight:var(--dc-w-semi);color:var(--dc-terra-ink);line-height:1.4}
+
+.dc-passi-barra{display:flex;flex-direction:column;gap:10px;padding:0 0 14px}
+.dc-passi{display:flex;gap:7px}
+.dc-passo{flex:1;height:5px;border-radius:var(--dc-radius-pill);background:var(--dc-line);cursor:pointer;transition:background .18s}
+.dc-passo.fatto{background:var(--dc-acc)}
+.dc-passo.on{background:var(--dc-hero)}
+.dc-passo-nome{display:flex;align-items:baseline;gap:8px}
+#dc-passo-tit{font-size:var(--dc-size-riga);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-sezione);color:var(--dc-ink)}
+#dc-passo-conta{font-size:12px;font-weight:var(--dc-w-medium);color:var(--dc-muted);opacity:.75}
+
+/* Le schede del diario e le loro celle usano i token del sistema */
+#page-oggi > .card{background:var(--dc-surface);border-radius:var(--dc-radius-scheda)!important;padding:var(--dc-pad-scheda)!important;display:flex;flex-direction:column;gap:var(--dc-gap-xl)}
+#page-oggi .flbl{font-size:var(--dc-size-riga);font-weight:var(--dc-w-semi);color:var(--dc-ink);line-height:1.3}
+#page-oggi .sb,#page-oggi .tb{
+  height:var(--dc-h-cella);border-radius:var(--dc-radius-cella)!important;border:0!important;
+  background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
+  font-family:var(--dc-font);font-size:var(--dc-size-riga);font-weight:var(--dc-w-semi);
+  display:flex;align-items:center;justify-content:center;flex:1;
+}
+#page-oggi .sb.on,#page-oggi .sb.sel,#page-oggi .sb.active,
+#page-oggi .tb.on,#page-oggi .tb.sel,#page-oggi .tb.active{background:var(--dc-hero)!important;color:var(--dc-hero-ink)!important}
+
+/* ── Barra di navigazione: usa i token della .dc-barra, non valori a mano ── */
+.bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:100;margin:0;border:0;
+  border-radius:var(--dc-radius-barra) var(--dc-radius-barra) 0 0;
+  background:var(--dc-barra);box-shadow:var(--dc-shadow-pannello);
+  padding:12px var(--dc-gap-s) calc(10px + env(safe-area-inset-bottom,0px));
+}
+.bottom-nav-inner{display:flex;justify-content:space-around;align-items:center;gap:2px;max-width:560px;margin:0 auto}
+.bn-btn{flex:1;min-width:0;background:none;border:0;cursor:pointer;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:7px;font-family:var(--dc-font)}
+.bn-btn .bn-icon{display:none}
+.bn-btn::before{content:'';width:9px;height:9px;border-radius:var(--dc-radius-pill);background:var(--dc-line);transition:width .18s ease,background .18s ease}
+.bn-btn.active::before{width:24px;background:var(--dc-acc)}
+.bn-lbl{font-size:var(--dc-size-tab);font-weight:var(--dc-w-medium);color:var(--dc-ink);opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bn-btn.active .bn-lbl{font-weight:var(--dc-w-semi);opacity:1}
+.main-inner{padding-bottom:calc(var(--dc-h-barra) + 20px + env(safe-area-inset-bottom,0px))}
+
+/* ── Pulsante profilo nella barra: nessuna regola lo copriva finora,
+   quindi prendeva lo stile predefinito del bottone e sbilanciava la riga. ── */
+.bn-user-btn{
+  flex:1;min-width:0;background:none;border:0;cursor:pointer;padding:6px 4px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  font-family:var(--dc-font);-webkit-appearance:none;appearance:none;
+}
+.bn-user-avatar{
+  width:22px;height:22px;border-radius:var(--dc-radius-pill);
+  background:var(--dc-petrolio-chiaro);color:var(--dc-hero);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:var(--dc-w-bold);line-height:1;
+}
+.bn-user-btn .bn-lbl{opacity:.55}
+.bn-user-btn.active .bn-lbl,html[data-pagina="impostazioni"] .bn-user-btn .bn-lbl{opacity:1;font-weight:var(--dc-w-semi)}
+
+/* ══ #topheader: nascosto per default ═══════════════════════════════
+   Prima veniva nascosto solo da una riga JS dentro goPage(). La Home
+   pero' parte gia' "active" nel markup, senza mai passare da goPage():
+   quella riga non girava mai, e la barra restava visibile - semi-
+   trasparente e sfocata - come fascia grigia sotto l'orologio.
+   Il difetto era del CSS ereditato da prima della riscrittura. */
+.topheader{display:none}
+
+/* La lieve sfumatura visibile sotto l'orologio nella PWA installata e'
+   la scrim di leggibilita' che iOS disegna sopra la pagina in modalita'
+   standalone: non e' generata da questo foglio di stile e non e'
+   correggibile via CSS. Confermato con un test di confine tra due
+   colori: la sfumatura si adatta a qualunque colore sottostante. */
+
+/* ══ IL VERO DIFETTO: .main-inner (regola vecchia in app.css) ha
+   padding-top:calc(env(safe-area-inset-top,0px) + 1.6rem) = 25,6px,
+   applicato anche alla Home. L'intestazione deve arrivare fino al
+   bordo: la gestione dello spazio in cima e' gia' tutta nel padding
+   di #home-hero, non serve un'altra imbottitura dal contenitore. ══ */
+
+
+/* La scheda "Ultimi 7 giorni" ha un'altezza fissa e contenuta, non piu'
+   allungata a riempire lo spazio residuo: quel meccanismo la faceva
+   sconfinare sotto la barra in basso su questo contenuto. Le barre
+   (max 44px) restano ancorate al fondo della traccia da 60px, con
+   margine sopra prima delle lettere dei giorni. */
+/* ══ HOME: si adatta allo schermo, non bloccata a un'altezza fissa ══
+   Le misure principali sono legate a 100dvh con clamp(): si restringono
+   sugli schermi bassi e crescono su quelli alti, restando quasi sempre
+   in una schermata sola senza rischiare di tagliare il contenuto se
+   cresce (saluto piu' lungo, testo diverso). Nessun overflow:hidden:
+   se proprio non basta, la pagina scorre invece di tagliare. */
+html[data-pagina="home"] #home-hero{
+  padding-top:calc(env(safe-area-inset-top,0px) + clamp(16px, 4dvh, 30px))!important;
+  padding-bottom:clamp(28px, 5dvh, 48px)!important;
+}
+html[data-pagina="home"] .dc-hero-nome{font-size:clamp(24px, 6dvh, 30px)!important}
+html[data-pagina="home"] .dc-stack{
+  gap:clamp(8px, 1.6dvh, 12px)!important;
+  padding-top:clamp(10px, 2dvh, 16px)!important;
+  padding-bottom:clamp(8px, 1.5dvh, 14px)!important;
+}
+html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
+
+/* ── PIEDE DEI PASSI DEL DIARY, come nel prototipo ──
+   Indietro + un solo pulsante principale che cambia etichetta,
+   non due gruppi separati che si scambiano di posto. */
+.dc-passi-nav{display:flex;gap:10px;padding:4px 0 8px}
+.dc-indietro{
+  flex:1;border:0;background:var(--dc-cella);color:var(--dc-terra-ink);
+  font-family:var(--dc-font);font-size:14.5px;font-weight:600;
+  padding:15px 20px;border-radius:var(--dc-radius-elemento);cursor:pointer;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ATTIVITÀ — un unico blocco pulito, valori letterali dal prototipo
+   autonomo (const pill = ...), non piu' otto patch sovrapposte.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Intestazione: trasparente, nessuna ombra ne' sfumatura ereditata */
+#page-attivita > .page-hero{
+  background:none!important;box-shadow:none!important;filter:none!important;
+  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
+}
+#page-attivita > .page-hero *{color:var(--dc-ink);opacity:1}
+#page-attivita > .page-hero::before,
+#page-attivita > .page-hero::after{display:none}
+#page-attivita > .page-hero div[style*="font-size:22px"]{
+  font-size:27px;font-weight:800;letter-spacing:-.03em;
+}
+#page-attivita > .page-hero div[style*="opacity:.85"]{
+  font-size:13.5px;color:var(--dc-muted);opacity:1;margin-top:6px;
+}
+
+/* Le tre fasce (schermata iniziale, prima di scegliere qualcosa) */
+.slot-btn{
+  background:var(--dc-surface);border:0;box-shadow:none;
+  border-radius:26px;padding:18px;
+}
+.slot-btn.has-items{background:var(--dc-surface)}
+#dc-slot-grid{display:none!important}  /* mai visibile, ne' da vuoto ne' da pieno */
+.slot-btn span[style*="font-size:28px"]{display:none}
+.slot-btn span[style*="font-size:13px"]{
+  font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dc-terra);
+}
+.slot-btn span[style*="font-size:11px"]{
+  font-size:13.5px;color:var(--dc-muted);opacity:.7;
+}
+
+/* Stato vuoto: margine (non gap) tra i figli, per compatibilita' */
+#plan-empty-state{
+  background:var(--dc-surface);border-radius:26px;padding:40px 26px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  margin-bottom:1rem;
+}
+#plan-empty-state > *{margin-top:28px}
+#plan-empty-state > *:first-child{margin-top:0}
+.dc-att-vuoto-testo{display:flex;flex-direction:column;gap:6px}
+.dc-att-vuoto-testo span:first-child{font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink)}
+.dc-att-vuoto-testo span:last-child{font-size:13.5px;line-height:1.5;color:var(--dc-muted)}
+#plan-empty-state .dc-cta-passo{
+  flex:2;border:0;background:var(--dc-hero);color:var(--dc-hero-ink);
+  font-family:var(--dc-font);font-size:14.5px;font-weight:600;
+  padding:15px 20px;border-radius:var(--dc-radius-elemento);cursor:pointer;
+}
+#plan-empty-state #plan-empty-state .dc-cta-passo{flex:none;width:auto;margin-top:28px}
+
+/* Riepilogo: intestazione di fascia con il suo "+", pillole rimovibili */
+.plan-summary-slot{
+  background:var(--dc-surface);border-radius:26px;padding:18px;
+  display:flex;flex-direction:column;gap:14px;margin-bottom:14px;
+}
+.plan-summary-slot-head{display:flex;align-items:center;gap:10px}
+.plan-summary-slot-title{
+  font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dc-terra);flex:1;margin:0;
+}
+.plan-summary-add{
+  border:0;background:var(--dc-cella);color:var(--dc-terra-ink);
+  width:30px;height:30px;border-radius:999px;
+  font-size:17px;font-weight:600;cursor:pointer;line-height:1;padding:0;flex:none;
+}
+.plan-summary-vuoto{font-size:13.5px;color:var(--dc-muted);opacity:.7}
+.plan-summary-chips{display:flex;flex-wrap:wrap;gap:8px}
+.plan-summary-chip{
+  background:var(--dc-cella);color:var(--dc-terra-ink);
+  font-size:13px;font-weight:600;padding:10px 16px;
+  border-radius:999px;cursor:pointer;
+}
+
+/* Pillole delle attivita' — valori letterali dal JS del prototipo:
+   const pill = (on) => `padding:11px 18px;border-radius:999px;
+   font-size:13.5px;font-weight:600;background:${on?hero:cella};
+   color:${on?heroink:terraInk}` */
+.cat-chip{
+  background:var(--dc-cella);color:var(--dc-terra-ink);border:0;
+  font-family:var(--dc-font);font-size:13.5px;font-weight:600;
+  padding:11px 18px;border-radius:999px;cursor:pointer;
+  box-shadow:none;transition:none;
+}
+.cat-chip.selected{background:var(--dc-hero);color:var(--dc-hero-ink);box-shadow:none}
+.cat-chip:hover{background:var(--dc-cella);color:var(--dc-terra-ink);border-color:transparent}
+
+/* Linguette di categoria: vuote a riposo, petrolio piene da attive -
+   angolo diverso dalle pillole, cosi' si distinguono a colpo d'occhio */
+.act-tabs{display:flex;gap:8px;margin-bottom:1.25rem;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.act-tabs::-webkit-scrollbar{display:none}
+.act-tab{
+  padding:10px 18px;border-radius:18px;font-size:13px;font-weight:600;
+  white-space:nowrap;flex:none;cursor:pointer;
+  background:var(--dc-surface);color:var(--dc-terra-ink);
+  border:1.5px solid var(--dc-cella);box-shadow:none;transition:none;
+}
+.act-tab.active{background:var(--dc-hero);color:var(--dc-hero-ink);border-color:var(--dc-hero)}
+.act-tab:hover{background:var(--dc-surface);color:var(--dc-terra-ink);border-color:var(--dc-cella)}
+.act-tab.active:hover{background:var(--dc-hero);color:var(--dc-hero-ink)}
+
+/* Attivita' personalizzata */
+.planner-add-btn{
+  border:0;background:var(--dc-hero);color:var(--dc-hero-ink);
+  width:36px;height:36px;border-radius:999px;font-size:17px;cursor:pointer;flex:none;
+}
+#custom-act-input{
+  border:0;background:var(--dc-bg);color:var(--dc-ink);
+  border-radius:18px;padding:13px 16px;
+  font-family:var(--dc-font);font-size:14px;
+}
+
+/* Schermata "Scegli le attivita'" */
+#act-step-pick{padding-top:8px}
+#act-step-pick > div > button[onclick="backToSlots()"]{
+  background:var(--dc-line)!important;border:0!important;color:var(--dc-muted)!important;
+  width:36px!important;height:36px!important;border-radius:999px!important;padding:0!important;font-size:0!important;
+  display:flex!important;align-items:center;justify-content:center;margin-bottom:16px;
+}
+#act-step-pick > div > button[onclick="backToSlots()"]::after{content:'‹';font-size:20px;line-height:1}
+#pick-slot-label{display:none}
+.dc-scegli-titolo{margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--dc-ink);flex:1;min-width:0}
+.dc-scegli-sotto{margin:6px 0 18px;font-size:13.5px;color:var(--dc-muted)}
+
+/* Freccetta che ruota al posto del pallino sotto "Home" durante il
+   doppio tocco per ricaricare - persa per sbaglio nella ripulitura */
+#bn-home.caricando::before{display:none}
+#bn-home.caricando .bn-icon{
+  display:flex!important;align-items:center;justify-content:center;
+  width:18px;height:18px;color:var(--dc-hero);
+}
+#bn-home.caricando .bn-icon svg{animation:dc-ruota .7s linear infinite}
+@keyframes dc-ruota{to{transform:rotate(360deg)}}
+
+/* Avviso "Salvato" flottante - perso nella ripulitura dell'Attivita' */
+.toast{
+  position:fixed;left:50%;bottom:calc(var(--dc-h-barra) + 22px + env(safe-area-inset-bottom,0px));
+  transform:translateX(-50%) translateY(10px);
+  display:flex;align-items:center;gap:8px;
+  font-size:13.5px;font-weight:600;
+  padding:12px 20px;border-radius:var(--dc-radius-pill);
+  background:var(--dc-hero);color:var(--dc-hero-ink);
+  box-shadow:0 10px 30px rgba(27,75,74,.28);
+  opacity:0;pointer-events:none;z-index:400;
+  transition:opacity .22s ease, transform .22s ease;
+  white-space:nowrap;border:0;
+}
+.toast::before{
+  content:'✓';display:flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:999px;
+  background:rgba(255,255,255,.22);font-size:11px;font-weight:800;flex:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Pulsante "Altro" nella scheda Abilita' di oggi - stessa sorte */
+.dc-skill-azioni{margin-top:6px}
+.dc-skill-altro{
+  border:0;background:none;padding:0;
+  font-family:var(--dc-font);font-size:12px;font-weight:700;
+  color:var(--dc-terra);cursor:pointer;
+}
+
+/* Alone grigio predefinito di iOS al tocco: puo' restare visibile sopra
+   il pulsante finche' non arriva il tocco successivo, nascondendo il
+   cambio di colore che in realta' avviene subito sotto. */
+.cat-chip,.act-tab{-webkit-tap-highlight-color:transparent}
+
+/* ══════════════════════════════════════════════════════════════════
+   STORICO — restile nei colori attuali, logica e struttura invariate.
+   Sei grafici clinici confermati e mantenuti, solo i colori cambiano.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Intestazione: stesso stile inline delle altre pagine, stesso rimedio */
+#page-storico > .page-hero{
+  background:none!important;box-shadow:none!important;filter:none!important;
+  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
+}
+#page-storico > .page-hero *{color:var(--dc-ink)!important;opacity:1!important}
+#page-storico > .page-hero::before,
+#page-storico > .page-hero::after{display:none!important}
+#page-storico > .page-hero div[style*="font-size:22px"]{
+  font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
+}
+#page-storico > .page-hero div[style*="opacity:.85"]{
+  font-size:13.5px!important;color:var(--dc-muted)!important;margin-top:6px!important;
+}
+
+/* Linguette Storico/Trend: stesso linguaggio delle linguette di categoria
+   dell'Attivita' - vuote a riposo, petrolio piene da attive */
+.storico-tabs{display:flex;gap:8px;margin-bottom:1.25rem}
+.storico-tab{
+  padding:11px 18px;font-size:13.5px;font-weight:600;
+  border-radius:999px;border:0;cursor:pointer;
+  background:var(--dc-cella);color:var(--dc-terra-ink);box-shadow:none;
+}
+.storico-tab.active{background:var(--dc-hero);color:var(--dc-hero-ink)}
+
+/* Pillole dei periodi (7gg/14gg/Tutti): valori letterali del prototipo,
+   gli stessi delle attivita' e delle categorie */
+.chart-range{display:flex;gap:8px;margin-bottom:16px;justify-content:flex-start}
+.chart-range-btn{
+  padding:11px 18px;font-size:13.5px;font-weight:600;
+  border-radius:999px;border:0;cursor:pointer;
+  background:var(--dc-cella);color:var(--dc-terra-ink);box-shadow:none;
+}
+.chart-range-btn.active{background:var(--dc-hero);color:var(--dc-hero-ink)}
+
+/* Etichetta di sezione ("Giorni compilati") */
+.slbl{
+  font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dc-terra);margin-bottom:14px;
+}
+
+/* Schede dei grafici Trend */
+.cwrap{
+  background:var(--dc-surface)!important;border:0!important;box-shadow:none!important;
+  border-radius:var(--dc-radius-scheda);padding:20px;margin-bottom:14px;
+}
+.cwrap::before{display:none!important}
+.ctitle{
+  font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink);
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+
+/* Elenco delle giornate: stessa riga bianca ad angolo 22 usata altrove
+   (fogli salvati, pazienti) invece del vecchio bordo sottile */
+.hi{
+  background:var(--dc-surface);border:0;border-radius:var(--dc-radius-riga);
+  padding:16px 18px;box-shadow:none;
+}
+.hi:hover{box-shadow:none;transform:none;border-color:transparent}
+.hd{color:var(--dc-ink);font-weight:800;letter-spacing:-.02em}
+
+
+/* Etichette nell'elenco delle giornate: uno stile solo, quello letterale
+   del prototipo per il badge "allarme" (background:var(--tintT);
+   color:var(--terraInk)), usato per tutte anche quando sono piu' di una -
+   nessuna differenza di colore per gravita', come chiesto. */
+.flag{
+  background:var(--dc-cella);color:var(--dc-terra-ink);
+  font-size:11px;font-weight:600;padding:6px 11px;border-radius:999px;
+}
+.flag-danger,.flag-warn,.flag-info,.flag-ok{background:var(--dc-cella);color:var(--dc-terra-ink)}
+
+/* Ramo decorativo sullo sfondo dell'Attivita', in basso a sinistra,
+   sotto tutto il resto - colore tenue, puramente ornamentale */
+#page-attivita{position:relative}
+.dc-att-ramo{
+  position:fixed;right:-60px;bottom:calc(84px + env(safe-area-inset-bottom,0px));
+  width:280px;opacity:.12;pointer-events:none;z-index:0;
+}
+#page-attivita > *:not(.dc-att-ramo){position:relative;z-index:1}
+
+/* .sc (contatori) in app.css ha bordo e ombra: lo stile scritto da
+   JavaScript non li tocca, quindi restavano attivi sotto. */
+.sc{border:0;box-shadow:none}
+
+/* .dc-sino-riga non era mai stato reso un contenitore flessibile:
+   i due pulsanti Si'/No avevano flex:1 ma senza un genitore flex quella
+   proprieta' non ha effetto, e ogni pulsante (display:flex) diventava
+   un blocco a se', impilato sopra l'altro invece che affiancato. */
+.dc-sino-riga{display:flex;gap:6px}
+
+/* ══════════════════════════════════════════════════════════════════
+   GUIDA DBT — .dc-riga e le sue parti erano usate nel markup generato
+   da guide.js ma non avevano MAI ricevuto una regola, ne' qui ne' in
+   app.css: le righe dei moduli rendevano senza alcuno stile. Valori
+   letterali dal prototipo (modulo: padding:16px, radius:26,
+   miniatura 66x66/radius:20).
+   ══════════════════════════════════════════════════════════════════ */
+#page-guida > .page-hero{
+  background:none!important;box-shadow:none!important;filter:none!important;
+  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
+}
+#page-guida > .page-hero *{color:var(--dc-ink)!important;opacity:1!important}
+#page-guida > .page-hero::before,
+#page-guida > .page-hero::after{display:none!important}
+#page-guida > .page-hero button[onclick="goBack()"]{
+  background:var(--dc-line)!important;border:0!important;color:var(--dc-muted)!important;
+  width:36px!important;height:36px!important;border-radius:999px!important;
+  padding:0!important;font-size:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+}
+#page-guida > .page-hero button[onclick="goBack()"]::after{content:'‹';font-size:20px;line-height:1}
+#page-guida > .page-hero div[style*="font-size:22px"]{
+  font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
+}
+#page-guida > .page-hero div[style*="opacity:.85"]{
+  font-size:13.5px!important;color:var(--dc-muted)!important;opacity:1!important;margin-top:6px!important;
+}
+
+.dc-riga{
+  background:var(--dc-surface);border-radius:26px;padding:16px;
+  display:flex;gap:16px;align-items:center;cursor:pointer;
+  margin-bottom:12px;
+}
+.dc-riga-ill{width:66px;height:66px;border-radius:20px;flex:none;object-fit:cover}
+.dc-riga-testo{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.dc-riga-tit{font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:1.2;color:var(--dc-ink)}
+.dc-riga-sub{font-size:12.5px;line-height:1.45;color:var(--dc-muted)}

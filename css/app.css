@@ -69,7 +69,9 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 /* Le schede fuori schermo non vengono ridisegnate finche' non servono */
-@media(max-width:700px){ .page{content-visibility:auto;contain-intrinsic-size:1px 1200px} }
+/* Rimosso content-visibility sulle pagine: su pagine lunghe come la Guida
+   il browser saltava il disegno delle parti in fondo, e i tocchi non
+   arrivavano ai comandi. Il guadagno di fluidita' non vale il difetto. */
 body{background:var(--bg);touch-action:pan-y}
 /* In login lo sfondo del documento e' verde: niente bordi bianchi
    sopra la status bar o sotto la home bar */
@@ -194,44 +196,20 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--text);line-heig
 .pill.unsaved{background:var(--amber-l);color:var(--amber)}
 
 /* ── BOTTOM NAV ── */
-/* Barra flottante a capsula, staccata dai bordi */
-.bottom-nav{
-  display:none;position:fixed;z-index:100;
-  left:12px;right:12px;
-  bottom:max(10px, calc(env(safe-area-inset-bottom,0px) - 10px));
-  padding:6px;
-  border-radius:999px;
-  /* Vetro vero: quasi trasparente, la leggibilita' arriva dalla sfocatura */
-  background:rgba(255,255,255,.10);
-  -webkit-backdrop-filter:blur(26px) saturate(190%);
-  backdrop-filter:blur(26px) saturate(190%);
-  transform:translateZ(0);        /* livello grafico a se': non ridisegna la pagina */
-  contain:paint;
-  border:1px solid rgba(255,255,255,.4);
-  box-shadow:0 10px 34px rgba(16,40,36,.22), 0 2px 8px rgba(16,40,36,.12), inset 0 1px 0 rgba(255,255,255,.6);
-}
-[data-theme="dark"] .bottom-nav{
-  background:rgba(20,30,28,.14);
-  border-color:rgba(255,255,255,.14);
-  box-shadow:0 8px 28px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08);
-}
+/* barra in basso: definita in dc.css */
+
+[data-theme="dark"] 
 /* Senza sfocatura disponibile serve piu' coprenza, o il testo diventa illeggibile */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
-  .bottom-nav{background:rgba(255,255,255,.94)}
+  
   }
-.bottom-nav-inner{display:flex;justify-content:space-around;align-items:stretch}
-.bn-btn{
-  display:flex;flex-direction:column;align-items:center;gap:2px;
-  background:none;border:none;cursor:pointer;
-  padding:7px 6px 6px;color:var(--text);font-family:var(--font-ui);min-width:48px;
-  flex:1;
-  transition:background .18s, color .18s;border-radius:999px;
-}
-.bn-btn .bn-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;transition:transform .15s}
-.bn-btn .bn-icon svg{width:22px;height:22px;display:block;flex-shrink:0}
-.bn-btn .bn-label{font-size:10px;font-weight:600;letter-spacing:.02em}
-.bn-btn.active{color:var(--teal-d);background:rgba(255,255,255,.55);border-radius:999px}
-.bn-btn.active .bn-icon{transform:scale(1.1)}
+
+
+
+
+
+
+
 
 /* ── USER MENU ── */
 .user-menu-btn{
@@ -584,11 +562,27 @@ textarea:focus,input:focus,select:focus{
 .leisure-item:hover{border-color:var(--teal);background:var(--teal-ll);transform:translateY(-1px)}
 .leisure-item.tried{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d);font-weight:600}
 .home-quick-card{
-  background:var(--surface);border:1px solid var(--border-l);
-  border-radius:var(--r);padding:1.25rem;cursor:pointer;
-  box-shadow:var(--shadow-sm);transition:all .15s;text-align:center;
+  background:var(--surface);border:none;
+  border-radius:var(--r);padding:1rem .5rem;cursor:pointer;
+  box-shadow:var(--shadow-sm);text-align:center;
+  /* Le quattro tessere hanno testi di lunghezza diversa: senza una
+     struttura comune si disallineano fra loro. */
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  min-height:104px;
+  transition:transform .28s var(--spring), box-shadow .28s var(--spring);
 }
-.home-quick-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-color:var(--sage)}
+.home-quick-card:active{transform:scale(.96)}
+/* icona, titolo e sottotitolo occupano sempre la stessa altezza */
+.home-quick-card > div:nth-child(1){height:30px;line-height:30px;font-size:24px}
+.home-quick-card > div:nth-child(2){
+  font-size:11.5px;font-weight:700;color:var(--text);line-height:1.2;
+  margin-top:4px;min-height:14px;
+}
+.home-quick-card > div:nth-child(3){
+  font-size:10.5px;color:var(--muted);line-height:1.25;
+  margin-top:3px;min-height:26px;display:flex;align-items:flex-start;justify-content:center;
+}
+.home-quick-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
 .leisure-cat-title{
   font-size:12px;font-weight:700;color:var(--teal);
   text-transform:uppercase;letter-spacing:.06em;
@@ -851,7 +845,7 @@ textarea:focus,input:focus,select:focus{
 /* ── RESPONSIVE ── */
 @media(max-width:700px){
   .sidebar{display:none}
-  .bottom-nav{display:block}
+  
   .main-inner{padding:.75rem .9rem;padding-bottom:calc(78px + env(safe-area-inset-bottom,0px) + 1rem)}
   /* Pagine senza barra superiore (Home, ecc.): il contenuto non deve
      finire sotto l'orologio/batteria */
@@ -864,7 +858,7 @@ textarea:focus,input:focus,select:focus{
   .strumenti-grid{grid-template-columns:1fr 1fr}
 }
 @media(min-width:701px){
-  .bottom-nav{display:none!important}
+  
   .topheader{margin:0;padding:14px 2.5rem}
   .main-inner{padding-top:1.75rem}
 }
@@ -872,7 +866,7 @@ textarea:focus,input:focus,select:focus{
 
 
       /* la scritta sta in fondo, sotto l'orologio */
-}
+
 /* ── ONBOARD FLIP ── */
 @keyframes slideOutLeft{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-40px)}}
 @keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
@@ -947,15 +941,12 @@ textarea:focus,input:focus,select:focus{
 /* ── Movimento: curva elastica e risposta al tocco ── */
 :root{ --spring:cubic-bezier(.34,1.56,.64,1); }
 
-.card, .strumenti-card, .bn-btn, .chart-range-btn, .dbn{
-  transition:transform .28s var(--spring), box-shadow .28s var(--spring),
-             background .18s ease, color .18s ease;
-}
+.card, .strumenti-card, 
 .strumenti-card:active, .chart-range-btn:active, .dbn:active{
   transform:scale(.96);
 }
-.bn-btn:active{ transform:scale(.92); }
-.bn-btn.active .bn-icon{ animation:pop .34s var(--spring); }
+
+
 @keyframes pop{ 0%{transform:scale(1)} 45%{transform:scale(1.22)} 100%{transform:scale(1.1)} }
 
 /* Nel tema scuro il riflesso interno va attenuato, o sembra sporco */
@@ -967,16 +958,10 @@ textarea:focus,input:focus,select:focus{
 
 /* Testo e icone si staccano dal contenuto che scorre sotto il vetro,
    senza dover alzare l'opacita' dello sfondo */
-.bn-btn .bn-lbl, .bn-btn .bn-icon,
-.topheader .dlabel, .topheader .dsub{
-  text-shadow:0 1px 2px rgba(255,255,255,.9), 0 0 6px rgba(255,255,255,.65);
-}
-.bn-btn .bn-icon svg{ filter:drop-shadow(0 1px 1.5px rgba(255,255,255,.9)); }
-[data-theme="dark"] .bn-btn .bn-lbl, [data-theme="dark"] .bn-btn .bn-icon,
-[data-theme="dark"] .topheader .dlabel, [data-theme="dark"] .topheader .dsub{
-  text-shadow:0 1px 3px rgba(0,0,0,.8);
-}
-[data-theme="dark"] .bn-btn .bn-icon svg{ filter:drop-shadow(0 1px 2px rgba(0,0,0,.8)); }
+
+
+[data-theme="dark"] 
+[data-theme="dark"] 
 
 /* La barra dei giorni resta sempre visibile: sticky non funziona qui perche'
    il contenitore ha overflow-x:hidden e diventa lui l'area di scorrimento,
@@ -1068,11 +1053,7 @@ textarea:focus,input:focus,select:focus{
 
 /* ── TEMA SCURO: vetro coerente con il tema chiaro ──
    Sostituisce le vecchie regole opache che annullavano l'effetto. */
-[data-theme="dark"] .bottom-nav{
-  background:rgba(20,30,28,.16)!important;
-  border-color:rgba(255,255,255,.14);
-  box-shadow:0 10px 34px rgba(0,0,0,.5), 0 2px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
-}
+[data-theme="dark"] 
 [data-theme="dark"] .topheader{
   background:rgba(20,30,28,.18)!important;
   border-color:rgba(255,255,255,.12);
@@ -1171,3 +1152,319 @@ textarea:focus,input:focus,select:focus{
   transition:transform .28s var(--spring), box-shadow .28s var(--spring);
 }
 .pat-hist-item:active{transform:scale(.98)}
+
+/* Sola consultazione: nulla e' cliccabile tranne la navigazione.
+   Vale anche per i comandi che agganciano l'azione via JavaScript. */
+.readonly-mode button:not([data-nav]),
+.readonly-mode input,
+.readonly-mode textarea,
+.readonly-mode select,
+.readonly-mode [onclick]:not([data-nav]),
+.readonly-mode .sb,.readonly-mode .tb,.readonly-mode .skill-btn,
+.readonly-mode .chip,.readonly-mode label{
+  pointer-events:none!important;
+}
+.readonly-mode .sb,.readonly-mode .tb{opacity:.9}
+
+/* Gli hero hanno sfondo scuro: il testo dentro deve essere chiaro.
+   Alcuni titoli ereditavano il nero del tema e sparivano. */
+.page-hero, .page-hero *:not(button){ color:#fff; }
+.page-hero .muted, .page-hero [style*="var(--muted)"]{ color:rgba(255,255,255,.82)!important; }
+.th-alert{transition:transform .2s var(--spring)}
+.th-alert:active{transform:scale(.98)}
+
+/* La griglia delle statistiche sta nel CSS, non negli stili applicati da
+   codice: un ridisegno (cambio periodo, cambio scheda) non puo' perderla. */
+/* #pat-stats contiene una barra larga, un titolo e una griglia propria:
+   imporgli una griglia dall'esterno spezzava tutto in colonne. */
+#pat-stats{display:block;margin-bottom:.75rem}
+#pat-stats > *{min-width:0}
+#pat-stats .sc{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:12px 14px;border-radius:var(--rs);background:var(--surface);
+  min-height:74px;
+}
+#pat-stats .sv{font-size:26px;font-weight:800;line-height:1.1}
+#pat-stats .sl{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.25}
+
+/* Card username (Home terapeuta): il dato da comunicare alle pazienti */
+
+
+
+[data-theme="dark"] .username-card-code{color:var(--teal)}
+
+
+.username-card-copy:active{transform:scale(.96)}
+.username-card-copy.ok{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* ── Media del periodo: resoconto a colpo d'occhio ── */
+.avg-evid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:4px}
+.avg-evid-item{
+  padding:10px 12px;border-radius:var(--rs);background:var(--surface-2);
+  box-shadow:inset 3px 0 0 var(--border-l);
+}
+.avg-evid-item.danger{box-shadow:inset 3px 0 0 #C85250;background:var(--red-l)}
+.avg-evid-item.warn{box-shadow:inset 3px 0 0 #B98230;background:var(--amber-l)}
+.avg-evid-txt{font-size:13.5px;font-weight:700;line-height:1.25}
+.avg-evid-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.avg-ok{
+  padding:10px 12px;border-radius:var(--rs);background:var(--teal-ll);
+  color:var(--teal-d);font-size:13px;font-weight:600;
+}
+
+.avg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:8px}
+.avg-tile{background:var(--surface-2);border-radius:var(--rs);padding:9px 11px}
+.avg-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.avg-lbl{font-size:12px;color:var(--text-2);line-height:1.2}
+.avg-val{font-size:17px;font-weight:800;flex-shrink:0}
+.avg-bar{height:4px;border-radius:2px;background:var(--border-l);margin-top:6px;overflow:hidden}
+.avg-bar > i{display:block;height:100%;border-radius:2px}
+
+.avg-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.avg-chip{
+  font-size:12px;padding:5px 10px;border-radius:999px;
+  background:var(--surface-2);color:var(--text-2);
+}
+.avg-chip.danger{background:var(--red-l);color:#C85250}
+.avg-chip.warn{background:var(--amber-l);color:#B98230}
+.avg-chip.ok{background:var(--teal-ll);color:var(--teal-d)}
+.avg-chip.muted{opacity:.75}
+.avg-zero{font-size:11.5px;color:var(--muted);margin-top:8px}
+
+/* Intestazione della media: titolo a sinistra, conteggio a destra */
+.pat-head-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  text-transform:none;letter-spacing:0;font-size:13px;
+}
+.pat-head-count{font-size:20px;font-weight:800;white-space:nowrap}
+.pat-head-count small{font-size:11px;font-weight:700;opacity:.75;margin-left:3px}
+
+/* I pulsanti non ereditano il colore dal tema: usano il nero predefinito
+   del browser, che su fondo scuro sparisce. */
+button{color:inherit}
+.strumenti-card{color:var(--text)}
+.page-hero button{color:#fff}
+
+/* Card unica della Home terapeuta */
+.hero-btn{
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+  color:#fff;padding:7px 15px;border-radius:999px;cursor:pointer;
+  font-family:var(--font-ui);font-size:13px;font-weight:600;flex-shrink:0;
+  transition:transform .28s var(--spring), background .18s ease;
+}
+.hero-btn:active{transform:scale(.96)}
+.hero-btn.ok{background:rgba(255,255,255,.9);color:var(--teal-d)}
+.hero-user{
+  margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.hero-user-label{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.75}
+.hero-user-code{font-size:22px;font-weight:800;letter-spacing:-.01em;margin:2px 0;user-select:all}
+.hero-user-hint{font-size:12px;opacity:.8;line-height:1.35}
+
+/* Tab Giornata: meno spoglia */
+#ptab-giornata > div:first-child{
+  background:var(--surface);border-radius:var(--rs);padding:12px 14px;
+  box-shadow:var(--shadow-sm);margin-bottom:1rem!important;
+  color:var(--text-2)!important;font-size:13px!important;
+}
+
+
+/* ── Tab Giornata: una scheda per giornata ── */
+.planner-day{
+  background:var(--surface);border-radius:var(--r);
+  box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:12px;
+}
+.planner-day-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 16px;background:var(--teal-ll);
+}
+.planner-day-date{font-size:13.5px;font-weight:800;color:var(--teal-d);text-transform:capitalize}
+.planner-day-count{font-size:11.5px;font-weight:700;color:var(--teal-d);opacity:.75}
+.planner-day-body{padding:6px 12px 14px}
+.planner-slot{
+  display:flex;gap:12px;align-items:center;   /* nome e pastiglie sulla stessa linea */
+  padding:12px 8px 12px 14px;   /* le fasce rientrano rispetto al bordo della scheda */
+  border-bottom:1px solid var(--border-l);
+}
+.planner-slot:last-child{border-bottom:none}
+.planner-slot.vuoto{opacity:.45}
+.planner-slot-name{
+  flex:0 0 108px;font-size:12.5px;font-weight:700;color:var(--text-2);
+  display:flex;align-items:center;gap:6px;line-height:1.2;
+}
+/* l'emoji ha una linea di base diversa dal testo: la riallineiamo */
+.planner-slot-name > span{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;font-size:15px;line-height:1;
+}
+.planner-slot-items{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
+.planner-chip{
+  font-size:12.5px;padding:5px 11px;border-radius:999px;
+  background:var(--surface-2);color:var(--text);
+}
+.planner-none{font-size:12.5px;color:var(--muted)}
+.planner-empty{
+  padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:13.5px;
+  background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow-sm);
+}
+@media(max-width:520px){
+  .planner-slot{flex-direction:column;gap:6px}
+  .planner-slot-name{flex:none}
+}
+
+.planner-slot-items{min-height:30px;align-items:center}
+@media(max-width:520px){
+  .planner-slot{align-items:flex-start}
+  .planner-slot-items{min-height:0}
+}
+
+/* Collegamento dalla Guida alla scheda corrispondente */
+.guide-scheda-link{
+  display:block;width:100%;margin:10px 0 2px;
+  padding:10px 14px;border-radius:var(--rs);
+  background:var(--teal-ll);color:var(--teal-d);
+  border:1px solid var(--teal-l);
+  font-family:var(--font-ui);font-size:13px;font-weight:700;
+  text-align:left;cursor:pointer;
+  transition:transform .28s var(--spring), background .18s ease;
+}
+.guide-scheda-link:active{transform:scale(.98)}
+
+/* ── Scheda a comparsa ── */
+.scheda-modal{
+  display:none;position:fixed;inset:0;z-index:300;
+  background:rgba(20,30,28,.55);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:1rem;
+}
+.scheda-modal.open{display:flex}
+.scheda-box{
+  background:var(--bg);border-radius:var(--r);
+  width:100%;max-width:640px;max-height:calc(100dvh - 2rem);
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 16px 60px rgba(0,0,0,.3);
+  animation:schedaIn .22s var(--spring);
+}
+@keyframes schedaIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+.scheda-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 18px;background:var(--surface);
+  border-bottom:1px solid var(--border-l);flex-shrink:0;
+}
+.scheda-title{font-size:15px;font-weight:800;color:var(--text)}
+.scheda-close{
+  width:32px;height:32px;border-radius:50%;border:none;flex-shrink:0;
+  background:var(--bg);color:var(--muted);font-size:19px;cursor:pointer;
+}
+.scheda-body{padding:1rem 1rem 1.5rem;overflow-y:auto;-webkit-overflow-scrolling:touch}
+/* dentro il riquadro la pagina non ha bisogno del suo tasto Indietro */
+.scheda-body button[onclick="goBack()"]{display:none}
+.scheda-body .page{
+  display:block!important;padding:0;
+  /* La pagina qui dentro non e' "fuori schermo": senza questo il browser
+     salta il disegno (content-visibility) e i tocchi non arrivano ai tasti. */
+  content-visibility:visible!important;
+  contain:none!important;
+  contain-intrinsic-size:auto!important;
+}
+.scheda-body,.scheda-box{pointer-events:auto}
+@media(max-width:600px){
+  .scheda-modal{padding:0;align-items:flex-end}
+  .scheda-box{max-width:none;max-height:92dvh;border-radius:var(--r) var(--r) 0 0}
+}
+
+/* Abilita' che apre direttamente la scheda */
+.guide-skill-header.apre-scheda{cursor:pointer}
+.guide-skill-header.apre-scheda [id^="sarr-"]{transform:none!important}
+
+/* Fogli di lavoro in fondo a un modulo della Guida */
+.guide-schede-modulo{margin:10px 0 4px;padding-top:10px;border-top:1px solid var(--border-l)}
+.guide-schede-titolo{
+  font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;
+}
+.guide-schede-modulo .guide-scheda-link{margin:0 0 8px}
+
+/* Fogli di lavoro in cima al modulo */
+.guide-schede-modulo{
+  margin:14px 4px 22px;padding:16px;
+  background:var(--teal-ll);border-radius:var(--rs);
+}
+.guide-schede-titolo{
+  font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal-d);margin-bottom:10px;
+}
+.guide-schede-modulo .guide-scheda-link{
+  display:block;width:100%;margin:0 0 8px;
+  padding:12px 14px;min-height:44px;      /* area di tocco comoda */
+  background:var(--surface);border:1px solid var(--teal-l);
+  border-radius:var(--rs);text-align:left;cursor:pointer;
+  position:relative;z-index:2;             /* niente strati sopra al tasto */
+}
+.guide-schede-modulo .guide-scheda-link:last-child{margin-bottom:0}
+
+/* In sola consultazione i collegamenti restano cliccabili: aprire una
+   scheda non modifica nulla. */
+.readonly-mode .guide-scheda-link,
+.readonly-mode [data-nav]{pointer-events:auto!important}
+
+/* Fogli di lavoro compilabili */
+.cf-passo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;margin-bottom:6px}
+.cf-n{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:var(--teal);color:#fff;font-size:13px;font-weight:800;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.cf-aiuto{font-size:12.5px;color:var(--muted);line-height:1.45;margin-bottom:10px}
+.cf-check{
+  margin:12px 0 8px;padding:9px 12px;border-radius:var(--rs);
+  background:var(--amber-l);color:#8A6220;
+  font-size:12px;font-weight:700;line-height:1.4;
+}
+.cf-scala{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 14px}
+.cf-scala-btn{
+  width:42px;height:42px;border-radius:var(--rs);
+  border:1px solid var(--border-l);background:var(--surface);
+  color:var(--text);font-family:var(--font-ui);font-size:15px;font-weight:700;cursor:pointer;
+}
+.cf-scala-btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.foglio-item{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 12px;border-radius:var(--rs);background:var(--surface-2);
+  margin-bottom:8px;
+}
+.foglio-item .bsec{padding:6px 12px;font-size:12.5px;flex-shrink:0}
+
+/* Fogli di lavoro nella scheda paziente */
+.foglio-blocco{padding:12px 0;border-bottom:1px solid var(--border-l)}
+.foglio-blocco:last-child{border-bottom:none}
+.foglio-blocco-tit{
+  font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.foglio-blocco-tit span{font-size:11.5px;font-weight:600;color:var(--muted);margin-left:auto}
+.foglio-riga{
+  font-size:13px;color:var(--text-2);line-height:1.5;
+  padding:6px 10px;background:var(--surface-2);border-radius:8px;margin-bottom:5px;
+}
+
+/* Accesso rapido: disposizione definita qui, non nello stile del markup.
+   Nascondere/mostrare via style.display cancellava il display:grid inline
+   e le tessere finivano incolonnate. */
+#home-quick-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);   /* due sopra, due sotto */
+  gap:10px;margin-bottom:1rem;
+}
+#home-quick-grid[hidden]{display:none!important}
+
+
+
+/* ══════════════════════════════════════════════════════════════════
+   Da qui in avanti comanda css/dc.css, riscritto dal prototipo.
+   I blocchi di sovrascrittura accumulati (layout 2026, tema, palette,
+   allineamenti vari) sono stati rimossi: erano ~39.000 caratteri di
+   regole con !important che impedivano al foglio nuovo di funzionare.
+   ══════════════════════════════════════════════════════════════════ */

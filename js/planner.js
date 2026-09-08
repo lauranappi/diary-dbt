@@ -13,17 +13,24 @@ function selectSlot(slot){
   currentPickSlot=slot;
   document.getElementById('act-step-slot').style.display='none';
   document.getElementById('act-step-pick').style.display='block';
-  const slotLabels={mattina:'🌅 Mattina',pomeriggio:'☀️ Pomeriggio',sera:'🌙 Sera'};
+  // l'intestazione "Attivita'" e' sorella dei due passi, non dentro il
+  // primo: senza questo restava visibile insieme al titolo "Scegli le
+  // attivita'", mostrando due titoli insieme.
+  const hero=document.querySelector('#page-attivita > .page-hero');
+  if(hero) hero.style.display='none';
+  const slotLabels={mattina:'Mattina',pomeriggio:'Pomeriggio',sera:'Sera'};
   document.getElementById('pick-slot-label').textContent=slotLabels[slot];
-  // activate first cat tab
-  // Default to 'vista' tab, not 'mie'
-  const vistaBtn=document.querySelector('#cat-tabs .act-tab[onclick*="vista"]');
-  if(vistaBtn)switchCatTab('vista',vistaBtn);
+  const sotto=document.getElementById('dc-scegli-sotto');
+  if(sotto) sotto.textContent = ({mattina:'Mattina',pomeriggio:'Pomeriggio',sera:'Sera'})[slot]||'';
+  const mieBtn=document.querySelector('#cat-tabs .act-tab[onclick*="mie"]');
+  if(mieBtn)switchCatTab('mie',mieBtn);
 }
 
 function backToSlots(){
   document.getElementById('act-step-pick').style.display='none';
   document.getElementById('act-step-slot').style.display='block';
+  const hero=document.querySelector('#page-attivita > .page-hero');
+  if(hero) hero.style.display='';
   renderPlanSummary();
 }
 
@@ -46,7 +53,7 @@ function renderCatChips(cat){
     } else {
       const selected=plannerData[currentPickSlot]||[];
       mine.forEach(item=>{
-        const wrap=document.createElement('div');wrap.style.cssText='display:flex;align-items:center;gap:4px;margin-bottom:4px';
+        const wrap=document.createElement('div');wrap.style.cssText='display:flex;align-items:center;gap:4px;flex:none';
         const chip=document.createElement('button');chip.className='cat-chip'+(selected.includes(item)?' selected':'');
         chip.textContent=(selected.includes(item)?'✓ ':'')+item;
         chip.onclick=()=>toggleCatChip(item,chip);
@@ -63,7 +70,7 @@ function renderCatChips(cat){
   const selected=plannerData[currentPickSlot]||[];
   catData.items.forEach(item=>{
     const wrap=document.createElement('div');
-    wrap.style.cssText='display:flex;align-items:center;gap:4px;margin-bottom:4px';
+    wrap.style.cssText='display:flex;align-items:center;gap:4px;flex:none';
     const chip=document.createElement('button');
     chip.className='cat-chip'+(selected.includes(item)?' selected':'');
     chip.textContent=(selected.includes(item)?'✓ ':'')+item;
@@ -71,12 +78,19 @@ function renderCatChips(cat){
     const mine=getCustomActs();
     const star=document.createElement('button');
     star.title='Aggiungi alle mie attività';
-    star.style.cssText='background:none;border:none;cursor:pointer;font-size:14px;padding:0 2px;opacity:'+(mine.includes(item)?'1':'.35');
-    star.textContent=mine.includes(item)?'⭐':'☆';
+    star.style.cssText='background:none;border:none;cursor:pointer;padding:0 2px;display:flex;align-items:center';
+    const disegnaStella=(piena)=>{
+      star.innerHTML='<svg width="14" height="14" viewBox="0 0 14 14" fill="'+(piena?'var(--dc-terra)':'none')+'">'
+        +'<path d="M7 1l1.76 3.76L13 5.27l-3 2.98.7 4.25L7 10.5l-3.7 1.99.7-4.25-3-2.98 4.24-.51z" stroke="var(--dc-terra)" stroke-width="1"/></svg>';
+    };
+    disegnaStella(mine.includes(item));
     star.onclick=(e)=>{
       e.stopPropagation();
       const m=getCustomActs();
-      if(!m.includes(item)){m.push(item);saveCustomActs(m);star.textContent='⭐';star.style.opacity='1';}
+      const idx=m.indexOf(item);
+      if(idx===-1){m.push(item);disegnaStella(true);}
+      else{m.splice(idx,1);disegnaStella(false);}
+      saveCustomActs(m);
     };
     wrap.appendChild(chip);wrap.appendChild(star);el.appendChild(wrap);
   });
@@ -85,17 +99,17 @@ function renderCatChips(cat){
 function toggleCatChip(item,chip){
   const arr=plannerData[currentPickSlot]||(plannerData[currentPickSlot]=[]);
   const idx=arr.indexOf(item);
-  if(idx===-1){
-    arr.push(item);
-    chip.classList.add('selected');
-    chip.textContent='✓ '+item;
-  } else {
-    arr.splice(idx,1);
-    chip.classList.remove('selected');
-    chip.textContent=item;
-  }
+  const scelto = idx===-1;
+  if(scelto){ arr.push(item); } else { arr.splice(idx,1); }
+  chip.classList.toggle('selected', scelto);
+  chip.textContent=(scelto?'✓ ':'')+item;
+  // Il colore va scritto direttamente sull'elemento, non solo tramite
+  // la classe: cosi' cambia sul momento senza passare dal ricalcolo
+  // dello stile esterno, che su alcuni dispositivi arrivava in ritardo.
+  chip.style.background = scelto ? 'var(--dc-hero)' : 'var(--dc-cella)';
+  chip.style.color = scelto ? 'var(--dc-hero-ink)' : 'var(--dc-terra-ink)';
   updateSlotCounts();
-  savePlanner();
+  setTimeout(savePlanner, 0);
 }
 
 function addCustomAct(){
@@ -125,31 +139,51 @@ function updateSlotCounts(){
 }
 
 function renderPlanSummary(){
-  const slotLabels={mattina:'🌅 Mattina',pomeriggio:'☀️ Pomeriggio',sera:'🌙 Sera'};
+  const slotLabels={mattina:'Mattina',pomeriggio:'Pomeriggio',sera:'Sera'};
   const summaryEl=document.getElementById('plan-summary');
   const bodyEl=document.getElementById('plan-summary-body');
   const hasAny=PLANNER_SLOTS.some(s=>(plannerData[s]||[]).length>0);
   summaryEl.style.display=hasAny?'block':'none';
   const emptyEl=document.getElementById('plan-empty-state');
   if(emptyEl)emptyEl.style.display=hasAny?'none':'block';
+  // Come nel prototipo: i tre pulsanti Mattina/Pomeriggio/Sera si vedono
+  // solo quando il piano e' vuoto. Appena c'e' qualcosa, restano solo
+  // le schede col "+" dentro il riepilogo.
+  const grid=document.getElementById('dc-slot-grid');
+  if(grid)grid.style.display=hasAny?'none':'grid';
   if(!hasAny){bodyEl.innerHTML='';return;}
   bodyEl.innerHTML='';
   PLANNER_SLOTS.forEach(slot=>{
     const items=plannerData[slot]||[];
-    if(!items.length)return;
     const slotDiv=document.createElement('div');slotDiv.className='plan-summary-slot';
+
+    const head=document.createElement('div');head.className='plan-summary-slot-head';
     const title=document.createElement('div');title.className='plan-summary-slot-title';
-    title.textContent=slotLabels[slot];slotDiv.appendChild(title);
-    const chips=document.createElement('div');chips.className='plan-summary-chips';
-    items.forEach((item,idx)=>{
-      const chip=document.createElement('div');chip.className='plan-summary-chip';
-      const txt=document.createElement('span');txt.textContent=item;
-      const btn=document.createElement('button');btn.textContent='×';btn.title='Rimuovi';
-      const s=slot,ix=idx;
-      btn.onclick=()=>{plannerData[s].splice(ix,1);updateSlotCounts();renderPlanSummary();savePlanner();};
-      chip.appendChild(txt);chip.appendChild(btn);chips.appendChild(chip);
-    });
-    slotDiv.appendChild(chips);bodyEl.appendChild(slotDiv);
+    title.textContent=slotLabels[slot];
+    const piu=document.createElement('button');piu.className='plan-summary-add';
+    piu.textContent='+';piu.title='Aggiungi';
+    piu.onclick=()=>selectSlot(slot);
+    head.appendChild(title);head.appendChild(piu);
+    slotDiv.appendChild(head);
+
+    if(!items.length){
+      const vuoto=document.createElement('span');vuoto.className='plan-summary-vuoto';
+      vuoto.textContent='Niente ancora';
+      slotDiv.appendChild(vuoto);
+    } else {
+      const chips=document.createElement('div');chips.className='plan-summary-chips';
+      items.forEach((item,idx)=>{
+        // Come nel prototipo: la pillola intera si tocca per togliere,
+        // senza una × visibile dentro.
+        const chip=document.createElement('span');chip.className='plan-summary-chip';
+        chip.textContent=item;
+        const s=slot,ix=idx;
+        chip.onclick=()=>{plannerData[s].splice(ix,1);updateSlotCounts();renderPlanSummary();savePlanner();};
+        chips.appendChild(chip);
+      });
+      slotDiv.appendChild(chips);
+    }
+    bodyEl.appendChild(slotDiv);
   });
 }
 

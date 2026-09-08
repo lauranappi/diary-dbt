@@ -93,7 +93,12 @@ async function saveDay(){
   svLS();updPill(key);showToast('t1');showToast('t2');
   if(channel)await pushChan();
 }
-function showToast(id){const t=document.getElementById(id);if(!t)return;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function showToast(id){
+  const t=document.getElementById(id);if(!t)return;
+  t.classList.add('show');
+  clearTimeout(t._nascondi);
+  t._nascondi = setTimeout(()=>t.classList.remove('show'), 2200);
+}
 
 function chDay(d){
   // Only auto-save if on diary page to avoid overwriting data from abilita navigation
@@ -115,6 +120,11 @@ function chDay(d){
   }
   const nd=new Date(cur);nd.setDate(nd.getDate()+d);if(isFut(nd))return;
   cur=nd;updDL();setForm(allData[dk(cur)]||null);
+  // chDay (le freccette) e dcDiary (titolo "Oggi"/"Ieri" e striscia dei
+  // giorni) sono due funzioni nate in momenti diversi: la prima non
+  // chiamava mai la seconda, quindi il titolo restava fermo su "Oggi"
+  // qualunque giorno si selezionasse con le frecce.
+  if(typeof dcDiary==='function') dcDiary();
   if(document.getElementById('page-abilita')?.classList.contains('active')){updAbiPill();renderActTab();}
 }
 function updDL(){
@@ -140,12 +150,23 @@ function goPage(name,btn){
   // hide topheader on settings, pazienti
   // topheader visibility handled above per page
   scrollPageTop();   // subito in cima, prima di popolare la pagina
-  if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();}
+  if(name==='oggi'){setForm(allData[dk(cur)]||null);updDL();if(typeof dcDiary==='function')dcDiary();}
 
   // La barra superiore ha senso solo dove esiste una barra data da mostrare
   // memoria della pagina da cui si arriva, per il tasto Indietro
   if(window._curPage && window._curPage!==name) window._prevPage=window._curPage;
+  if(name==='strumenti') name='guida';   // pagina rimossa: si va alla Guida
   window._curPage=name;
+  document.body.dataset.pagina = name;
+  // il colore della fascia di sistema segue lo sfondo di <html>,
+  // non del body: la marcatura serve li'
+  document.documentElement.dataset.pagina = name;
+  // iOS colora la fascia dell'orologio con theme-color: sulla Home il
+  // blocco petrolio arriva fin lassu', quindi la fascia deve essere verde.
+  // In standalone iOS la fascia di sistema usa il colore fissato
+  // all'installazione: cambiarla a ogni pagina non ha effetto, quindi
+  // resta petrolio ovunque (coerente con l'intestazione della Home).
+  if(typeof setThemeColor==='function') setThemeColor('#1B4B4A');
 
   const showTopheader=name==='oggi'||name==='attivita'||name==='abilita';
   // Al terapeuta la barra dei giorni non serve: consulta, non compila.
@@ -195,12 +216,18 @@ function tapHome(el){
   const now = Date.now();
   if(now - _homeTapAt < 600){
     _homeTapAt = 0;
-    const t = document.createElement('div');
-    t.className = 'tap-toast';
-    t.textContent = 'Aggiornamento…';
-    document.body.appendChild(t);
-    requestAnimationFrame(()=>t.classList.add('on'));
-    setTimeout(()=>window.location.reload(), 260);
+    // freccina che ruota al posto del pallino sotto "Home", non un
+    // avviso di testo che galleggia sopra il resto della pagina
+    const btn = document.getElementById('bn-home');
+    if(btn){
+      btn.classList.add('caricando');
+      const ico = btn.querySelector('.bn-icon');
+      if(ico) ico.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none">'
+        +'<path d="M12.5 7A5.5 5.5 0 1 1 9.9 2.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'
+        +'<path d="M12.5 2.5v3.2h-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'
+        +'</svg>';
+    }
+    setTimeout(()=>window.location.reload(), 480);
     return;
   }
   _homeTapAt = now;
@@ -212,8 +239,7 @@ function tapHome(el){
 // Le schede e le abilita' sono materiale di riferimento: il terapeuta le
 // legge, non le compila. I suoi dati non finirebbero da nessuna parte utile.
 const PAGINE_CONSULTAZIONE = ['please','diarioemo','pianocrisi','catena','eventi',
-                              'dearman','give','fast','abc','sentiero','guida','abilita',
-                              'oggi','attivita'];
+                              'dearman','give','fast','abc','sentiero','guida','abilita','oggi','fatti','procontro'];
 
 function applyReadOnlyForTerapeuta(name){
   if(typeof profile==='undefined' || profile.role!=='terapeuta') return;
@@ -232,19 +258,25 @@ function applyReadOnlyForTerapeuta(name){
   // Tutto cio' che e' cliccabile viene neutralizzato, tranne la navigazione:
   // le caselle di PLEASE e le voci delle attivita' piacevoli non sono campi
   // ma elementi con un onclick, quindi non bastava disabilitare i campi.
-  const isNav = oc => /gopage|goback|togglesisection|switchpattab|toggleguide|togglesk|apri|open/.test(oc);
+  const isNav = oc => /gopage|goback|openscheda|closescheda|togglesisection|switchpattab|toggleguide|toggleguidemodule|toggleguideskill|togglesk|apri|open/.test(oc);
   const scrive = txt => /salva|aggiungi|genera|elimina|rimuovi|nuovo|nuova|azzera|reset|segna|svuota/.test(txt);
 
+  // I comandi del Diary agganciano l'azione con b.onclick=... da codice,
+  // quindi non hanno l'attributo onclick nel markup: cercarlo non bastava.
+  // Marchiamo solo la navigazione e lascia che sia il CSS a disattivare
+  // tutto il resto, indipendentemente da come e' agganciato il gestore.
   page.querySelectorAll('[onclick]').forEach(el=>{
     const oc=(el.getAttribute('onclick')||'').toLowerCase();
-    const txt=(el.textContent||'').toLowerCase();
-    if(isNav(oc)) return;                       // indietro, sezioni, link interni
-    if(el.tagName==='BUTTON' && scrive(txt)){   // comandi che scrivono: via
-      el.style.display='none';
-    } else {                                    // il resto resta visibile ma inerte
-      el.style.pointerEvents='none';
-      el.style.opacity='.85';
-    }
+    if(isNav(oc)) el.setAttribute('data-nav','');
+  });
+  // i collegamenti ai fogli di lavoro si marcano da soli alla creazione:
+  // qui garantiamo che restino attivi anche se generati dopo
+  page.querySelectorAll('.guide-scheda-link,.guide-module-header,.guide-skill-header')
+      .forEach(el=>el.setAttribute('data-nav',''));
+  page.querySelectorAll('button').forEach(b=>{
+    if(b.hasAttribute('data-nav')) return;
+    const txt=(b.textContent||'').toLowerCase();
+    if(scrive(txt)) b.style.display='none';     // comandi che scrivono: via
   });
 
   if(!page.querySelector('.readonly-note')){
@@ -255,4 +287,169 @@ function applyReadOnlyForTerapeuta(name){
     if(hero && hero.nextSibling) page.insertBefore(n, hero.nextSibling);
     else page.insertBefore(n, page.firstChild);
   }
+}
+
+
+// ── SCHEDE A COMPARSA ────────────────────────────────────────────────────
+// La pagina vera viene spostata dentro il riquadro (non copiata): così
+// identificativi, campi e gestori restano quelli originali e continuano a
+// funzionare. Alla chiusura torna al suo posto.
+const SCHEDA_TITOLI = {
+  dearman:'Copione DEAR MAN', give:'Relazione — GIVE', fast:'Rispetto di sé — FAST',
+  abc:'ABC — Costruisci emozioni positive', sentiero:'Sentiero di mezzo',
+  please:'Checklist PLEASE', diarioemo:'Diario delle emozioni',
+  fatti:'Controlla i fatti', procontro:"Pro e contro dell'usare le abilità",
+  pianocrisi:'Piano di crisi', catena:'Analisi della catena',
+  eventi:'La mia lista piacevole'
+};
+const SCHEDA_RENDER = {
+  please:()=>typeof renderPlease==='function'&&renderPlease(),
+  diarioemo:()=>typeof deRenderLista==='function'&&deRenderLista(),
+  pianocrisi:()=>typeof pcCarica==='function'&&pcCarica(),
+  catena:()=>typeof caRenderLista==='function'&&caRenderLista(),
+  eventi:()=>typeof epRender==='function'&&epRender(),
+  fatti:()=>typeof cfRenderLista==='function'&&cfRenderLista(),
+  procontro:()=>typeof pcbRenderLista==='function'&&pcbRenderLista()
+};
+let _schedaAperta=null;
+
+function openScheda(name){
+  const page=document.getElementById('page-'+name);
+  const modal=document.getElementById('scheda-modal');
+  const body=document.getElementById('scheda-body');
+  if(!page||!modal||!body) return;
+  if(_schedaAperta) closeScheda();
+
+  page.dataset.homeParent = page.parentElement.id || '';
+  page._segnaposto = document.createComment('scheda '+name);
+  page.parentElement.insertBefore(page._segnaposto, page);
+
+  body.appendChild(page);
+  page.classList.add('active');
+  page.style.display='block';
+  document.getElementById('scheda-title').textContent = SCHEDA_TITOLI[name] || '';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+  _schedaAperta=name;
+
+  if(SCHEDA_RENDER[name]) setTimeout(SCHEDA_RENDER[name],30);
+  setTimeout(()=>{ body.scrollTop=0; },20);
+  if(typeof applyReadOnlyForTerapeuta==='function') setTimeout(()=>applyReadOnlyForTerapeuta(name),60);
+}
+
+function closeScheda(){
+  const modal=document.getElementById('scheda-modal');
+  if(!_schedaAperta){ if(modal) modal.classList.remove('open'); return; }
+  const page=document.getElementById('page-'+_schedaAperta);
+  if(page && page._segnaposto && page._segnaposto.parentElement){
+    page._segnaposto.parentElement.insertBefore(page, page._segnaposto);
+    page._segnaposto.remove();
+    page._segnaposto=null;
+  }
+  if(page){ page.classList.remove('active'); page.style.display='none'; }
+  modal.classList.remove('open');
+  document.body.style.overflow='';
+  _schedaAperta=null;
+}
+
+// chiusura toccando fuori o con Esc
+document.addEventListener('click', e=>{
+  if(e.target && e.target.id==='scheda-modal') closeScheda();
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeScheda(); });
+
+
+// ════════════════════════════════════════════════════════════════
+// DIARY — striscia dei giorni e passi, come nel prototipo
+// Le quattro schede esistenti diventano i quattro passi.
+// ════════════════════════════════════════════════════════════════
+let dcPasso = 0;
+const DC_PASSI = ['Comportamenti', 'Sostanze e impulsi', 'Emozioni', 'Terapia e attività'];
+
+function dcSchede(){
+  const pag = document.getElementById('page-oggi');
+  return pag ? [...pag.querySelectorAll(':scope > .card')] : [];
+}
+
+function dcVaiPasso(n){
+  const schede = dcSchede();
+  if(!schede.length) return;
+  dcPasso = Math.max(0, Math.min(schede.length-1, n));
+  schede.forEach((c,idx)=>{ c.style.display = idx===dcPasso ? '' : 'none'; });
+
+  const barra = document.getElementById('dc-passi');
+  if(barra){
+    barra.innerHTML = schede.map((_,idx)=>
+      '<span class="dc-passo'+(idx===dcPasso?' on':(idx<dcPasso?' fatto':''))+'" onclick="dcVaiPasso('+idx+')"></span>'
+    ).join('');
+  }
+  const tit = document.getElementById('dc-passo-tit');
+  const conta = document.getElementById('dc-passo-conta');
+  if(tit) tit.textContent = DC_PASSI[dcPasso] || '';
+  if(conta) conta.textContent = (dcPasso+1)+' di '+schede.length;
+
+  // Il pulsante principale cambia etichetta e azione da solo, come nel
+  // prototipo: "Avanti" sui primi passi, "Salva giornata" sull'ultimo -
+  // non due gruppi di pulsanti separati che si scambiano di posto.
+  const ultimoPasso = dcPasso === schede.length - 1;
+  const cta = document.getElementById('dc-cta-passo');
+  if(cta) cta.textContent = ultimoPasso ? '⤓ Salva giornata' : 'Avanti';
+  const indietro = document.getElementById('dc-indietro');
+  if(indietro){ indietro.disabled = dcPasso === 0; indietro.classList.toggle('spenta', dcPasso === 0); }
+  window.scrollTo(0,0);
+}
+
+function dcStriscia(){
+  const el = document.getElementById('dc-strip');
+  if(!el) return;
+  let out = '';
+  for(let i=9;i>=0;i--){
+    const gg = new Date(); gg.setDate(gg.getDate()-i);
+    const k = dk(gg);
+    const voce = allData[k];
+    const piena = voce && !isDayEmpty(voce);
+    const sel = k === dk(cur);
+    const dow = ['dom','lun','mar','mer','gio','ven','sab'][gg.getDay()];
+    out += '<button class="dc-giorno'+(sel?' sel':'')+'" onclick="goDay(\''+k+'\')">'
+        +  '<span class="dc-giorno-dow">'+dow+'</span>'
+        +  '<span class="dc-giorno-num">'+gg.getDate()+'</span>'
+        +  '<span class="dc-giorno-dot'+(piena?' piena':'')+'"></span>'
+        +  '</button>';
+  }
+  el.innerHTML = out;
+  const attivo = el.querySelector('.dc-giorno.sel');
+  if(attivo) attivo.scrollIntoView({inline:'center', block:'nearest'});
+}
+
+function goDay(k){
+  // Prima spostava una variabile 'curDay' separata da 'cur': il titolo
+  // cambiava ma i dati mostrati restavano quelli del giorno precedente,
+  // perche' salvataggio e caricamento leggono solo 'cur'.
+  cur = new Date(k);
+  setForm(allData[dk(cur)]||null);
+  if(typeof updDL==='function') updDL();
+  dcDiary();
+}
+
+function dcDiary(){
+  const t = document.getElementById('dc-giorno-tit');
+  const d = document.getElementById('dc-giorno-data');
+  const gg = cur;   // 'cur' e' l'unica variabile del giorno corrente: la usano anche salvataggio e caricamento
+  const oggiQ = dk(gg) === today();
+  const ieriD = new Date(); ieriD.setDate(ieriD.getDate()-1);
+  if(t) t.textContent = oggiQ ? 'Oggi' : (dk(gg)===dk(ieriD) ? 'Ieri' : gg.toLocaleDateString('it-IT',{weekday:'long'}));
+  if(d) d.textContent = gg.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
+  const succ = document.getElementById('dc-succ');
+  if(succ){ succ.disabled = oggiQ; succ.classList.toggle('spenta', oggiQ); }
+  dcStriscia();
+  dcVaiPasso(dcPasso);
+}
+
+
+// Il pulsante principale del passo: avanza, o salva se e' l'ultimo -
+// stessa etichetta dinamica del prototipo, non due pulsanti diversi.
+function dcAzionePasso(){
+  const schede = dcSchede();
+  if(dcPasso === schede.length - 1){ if(typeof saveDay==='function') saveDay(); }
+  else { dcVaiPasso(dcPasso+1); }
 }

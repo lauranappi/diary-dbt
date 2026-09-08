@@ -82,6 +82,7 @@ async function pushChan(){
         profile:{nome:profile.nome,cognome:profile.cognome,role:profile.role,terapeutaCode:profile.terapeutaCode||null,customActs:profile.customActs||[]},
         therapistNotes:profile.therapistNotes||{},
         patientNotes:profile.patientNotes||{},
+        fogli:(typeof raccogliFogli==='function'? raccogliFogli() : null),
         ts:lastPushTs
       },
       updated_at:new Date().toISOString()

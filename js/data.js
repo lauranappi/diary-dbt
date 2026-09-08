@@ -19,26 +19,26 @@ const SKG=[
 ];
 
 const DBT_SKILLS=[
-  {id:'tip',name:'TIP',icon:'TIP',color:'#E6F5F3',desc:'Cambia rapidamente la chimica del corpo',steps:[
+  {id:'tip',name:'TIP',icon:'TIP',color:'#EEF4F3',desc:'Cambia rapidamente la chimica del corpo',steps:[
     'T — Temperatura: immergi il viso in acqua fredda (min 10°C) trattenendo il fiato per 30 sec. Oppure tieni un impacco freddo sugli occhi e guance.',
     'I — Esercizio fisico Intenso: corri, salta, fai squat per almeno 20 minuti per scaricare l\'energia emotiva accumulata.',
     'P — Placa la respirazione: inspira per 5 sec, espira per 7 sec. Ripeti per 5 minuti. L\'espirazione più lunga attiva il sistema parasimpatico.',
     'P — rilassamento muscolare Progressivo: contrai ogni gruppo muscolare per 5-6 sec poi rilascia. Inizia dai piedi e sali fino al viso.'
   ]},
-  {id:'stop',name:'STOP',icon:'STP',color:'#FCEBEB',desc:'Interrompi la reazione impulsiva',steps:[
+  {id:'stop',name:'STOP',icon:'STP',color:'#F8E8DF',desc:'Interrompi la reazione impulsiva',steps:[
     'S — Stop: fermati. Non muovere un muscolo. Congela la situazione.',
     'T — fai un passo indieT​ro: allontanati fisicamente o mentalmente. Fai un respiro profondo.',
     'O — Osserva: cosa sta succedendo dentro e fuori di te? Quali sono i tuoi pensieri e sentimenti?',
     'P — Procedi in maniera mindful: agisci con consapevolezza. Quale azione renderebbe la situazione migliore?'
   ]},
-  {id:'acqua',name:'Acqua fredda',icon:'H₂O',color:'#E6F1FB',desc:'Il riflesso da immersione calma il sistema nervoso',steps:[
+  {id:'acqua',name:'Acqua fredda',icon:'H₂O',color:'#EEF4F3',desc:'Il riflesso da immersione calma il sistema nervoso',steps:[
     'Riempi una bacinella con acqua fredda (non ghiacciata, min 10°C).',
     'Trattieni il fiato e immergi il viso per 15-30 secondi.',
     'In alternativa: tieni un sacchetto con acqua fredda sugli occhi e guance.',
     'Siediti in tranquillità — muoversi riduce l\'efficacia.',
     'Attenzione: non usare se hai problemi cardiaci o assumi farmaci betabloccanti.'
   ]},
-  {id:'migliora',name:'MIGLIORA',icon:'MIG',color:'#FFF3CD',desc:'Migliora il momento presente',steps:[
+  {id:'migliora',name:'MIGLIORA',icon:'MIG',color:'#FCF2D6',desc:'Migliora il momento presente',steps:[
     'IMmaginazione: immagina una scena rilassante o una stanza sicura nella tua mente.',
     'SIgnificato: trova uno scopo o un significato anche nella sofferenza.',
     'PreGhiera: apri il cuore a qualcosa di più grande di te.',
@@ -47,7 +47,7 @@ const DBT_SKILLS=[
     'breve ripOso: concediti una vacanza mentale.',
     'AutoincoRAggiamento: "Ce la posso fare", "Passerà anche questo".'
   ]},
-  {id:'rilassamento',name:'Rilassamento muscolare',icon:'REL',color:'#E6F5F3',desc:'Progressivo: 16 gruppi muscolari',steps:[
+  {id:'rilassamento',name:'Rilassamento muscolare',icon:'REL',color:'#EEF4F3',desc:'Progressivo: 16 gruppi muscolari',steps:[
     'Assumi una posizione comoda. Allenta gli abiti.',
     'Inizia dai piedi: contrai i muscoli per 5-6 sec durante l\'inspirazione.',
     'Rilascia durante l\'espirazione, ripeti mentalmente "Rilassati".',
@@ -55,21 +55,21 @@ const DBT_SKILLS=[
     'Procedi verso l\'alto: polpacci → cosce → addome → schiena → spalle → braccia → mani → collo → viso.',
     'Con la pratica puoi rilassare tutto il corpo in pochi secondi.'
   ]},
-  {id:'accettazione',name:'Accettazione radicale',icon:'ACC',color:'#EEEDFE',desc:'Accettare la realtà com\'è, non come vorresti che fosse',steps:[
+  {id:'accettazione',name:'Accettazione radicale',icon:'ACC',color:'#EEF4F3',desc:'Accettare la realtà com\'è, non come vorresti che fosse',steps:[
     'Riconosci la situazione dolorosa senza giudicarla come "ingiusta".',
     'Ricorda: accettare non significa approvare, ma smettere di lottare contro la realtà.',
     'Nota la resistenza nel corpo (tensione, rabbia) — è normale.',
     'Ripeti: "Questo sta accadendo. Non posso cambiarlo in questo momento."',
     'Orienta l\'energia verso quello che puoi fare, non verso quello che non puoi cambiare.'
   ]},
-  {id:'minda',name:'Mindfulness emozioni',icon:'MND',color:'#E6F5F3',desc:'Cavalca l\'onda emotiva senza esserne travolti',steps:[
+  {id:'minda',name:'Mindfulness emozioni',icon:'MND',color:'#EEF4F3',desc:'Cavalca l\'onda emotiva senza esserne travolti',steps:[
     'Fai un passo indietro e osserva l\'emozione come un\'onda che va e viene.',
     'Non bloccarla, non respingerla, non aggrappartici, non amplificarla.',
     'Nota dove la senti nel corpo. Sperimenta le sensazioni completamente.',
     'Ricorda: tu non sei la tua emozione. Non devi agire su di essa.',
     'Pratica l\'amore per la tua emozione: rispettala, accettala radicalmente.'
   ]},
-  {id:'dear',name:'DEAR MAN',icon:'DM',color:'#EEF2FF',desc:'Chiedi ciò che vuoi in modo efficace',steps:[
+  {id:'dear',name:'DEAR MAN',icon:'DM',color:'#EEF4F3',desc:'Chiedi ciò che vuoi in modo efficace',steps:[
     'D — Descrivi la situazione con i fatti puri.',
     'E — Esprimi come ti senti: "Mi sento..." (non "Tu mi fai sentire").',
     'A — Afferma ciò che vuoi chiaramente. Non aspettarti che indovinino.',
@@ -78,21 +78,21 @@ const DBT_SKILLS=[
     'A — Appari sicura: contatto visivo, voce calma, postura dritta.',
     'N — Negozia: sii disposta a dare per ricevere.'
   ]},
-  {id:'procontro',name:'Pro e Contro',icon:'P/C',color:'#FFF3CD',desc:'Valuta prima di agire sull\'impulso',steps:[
+  {id:'procontro',name:'Pro e Contro',icon:'P/C',color:'#FCF2D6',desc:'Valuta prima di agire sull\'impulso',steps:[
     'Scrivi i PRO del cedere all\'impulso: cosa otterresti nel breve termine?',
     'Scrivi i CONTRO del cedere: quali conseguenze a lungo termine?',
     'Scrivi i PRO del resistere: cosa guadagneresti?',
     'Scrivi i CONTRO del resistere: cosa ti costerebbe?',
     'Conserva la lista con te e rileggila quando senti l\'impulso.'
   ]},
-  {id:'please',name:'PLEASE',icon:'PLS',color:'#E6F5F3',desc:'Prenditi cura del corpo per ridurre la vulnerabilità',steps:[
+  {id:'please',name:'PLEASE',icon:'PLS',color:'#EEF4F3',desc:'Prenditi cura del corpo per ridurre la vulnerabilità',steps:[
     'PL — PhysicaL: vai dal medico, prendi le medicine prescritte.',
     'E — alimentazione Equilibrata: non saltare pasti.',
     'A — Astieniti da sostanze Alteranti: alcol e droghe aumentano la reattività.',
     'S — Sonno bilanciato: mantieni un ritmo regolare.',
     'E — Esercizio fisico: almeno 20 minuti al giorno.'
   ]},
-  {id:'sorriso',name:'Mezzo sorriso',icon:'☺',color:'#FEF6E4',desc:'Accettare la realtà attraverso il corpo',steps:[
+  {id:'sorriso',name:'Mezzo sorriso',icon:'☺',color:'#FCF2D6',desc:'Accettare la realtà attraverso il corpo',steps:[
     'Rilassa il viso dalla sommità del capo alla mandibola.',
     'Lascia che le labbra salgano leggermente — appena percettibile.',
     'Tieni le mani aperte, palmi verso l\'alto.',

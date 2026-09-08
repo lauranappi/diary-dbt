@@ -4,15 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Diary Card DBT</title>
+<style id="critico-pagine">.page{display:none}.page.active{display:block}</style>
+
 <meta name="theme-color" content="#F6F3EE">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Diary DBT">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/svg+xml" href="illustrazioni/icona-app.svg">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
-<link rel="stylesheet" href="css/app.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css?v=202609082158">
+<link rel="stylesheet" href="css/dc.css?v=202609082158">
 </head>
 <body>
 
@@ -105,32 +112,7 @@
     <button class="ni" onclick="goPage('storico',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M16 2v4 M8 2v4 M3 10h18"/></svg></span> Storico & Trend</button>
   <button class="ni" onclick="goPage('abilita',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3v-16a3 3 0 0 0-3-3z M15 2a3 3 0 0 1 3 3 3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3v-16a3 3 0 0 1 3-3z"/></svg></span> Abilità</button>
   <button class="ni" id="ni-pazienti" onclick="goPage('pazienti',this)" style="display:none"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Pazienti</button>
-  <div class="si-section">
-    <div class="si-header" onclick="toggleSiSection('si-schede',this)">
-      <span>Schede</span><span class="si-arrow">▾</span>
-    </div>
-    <div class="si-body" id="si-schede">
-    <button class="ni" onclick="goPage('dearman',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></span> DEAR MAN</button>
-    <button class="ni" onclick="goPage('pianocrisi',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span> Piano di crisi</button>
-    <button class="ni" onclick="goPage('diarioemo',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8"/></svg></span> Diario emozioni</button>
-    <button class="ni" onclick="goPage('catena',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71 M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span> Analisi catena</button>
-    <button class="ni" onclick="goPage('please',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4 M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> PLEASE</button>
-    <button class="ni" onclick="goPage('eventi',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span> Att. piacevoli</button>
-    </div>
-  </div>
-
-  <div class="si-section">
-    <div class="si-header" onclick="toggleSiSection('si-abilita',this)">
-      <span>Abilità DBT</span><span class="si-arrow">▾</span>
-    </div>
-    <div class="si-body" id="si-abilita">
-    <button class="ni" onclick="goPage('give',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> GIVE</button>
-    <button class="ni" onclick="goPage('fast',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> FAST</button>
-    <button class="ni" onclick="goPage('abc',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z M12 6v6l4 2"/></svg></span> ABC</button>
-    <button class="ni" onclick="goPage('sentiero',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></span> Sentiero di mezzo</button>
-    <button class="ni" onclick="goPage('guida',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span> Guida DBT</button>
-    </div>
-  </div>
+  <button class="ni" onclick="goPage('guida',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span> Guida DBT</button>
 
   </div><!-- end sidebar-scroll -->
   <div class="sidebar-footer">
@@ -179,106 +161,105 @@
 <div class="main-inner">
 
 <!-- ══ PAGE: HOME ══ -->
-<div id="page-home" class="page">
+<div id="page-home" class="page active">
 
-  <!-- HERO -->
-  <div id="home-hero" class="home-hero">
-    <div class="hero-mesh"></div>
-    <div class="hero-grain"></div>
-    <div style="position:relative">
-      <div id="home-greeting" style="font-size:24px;font-weight:800;margin-bottom:2px;letter-spacing:-.02em"></div>
-      <div id="home-date" style="font-size:13px;opacity:.75;margin-bottom:1rem"></div>
-      <div id="home-pill-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.75rem"></div>
-      <!-- Mini mood bar from yesterday -->
-      <div id="home-mood-bar" style="display:none;margin-top:.5rem"></div>
-    </div>
-  </div>
+  <div id="terap-home" style="display:none"></div>
 
-  <!-- DIARY STATUS CARD -->
-  <div id="home-diary-card" style="margin-bottom:1rem"></div>
-
-  <!-- STREAK + 7-DAY DOTS -->
-  <div style="background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);padding:1.25rem;box-shadow:var(--shadow-sm);margin-bottom:1rem">
-    <div style="display:flex;align-items:center;gap:16px">
-      <div style="text-align:center;min-width:56px">
-        <div id="streak-num" style="font-size:40px;font-weight:800;color:var(--teal);line-height:1">0</div>
-        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">streak</div>
+  <!-- 1. INTESTAZIONE -->
+  <div id="home-hero" class="dc-hero">
+    <img class="dc-hero-deco" src="illustrazioni/decorative/deco-tratti-chiaro.svg" alt="">
+    <svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"/></svg>
+    <div class="dc-hero-riga">
+      <div class="dc-hero-in">
+        <span class="dc-hero-saluto" id="home-date"></span>
+        <h2 class="dc-hero-nome" id="home-greeting"></h2>
+        <p class="dc-hero-sub" id="home-pill-row"></p>
+        <button class="dc-cta" onclick="goPage('oggi',null)">Compila la diary</button>
       </div>
-      <div style="flex:1">
-        <div id="streak-sub" style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px">Inizia oggi!</div>
-        <div id="streak-dots" style="display:flex;gap:5px;align-items:center"></div>
-        <div style="display:flex;justify-content:space-between;margin-top:4px">
-          <div id="streak-days-label" style="font-size:10px;color:var(--muted)"></div>
-        </div>
+      <button class="dc-hero-imp" onclick="goPage('impostazioni',null)" aria-label="Impostazioni">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.6" stroke="#FFFFFF" stroke-width="2"/><circle cx="9" cy="9" r="6.6" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3.2 3.4"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="dc-stack">
+
+    <!-- 2. STREAK + IERI -->
+    <div class="dc-row">
+      <div class="dc-card dc-streak">
+        <span class="dc-streak-num" id="streak-num">0</span>
+        <span class="dc-streak-lbl">giorni<br>di fila</span>
+        <span id="streak-sub" hidden></span><span id="streak-dots" hidden></span><span id="streak-days-label" hidden></span>
+      </div>
+      <div class="dc-card dc-ieri">
+        <span class="dc-card-tit">Ieri</span>
+        <div id="home-emo-yesterday"></div>
       </div>
     </div>
+
+    <!-- 3. ABILITÀ DI OGGI -->
+    <div id="home-suggest-box" class="dc-card dc-skill" onclick="goPage('guida',null)"></div>
+
+    <!-- 4. ULTIMI 7 GIORNI -->
+    <div class="dc-card dc-week-card" onclick="goPage('storico',null)">
+      <div class="dc-card-riga">
+        <span class="dc-card-tit">Ultimi 7 giorni</span>
+        <svg width="11" height="19" viewBox="0 0 11 19" fill="none" class="dc-chev"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div id="home-timeline"></div>
+    </div>
+
+    <div id="home-diary-card" hidden></div>
   </div>
-
-  <!-- EMOZIONI IERI (mini sparkline) -->
-  <div id="home-emo-yesterday" style="margin-bottom:1rem;display:none"></div>
-
-  <!-- SUGGERIMENTO ABILITÀ -->
-  <div id="home-suggest-box" style="margin-bottom:1rem"></div>
-
-  <!-- ACCESSO RAPIDO -->
-  <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Accesso rapido</div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem" id="home-quick-grid">
-    <div class="home-quick-card" onclick="goPage('oggi',null)" style="padding:.75rem .5rem;text-align:center">
-      <div style="font-size:24px;margin-bottom:4px">📓</div>
-      <div style="font-size:11px;font-weight:700;color:var(--text)">Diary</div>
-      <div style="font-size:10px;color:var(--muted);margin-top:1px" id="hq-oggi-sub">—</div>
-    </div>
-    <div class="home-quick-card" onclick="goPage('abilita',null)" style="padding:.75rem .5rem;text-align:center">
-      <div style="font-size:24px;margin-bottom:4px">✨</div>
-      <div style="font-size:11px;font-weight:700;color:var(--text)">Abilità</div>
-      <div style="font-size:10px;color:var(--muted);margin-top:1px">Segna oggi</div>
-    </div>
-    <div class="home-quick-card" onclick="goPage('attivita',null)" style="padding:.75rem .5rem;text-align:center">
-      <div style="font-size:24px;margin-bottom:4px">🌱</div>
-      <div style="font-size:11px;font-weight:700;color:var(--text)">Attività</div>
-      <div style="font-size:10px;color:var(--muted);margin-top:1px" id="hq-attivita-sub">Pianifica</div>
-    </div>
-    <div class="home-quick-card" onclick="goPage('storico',null)" style="padding:.75rem .5rem;text-align:center">
-      <div style="font-size:24px;margin-bottom:4px">📈</div>
-      <div style="font-size:11px;font-weight:700;color:var(--text)">Trend</div>
-      <div style="font-size:10px;color:var(--muted);margin-top:1px" id="hq-trend-sub">7 giorni</div>
-    </div>
-  </div>
-
-  <!-- ULTIMI 7 GIORNI MINI-TIMELINE -->
-  <div id="home-timeline" style="margin-bottom:1rem"></div>
 
 </div>
 
-<!-- ══ PAGE: OGGI ══ -->
-<div id="page-oggi" class="page active">
-  <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+<div id="page-oggi" class="page">
 
-    <div style="position:relative">
-      <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Diary Card</div>
-      <div style="font-size:13px;opacity:.85">Compila la tua giornata</div>
+  <div class="dc-testata">
+    <div class="dc-testata-testo">
+      <h2 id="dc-giorno-tit">Oggi</h2>
+      <p id="dc-giorno-data"></p>
+    </div>
+    <button class="dc-tondo" onclick="chDay(-1)" aria-label="Giorno precedente">
+      <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="dc-tondo" id="dc-succ" onclick="chDay(1)" aria-label="Giorno successivo">
+      <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <div class="dc-strip" id="dc-strip"></div>
+
+  <div class="dc-passi-barra">
+    <div class="dc-passi" id="dc-passi"></div>
+    <div class="dc-passo-nome">
+      <span id="dc-passo-tit"></span>
+      <span id="dc-passo-conta"></span>
     </div>
   </div>
 
+  
+
   <div class="card">
-    <div class="slbl">Comportamenti suicidari / autolesivi</div>
+    <div class="dc-kicker-diary">Comportamenti suicidari / autolesivi</div>
     <div class="g2">
       <div class="field"><span class="flbl">Pensieri suicidari (0–5)</span><div class="sr" id="s-sp"></div></div>
-      <div class="field"><span class="flbl">Azione suicidaria</span><div class="tr" id="t-sa"></div></div>
+      <div class="field"><span class="flbl">Azione suicidaria</span><div class="dc-sino-riga" id="t-sa"></div></div>
       <div class="field"><span class="flbl">Intenzione autolesività (0–5)</span><div class="sr" id="s-ai"></div></div>
-      <div class="field"><span class="flbl">Azione autolesività</span><div class="tr" id="t-aa"></div></div>
+      <div class="field"><span class="flbl">Azione autolesività</span><div class="dc-sino-riga" id="t-aa"></div></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="slbl">Comportamenti disfunzionali</div>
+    <div class="dc-kicker-diary">Comportamenti disfunzionali</div>
     <div class="g2">
       <div class="field"><span class="flbl">Alcol — intenzione (0–5)</span><div class="sr" id="s-alci"></div></div>
       <div class="field"><span class="flbl">Alcol — uso (cosa e quanto?)</span><input type="text" id="tx-alcu" placeholder="Es. un bicchiere di vino"/></div>
       <div class="field"><span class="flbl">CBD — intenzione (0–5)</span><div class="sr" id="s-cbdi"></div></div>
       <div class="field"><span class="flbl">CBD — uso (quanto?)</span><input type="text" id="tx-cbdu" placeholder="Es. 1"/></div>
-      <div class="field"><span class="flbl">Emotional eating</span><div class="tr" id="t-ee"></div></div>
-      <div class="field"><span class="flbl">Farmaci prescritti</span><div class="tr" id="t-farm"></div></div>
+      <div class="field"><span class="flbl">Emotional eating</span><div class="dc-sino-riga" id="t-ee"></div></div>
+      <div class="field"><span class="flbl">Farmaci prescritti</span><div class="dc-sino-riga" id="t-farm"></div></div>
     </div>
     <div class="g2" style="margin-top:1rem">
       <div class="field"><span class="flbl">Rimuginio — su che cosa?</span><textarea id="tx-rim" placeholder="Descrivi..."></textarea></div>
@@ -291,7 +272,7 @@
   </div>
 
   <div class="card">
-    <div class="slbl">Emozioni (0–5)</div>
+    <div class="dc-kicker-diary">Emozioni (0–5)</div>
     <div class="g2">
       <div class="field"><span class="flbl">Serenità</span><div class="sr" id="s-ser"></div></div>
       <div class="field"><span class="flbl">Gioia</span><div class="sr" id="s-gio"></div></div>
@@ -309,7 +290,7 @@
   </div>
 
   <div class="card">
-    <div class="slbl">Terapia & attività</div>
+    <div class="dc-kicker-diary">Terapia & attività</div>
     <div class="g3">
       <div class="field"><span class="flbl">Abbandonare la terapia (0–5)</span><div class="sr" id="s-abb"></div></div>
       <div class="field"><span class="flbl">Fiducia nel cambiamento (0–5)</span><div class="sr" id="s-fid"></div></div>
@@ -323,11 +304,11 @@
     </div>
   </div>
 
-  <div class="abar">
-    <button class="bpri" onclick="saveDay()">⤓ Salva giornata</button>
-    <button class="bsec" onclick="clearForm()">Azzera</button>
-    <span class="toast" id="t1">✓ Salvato</span>
-  </div>
+  <div class="dc-passi-nav">
+<button class="dc-indietro" id="dc-indietro" onclick="dcVaiPasso(dcPasso-1)">Indietro</button>
+<button class="dc-cta-passo" id="dc-cta-passo" onclick="dcAzionePasso()">Avanti</button>
+</div>
+<span class="toast" id="t1">Salvato</span>
 </div>
 
 <!-- ══ PAGE: ABILITÀ ══ -->
@@ -350,95 +331,82 @@
     </div>
     <div class="abar">
       <button class="bpri" onclick="saveDay()">⤓ Salva</button>
-      <span class="toast" id="t2">✓ Salvato</span>
+      <span class="toast" id="t2">Salvato</span>
     </div>
   </div>
 </div>
 
 <!-- ══ PAGE: ATTIVITÀ ══ -->
 <div id="page-attivita" class="page">
-  <!-- Hero -->
-  <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
-
-    <div style="position:relative">
-      <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">🎯 Attività & Giornata</div>
-      <div style="font-size:13px;opacity:.85" id="planner-day-label">Pianifica la tua giornata</div>
+<img src="illustrazioni/decorative/deco-ramo-petrolio.svg" class="dc-att-ramo" alt="">
+<!-- Hero -->
+<div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+  <div style="position:relative">
+    <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Attività</div>
+    <div style="font-size:13px;opacity:.85" id="planner-day-label">Pianifica la tua giornata</div>
+  </div>
+</div>
+<!-- STEP 1: scegli slot -->
+<div id="act-step-slot">
+  <div id="dc-slot-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem">
+    <button class="slot-btn" id="slotbtn-mattina" onclick="selectSlot('mattina')">
+      <span style="font-size:13px;font-weight:700">Mattina</span>
+      <span id="slot-count-mattina" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
+    </button>
+    <button class="slot-btn" id="slotbtn-pomeriggio" onclick="selectSlot('pomeriggio')">
+      <span style="font-size:13px;font-weight:700">Pomeriggio</span>
+      <span id="slot-count-pomeriggio" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
+    </button>
+    <button class="slot-btn" id="slotbtn-sera" onclick="selectSlot('sera')">
+      <span style="font-size:13px;font-weight:700">Sera</span>
+      <span id="slot-count-sera" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
+    </button>
+  </div>
+  <!-- Empty state when no plan -->
+  <div id="plan-empty-state">
+    <img src="illustrazioni/vuoti/vuoto-attivita.svg" width="150" height="150" alt="">
+    <div class="dc-att-vuoto-testo">
+      <span>Nessuna attività pianificata</span>
+      <span>Aggiungine una: anche piccola va bene.</span>
+    </div>
+    <button class="dc-cta-passo" onclick="selectSlot(new Date().getHours()<12?'mattina':new Date().getHours()<18?'pomeriggio':'sera')">Aggiungi attività</button>
+  </div>
+  <!-- Piano riepilogo -->
+  <div id="plan-summary" style="display:none">
+        <div id="plan-summary-body"></div>
+    <span class="toast" id="t-plan">Salvato</span>
+  </div>
+</div>
+<!-- STEP 2: scegli attività (appare dopo aver selezionato lo slot) -->
+<div id="act-step-pick" style="display:none">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+    <button onclick="backToSlots()" style="background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--rs);padding:7px 14px;font-size:13px;cursor:pointer;font-family:var(--font-ui)">← Indietro</button>
+    <h2 class="dc-scegli-titolo" style="margin:0">Scegli le attività</h2>
+    <div style="display:none" id="pick-slot-label">Mattina</div>
+  </div>
+  <p class="dc-scegli-sotto" id="dc-scegli-sotto"></p>
+  <!-- Categorie chips -->
+  <div class="act-tabs" style="margin-bottom:1rem" id="cat-tabs">
+    <button class="act-tab" onclick="switchCatTab('mie',this)">Le mie</button>
+    <button class="act-tab active" onclick="switchCatTab('vista',this)">Vista</button>
+    <button class="act-tab" onclick="switchCatTab('udito',this)">Udito</button>
+    <button class="act-tab" onclick="switchCatTab('olfatto',this)">Olfatto</button>
+    <button class="act-tab" onclick="switchCatTab('gusto',this)">Gusto</button>
+    <button class="act-tab" onclick="switchCatTab('tatto',this)">Tatto</button>
+    <button class="act-tab" onclick="switchCatTab('distrarsi',this)">Distrarsi</button>
+    <button class="act-tab" onclick="switchCatTab('migliora',this)">Migliora</button>
+  </div>
+  <div id="act-content" style="display:none"></div>
+  <div id="cat-chips-content" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem"></div>
+  <!-- Personalizzata -->
+  <div style="border-top:1px solid var(--border-l);padding-top:1rem;margin-top:.5rem">
+    <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">Aggiungi attività personalizzata</div>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="custom-act-input" placeholder="Es. chiamata con amica..." style="flex:1;padding:9px 12px;font-size:13px;border-radius:var(--rs);border:1.5px solid var(--border)" onkeydown="if(event.key==='Enter')addCustomAct()"/>
+      <button class="planner-add-btn" onclick="addCustomAct()">+</button>
     </div>
   </div>
-
-  <!-- STEP 1: scegli slot -->
-  <div id="act-step-slot">
-    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:.5rem">In quale momento vuoi aggiungere un'attività?</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:1rem;line-height:1.5">Tocca un momento della giornata, scegli le attività e salvale. La tua terapeuta le vedrà.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem">
-      <button class="slot-btn" id="slotbtn-mattina" onclick="selectSlot('mattina')">
-        <span style="font-size:28px;display:block;margin-bottom:6px">🌅</span>
-        <span style="font-size:13px;font-weight:700">Mattina</span>
-        <span id="slot-count-mattina" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
-      </button>
-      <button class="slot-btn" id="slotbtn-pomeriggio" onclick="selectSlot('pomeriggio')">
-        <span style="font-size:28px;display:block;margin-bottom:6px">☀️</span>
-        <span style="font-size:13px;font-weight:700">Pomeriggio</span>
-        <span id="slot-count-pomeriggio" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
-      </button>
-      <button class="slot-btn" id="slotbtn-sera" onclick="selectSlot('sera')">
-        <span style="font-size:28px;display:block;margin-bottom:6px">🌙</span>
-        <span style="font-size:13px;font-weight:700">Sera</span>
-        <span id="slot-count-sera" style="font-size:11px;color:var(--muted);display:block;margin-top:2px"></span>
-      </button>
-    </div>
-
-    <!-- Empty state when no plan -->
-    <div id="plan-empty-state" style="text-align:center;padding:1.5rem 1rem;color:var(--muted);background:var(--surface-2);border-radius:var(--r);border:1.5px dashed var(--border);margin-bottom:1rem">
-      <div style="font-size:32px;margin-bottom:8px">🌱</div>
-      <div style="font-size:14px;font-weight:600;color:var(--text-2);margin-bottom:4px">Nessuna attività pianificata</div>
-      <div style="font-size:12px;line-height:1.5">Tocca Mattina, Pomeriggio o Sera per iniziare a pianificare la tua giornata.</div>
-    </div>
-
-    <!-- Piano riepilogo -->
-    <div id="plan-summary" style="display:none">
-      <div class="slbl" style="margin-bottom:10px">Il tuo piano di oggi</div>
-      <div id="plan-summary-body"></div>
-      <div class="abar">
-        <button class="bpri" onclick="savePlanner()">⤓ Salva piano</button>
-        <span class="toast" id="t-plan">✓ Salvato</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 2: scegli attività (appare dopo aver selezionato lo slot) -->
-  <div id="act-step-pick" style="display:none">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
-      <button onclick="backToSlots()" style="background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--rs);padding:7px 14px;font-size:13px;cursor:pointer;font-family:var(--font-ui)">← Indietro</button>
-      <div style="font-size:15px;font-weight:700" id="pick-slot-label">Mattina</div>
-    </div>
-
-    <!-- Categorie chips -->
-    <div class="act-tabs" style="margin-bottom:1rem" id="cat-tabs">
-      <button class="act-tab" onclick="switchCatTab('mie',this)">⭐ Le mie</button>
-      <button class="act-tab active" onclick="switchCatTab('vista',this)">Vista</button>
-      <button class="act-tab" onclick="switchCatTab('udito',this)">Udito</button>
-      <button class="act-tab" onclick="switchCatTab('olfatto',this)">Olfatto</button>
-      <button class="act-tab" onclick="switchCatTab('gusto',this)">Gusto</button>
-      <button class="act-tab" onclick="switchCatTab('tatto',this)">Tatto</button>
-      <button class="act-tab" onclick="switchCatTab('distrarsi',this)">Distrarsi</button>
-      <button class="act-tab" onclick="switchCatTab('migliora',this)">Migliora</button>
-    </div>
-
-    <div id="act-content" style="display:none"></div>
-    <div id="cat-chips-content" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem"></div>
-
-    <!-- Personalizzata -->
-    <div style="border-top:1px solid var(--border-l);padding-top:1rem;margin-top:.5rem">
-      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">Aggiungi attività personalizzata</div>
-      <div style="display:flex;gap:8px">
-        <input type="text" id="custom-act-input" placeholder="Es. chiamata con amica..."
-          style="flex:1;padding:9px 12px;font-size:13px;border-radius:var(--rs);border:1.5px solid var(--border)"
-          onkeydown="if(event.key==='Enter')addCustomAct()"/>
-        <button class="planner-add-btn" onclick="addCustomAct()">+</button>
-      </div>
-    </div>
-  </div>
+</div>
 </div>
 
 <!-- ══ PAGE: STORICO ══ -->
@@ -451,28 +419,29 @@
     </div>
   </div>
 
+  <div class="chart-range" id="storico-range">
+    <button class="chart-range-btn active" onclick="setStoricoRange(7,this)">7gg</button>
+    <button class="chart-range-btn" onclick="setStoricoRange(14,this)">14gg</button>
+    <button class="chart-range-btn" onclick="setStoricoRange(0,this)">Tutti</button>
+  </div>
+  <div class="chart-range" id="trend-range" style="display:none">
+    <button class="chart-range-btn active" onclick="setTrendRange(7,this)">7gg</button>
+    <button class="chart-range-btn" onclick="setTrendRange(14,this)">14gg</button>
+    <button class="chart-range-btn" onclick="setTrendRange(0,this)">Tutti</button>
+  </div>
+
   <div class="storico-tabs">
-    <button class="storico-tab active" id="stab-storico" onclick="switchStoricoTab('storico')">📋 Storico</button>
-    <button class="storico-tab" id="stab-trend" onclick="switchStoricoTab('trend')">📈 Trend</button>
+    <button class="storico-tab active" id="stab-storico" onclick="switchStoricoTab('storico')">Storico</button>
+    <button class="storico-tab" id="stab-trend" onclick="switchStoricoTab('trend')">Trend</button>
   </div>
 
   <div id="storico-panel">
-    <div class="chart-range" id="storico-range">
-      <button class="chart-range-btn active" onclick="setStoricoRange(7,this)">7gg</button>
-      <button class="chart-range-btn" onclick="setStoricoRange(14,this)">14gg</button>
-      <button class="chart-range-btn" onclick="setStoricoRange(0,this)">Tutti</button>
-    </div>
     <div class="sgrid" id="sgrid"></div>
-    <div class="slbl">Giorni compilati</div>
+    <div class="slbl">Le giornate</div>
     <div id="hlist"></div>
   </div>
 
   <div id="trend-panel" style="display:none">
-    <div class="chart-range" id="trend-range">
-      <button class="chart-range-btn active" onclick="setTrendRange(7,this)">7gg</button>
-      <button class="chart-range-btn" onclick="setTrendRange(14,this)">14gg</button>
-      <button class="chart-range-btn" onclick="setTrendRange(0,this)">Tutti</button>
-    </div>
     <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="height:220px"><div id="cSuic1" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="height:220px"><div id="cSuic2" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="height:220px"><div id="cSost" style="min-height:200px"></div></div></div>
@@ -486,80 +455,8 @@
 
 
 <!-- ══ PAGE: STRUMENTI ══ -->
-<div id="page-strumenti" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
-    <div style="position:relative">
-      <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">🛠 Strumenti</div>
-      <div style="font-size:13px;opacity:.85">Schede di compilazione e abilità</div>
-    </div>
-  </div>
-  <div class="strumenti-grid">
-    <div class="strumenti-card" onclick="goPage('dearman',null)">
-      <span class="sc-icon">🗣</span>
-      <span class="sc-name">DEAR MAN</span>
-      <span class="sc-desc">Prepara una conversazione difficile</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('pianocrisi',null)">
-      <span class="sc-icon">🆘</span>
-      <span class="sc-name">Piano di crisi</span>
-      <span class="sc-desc">Cosa fare quando stai male</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('diarioemo',null)">
-      <span class="sc-icon">💭</span>
-      <span class="sc-name">Diario emozioni</span>
-      <span class="sc-desc">Registra e analizza un'emozione</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('catena',null)">
-      <span class="sc-icon">🔗</span>
-      <span class="sc-name">Analisi catena</span>
-      <span class="sc-desc">Comprendi un comportamento problematico</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('please',null)">
-      <span class="sc-icon">🌿</span>
-      <span class="sc-name">PLEASE</span>
-      <span class="sc-desc">Prenditi cura del corpo oggi</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('abilita',null)">
-      <span class="sc-icon">✨</span>
-      <span class="sc-name">Abilità DBT</span>
-      <span class="sc-desc">Usa e registra un'abilità</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('guida',null)">
-      <span class="sc-icon">📖</span>
-      <span class="sc-name">Guida DBT</span>
-      <span class="sc-desc">Tutte le abilità spiegate</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('eventi',null)">
-      <span class="sc-icon">📋</span>
-      <span class="sc-name">Scheda eventi</span>
-      <span class="sc-desc">Registra eventi piacevoli</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('give',null)">
-      <span class="sc-icon">🤝</span>
-      <span class="sc-name">GIVE</span>
-      <span class="sc-desc">Mantieni relazioni positive</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('fast',null)">
-      <span class="sc-icon">🛡</span>
-      <span class="sc-name">FAST</span>
-      <span class="sc-desc">Mantieni il rispetto di te stessa</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('abc',null)">
-      <span class="sc-icon">🌱</span>
-      <span class="sc-name">ABC</span>
-      <span class="sc-desc">Costruisci emozioni positive</span>
-    </div>
-    <div class="strumenti-card" onclick="goPage('sentiero',null)">
-      <span class="sc-icon">⚖️</span>
-      <span class="sc-name">Sentiero di mezzo</span>
-      <span class="sc-desc">Pensiero dialettico</span>
-    </div>
-  </div>
-</div>
-
-<!-- ══ PAGE: DEAR MAN COPIONE ══ -->
 <div id="page-dearman" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#4F6BED,#6B8EF0);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
+  <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
     <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Copione DEAR MAN</div>
     <div style="font-size:13px;opacity:.85">Prepara una conversazione difficile passo per passo</div>
@@ -578,7 +475,7 @@
 
     <div style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">D</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">D</span>
         <span style="font-size:13px;font-weight:600">Descrivi la situazione (solo fatti)</span>
       </div>
       <textarea id="dm-d" rows="2" placeholder="Es. Mi avevi detto che saresti tornata per cena, ma sei arrivata alle 23." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
@@ -586,7 +483,7 @@
 
     <div style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">E</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">E</span>
         <span style="font-size:13px;font-weight:600">Esprimi come ti senti</span>
       </div>
       <textarea id="dm-e" rows="2" placeholder="Es. Quando succede, mi preoccupo e mi sento sola." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
@@ -594,7 +491,7 @@
 
     <div style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">A</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">A</span>
         <span style="font-size:13px;font-weight:600">Afferma ciò che vuoi (chiaro e diretto)</span>
       </div>
       <textarea id="dm-a" rows="2" placeholder="Es. Vorrei che mi avvisassi quando pensi di fare tardi." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
@@ -602,7 +499,7 @@
 
     <div style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">R</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">R</span>
         <span style="font-size:13px;font-weight:600">Rinforza — spiega i benefici</span>
       </div>
       <textarea id="dm-r" rows="2" placeholder="Es. Sarei molto più tranquilla e potremmo goderci la serata senza tensioni." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
@@ -610,7 +507,7 @@
 
     <div style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">N</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px">N</span>
         <span style="font-size:13px;font-weight:600">Negozia — cosa potresti offrire in cambio?</span>
       </div>
       <textarea id="dm-n" rows="2" placeholder="Es. Potrei anche io avvisarti quando faccio tardi. Cosa ti sembrerebbe giusto?" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical"></textarea>
@@ -638,7 +535,7 @@
         </div>
       </div>
       <div style="text-align:center">
-        <div style="font-size:11px;font-weight:700;color:#E0567A;margin-bottom:6px">RISPETTO DI SÉ</div>
+        <div style="font-size:11px;font-weight:700;color:#C9714B;margin-bottom:6px">RISPETTO DI SÉ</div>
         <div style="display:flex;justify-content:center;gap:4px">
           <button class="dm-pri" data-key="ris" data-val="1" onclick="dmPri('ris',1)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">1</button>
           <button class="dm-pri" data-key="ris" data-val="2" onclick="dmPri('ris',2)" style="padding:4px 8px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--text)">2</button>
@@ -652,18 +549,18 @@
   <button onclick="dmGenera()" style="width:100%;padding:14px;background:var(--teal);color:#fff;border:none;border-radius:var(--r);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font-ui);margin-bottom:1rem">Genera il copione →</button>
 
   <!-- M e A — sempre visibili -->
-  <div class="card" style="margin-bottom:1rem;border-left:3px solid #4F6BED">
+  <div class="card" style="margin-bottom:1rem;border-left:3px solid #1B4B4A">
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Durante la conversazione</div>
     <div style="display:flex;flex-direction:column;gap:10px">
       <div style="display:flex;align-items:flex-start;gap:10px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:1px">M</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:1px">M</span>
         <div>
           <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Mantieni la posizione (Mindful)</div>
           <div style="font-size:12px;color:var(--text-2);line-height:1.5">Rimani sull'obiettivo. Non distrarti da provocazioni o cambi di argomento. Ripeti il disco rotto se necessario: <em>"Capisco, ma vorrei prima finire questo discorso."</em></div>
         </div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:10px">
-        <span style="background:#4F6BED;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:1px">A</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:1px">A</span>
         <div>
           <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Appari sicura di te</div>
           <div style="font-size:12px;color:var(--text-2);line-height:1.5">Contatto visivo diretto. Voce calma e ferma. Postura dritta, spalle aperte. Non scusarti per il fatto di chiedere.</div>
@@ -681,7 +578,7 @@
 
 <!-- ══ PAGE: GIVE ══ -->
 <div id="page-give" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#2E7D32,#43A047);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+  <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:relative">
       <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:800;margin-bottom:4px">Relazione — GIVE</div>
@@ -693,29 +590,29 @@
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">Le 4 abilità GIVE</div>
     <div style="display:flex;flex-direction:column;gap:14px">
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <span style="background:#2E7D32;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">G</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">G</span>
         <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Gentile — Sii cortese e rispettosa</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Non attaccare verbalmente. Non minacciare. Non moralizzare ("Dovresti…"). Non fare l'occhiolino o alzare gli occhi al cielo. Tollera un no — esci dalla discussione elegantemente se necessario.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <span style="background:#2E7D32;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">I</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">I</span>
         <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Interessata — Ascolta davvero</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Guarda negli occhi. Non interrompere. Avvicinati invece di allontanarti. Sii comprensiva se vuole rimandare la discussione. Ascolta il suo punto di vista e le ragioni del rifiuto.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <span style="background:#2E7D32;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">V</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">V</span>
         <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Valida — Mostra che capisci</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Con parole e azioni mostra di comprendere le emozioni e opinioni dell'altro. Guarda le cose dal suo punto di vista: <em>"Mi rendo conto che sia difficile per te"</em>, <em>"So che sei impegnato, ma…"</em>. Se è a disagio, trovate un posto tranquillo.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <span style="background:#2E7D32;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">E</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">E</span>
         <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Educata — Usa il senso dell'umorismo</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Sorridi. Metti l'altro a proprio agio, sdrammatizza. Usa la persuasione più che l'insistenza. Sii diplomatica. Evita un atteggiamento negativo o polemico.</div></div>
       </div>
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:1rem;border-left:3px solid #2E7D32">
+  <div class="card" style="margin-bottom:1rem;border-left:3px solid #1B4B4A">
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">I 6 livelli di validazione (V di GIVE)</div>
     <div style="display:flex;flex-direction:column;gap:10px">
       <div style="display:flex;gap:10px;align-items:flex-start">
@@ -748,7 +645,7 @@
 
 <!-- ══ PAGE: FAST ══ -->
 <div id="page-fast" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#5C6BC0,#7986CB);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+  <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:relative">
       <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:800;margin-bottom:4px">Rispetto di sé — FAST</div>
@@ -760,29 +657,29 @@
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">Le 4 abilità FAST</div>
     <div style="display:flex;flex-direction:column;gap:14px">
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <span style="background:#5C6BC0;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">F</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">F</span>
         <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Franca — Sii giusta con te stessa e con l'altra</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Ricordati di validare i tuoi sentimenti e desideri quanto quelli degli altri. Non scusarti di esistere o di avere bisogni. <em>Non mostrare vergogna</em>: non assumere una postura curva, non abbassare lo sguardo.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <span style="background:#5C6BC0;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">A</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">A</span>
         <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Assertiva — Non scusarti di avere opinioni</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Non scusarti di non essere d'accordo. Non invalida ciò che ha valore per te. Non agire come se fossi impotente quando non lo sei. Non esagerare, non cercare scuse.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <span style="background:#5C6BC0;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">S</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">S</span>
         <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Segui i tuoi valori — Non tradirli per cose poco importanti</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Rimani fedele ai tuoi valori. Non rinunciare a ciò che è importante per te solo per accontentare. Spiega chiaramente qual è il modo corretto di pensare e agire secondo te — e mantieni la tua posizione.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <span style="background:#5C6BC0;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">T</span>
+        <span style="background:#1B4B4A;color:#fff;font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0">T</span>
         <div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">Trasparente — Non mentire</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Non mentire. Non fingere. Non manipolare. Esprimi ciò che pensi davvero in modo diretto e rispettoso.</div></div>
       </div>
     </div>
   </div>
 
-  <div class="card" style="border-left:3px solid #5C6BC0">
+  <div class="card" style="border-left:3px solid #1B4B4A">
     <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">Quando usare GIVE vs FAST</div>
     <div style="font-size:13px;color:var(--text-2);line-height:1.6">
       Usa <b>GIVE</b> quando la relazione è la priorità — vuoi che l'altro si senta bene e mantenere il legame.<br><br>
@@ -794,7 +691,7 @@
 
 <!-- ══ PAGE: ABC ══ -->
 <div id="page-abc" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#E0567A,#EC407A);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+  <div class="page-hero" style="background:linear-gradient(135deg,#C9714B,#D8845C);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:relative">
       <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:800;margin-bottom:4px">ABC — Costruisci emozioni positive</div>
@@ -804,7 +701,7 @@
 
   <div class="card" style="margin-bottom:1rem">
     <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:16px">
-      <span style="background:#E0567A;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">A</span>
+      <span style="background:#C9714B;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">A</span>
       <div>
         <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">Accumula emozioni positive</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:10px"><b>A breve termine:</b> fai oggi almeno una cosa piacevole. Non aspettare di sentirtelo dire — programmala.</div>
@@ -816,7 +713,7 @@
     </div>
 
     <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:16px">
-      <span style="background:#E0567A;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">B</span>
+      <span style="background:#C9714B;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">B</span>
       <div>
         <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">Bravo nella Mastery — Diventa brava in qualcosa</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6">Fai ogni giorno una cosa che ti faccia sentire competente ed efficace. Non deve essere grande — anche qualcosa di piccolo ma sfidante. La mastery combatte la disperazione e il senso di impotenza.</div>
@@ -827,7 +724,7 @@
     </div>
 
     <div style="display:flex;gap:12px;align-items:flex-start">
-      <span style="background:#E0567A;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">C</span>
+      <span style="background:#C9714B;color:#fff;font-size:16px;font-weight:800;padding:6px 12px;border-radius:20px;flex-shrink:0">C</span>
       <div>
         <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">Cope ahead — Prepara un piano in anticipo</div>
         <div style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:10px">Identifica una situazione emotiva difficile che potrebbe capitare. Prepara un piano su come gestirla <em>prima</em> che accada. Immagina la situazione in dettaglio e fai le prove mentali di come risponderai.</div>
@@ -846,7 +743,7 @@
 
 <!-- ══ PAGE: SENTIERO DI MEZZO ══ -->
 <div id="page-sentiero" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#FF7043,#FF8A65);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+  <div class="page-hero" style="background:linear-gradient(135deg,#E0A23A,#EFC03B);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:relative">
       <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:800;margin-bottom:4px">Sentiero di mezzo</div>
@@ -879,7 +776,7 @@
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:1rem;border-left:3px solid #FF7043">
+  <div class="card" style="margin-bottom:1rem;border-left:3px solid #E0A23A">
     <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">Cose che possono essere entrambe vere</div>
     <div style="display:flex;flex-direction:column;gap:6px">
       <div style="font-size:13px;color:var(--text-2);padding:6px 0;border-bottom:1px solid var(--border-l)">Puoi voler cambiare <b>E</b> avere ancora bisogno di fare meglio</div>
@@ -906,7 +803,7 @@
 
 <!-- ══ PAGE: DIARIO EMOZIONI ══ -->
 <div id="page-diarioemo" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#E0567A,#EC407A);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
+  <div class="page-hero" style="background:linear-gradient(135deg,#C9714B,#D8845C);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
     <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Diario delle emozioni</div>
     <div style="font-size:13px;opacity:.85">Analizza un episodio emotivo difficile</div>
@@ -947,7 +844,7 @@
 
 <!-- ══ PAGE: PIANO CRISI ══ -->
 <div id="page-pianocrisi" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#C62828,#EF5350);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
+  <div class="page-hero" style="background:linear-gradient(135deg,#B4593A,#D8845C);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
     <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Piano di crisi</div>
     <div style="font-size:13px;opacity:.85">Le mie abilità e contatti per i momenti difficili</div>
@@ -997,7 +894,7 @@
 
 <!-- ══ PAGE: CATENA ══ -->
 <div id="page-catena" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#5C6BC0,#7986CB);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
+  <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
     <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Analisi della catena</div>
     <div style="font-size:13px;opacity:.85">Capire cosa ha scatenato un comportamento problematico</div>
@@ -1026,7 +923,7 @@
 
 <!-- ══ PAGE: EVENTI PIACEVOLI ══ -->
 <div id="page-eventi" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,#2E7D32,#43A047);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
+  <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
     <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">La mia lista piacevole</div>
     <div style="font-size:13px;opacity:.85">Seleziona le attività che ti piacciono dalla lista Linehan</div>
@@ -1043,6 +940,116 @@
 <!-- trend merged into storico -->
 
 <!-- ══ PAGE: PAZIENTI (terapeuta) ══ -->
+
+<div id="page-fatti" class="page">
+  <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A 0%,#123534 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
+    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    <div style="font-size:22px;font-weight:800;margin-bottom:4px">Controlla i fatti</div>
+    <div style="font-size:13px;opacity:.9">L'emozione corrisponde ai fatti, o all'interpretazione dei fatti?</div>
+  </div>
+
+  <div class="card">
+    <div class="cf-passo"><span class="cf-n">1</span> Quale emozione voglio cambiare?</div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:4px">
+      <input id="cf-emozione" placeholder="Nome dell'emozione" style="padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text)">
+      <input id="cf-int-prima" type="number" min="0" max="100" placeholder="Prima 0-100" style="padding:10px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text)">
+      <input id="cf-int-dopo" type="number" min="0" max="100" placeholder="Dopo 0-100" style="padding:10px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text)">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="cf-passo"><span class="cf-n">2</span> Qual è l'evento scatenante?</div>
+    <div class="cf-aiuto">Chi ha fatto cosa a chi? Cosa ha causato cosa? Qual è l'aspetto problematico per te?</div>
+    <textarea id="cf-evento" rows="3" placeholder="Descrivi l'evento come lo hai osservato" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <div class="cf-check">CONTROLLA I FATTI! Cerca estremizzazioni o giudizi, e riscrivi in modo più accurato.</div>
+    <textarea id="cf-evento-fatti" rows="2" placeholder="Riscrivi i fatti, senza giudizi" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="cf-passo"><span class="cf-n">3</span> Quali sono le mie interpretazioni?</div>
+    <div class="cf-aiuto">Cosa sto dando per scontato? Sto aggiungendo interpretazioni ai fatti?</div>
+    <textarea id="cf-interpretazioni" rows="3" placeholder="Pensieri, credenze, assunti" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <div class="cf-check">CONTROLLA I FATTI! Elenca quante più interpretazioni alternative riesci.</div>
+    <textarea id="cf-alternative" rows="3" placeholder="Altre interpretazioni possibili" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <textarea id="cf-interpretazioni-fatti" rows="2" placeholder="Interpretazione più verosimile o più utile" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="cf-passo"><span class="cf-n">4</span> Esiste una minaccia?</div>
+    <div class="cf-aiuto">Cosa di questo evento mi mette in pericolo? Quali conseguenze temo?</div>
+    <textarea id="cf-minaccia" rows="2" placeholder="Dai un nome alla minaccia" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <div class="cf-check">CONTROLLA I FATTI! Elenca quanti più esiti alternativi ti vengono in mente.</div>
+    <textarea id="cf-esiti" rows="3" placeholder="Altri esiti possibili" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <textarea id="cf-minaccia-fatti" rows="2" placeholder="Conseguenza non catastrofica verosimile" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="cf-passo"><span class="cf-n">5</span> Qual è la catastrofe?</div>
+    <div class="cf-aiuto">Descrivi la conseguenza peggiore che ci si può ragionevolmente aspettare.</div>
+    <textarea id="cf-catastrofe" rows="3" placeholder="La catastrofe temuta" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <textarea id="cf-affrontare" rows="3" placeholder="Come potrei affrontarla, se accadesse davvero" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="cf-passo"><span class="cf-n">6</span> L'emozione corrisponde ai fatti?</div>
+    <div class="cf-aiuto">0 = no, per niente · 5 = certamente</div>
+    <div id="cf-scala" class="cf-scala"></div>
+    <textarea id="cf-verifica" rows="3" placeholder="Cosa ho fatto per controllare i fatti" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      <button class="bpri" onclick="cfSalva()">Salva foglio</button>
+      <button class="bsec" onclick="cfNuovo()">Nuovo foglio</button>
+    </div>
+    <div id="cf-msg" style="font-size:12.5px;color:var(--muted);margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <div class="slbl">Fogli salvati</div>
+    <div id="cf-lista"></div>
+  </div>
+</div>
+
+<div id="page-procontro" class="page">
+  <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A 0%,#123534 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
+    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    <div style="font-size:22px;font-weight:800;margin-bottom:4px">Pro e contro dell'usare le abilità</div>
+    <div style="font-size:13px;opacity:.9">Qual è il modo più efficace per ottenere ciò che vuoi? Sono i tuoi obiettivi, non quelli di altri.</div>
+  </div>
+
+  <div class="card">
+    <div class="slbl">La situazione</div>
+    <textarea id="pc2-situazione" rows="2" placeholder="Descrivi la situazione o il problema" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <div class="slbl" style="margin-top:14px">Il tuo obiettivo</div>
+    <textarea id="pc2-obiettivo" rows="2" placeholder="Cosa vuoi ottenere in questa situazione" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="cf-passo" style="color:var(--teal-d)">Praticare le abilità</div>
+    <div class="slbl">Pro</div>
+    <textarea id="pc2-usare-pro" rows="3" placeholder="Vantaggi del praticare le abilità" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <div class="slbl" style="margin-top:12px">Contro</div>
+    <textarea id="pc2-usare-contro" rows="3" placeholder="Svantaggi del praticare le abilità" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="cf-passo" style="color:#C85250">Non praticare le abilità</div>
+    <div class="slbl">Pro</div>
+    <textarea id="pc2-non-pro" rows="3" placeholder="Vantaggi del non praticarle, o del cedere all impulso" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <div class="slbl" style="margin-top:12px">Contro</div>
+    <textarea id="pc2-non-contro" rows="3" placeholder="Svantaggi del non praticarle" style="width:100%;padding:10px 12px;border:1px solid var(--border-l);border-radius:var(--rs);font-family:var(--font-ui);font-size:14px;background:var(--surface);color:var(--text);resize:vertical"></textarea>
+    <div class="cf-check" style="margin-top:14px">Controlla i fatti: sei stata accurata nel valutare vantaggi e svantaggi?</div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+      <button class="bpri" onclick="pcbSalva()">Salva foglio</button>
+      <button class="bsec" onclick="pcbNuovo()">Nuovo foglio</button>
+    </div>
+    <div id="pc2-msg" style="font-size:12.5px;color:var(--muted);margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <div class="slbl">Fogli salvati</div>
+    <div id="pc2-lista"></div>
+  </div>
+</div>
+
 <div id="page-pazienti" class="page">
   <!-- LIST VIEW -->
   <div id="pat-list-view">
@@ -1075,12 +1082,18 @@
     </div>
 
     <!-- Tabs -->
+    <div class="chart-range" id="pat-range" style="margin-bottom:.75rem">
+      <button class="chart-range-btn active" onclick="setPatRange(7,this)">7gg</button>
+      <button class="chart-range-btn" onclick="setPatRange(14,this)">14gg</button>
+      <button class="chart-range-btn" onclick="setPatRange(0,this)">Tutti</button>
+    </div>
     <div class="pat-tabs">
       <button class="pat-tab active" onclick="switchPatTab('overview',this)">Panoramica</button>
       <button class="pat-tab" onclick="switchPatTab('trend',this)">Trend</button>
       <button class="pat-tab" onclick="switchPatTab('giornata',this)">Giornata</button>
       <button class="pat-tab" onclick="switchPatTab('abilita',this)">Abilità</button>
       <button class="pat-tab" onclick="switchPatTab('storico',this)">Storico</button>
+      <button class="pat-tab" onclick="switchPatTab('fogli',this)">Fogli di lavoro</button>
       <button class="pat-tab" onclick="switchPatTab('sessioni',this)">Note sessione</button>
     </div>
 
@@ -1093,18 +1106,13 @@
         <textarea id="pat-notes" placeholder="Scrivi qui le tue note su questa paziente. Sono visibili solo a te." style="min-height:100px"></textarea>
         <div class="abar">
           <button class="bpri" onclick="savePatientNotes()">⤓ Salva note</button>
-          <span class="toast" id="t-pat">✓ Salvato</span>
+          <span class="toast" id="t-pat">Salvato</span>
         </div>
       </div>
     </div>
 
     <!-- TAB: TREND -->
     <div class="pat-tab-content" id="ptab-trend">
-      <div class="chart-range" id="pat-range">
-      <button class="chart-range-btn active" onclick="setPatRange(7,this)">7gg</button>
-      <button class="chart-range-btn" onclick="setPatRange(14,this)">14gg</button>
-      <button class="chart-range-btn" onclick="setPatRange(0,this)">Tutti</button>
-    </div>
     <div class="cwrap"><div class="ctitle">⚠ Comportamenti suicidari</div><div style="height:220px"><div id="pc4" style="min-height:200px"></div></div></div>
       <div class="cwrap"><div class="ctitle">⚠ Autolesività</div><div style="height:220px"><div id="pc5" style="min-height:200px"></div></div></div>
       <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="height:220px"><div id="pc6" style="min-height:200px"></div></div></div>
@@ -1132,6 +1140,11 @@
     </div>
 
     <!-- TAB: STORICO -->
+    <div class="pat-tab-content" id="ptab-fogli">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:1rem">Fogli di lavoro compilati dalla paziente, raggruppati per giorno.</div>
+      <div id="pat-fogli-view"></div>
+    </div>
+
     <div class="pat-tab-content" id="ptab-storico">
       <div class="slbl">Storico giornaliero</div>
     <!-- TAB: NOTE SESSIONE -->
@@ -1228,7 +1241,7 @@
 
     <div class="abar">
       <button class="bpri" onclick="saveSettings()">Salva impostazioni</button>
-      <span class="toast" id="t-set">✓ Salvato</span>
+      <span class="toast" id="t-set">Salvato</span>
     </div>
   </div>
 
@@ -1274,22 +1287,18 @@
 </div><!-- flex col -->
 
 <!-- BOTTOM NAV -->
-<nav class="bottom-nav">
+<nav class="bottom-nav" style="position:fixed;left:0;right:0;bottom:0;z-index:100;margin:0;border:0;border-radius:30px 30px 0 0;background:#FFFFFF;box-shadow:0 -6px 26px rgba(27,75,74,.08);padding:12px 8px calc(10px + env(safe-area-inset-bottom,0px));display:block">
   <div class="bottom-nav-inner">
     <button class="bn-btn" id="bn-home" onclick="tapHome(this)">
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/></svg></span>
-      <span class="bn-label">Home</span>
+      <span class="bn-lbl">Home</span>
     </button>
     <button class="bn-btn active" id="bn-oggi" onclick="goPage('oggi',this)">
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9 M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
-      <span class="bn-label">Diary</span>
+      <span class="bn-lbl">Diary</span>
     </button>
-    <button class="bn-btn" id="bn-strumenti" onclick="goPage('strumenti',this)">
+    <button class="bn-btn" id="bn-guida" onclick="goPage('guida',this)">
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
-      <span class="bn-label">Strumenti</span>
-    </button>
-    <button class="bn-btn" id="bn-guida" onclick="goPage('guida',this)" style="display:none">
-      <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
       <span class="bn-lbl">Guida</span>
     </button>
     <button class="bn-btn" id="bn-abilita" onclick="goPage('abilita',this)" style="display:none">
@@ -1298,34 +1307,31 @@
     </button>
     <button class="bn-btn" id="bn-storico" onclick="goPage('storico',this)">
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M16 2v4 M8 2v4 M3 10h18"/></svg></span>
-      <span class="bn-label">Storico</span>
+      <span class="bn-lbl">Storico</span>
     </button>
     <button class="bn-btn" id="bn-attivita" onclick="goPage('attivita',this)">
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19.2 2.96c1.4 9.3 2.8 17.04-8.2 17.04z M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
-      <span class="bn-label">Attività</span>
-    </button>
-    <button class="bn-user-btn" onclick="goPage('impostazioni',this)">
-      <div class="bn-user-avatar" id="bn-avatar">?</div>
-      <span class="bn-label" id="bn-username">—</span>
+      <span class="bn-lbl">Attività</span>
     </button>
   </div>
 </nav>
 </div><!-- shell -->
 
-<link rel="stylesheet" href="css/app.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 
-<script src="js/data.js"></script>
-<script src="js/config.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/diary.js"></script>
-<script src="js/analytics.js"></script>
-<script src="js/pazienti.js"></script>
-<script src="js/settings.js"></script>
-<script src="js/planner.js"></script>
-<script src="js/guide.js"></script>
-<script src="js/forms.js"></script>
-<script src="js/init.js"></script>
+<script src="js/data.js?v=202609082158"></script>
+<script src="js/config.js?v=202609082158"></script>
+<script src="js/auth.js?v=202609082158"></script>
+<script src="js/diary.js?v=202609082158"></script>
+<script src="js/analytics.js?v=202609082158"></script>
+<script src="js/pazienti.js?v=202609082158"></script>
+<script src="js/settings.js?v=202609082158"></script>
+<script src="js/planner.js?v=202609082158"></script>
+<script src="js/guide.js?v=202609082158"></script>
+<script src="js/forms.js?v=202609082158"></script>
+<script src="js/init.js?v=202609082158"></script>
 
 
 <!-- PATIENT DAY DETAIL MODAL -->
@@ -1368,6 +1374,19 @@
   </button>
 </div>
 
+
+
+
+<!-- SCHEDA A COMPARSA (contiene la pagina vera, spostata qui all'apertura) -->
+<div id="scheda-modal" class="scheda-modal">
+  <div class="scheda-box">
+    <div class="scheda-head">
+      <div id="scheda-title" class="scheda-title"></div>
+      <button onclick="closeScheda()" class="scheda-close" aria-label="Chiudi">×</button>
+    </div>
+    <div id="scheda-body" class="scheda-body"></div>
+  </div>
+</div>
 
 
 </body>

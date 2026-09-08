@@ -1,4 +1,4 @@
-const CACHE = 'diary-dbt-v50';
+const CACHE = 'diary-dbt-202609081437';
 
 // Solo asset esterni che non cambiano mai
 const STATIC = [
@@ -20,6 +20,10 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // I file versionati (?v=...) non passano mai dalla cache: ignora le versioni
+  // vecchie ed evita che un service worker obsoleto serva stili superati.
+  if (e.request.url.includes('?v=')) return;
+
   const url = new URL(e.request.url);
   const sameOrigin = url.origin === self.location.origin;
   const isCDN = STATIC.includes(e.request.url);

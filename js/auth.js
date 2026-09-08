@@ -165,7 +165,7 @@ function showLoginScreen(){
 function enterApp(){
   document.getElementById('onboard').style.display='none';
   document.getElementById('app').style.display='flex';
-  setThemeColor('#F6F3EE');   // chiaro: l'orologio nero resta leggibile
+  setThemeColor('#1B4B4A');   // si atterra sulla Home, che ha l'intestazione petrolio
   document.documentElement.classList.remove('login-mode');
   document.documentElement.classList.add('app-mode');
   initApp();
@@ -214,43 +214,6 @@ async function checkUsernameAvailable(username){
   }catch(e){return {ok:false,error:'Errore di rete'};}
 }
 
-async function saveProfile(){
-  const nome=document.getElementById('ob-nome').value.trim();
-  const cognome=document.getElementById('ob-cognome').value.trim();
-  const username=document.getElementById('ob-username').value.trim().toLowerCase();
-  const msg=document.getElementById('ob-username-msg');
-  if(!nome){alert('Inserisci il tuo nome.');return}
-  if(!cognome){alert('Inserisci il tuo cognome.');return}
-  const vErr=validateUsername(username);
-  if(vErr){msg.style.color='var(--red)';msg.textContent=vErr;return;}
-  msg.style.color='var(--muted)';
-  msg.textContent='Verifica username...';
-  const check=await checkUsernameAvailable(username);
-  if(!check.ok){msg.style.color='var(--red)';msg.textContent=check.error;return;}
-  if(check.taken){msg.style.color='var(--red)';msg.textContent='Username già in uso. Scegline un altro.';return;}
-  msg.style.color='var(--teal)';msg.textContent='✓ Username disponibile';
-  profile.nome=nome;
-  profile.cognome=cognome;
-  profile.role=profile.role||'paziente';
-  profile.code=username;
-  if(profile.role==='paziente'){
-    const pc=document.getElementById('ob-pcode').value.trim().toLowerCase();
-    profile.terapeutaCode=pc||null;
-  } else {
-    profile.terapeutaCode=null;
-  }
-  channel=profile.code;
-  const restoredData=allData;
-  if(!Object.keys(restoredData).length){
-    ldData();
-  }
-  svProfile();
-  svData();
-  // Push immediately so terapeuta link is saved on Supabase
-  await pushChan();
-  console.log('Profile saved:',profile);
-  initApp();
-}
 function initApp(){
   if(!profile.nome){
     document.getElementById('onboard').style.display='flex';
@@ -275,7 +238,8 @@ function initApp(){
     // Diary e Attivita' restano visibili ma in sola lettura (fanno da
     // riferimento): si nascondono solo Home e Storico, che mostrerebbero
     // dati personali inesistenti per il terapeuta.
-    const HIDE_FOR_TERAP=["'home'","'storico'"];
+    // Abilita' esce dal menu: le schede DBT stanno tutte sotto "Schede".
+    const HIDE_FOR_TERAP=["'storico'","'attivita'","'abilita'"];
     const keepForTerap = oc => !HIDE_FOR_TERAP.some(p=>oc.includes(p));
     document.querySelectorAll('.ni').forEach(b=>{
       const oc=b.getAttribute('onclick')||'';
@@ -283,13 +247,18 @@ function initApp(){
       // precedente poteva averle nascoste con uno stile sull'elemento
       b.style.display = keepForTerap(oc) ? '' : 'none';
     });
-    // Le sezioni partono aperte usando la classe prevista dal componente:
-    // uno stile scritto sull'elemento bloccherebbe la chiusura al clic.
-    document.querySelectorAll('.si-body').forEach(el=>{
-      el.style.display='';           // rimuove eventuali forzature precedenti
-      el.classList.add('open');
+    // Pazienti in cima a entrambi i menu: e' il punto di partenza del lavoro
+    ['.ni','.bn-btn'].forEach(sel=>{
+      const items=[...document.querySelectorAll(sel)];
+      const paz =items.find(b=>(b.getAttribute('onclick')||'').includes("'pazienti'"));
+      const home=items.find(b=>(b.getAttribute('onclick')||'').includes("'home'"));
+      // subito dopo Home, non in cima al pannello (finiva sopra il titolo)
+      if(paz && home && home.parentElement===paz.parentElement) home.after(paz);
     });
-    document.querySelectorAll('.si-arrow').forEach(el=>{ el.style.transform='rotate(180deg)'; });
+
+    // Le sezioni restano chiuse all'avvio: si aprono al tocco.
+    // Ripuliamo solo eventuali forzature lasciate da versioni precedenti.
+    document.querySelectorAll('.si-body').forEach(el=>{ el.style.display=''; });
     document.getElementById('ni-pazienti').style.display='flex';
     // Hide bottom nav items, show pazienti
     document.querySelectorAll('.bn-btn').forEach(b=>{
@@ -299,7 +268,7 @@ function initApp(){
     // Show pazienti in bottom nav (it doesnt exist, need to add)
     // For now just hide topheader and go directly to pazienti
     document.getElementById('topheader').style.display='none';
-    setTimeout(()=>goPage('pazienti',null),50);
+    setTimeout(()=>goPage('home',null),50);   // si parte dalla panoramica
   } else {
     // Patient mode: show diary
   }

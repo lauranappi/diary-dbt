@@ -1,0 +1,1004 @@
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap" rel="stylesheet">
+<script src="./illustrazioni-inline.js"></script>
+<style>body{margin:0;background:#F0E6D6;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#14201F}a{color:#1B4B4A}a:hover{color:#C1714A}::-webkit-scrollbar{width:0;height:0}button{font-family:inherit}input,textarea{font-family:inherit}</style>
+</helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#FBF3E7"/><circle cx="35" cy="33" r="9" fill="#F5CE47"/><path d="M50 45C63 53 63 75 50 83C37 75 37 53 50 45Z" fill="#1B4B4A"/></svg></template>
+<div style="{{ stileFuori }}">
+
+  <sc-if value="{{ mostraLato }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;flex-direction:column;gap:14px;width:280px;flex:none">
+    <span style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#C1714A">Diary Card DBT</span>
+    <h1 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.05">Prototipo</h1>
+    <p style="margin:0;font-size:14px;line-height:1.6;color:#1B4B4A">Tutto navigabile: barra in basso, frecce, pannelli che salgono dal basso, tema chiaro/scuro dal pannello Tweaks o dal tasto in Impostazioni.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <sc-for list="{{ salti }}" as="s" hint-placeholder-count="8">
+        <button onClick="{{ s.tap }}" style="{{ s.style }}">{{ s.nome }}</button>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="{{ tema }}">
+    <div style="position:absolute;inset:0 0 84px 0;overflow-y:auto;background:var(--bg)">
+
+      <sc-if value="{{ vHome }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="background:var(--hero);padding:44px 26px 48px;position:relative;overflow:hidden">
+            <img src="illustrazioni/decorative/deco-tratti-chiaro.svg" style="position:absolute;right:-26px;top:20px;width:190px;opacity:.35" alt="">
+            <svg viewBox="0 0 390 40" preserveAspectRatio="none" style="position:absolute;left:0;right:0;bottom:-1px;width:100%;height:40px;display:block"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z" fill="var(--bg)"/></svg>
+            <div style="position:relative;display:flex;align-items:flex-start;gap:12px">
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:13px;font-weight:500;color:var(--herosub)">{{ saluto }}</span>
+                <h2 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-.03em;color:var(--heroink)">{{ nome }}</h2>
+                <p style="margin:2px 0 0;font-size:13.5px;line-height:1.5;color:var(--herosub);max-width:230px">{{ statoDiary }}</p>
+                <button onClick="{{ apriDiary }}" style="margin-top:12px;align-self:flex-start;border:0;background:var(--acc);color:#14201F;font-size:14px;font-weight:600;padding:12px 22px;border-radius:18px;cursor:pointer" style-hover="background:#FDF3D5">{{ ctaDiary }}</button>
+              </div>
+              <button onClick="{{ apriImpostazioni }}" style="border:0;background:rgba(255,255,255,.14);width:38px;height:38px;border-radius:999px;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center;padding:0" style-hover="background:rgba(255,255,255,.24)">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.6" stroke="#FFFFFF" stroke-width="2"/><circle cx="9" cy="9" r="6.6" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3.2 3.4"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div style="padding:16px 20px 14px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:12px">
+              <div style="flex:1;background:var(--surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--muted)">14</span>
+                <span style="font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.35">giorni<br>di fila</span>
+              </div>
+              <div style="flex:1.6;background:var(--surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12.5px;font-weight:600;color:var(--muted)">Ieri</span>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <sc-for list="{{ ieri }}" as="e" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:9px">
+                      <span style="font-size:12px;font-weight:500;width:66px;flex:none;color:var(--ink)">{{ e.nome }}</span>
+                      <span style="flex:1;height:7px;border-radius:999px;background:var(--line);position:relative;overflow:hidden"><i style="{{ e.fill }}"></i></span>
+                      <span style="font-size:11px;font-weight:600;color:var(--terra)">{{ e.val }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <div onClick="{{ apriGuida }}" style="background:var(--surface2);border-radius:26px;padding:18px;position:relative;overflow:hidden;cursor:pointer">
+              <img src="illustrazioni/decorative/deco-macchia-petrolio.svg" style="position:absolute;right:-30px;bottom:-46px;width:130px;opacity:.12" alt="">
+              <div style="position:relative;display:flex;gap:16px;align-items:center">
+                <img src="illustrazioni/miniature/modulo-mindfulness.svg" width="52" height="52" style="flex:none;border-radius:18px" alt="">
+                <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+                  <span style="font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Abilità di oggi</span>
+                  <span style="font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">Osservare il respiro</span>
+                  <span style="font-size:12.5px;line-height:1.45;color:var(--muted)">Tre minuti, senza cambiare nulla.</span>
+                </div>
+                <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <div onClick="{{ apriStorico }}" style="background:var(--surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:12px;cursor:pointer">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:12.5px;font-weight:600;color:var(--muted);flex:1">Ultimi 7 giorni</span>
+                <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;height:60px">
+                <sc-for list="{{ settimana }}" as="g" hint-placeholder-count="7">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:9px">
+                    <span style="{{ g.bar }}"></span>
+                    <span style="font-size:11px;font-weight:500;color:var(--muted);opacity:.7">{{ g.d }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vDiary }}">
+        <div style="padding:48px 0 24px">
+          <div style="padding:0 20px;display:flex;align-items:center;gap:10px">
+            <div style="flex:1;min-width:0">
+              <h2 style="margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">{{ titoloGiorno }}</h2>
+              <p style="margin:4px 0 0;font-size:13.5px;color:var(--muted)">{{ dataGiorno }}</p>
+            </div>
+            <button onClick="{{ giornoPrec }}" style="border:0;background:var(--line);width:36px;height:36px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;flex:none">
+              <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button onClick="{{ giornoSucc }}" style="{{ stileSucc }}">
+              <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+
+          <div ref="{{ stripRef }}" style="display:flex;gap:8px;overflow-x:auto;padding:16px 20px 16px;scrollbar-width:none">
+            <sc-for list="{{ giorni }}" as="g" hint-placeholder-count="10">
+              <div onClick="{{ g.tap }}" style="{{ g.style }}">
+                <span style="font-size:11px;font-weight:500;opacity:.75;text-transform:uppercase;letter-spacing:.06em">{{ g.dow }}</span>
+                <span style="font-size:17px;font-weight:800;letter-spacing:-.02em">{{ g.num }}</span>
+                <span style="{{ g.dot }}"></span>
+              </div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ soloLettura }}">
+            <div style="margin:0 20px 14px;background:var(--tintT);border-radius:18px;padding:13px 16px;display:flex;align-items:center;gap:10px">
+              <span style="width:9px;height:9px;border-radius:999px;background:var(--terra);flex:none"></span>
+              <span style="font-size:12.5px;font-weight:600;color:var(--terraInk);line-height:1.4">Giornata passata · sola consultazione</span>
+            </div>
+          </sc-if>
+
+          <div style="padding:0 20px 14px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:7px">
+              <sc-for list="{{ passi }}" as="p" hint-placeholder-count="4">
+                <span onClick="{{ p.tap }}" style="{{ p.style }}"></span>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px">
+              <span style="font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ passoNome }}</span>
+              <span style="font-size:12px;font-weight:500;color:var(--muted);opacity:.75">{{ passoConta }}</span>
+            </div>
+          </div>
+
+          <div style="margin:0 20px;display:flex;flex-direction:column;gap:12px">
+            <sc-if value="{{ mostraScale }}">
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:20px">
+                <sc-for list="{{ scale }}" as="s" hint-placeholder-count="6">
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <span style="font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.3">{{ s.nome }}</span>
+                    <div style="display:flex;gap:6px">
+                      <sc-for list="{{ s.celle }}" as="c" hint-placeholder-count="6">
+                        <span onClick="{{ c.tap }}" style="{{ c.style }}">{{ c.n }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ mostraSiNo }}">
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+                <sc-for list="{{ sino }}" as="s" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="font-size:14.5px;font-weight:600;color:var(--ink);flex:1;line-height:1.3">{{ s.nome }}</span>
+                    <div style="display:flex;gap:6px;flex:none">
+                      <span onClick="{{ s.tapSi }}" style="{{ s.stileSi }}">Sì</span>
+                      <span onClick="{{ s.tapNo }}" style="{{ s.stileNo }}">No</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ mostraTesti }}">
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+                <sc-for list="{{ testi }}" as="t" hint-placeholder-count="3">
+                  <label style="display:flex;flex-direction:column;gap:8px">
+                    <span style="font-size:13px;font-weight:600;color:var(--muted)">{{ t.nome }}</span>
+                    <textarea value="{{ t.val }}" onChange="{{ t.set }}" rows="{{ t.rows }}" placeholder="{{ t.ph }}" style="border:0;background:var(--bg);color:var(--ink);border-radius:18px;padding:14px 16px;font-size:14px;line-height:1.5;resize:none;outline:none"></textarea>
+                  </label>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <div style="display:flex;gap:10px;padding:4px 0 8px">
+              <button onClick="{{ passoPrec }}" style="{{ stilePassoPrec }}">Indietro</button>
+              <button onClick="{{ passoSucc }}" style="flex:2;border:0;background:var(--hero);color:var(--heroink);font-size:14.5px;font-weight:600;padding:15px 20px;border-radius:20px;cursor:pointer">{{ ctaPasso }}</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vAbilita }}">
+        <div style="padding:48px 20px 24px">
+          <h2 style="margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">Abilità di oggi</h2>
+          <p style="margin:6px 0 18px;font-size:13.5px;color:var(--muted)">{{ contaAbilita }}</p>
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <sc-for list="{{ gruppiAbilita }}" as="g" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <img data-ill="{{ g.src }}" width="34" height="34" style="border-radius:12px;flex:none" alt="">
+                  <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">{{ g.nome }}</span>
+                </div>
+                <div style="background:var(--surface);border-radius:26px;padding:8px 18px;display:flex;flex-direction:column">
+                  <sc-for list="{{ g.abilita }}" as="a" hint-placeholder-count="5">
+                    <div onClick="{{ a.tap }}" style="display:flex;align-items:center;gap:14px;padding:13px 0;cursor:pointer">
+                      <span style="{{ a.box }}">
+                        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="{{ a.tick }}"><path d="M2 7L5 10L11 3" stroke="#14201F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </span>
+                      <span style="{{ a.label }}">{{ a.nome }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vAccesso }}">
+        <div style="min-height:100%;background:var(--hero);padding:64px 26px 40px;display:flex;flex-direction:column;gap:26px;position:relative;overflow:hidden">
+          <img src="illustrazioni/decorative/deco-ramo-chiaro.svg" style="position:absolute;right:-40px;top:-10px;width:210px;opacity:.28" alt="">
+          <div style="position:relative;display:flex;flex-direction:column;gap:10px">
+            <img src="illustrazioni/icona-app.svg" width="56" height="56" style="border-radius:16px" alt="">
+            <h2 style="margin:12px 0 0;font-size:28px;font-weight:800;letter-spacing:-.03em;color:var(--heroink);line-height:1.15">{{ titoloAccesso }}</h2>
+            <p style="margin:0;font-size:13.5px;line-height:1.5;color:var(--herosub);max-width:250px">{{ sottoAccesso }}</p>
+          </div>
+          <div style="position:relative;background:var(--surface);border-radius:26px;padding:22px;display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ campiAccesso }}" as="c" hint-placeholder-count="3">
+              <label style="display:flex;flex-direction:column;gap:7px">
+                <span style="font-size:12.5px;font-weight:600;color:var(--muted)">{{ c.nome }}</span>
+                <input value="{{ c.val }}" onChange="{{ c.set }}" type="{{ c.type }}" placeholder="{{ c.ph }}" style="{{ c.style }}">
+                <sc-if value="{{ c.errore }}">
+                  <span style="font-size:12px;font-weight:500;color:var(--terraInk)">{{ c.errore }}</span>
+                </sc-if>
+              </label>
+            </sc-for>
+            <sc-if value="{{ mostraRuolo }}">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:12.5px;font-weight:600;color:var(--muted)">Ruolo</span>
+                <div style="display:flex;gap:8px">
+                  <span onClick="{{ ruoloPaziente }}" style="{{ stileRuoloP }}">Paziente</span>
+                  <span onClick="{{ ruoloTerapeuta }}" style="{{ stileRuoloT }}">Terapeuta</span>
+                </div>
+              </div>
+            </sc-if>
+            <button onClick="{{ inviaAccesso }}" style="{{ stileInvia }}">{{ ctaAccesso }}</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:2px">
+              <span onClick="{{ cambiaAccesso }}" style="font-size:13px;font-weight:600;color:var(--terraInk);cursor:pointer;text-decoration:underline">{{ altroAccesso }}</span>
+              <span style="font-size:13px;font-weight:500;color:var(--muted);opacity:.75;cursor:pointer">Password dimenticata</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vAttivita }}">
+        <div style="padding:48px 20px 24px">
+          <h2 style="margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">Attività</h2>
+          <p style="margin:6px 0 18px;font-size:13.5px;color:var(--muted)">{{ dataOggi }}</p>
+          <sc-if value="{{ pianoVuoto }}">
+            <div style="background:var(--surface);border-radius:26px;padding:40px 26px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px">
+              <img src="illustrazioni/vuoti/vuoto-attivita.svg" width="150" height="150" alt="">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">Nessuna attività pianificata</span>
+                <span style="font-size:13.5px;line-height:1.5;color:var(--muted)">Aggiungine una: anche piccola va bene.</span>
+              </div>
+              <button onClick="{{ apriScegli }}" style="border:0;background:var(--hero);color:var(--heroink);font-size:14px;font-weight:600;padding:13px 24px;border-radius:18px;cursor:pointer">Aggiungi attività</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ pianoPieno }}">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ fasce }}" as="f" hint-placeholder-count="3">
+                <div style="background:var(--surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:14px">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);flex:1">{{ f.nome }}</span>
+                    <button onClick="{{ f.aggiungi }}" style="border:0;background:var(--cella);color:var(--terraInk);width:30px;height:30px;border-radius:999px;font-size:17px;font-weight:600;cursor:pointer;line-height:1;padding:0">+</button>
+                  </div>
+                  <sc-if value="{{ f.vuota }}">
+                    <span style="font-size:13.5px;color:var(--muted);opacity:.7">Niente ancora</span>
+                  </sc-if>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ f.voci }}" as="a" hint-placeholder-count="2">
+                      <span onClick="{{ a.rimuovi }}" style="background:var(--cella);color:var(--terraInk);font-size:13px;font-weight:600;padding:10px 16px;border-radius:999px;cursor:pointer">{{ a.nome }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vScegli }}">
+        <div style="padding:48px 20px 24px">
+          <button onClick="{{ apriAttivita }}" style="border:0;background:var(--line);width:36px;height:36px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-bottom:16px">
+            <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <h2 style="margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">Scegli le attività</h2>
+          <p style="margin:6px 0 18px;font-size:13.5px;color:var(--muted)">{{ fasciaScelta }}</p>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <sc-for list="{{ categorie }}" as="c" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">{{ c.nome }}</span>
+                <div style="display:flex;flex-wrap:wrap;gap:8px">
+                  <sc-for list="{{ c.voci }}" as="a" hint-placeholder-count="4">
+                    <span onClick="{{ a.tap }}" style="{{ a.style }}">{{ a.nome }}</span>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ apriAttivita }}" style="margin-top:22px;width:100%;border:0;background:var(--hero);color:var(--heroink);font-size:14.5px;font-weight:600;padding:15px 20px;border-radius:20px;cursor:pointer">Fatto</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vStorico }}">
+        <div style="padding:48px 20px 24px">
+          <h2 style="margin:0 0 14px;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">Storico &amp; trend</h2>
+          <div style="display:flex;gap:7px;margin-bottom:10px">
+            <sc-for list="{{ periodi }}" as="p" hint-placeholder-count="3">
+              <span onClick="{{ p.tap }}" style="{{ p.style }}">{{ p.nome }}</span>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:7px;margin-bottom:16px">
+            <sc-for list="{{ viste }}" as="p" hint-placeholder-count="2">
+              <span onClick="{{ p.tap }}" style="{{ p.style }}">{{ p.nome }}</span>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ vistaElenco }}">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="background:var(--hero);border-radius:26px;padding:22px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden">
+                <img src="illustrazioni/decorative/deco-cerchi-chiaro.svg" style="position:absolute;right:-24px;bottom:-30px;width:120px;opacity:.3" alt="">
+                <span style="font-size:44px;font-weight:800;letter-spacing:-.04em;color:var(--acc);line-height:1;position:relative">{{ giorniCompilati }}</span>
+                <span style="font-size:13.5px;font-weight:500;color:var(--herosub);line-height:1.4;position:relative">giorni compilati<br>su {{ giorniPeriodo }}</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <sc-for list="{{ contatori }}" as="c" hint-placeholder-count="10">
+                  <div style="background:var(--surface);border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:3px">
+                    <span style="{{ c.num }}">{{ c.val }}</span>
+                    <span style="font-size:11.5px;font-weight:500;color:var(--muted);line-height:1.3">{{ c.nome }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);margin-top:6px">Le giornate</span>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ giornate }}" as="g" hint-placeholder-count="7">
+                  <div onClick="{{ g.tap }}" style="background:var(--surface);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer">
+                    <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0">
+                      <span style="font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ g.data }}</span>
+                      <span style="font-size:12.5px;color:var(--muted)">{{ g.emozione }}</span>
+                    </div>
+                    <sc-if value="{{ g.allarme }}">
+                      <span style="background:var(--tintT);color:var(--terraInk);font-size:11px;font-weight:600;padding:6px 11px;border-radius:999px;flex:none">{{ g.allarme }}</span>
+                    </sc-if>
+                    <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ vistaTrend }}">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ grafici }}" as="g" hint-placeholder-count="3">
+                <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+                  <div style="display:flex;align-items:baseline;gap:8px">
+                    <span style="font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink);flex:1">{{ g.nome }}</span>
+                    <span style="font-size:12px;font-weight:600;color:var(--terra)">{{ g.media }}</span>
+                  </div>
+                  <div style="display:flex;align-items:flex-end;justify-content:space-between;height:88px;gap:4px">
+                    <sc-for list="{{ g.barre }}" as="b" hint-placeholder-count="7">
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+                        <span style="{{ b.style }}"></span>
+                        <span style="font-size:10px;font-weight:500;color:var(--muted);opacity:.65">{{ b.d }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+                <span style="font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">Sofferenza emotiva nel tempo</span>
+                <svg viewBox="0 0 300 110" style="width:100%;height:110px;display:block">
+                  <polyline points="{{ lineaSfondo }}" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  <polyline points="{{ linea }}" fill="none" stroke="var(--hero)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div style="display:flex;justify-content:space-between">
+                  <span style="font-size:11px;font-weight:500;color:var(--muted);opacity:.65">{{ etichettaInizio }}</span>
+                  <span style="font-size:11px;font-weight:500;color:var(--muted);opacity:.65">oggi</span>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vGuida }}">
+        <div style="padding:48px 20px 24px">
+          <div style="position:relative;padding:0 0 20px;overflow:hidden">
+            <img src="illustrazioni/decorative/deco-ramo-petrolio.svg" style="position:absolute;right:-34px;top:-16px;width:170px;opacity:.14" alt="">
+            <h2 style="margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;position:relative;color:var(--ink)">Guida DBT</h2>
+            <p style="margin:8px 0 0;font-size:13.5px;color:var(--muted);position:relative">Quattro moduli e gli strumenti generali.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ moduli }}" as="m" hint-placeholder-count="5">
+              <div onClick="{{ m.tap }}" style="background:var(--surface);border-radius:26px;padding:16px;display:flex;gap:16px;align-items:center;cursor:pointer">
+                <img data-ill="{{ m.src }}" width="66" height="66" style="flex:none;border-radius:20px" alt="">
+                <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+                  <span style="font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:1.2;color:var(--ink)">{{ m.nome }}</span>
+                  <span style="font-size:12.5px;line-height:1.45;color:var(--muted)">{{ m.sotto }}</span>
+                </div>
+                <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none;margin-right:6px"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </sc-for>
+            <div onClick="{{ apriEmozioni }}" style="background:var(--hero);border-radius:26px;padding:22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-top:6px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--heroink)">Schede emozioni</span>
+                <span style="font-size:12.5px;color:var(--herosub)">Sette emozioni, azione opposta</span>
+              </div>
+              <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none;margin-right:4px"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--acc)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div onClick="{{ apriFogli }}" style="background:var(--surface2);border-radius:26px;padding:22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">Fogli di lavoro</span>
+                <span style="font-size:12.5px;color:var(--muted)">Otto fogli compilabili e quelli salvati</span>
+              </div>
+              <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none;margin-right:4px"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vModulo }}">
+        <div style="padding:48px 20px 24px">
+          <button onClick="{{ apriGuida }}" style="border:0;background:var(--line);width:36px;height:36px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-bottom:16px">
+            <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div style="display:flex;gap:16px;align-items:center;margin-bottom:18px">
+            <img data-ill="{{ moduloSrc }}" width="66" height="66" style="flex:none;border-radius:20px" alt="">
+            <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1.15">{{ moduloNome }}</h2>
+          </div>
+          <div style="background:var(--surface2);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:7px;margin-bottom:14px">
+            <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Quando usarla</span>
+            <span style="font-size:14px;line-height:1.55;color:var(--ink)">{{ moduloQuando }}</span>
+          </div>
+          <sc-if value="{{ haFogli }}">
+          <div style="background:var(--surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+            <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Fogli di lavoro</span>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ moduloFogli }}" as="f" hint-placeholder-count="2">
+                <div onClick="{{ f.tap }}" style="display:flex;align-items:center;gap:12px;cursor:pointer;padding:4px 0">
+                  <span style="width:9px;height:9px;border-radius:999px;background:var(--acc);flex:none"></span>
+                  <span style="font-size:14px;font-weight:600;color:var(--ink);flex:1">{{ f.nome }}</span>
+                  <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+          <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Le abilità</span>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+            <sc-for list="{{ moduloAbilita }}" as="a" hint-placeholder-count="6">
+              <div style="background:var(--surface);border-radius:22px;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+                <div onClick="{{ a.tap }}" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+                  <span style="font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink);flex:1">{{ a.nome }}</span>
+                  <svg width="19" height="11" viewBox="0 0 19 11" fill="none" style="{{ a.freccia }}"><path d="M2.5 2.5L9.5 8L16.5 2.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <sc-if value="{{ a.aperta }}">
+                  <div style="display:flex;flex-direction:column;gap:10px;padding-top:2px">
+                    <sc-for list="{{ a.passi }}" as="p" hint-placeholder-count="3">
+                      <div style="display:flex;gap:12px;align-items:flex-start">
+                        <span style="width:22px;height:22px;border-radius:999px;background:var(--cella);color:var(--terraInk);font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px">{{ p.n }}</span>
+                        <span style="font-size:13.5px;line-height:1.5;color:var(--ink);flex:1">{{ p.testo }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vEmozioni }}">
+        <div style="padding:48px 20px 24px">
+          <button onClick="{{ apriGuida }}" style="border:0;background:var(--line);width:36px;height:36px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-bottom:16px">
+            <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <h2 style="margin:0 0 8px;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">Schede emozioni</h2>
+          <p style="margin:0 0 20px;font-size:13.5px;color:var(--muted)">Quando corrisponde ai fatti, cosa la scatena, l'azione opposta.</p>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ emozioni }}" as="e" hint-placeholder-count="7">
+              <div onClick="{{ e.tap }}" style="background:var(--surface);border-radius:26px;padding:16px;display:flex;gap:16px;align-items:center;cursor:pointer">
+                <img data-ill="{{ e.src }}" width="66" height="66" style="flex:none;border-radius:20px" alt="">
+                <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+                  <span style="font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:1.2;color:var(--ink)">{{ e.nome }}</span>
+                  <span style="font-size:12.5px;line-height:1.45;color:var(--muted)">{{ e.sotto }}</span>
+                </div>
+                <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none;margin-right:6px"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vEmozione }}">
+        <div style="padding:48px 20px 24px">
+          <button onClick="{{ apriEmozioni }}" style="border:0;background:var(--line);width:36px;height:36px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-bottom:16px">
+            <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px">
+            <img data-ill="{{ emozioneSrc }}" width="72" height="72" style="flex:none;border-radius:22px" alt="">
+            <h2 style="margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">{{ emozioneNome }}</h2>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ emozioneBlocchi }}" as="b" hint-placeholder-count="6">
+              <div style="{{ b.card }}">
+                <span style="{{ b.kicker }}">{{ b.nome }}</span>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+                  <sc-for list="{{ b.voci }}" as="t" hint-placeholder-count="3">
+                    <div style="display:flex;gap:10px;align-items:flex-start">
+                      <span style="{{ t.punto }}"></span>
+                      <span style="{{ t.testo }}">{{ t.val }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vFogli }}">
+        <div style="padding:48px 20px 24px">
+          <button onClick="{{ apriGuida }}" style="border:0;background:var(--line);width:36px;height:36px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-bottom:16px">
+            <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <h2 style="margin:0 0 8px;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">Fogli di lavoro</h2>
+          <p style="margin:0 0 20px;font-size:13.5px;color:var(--muted)">Si aprono in un pannello, si salvano con la data.</p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ listaFogli }}" as="f" hint-placeholder-count="8">
+              <div onClick="{{ f.tap }}" style="background:var(--surface);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer">
+                <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0">
+                  <span style="font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ f.nome }}</span>
+                  <span style="font-size:12.5px;color:var(--muted);line-height:1.4">{{ f.sotto }}</span>
+                </div>
+                <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;align-items:baseline;gap:8px;margin:26px 0 12px">
+            <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);flex:1">I tuoi fogli salvati</span>
+            <span style="font-size:12px;font-weight:500;color:var(--muted);opacity:.7">{{ contaSalvati }}</span>
+          </div>
+          <sc-if value="{{ salvatiVuoti }}">
+            <div style="background:var(--surface);border-radius:26px;padding:36px 26px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px">
+              <img src="illustrazioni/vuoti/vuoto-fogli.svg" width="140" height="140" alt="">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">Nessun foglio compilato</span>
+                <span style="font-size:13px;line-height:1.5;color:var(--muted)">Comincia da PLEASE: è il più breve.</span>
+              </div>
+            </div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ salvati }}" as="s" hint-placeholder-count="3">
+              <div style="background:var(--surface);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:12px">
+                <div onClick="{{ s.apri }}" style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0;cursor:pointer">
+                  <div style="display:flex;align-items:baseline;gap:8px">
+                    <span style="font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ s.nome }}</span>
+                    <span style="font-size:11.5px;font-weight:500;color:var(--terra)">{{ s.data }}</span>
+                  </div>
+                  <span style="font-size:12.5px;line-height:1.4;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ s.anteprima }}</span>
+                </div>
+                <button onClick="{{ s.elimina }}" style="border:0;background:var(--cella);width:32px;height:32px;border-radius:999px;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center;padding:0">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 4.5h9M5.5 4.5V3h3v1.5M4 4.5l.6 7h4.8l.6-7" stroke="var(--terraInk)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vImpostazioni }}">
+        <div style="padding:48px 20px 24px">
+          <h2 style="margin:0 0 20px;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">Impostazioni</h2>
+          <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px;margin-bottom:14px">
+            <sc-for list="{{ campiProfilo }}" as="c" hint-placeholder-count="3">
+              <label style="display:flex;flex-direction:column;gap:7px">
+                <span style="font-size:12.5px;font-weight:600;color:var(--muted)">{{ c.nome }}</span>
+                <input value="{{ c.val }}" onChange="{{ c.set }}" readOnly="{{ c.ro }}" style="{{ c.style }}">
+              </label>
+            </sc-for>
+          </div>
+          <div style="background:var(--surface);border-radius:26px;padding:8px 20px;display:flex;flex-direction:column;margin-bottom:14px">
+            <sc-for list="{{ interruttori }}" as="i" hint-placeholder-count="3">
+              <div onClick="{{ i.tap }}" style="display:flex;align-items:center;gap:14px;padding:15px 0;cursor:pointer">
+                <div style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:0">
+                  <span style="font-size:14.5px;font-weight:600;color:var(--ink)">{{ i.nome }}</span>
+                  <span style="font-size:12px;color:var(--muted);opacity:.75">{{ i.sotto }}</span>
+                </div>
+                <span style="{{ i.track }}"><i style="{{ i.knob }}"></i></span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:var(--surface);border-radius:26px;padding:8px 20px;display:flex;flex-direction:column;margin-bottom:14px">
+            <sc-for list="{{ azioni }}" as="a" hint-placeholder-count="3">
+              <div onClick="{{ a.tap }}" style="display:flex;align-items:center;gap:12px;padding:15px 0;cursor:pointer">
+                <span style="{{ a.label }}">{{ a.nome }}</span>
+                <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ apriTerapeuta }}" style="width:100%;border:0;background:var(--surface2);color:var(--ink);font-size:14px;font-weight:600;padding:15px 20px;border-radius:20px;cursor:pointer">Passa alla vista terapeuta</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vTHome }}">
+        <div>
+          <div style="background:var(--hero);padding:44px 26px 48px;position:relative;overflow:hidden">
+            <img src="illustrazioni/decorative/deco-cerchi-chiaro.svg" style="position:absolute;right:-30px;top:6px;width:150px;opacity:.28" alt="">
+            <svg viewBox="0 0 390 40" preserveAspectRatio="none" style="position:absolute;left:0;right:0;bottom:-1px;width:100%;height:40px;display:block"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z" fill="var(--bg)"/></svg>
+            <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:13px;font-weight:500;color:var(--herosub)">{{ saluto }}</span>
+              <h2 style="margin:0;font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--heroink)">Dott.ssa Rossi</h2>
+              <div style="display:flex;gap:26px;margin-top:12px">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--acc);line-height:1">9</span>
+                  <span style="font-size:12px;font-weight:500;color:var(--herosub)">pazienti</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--heroink);line-height:1">6</span>
+                  <span style="font-size:12px;font-weight:500;color:var(--herosub)">hanno compilato oggi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px 20px 14px;display:flex;flex-direction:column;gap:12px">
+            <div style="background:var(--surface2);border-radius:26px;padding:20px;display:flex;align-items:center;gap:14px">
+              <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Il tuo username</span>
+                <span style="font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">dott-rossi-42</span>
+                <span style="font-size:12.5px;line-height:1.4;color:var(--muted)">Comunicalo alle pazienti in prima seduta.</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px">
+              <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);flex:1">Segnalazioni · 7 giorni</span>
+              <span style="font-size:12px;font-weight:500;color:var(--muted);opacity:.7">{{ contaSegnalazioni }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ segnalazioni }}" as="s" hint-placeholder-count="4">
+                <div onClick="{{ s.tap }}" style="background:var(--surface);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer">
+                  <span style="width:10px;height:10px;border-radius:999px;background:var(--terra);flex:none"></span>
+                  <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0">
+                    <span style="font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ s.nome }}</span>
+                    <span style="font-size:12.5px;color:var(--muted);line-height:1.4">{{ s.cosa }}</span>
+                  </div>
+                  <span style="font-size:11.5px;font-weight:600;color:var(--terraInk);flex:none">{{ s.quando }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <button onClick="{{ apriPazienti }}" style="margin-top:6px;width:100%;border:0;background:var(--hero);color:var(--heroink);font-size:14.5px;font-weight:600;padding:15px 20px;border-radius:20px;cursor:pointer">Tutte le pazienti</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vTPazienti }}">
+        <div style="padding:48px 20px 24px">
+          <h2 style="margin:0 0 6px;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">Le mie pazienti</h2>
+          <p style="margin:0 0 20px;font-size:13.5px;color:var(--muted)">Nove in cura, ordinate per ultima compilazione.</p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ pazienti }}" as="p" hint-placeholder-count="9">
+              <div onClick="{{ p.tap }}" style="background:var(--surface);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer">
+                <span style="{{ p.iniziali }}">{{ p.sigla }}</span>
+                <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ p.nome }}</span>
+                    <sc-if value="{{ p.allarme }}">
+                      <span style="width:8px;height:8px;border-radius:999px;background:var(--terra);flex:none"></span>
+                    </sc-if>
+                  </div>
+                  <span style="font-size:12px;color:var(--muted)">{{ p.username }} · {{ p.giorni }}</span>
+                </div>
+                <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ vTPaziente }}">
+        <div style="padding:48px 0 24px">
+          <div style="padding:0 20px;display:flex;align-items:center;gap:12px;margin-bottom:14px">
+            <button onClick="{{ apriPazienti }}" style="border:0;background:var(--line);width:36px;height:36px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;flex:none">
+              <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div style="flex:1;min-width:0">
+              <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-.03em;color:var(--ink)">{{ pazienteNome }}</h2>
+              <span style="font-size:12.5px;color:var(--muted)">{{ pazienteUser }}</span>
+            </div>
+          </div>
+          <div style="margin:0 20px 12px;background:var(--surface2);border-radius:18px;padding:13px 16px;display:flex;align-items:center;gap:10px">
+            <span style="width:9px;height:9px;border-radius:999px;background:var(--acc);flex:none"></span>
+            <span style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.4">Sola consultazione · non puoi modificare i dati</span>
+          </div>
+          <div style="display:flex;gap:7px;padding:0 20px 12px">
+            <sc-for list="{{ periodi }}" as="p" hint-placeholder-count="3">
+              <span onClick="{{ p.tap }}" style="{{ p.style }}">{{ p.nome }}</span>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:7px;overflow-x:auto;padding:0 20px 16px;scrollbar-width:none">
+            <sc-for list="{{ linguette }}" as="l" hint-placeholder-count="7">
+              <span onClick="{{ l.tap }}" style="{{ l.style }}">{{ l.nome }}</span>
+            </sc-for>
+          </div>
+
+          <div style="padding:0 20px;display:flex;flex-direction:column;gap:12px">
+            <sc-if value="{{ tPanoramica }}">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+                  <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Emozioni · media del periodo</span>
+                  <div style="display:flex;flex-direction:column;gap:11px">
+                    <sc-for list="{{ medieEmozioni }}" as="e" hint-placeholder-count="6">
+                      <div style="display:flex;align-items:center;gap:10px">
+                        <span style="font-size:13px;font-weight:500;width:96px;flex:none;color:var(--ink)">{{ e.nome }}</span>
+                        <span style="flex:1;height:8px;border-radius:999px;background:var(--line);position:relative;overflow:hidden"><i style="{{ e.fill }}"></i></span>
+                        <span style="font-size:12px;font-weight:700;color:var(--terraInk);width:22px;text-align:right;flex:none">{{ e.val }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+                  <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Comportamenti · sì/no nel periodo</span>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                    <sc-for list="{{ mediaSiNo }}" as="s" hint-placeholder-count="4">
+                      <div style="background:var(--bg);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:3px">
+                        <span style="{{ s.num }}">{{ s.val }}</span>
+                        <span style="font-size:11.5px;font-weight:500;color:var(--muted);line-height:1.3">{{ s.nome }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:14px">
+                  <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Abilità più usate</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ abilitaTop }}" as="a" hint-placeholder-count="5">
+                      <span style="background:var(--cella);color:var(--terraInk);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">{{ a }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+                <div onClick="{{ apriCrisiPaziente }}" style="background:var(--hero);border-radius:26px;padding:20px;display:flex;align-items:center;gap:12px;cursor:pointer">
+                  <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+                    <span style="font-size:15.5px;font-weight:800;letter-spacing:-.02em;color:var(--heroink)">Piano di crisi</span>
+                    <span style="font-size:12.5px;color:var(--herosub)">Aggiornato il {{ crisiData }}</span>
+                  </div>
+                  <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--acc)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ tTrend }}">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <sc-for list="{{ grafici }}" as="g" hint-placeholder-count="3">
+                  <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+                    <div style="display:flex;align-items:baseline;gap:8px">
+                      <span style="font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink);flex:1">{{ g.nome }}</span>
+                      <span style="font-size:12px;font-weight:600;color:var(--terra)">{{ g.media }}</span>
+                    </div>
+                    <div style="display:flex;align-items:flex-end;justify-content:space-between;height:88px;gap:4px">
+                      <sc-for list="{{ g.barre }}" as="b" hint-placeholder-count="7">
+                        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+                          <span style="{{ b.style }}"></span>
+                          <span style="font-size:10px;font-weight:500;color:var(--muted);opacity:.65">{{ b.d }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ tGiornata }}">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <sc-for list="{{ giornataPaziente }}" as="f" hint-placeholder-count="3">
+                  <div style="background:var(--surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                    <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">{{ f.nome }}</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px">
+                      <sc-for list="{{ f.voci }}" as="a" hint-placeholder-count="2">
+                        <span style="background:var(--cella);color:var(--terraInk);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">{{ a }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ tAbilita }}">
+              <div style="background:var(--surface);border-radius:26px;padding:8px 20px;display:flex;flex-direction:column">
+                <sc-for list="{{ abilitaPeriodo }}" as="a" hint-placeholder-count="8">
+                  <div style="display:flex;align-items:center;gap:12px;padding:14px 0">
+                    <span style="font-size:14px;font-weight:600;color:var(--ink);flex:1;line-height:1.3">{{ a.nome }}</span>
+                    <span style="flex:none;width:78px;height:7px;border-radius:999px;background:var(--line);position:relative;overflow:hidden"><i style="{{ a.fill }}"></i></span>
+                    <span style="font-size:12px;font-weight:700;color:var(--terraInk);width:34px;text-align:right;flex:none">{{ a.val }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ tStorico }}">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ giornate }}" as="g" hint-placeholder-count="7">
+                  <div style="background:var(--surface);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer">
+                    <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0">
+                      <span style="font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ g.data }}</span>
+                      <span style="font-size:12.5px;color:var(--muted)">{{ g.emozione }}</span>
+                    </div>
+                    <sc-if value="{{ g.allarme }}">
+                      <span style="background:var(--tintT);color:var(--terraInk);font-size:11px;font-weight:600;padding:6px 11px;border-radius:999px;flex:none">{{ g.allarme }}</span>
+                    </sc-if>
+                    <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ tFogli }}">
+              <div style="display:flex;flex-direction:column;gap:18px">
+                <sc-for list="{{ fogliPerGiorno }}" as="g" hint-placeholder-count="3">
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">{{ g.data }}</span>
+                    <sc-for list="{{ g.fogli }}" as="f" hint-placeholder-count="2">
+                      <div onClick="{{ f.tap }}" style="background:var(--surface);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer">
+                        <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0">
+                          <span style="font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ f.nome }}</span>
+                          <span style="font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.anteprima }}</span>
+                        </div>
+                        <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ tNote }}">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:10px">
+                  <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Nuova nota di sessione</span>
+                  <textarea value="{{ notaNuova.val }}" onChange="{{ notaNuova.set }}" rows="4" placeholder="Appunti della seduta" style="border:0;background:var(--bg);color:var(--ink);border-radius:18px;padding:14px 16px;font-size:14px;line-height:1.5;resize:none;outline:none"></textarea>
+                  <button onClick="{{ salvaNota }}" style="align-self:flex-start;border:0;background:var(--hero);color:var(--heroink);font-size:13.5px;font-weight:600;padding:12px 20px;border-radius:18px;cursor:pointer">Salva nota</button>
+                </div>
+                <sc-for list="{{ note }}" as="n" hint-placeholder-count="2">
+                  <div style="background:var(--surface);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:6px">
+                    <span style="font-size:11.5px;font-weight:600;color:var(--terra)">{{ n.data }}</span>
+                    <span style="font-size:13.5px;line-height:1.55;color:var(--ink)">{{ n.testo }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+
+    <div style="{{ stileBarra }}">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6">
+        <div onClick="{{ t.tap }}" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;padding:10px 2px 0;flex:1">
+          <span style="{{ t.mark }}"></span>
+          <span style="{{ t.label }}">{{ t.nome }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ pannelloAperto }}">
+      <div onClick="{{ chiudiPannello }}" style="position:absolute;inset:0;background:rgba(14,42,41,.46);display:flex;align-items:flex-end">
+        <div onClick="{{ stopPropagazione }}" style="width:100%;max-height:90%;background:var(--bg);border-radius:30px 30px 0 0;display:flex;flex-direction:column;overflow:hidden">
+          <div style="padding:22px 22px 14px;display:flex;align-items:flex-start;gap:12px;flex:none">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">{{ pannelloKicker }}</span>
+              <span style="font-size:21px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1.15">{{ pannelloTitolo }}</span>
+            </div>
+            <button onClick="{{ chiudiPannello }}" style="border:0;background:var(--line);width:34px;height:34px;border-radius:999px;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center;padding:0">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 2.5l8 8M10.5 2.5l-8 8" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <div style="overflow-y:auto;padding:0 22px 26px;display:flex;flex-direction:column;gap:14px">
+
+            <sc-if value="{{ pPlease }}">
+              <div style="background:var(--surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;gap:6px;padding-left:112px">
+                  <sc-for list="{{ pleaseGiorni }}" as="g" hint-placeholder-count="7">
+                    <span style="flex:1;text-align:center;font-size:10.5px;font-weight:600;color:var(--muted);opacity:.7;text-transform:uppercase">{{ g }}</span>
+                  </sc-for>
+                </div>
+                <sc-for list="{{ pleaseRighe }}" as="r" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span style="width:106px;flex:none;font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.25">{{ r.nome }}</span>
+                    <sc-for list="{{ r.celle }}" as="c" hint-placeholder-count="7">
+                      <span onClick="{{ c.tap }}" style="{{ c.style }}"></span>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:var(--surface2);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Come si legge</span>
+                <span style="font-size:13.5px;line-height:1.5;color:var(--ink)">{{ pleaseNota }}</span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ pCrisi }}">
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Segnali di allarme</span>
+                <textarea value="{{ crisiSegnali.val }}" onChange="{{ crisiSegnali.set }}" rows="3" placeholder="Come mi accorgo che sta iniziando" style="border:0;background:var(--bg);color:var(--ink);border-radius:18px;padding:14px 16px;font-size:14px;line-height:1.5;resize:none;outline:none"></textarea>
+              </div>
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:12px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Quattro abilità che funzionano su di me</span>
+                <sc-for list="{{ crisiAbilita }}" as="a" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="width:24px;height:24px;border-radius:999px;background:var(--cella);color:var(--terraInk);font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none">{{ a.n }}</span>
+                    <input value="{{ a.val }}" onChange="{{ a.set }}" placeholder="es. TIPP con acqua fredda" style="flex:1;min-width:0;border:0;background:var(--bg);color:var(--ink);border-radius:999px;padding:12px 16px;font-size:13.5px;outline:none">
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:12px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Tre persone che posso chiamare</span>
+                <sc-for list="{{ crisiPersone }}" as="p" hint-placeholder-count="3">
+                  <div style="display:flex;gap:8px">
+                    <input value="{{ p.nome }}" onChange="{{ p.setNome }}" placeholder="Nome" style="flex:1.3;min-width:0;border:0;background:var(--bg);color:var(--ink);border-radius:999px;padding:12px 16px;font-size:13.5px;outline:none">
+                    <input value="{{ p.tel }}" onChange="{{ p.setTel }}" placeholder="Numero" style="flex:1;min-width:0;border:0;background:var(--bg);color:var(--ink);border-radius:999px;padding:12px 16px;font-size:13.5px;outline:none">
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:var(--surface2);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Numeri utili</span>
+                <sc-for list="{{ crisiNumeri }}" as="n" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:baseline;gap:10px">
+                    <span style="font-size:13.5px;font-weight:600;color:var(--ink);flex:1">{{ n.nome }}</span>
+                    <span style="font-size:14px;font-weight:800;letter-spacing:-.02em;color:var(--terraInk)">{{ n.tel }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Motivi per resistere</span>
+                <textarea value="{{ crisiMotivi.val }}" onChange="{{ crisiMotivi.set }}" rows="4" placeholder="Con le tue parole" style="border:0;background:var(--bg);color:var(--ink);border-radius:18px;padding:14px 16px;font-size:14px;line-height:1.5;resize:none;outline:none"></textarea>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ pLettura }}">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="background:var(--surface2);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Quando usarla</span>
+                  <span style="font-size:14px;line-height:1.55;color:var(--ink)">{{ letturaQuando }}</span>
+                </div>
+                <sc-for list="{{ letturaPassi }}" as="p" hint-placeholder-count="4">
+                  <div style="background:var(--surface);border-radius:26px;padding:18px;display:flex;gap:14px;align-items:flex-start">
+                    <span style="width:30px;height:30px;border-radius:999px;background:var(--acc);color:#14201F;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none">{{ p.lettera }}</span>
+                    <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+                      <span style="font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">{{ p.nome }}</span>
+                      <span style="font-size:13.5px;line-height:1.5;color:var(--muted)">{{ p.testo }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ pModello }}">
+              <div style="background:var(--surface2);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)">Modello del pannello</span>
+                <span style="font-size:13.5px;line-height:1.5;color:var(--ink)">{{ modelloNota }}</span>
+              </div>
+              <div style="background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+                <sc-for list="{{ modelloCampi }}" as="c" hint-placeholder-count="3">
+                  <label style="display:flex;flex-direction:column;gap:8px">
+                    <span style="font-size:12.5px;font-weight:600;color:var(--muted)">{{ c.nome }}</span>
+                    <textarea value="{{ c.val }}" onChange="{{ c.set }}" rows="{{ c.rows }}" placeholder="{{ c.ph }}" style="border:0;background:var(--bg);color:var(--ink);border-radius:18px;padding:14px 16px;font-size:14px;line-height:1.5;resize:none;outline:none"></textarea>
+                  </label>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ pannelloSalvabile }}">
+              <div style="display:flex;gap:10px;padding-top:2px">
+                <button onClick="{{ chiudiPannello }}" style="flex:1;border:0;background:var(--cella);color:var(--terraInk);font-size:14.5px;font-weight:600;padding:15px 20px;border-radius:20px;cursor:pointer">Annulla</button>
+                <button onClick="{{ salvaFoglio }}" style="flex:2;border:0;background:var(--hero);color:var(--heroink);font-size:14.5px;font-weight:600;padding:15px 20px;border-radius:20px;cursor:pointer">Salva foglio</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ confermaAperta }}">
+      <div style="position:absolute;inset:0;background:rgba(14,42,41,.46);display:flex;align-items:center;justify-content:center;padding:28px">
+        <div style="background:var(--bg);border-radius:26px;padding:24px;display:flex;flex-direction:column;gap:10px;width:100%">
+          <span style="font-size:19px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1.2">Eliminare questo foglio?</span>
+          <span style="font-size:13.5px;line-height:1.5;color:var(--muted)">{{ confermaTesto }}</span>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button onClick="{{ annullaConferma }}" style="flex:1;border:0;background:var(--cella);color:var(--terraInk);font-size:14px;font-weight:600;padding:14px 18px;border-radius:18px;cursor:pointer">Annulla</button>
+            <button onClick="{{ confermaElimina }}" style="flex:1;border:0;background:var(--terra);color:#FFFFFF;font-size:14px;font-weight:600;padding:14px 18px;border-radius:18px;cursor:pointer">Elimina</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+</div>

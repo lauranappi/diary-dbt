@@ -42,6 +42,10 @@ function closeUserMenu(){
 function switchStoricoTab(tab){
   document.getElementById('storico-panel').style.display=tab==='storico'?'':'none';
   document.getElementById('trend-panel').style.display=tab==='trend'?'':'none';
+  // I due selettori di periodo ora stanno prima delle linguette, come nel
+  // prototipo: si mostra solo quello del pannello attivo.
+  document.getElementById('storico-range').style.display=tab==='storico'?'':'none';
+  document.getElementById('trend-range').style.display=tab==='trend'?'':'none';
   document.getElementById('stab-storico').className='storico-tab'+(tab==='storico'?' active':'');
   document.getElementById('stab-trend').className='storico-tab'+(tab==='trend'?' active':'');
   if(tab==='trend') renderTrend();
