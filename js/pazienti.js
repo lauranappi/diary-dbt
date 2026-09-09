@@ -49,9 +49,10 @@ async function renderPatients(){
       const lastUpdate=row.updated_at?new Date(row.updated_at):null;
       const lastStr=lastUpdate?lastUpdate.toLocaleDateString('it-IT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'mai';
       const card=document.createElement('div');
-      card.className='patient-card';
+      card.className='dc-riga';
       card.onclick=()=>openPatient(row.code,row);
-      card.innerHTML='<div><div class="patient-name">'+(p.nome||'?')+' '+(p.cognome||'')+'</div><div class="patient-meta">@'+row.code+' • '+numDays+' giorni • aggiornato '+lastStr+'</div></div><div style="color:var(--muted);font-size:22px">›</div>';
+      card.innerHTML='<div class="dc-riga-testo"><span class="dc-riga-tit">'+(p.nome||'?')+' '+(p.cognome||'')+'</span><span class="dc-riga-sub">@'+row.code+' • '+numDays+' giorni • aggiornato '+lastStr+'</span></div>'
+        +'<svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       pl.appendChild(card);
     });
   }catch(e){pl.innerHTML='<div style="color:var(--red);padding:1rem">Errore: '+e.message+'</div>';}
@@ -172,12 +173,12 @@ function renderPatientCharts(){
   function sv(f){return keys.map(k=>entries[k]?.scales?.[f]??null);}
   function tv(f){return keys.map(k=>{const d=entries[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0});}
 
-  mkP('pc4',[{name:'Pensieri suicidari',data:sv('sp')},{name:'Azione (0/1)',data:tv('sa')}],['#D8845C','#B71C1C']);
-  mkP('pc5',[{name:'Intenzione autoles.',data:sv('ai')},{name:'Azione (0/1)',data:tv('aa')}],['#D8845C','#880E4F']);
-  mkP('pc6',[{name:'Intenzione alcol',data:sv('alci')},{name:'Intenzione CBD',data:sv('cbdi')}],['#FFA726','#66BB6A']);
-  mkP('pc1',[{name:'Serenità',data:sv('ser')},{name:'Gioia',data:sv('gio')}],['#26A69A','#FFA726']);
-  mkP('pc2',[{name:'Tristezza',data:sv('tri')},{name:'Paura',data:sv('pau')},{name:'Rabbia',data:sv('rab')}],['#42A5F5','#D8845C','#D8845C']);
-  mkP('pc3',[{name:'Vergogna',data:sv('ver')},{name:'Colpa',data:sv('col')},{name:'Vuoto',data:sv('vuo')},{name:'Sof. emotiva',data:sv('se')}],['#9E9E9E','#757575','#424242','#26A69A']);
+  mkP('pc4',[{name:'Pensieri suicidari',data:sv('sp')},{name:'Azione (0/1)',data:tv('sa')}],['#C1714A','#123534']);
+  mkP('pc5',[{name:'Intenzione autoles.',data:sv('ai')},{name:'Azione (0/1)',data:tv('aa')}],['#C1714A','#123534']);
+  mkP('pc6',[{name:'Intenzione alcol',data:sv('alci')},{name:'Intenzione CBD',data:sv('cbdi')}],['#F5CE47','#1B4B4A']);
+  mkP('pc1',[{name:'Serenità',data:sv('ser')},{name:'Gioia',data:sv('gio')}],['#1B4B4A','#F5CE47']);
+  mkP('pc2',[{name:'Tristezza',data:sv('tri')},{name:'Paura',data:sv('pau')},{name:'Rabbia',data:sv('rab')}],['#1B4B4A','#C1714A','#8A4A30']);
+  mkP('pc3',[{name:'Vergogna',data:sv('ver')},{name:'Colpa',data:sv('col')},{name:'Vuoto',data:sv('vuo')},{name:'Sof. emotiva',data:sv('se')}],['#8FB5B0','#2A6866','#123534','#C1714A']);
   renderChart('cEmoEat',[{name:'Em.eating',data:sv('ee')}],['#E0A23A']);
 }
 
@@ -191,7 +192,8 @@ function renderPatientHistory(){
     const d=entries[k];const item=document.createElement('div');item.className='hi pat-hist-item';
     item.style.cursor='pointer';
     const flags=buildFlagsData(d);
-    item.innerHTML='<div style="flex:1"><div class="hd">'+fmtS(k)+'</div><div class="flags">'+flags+'</div></div><span style="color:#ccc;font-size:22px;flex-shrink:0">›</span>';
+    item.innerHTML='<div style="flex:1"><div class="hd">'+fmtS(k)+'</div><div class="flags">'+flags+'</div></div>'
+      +'<svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     item.onclick=()=>showPatientDay(k);
     ph.appendChild(item);
   });
@@ -234,15 +236,31 @@ function mkScaleRow(label,val,key){
 function showPatientDay(k){
   const entries=currentPatient.entries;
   const d=entries[k];if(!d)return;
-  const modal=document.getElementById('pat-day-modal');
-  document.getElementById('pat-day-title').textContent='Diary del '+fmtL(k);
-  const body=document.getElementById('pat-day-body');
+  const modal=document.getElementById('scheda-modal');
+  document.getElementById('scheda-title').textContent='Diary del '+fmtL(k);
+  const body=document.getElementById('scheda-body');
   const s=d.scales||{};
   const t=d.toggles||{};
   const tx=d.texts||{};
+
+  const kicker=testo=>'<span class="dc-thome-kicker">'+testo+'</span>';
+  const card=(titolo,contenuto)=>'<div style="background:var(--dc-surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px;margin-bottom:12px">'
+    +kicker(titolo)+contenuto+'</div>';
+  const barra=(nome,val,max,colore)=>{
+    const pct=Math.min(100,(val/max)*100);
+    return '<div style="display:flex;align-items:center;gap:10px">'
+      +'<span style="font-size:13px;font-weight:500;width:120px;flex:none;color:var(--dc-ink)">'+nome+'</span>'
+      +'<span style="flex:1;height:8px;border-radius:999px;background:var(--dc-line);position:relative;overflow:hidden">'
+      +'<i style="position:absolute;left:0;top:0;bottom:0;width:'+pct+'%;border-radius:999px;background:'+colore+'"></i></span>'
+      +'<span style="font-size:12px;font-weight:700;color:var(--dc-terra-ink);width:20px;text-align:right;flex:none">'+val+'</span>'
+      +'</div>';
+  };
+  const testoLibero=(etichetta,valore)=>'<div><div class="dc-thome-kicker" style="margin-bottom:4px">'+etichetta+'</div>'
+    +'<div style="font-size:14px;color:var(--dc-ink);line-height:1.5">'+valore+'</div></div>';
+
   let html='';
 
-  // SEZIONE 1: comportamenti critici
+  // ── Comportamenti e sostanze ──
   const critScales=['sp','ai','alci','cbdi','rap','atti'];
   const critTog=['sa','aa','ee','farm'];
   const critTxKeys=['alcu','cbdu','rap'];
@@ -250,104 +268,98 @@ function showPatientDay(k){
   const critTogRows=critTog.filter(k2=>t[k2]);
   const critTxRows=critTxKeys.filter(k2=>tx[k2]&&tx[k2].trim());
   if(critScaleRows.length||critTogRows.length||critTxRows.length){
-    html+='<div class="pat-section"><div class="pat-section-body">';
-    html+='<div class="pat-sub" style="color:#C85250">⚠ Comportamenti e sostanze</div>';
-    if(critScaleRows.length){
-      html+='<div class="modal-grid">';
-      critScaleRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2]);});
-      html+='</div>';
-    }
+    let c='<div style="display:flex;flex-direction:column;gap:11px">';
+    critScaleRows.forEach(k2=>{c+=barra(SCALE_LABELS[k2],s[k2],5,scaleColor(s[k2],POSITIVE_SCALES.has(k2)));});
+    c+='</div>';
     if(critTogRows.length){
-      html+='<div style="margin-top:8px">';
+      c+='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:2px">';
       critTogRows.forEach(k2=>{
         const val=t[k2];
-        const isDanger=val==="Sì"&&(k2==="sa"||k2==="aa");
-        const color=isDanger?"var(--red)":val==="Sì"?"var(--teal)":"var(--muted)";
-        const bg=isDanger?"var(--red-l)":val==="Sì"?"var(--teal-ll)":"var(--surface-2)";
-        html+='<div class="modal-row" style="background:'+bg+';border-radius:8px;margin-bottom:4px">'
-          +'<span style="font-weight:600">'+TOG_LABELS[k2]+'</span>'
-          +'<strong style="color:'+color+'">'+val+'</strong></div>';
+        const isDanger=val==='Sì'&&(k2==='sa'||k2==='aa');
+        const bg=isDanger?'var(--dc-cella)':val==='Sì'?'var(--dc-petrolio-chiaro)':'var(--dc-bg)';
+        const fg=isDanger?'var(--dc-terracotta)':val==='Sì'?'var(--dc-petrolio)':'var(--dc-muted)';
+        c+='<span style="background:'+bg+';color:'+fg+';font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+TOG_LABELS[k2]+': '+val+'</span>';
       });
-      html+='</div>';
+      c+='</div>';
     }
-    if(critTxRows.length){
-      html+='<div style="margin-top:8px">';
-      critTxRows.forEach(k2=>{html+='<div class="modal-text-row"><div class="ms-label">'+TEXT_LABELS[k2]+'</div><div class="ms-text">'+tx[k2]+'</div></div>';});
-      html+='</div>';
-    }
-    html+='</div></div>';
+    critTxRows.forEach(k2=>{ c+='<div style="margin-top:8px">'+testoLibero(TEXT_LABELS[k2],tx[k2])+'</div>'; });
+    html+=card('Comportamenti e sostanze', c);
   }
 
-  // SEZIONE 2: emozioni
+  // ── Emozioni e benessere ──
   const emoScales=['ser','gio','pau','rab','tri','ver','col','vuo','sf','se','abb','fid'];
   const emoRows=emoScales.filter(k2=>s[k2]!=null);
   if(emoRows.length){
-    html+='<div class="modal-section"><div class="pat-sub">Emozioni e benessere</div>';
-    html+='<div class="modal-grid">';
-    emoRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2],k2);});
-    html+='</div></div>';
+    let c='<div style="display:flex;flex-direction:column;gap:11px">';
+    emoRows.forEach(k2=>{c+=barra(SCALE_LABELS[k2],s[k2],5,scaleColor(s[k2],POSITIVE_SCALES.has(k2)));});
+    c+='</div>';
+    html+=card('Emozioni e benessere', c);
   }
 
-  // SEZIONE 3: testi liberi
+  // ── Note ──
   const otherTx=['rim','att','note'];
   const otherTxRows=otherTx.filter(k2=>tx[k2]&&tx[k2].trim());
   if(otherTxRows.length){
-    html+='<div class="modal-section"><div class="pat-sub">Note</div>';
-    otherTxRows.forEach(k2=>{html+='<div class="modal-text-row"><div class="ms-label">'+TEXT_LABELS[k2]+'</div><div class="ms-text">'+tx[k2]+'</div></div>';});
-    html+='</div></div>';
+    let c='<div style="display:flex;flex-direction:column;gap:14px">';
+    otherTxRows.forEach(k2=>{ c+=testoLibero(TEXT_LABELS[k2],tx[k2]); });
+    c+='</div>';
+    html+=card('Note', c);
   }
 
-  // SEZIONE 4: abilità DBT
+  // ── Abilità DBT usate ──
   const sk=d.skills||{};
   const skUsed=Object.keys(sk).filter(k2=>sk[k2]);
   if(skUsed.length){
-    html+='<div class="modal-section"><div class="pat-sub">Abilità DBT usate</div><div class="modal-chips">';
+    let c='<div style="display:flex;flex-wrap:wrap;gap:8px">';
     skUsed.forEach(skid=>{
       const parts=skid.replace(/^sk_/,'').split('_');
-      const item=parts.slice(1).join('_');
-      html+='<span class="modal-chip">'+item+'</span>';
+      c+='<span style="background:var(--dc-cella);color:var(--dc-terra-ink);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+parts.slice(1).join(' ')+'</span>';
     });
-    html+='</div></div>';
+    c+='</div>';
+    html+=card('Abilità DBT usate', c);
   }
 
-  // SEZIONE 5: piano giornata
+  // ── Piano giornata ──
   const plan=d.planner;
-  const slotLabels={mattina:'🌅 Mattina',pomeriggio:'☀️ Pomeriggio',sera:'🌙 Sera'};
+  const slotLabels={mattina:'Mattina',pomeriggio:'Pomeriggio',sera:'Sera'};
   const hasPlanner=plan&&Object.values(plan).some(a=>a&&a.length>0);
   if(hasPlanner){
-    html+='<div class="modal-section"><div class="pat-sub">Piano giornata</div>';
+    let c='<div style="display:flex;flex-direction:column;gap:14px">';
     ['mattina','pomeriggio','sera'].forEach(slot=>{
       const items=(plan[slot])||[];
       if(!items.length)return;
-      html+='<div class="pat-planner-slot"><div class="pat-planner-slot-title">'+slotLabels[slot]+'</div>';
-      html+='<div class="pat-planner-items">'+items.map(i=>'<span class="pat-planner-chip">'+i+'</span>').join('')+'</div></div>';
+      c+='<div><div class="dc-thome-kicker" style="margin-bottom:8px">'+slotLabels[slot]+'</div>'
+        +'<div style="display:flex;flex-wrap:wrap;gap:8px">'
+        +items.map(x=>'<span style="background:var(--dc-cella);color:var(--dc-terra-ink);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+x+'</span>').join('')
+        +'</div></div>';
     });
-    html+='</div>';
+    c+='</div>';
+    html+=card('Piano giornata', c);
   }
 
-  if(!html)html='<div style="color:var(--muted);padding:2rem;text-align:center">Nessun dato compilato.</div>';
-  body.innerHTML=html;
-  modal.style.display='flex';
-  modal.style.alignItems='center';
-  modal.style.justifyContent='center';
+  if(!html)html='<div style="text-align:center;padding:2rem 1rem;color:var(--dc-muted)">Nessun dato compilato.</div>';
+  body.innerHTML='<div style="padding:0 22px 26px">'+html+'</div>';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
 }
+
 function closePatientDay(){
-  document.getElementById('pat-day-modal').style.display='none';
+  closeScheda();
 }
 
 function buildFlagsData(d){
   if(!d)return'';const flags=[];
   const s=d.scales||{},t=d.toggles||{},tx=d.texts||{};
-  if(t.sa==='Sì')flags.push({cls:'flag-danger',label:'⚠ Az. suicidaria'});
+  if(t.sa==='Sì')flags.push({cls:'flag-danger',label:'Az. suicidaria'});
   if(s.sp>=3)flags.push({cls:'flag-danger',label:'Pensieri suic. '+s.sp});
-  if(t.aa==='Sì')flags.push({cls:'flag-danger',label:'⚠ Az. autolesività'});
+  if(t.aa==='Sì')flags.push({cls:'flag-danger',label:'Az. autolesività'});
   if(s.ai>=3)flags.push({cls:'flag-warn',label:'Autoles. '+s.ai});
   if(s.se>=3)flags.push({cls:'flag-warn',label:'Sof.em. '+s.se});
-  if(tx.alcu&&tx.alcu.trim())flags.push({cls:'flag-warn',label:'◔ '+tx.alcu});
-  if(tx.cbdu&&tx.cbdu.trim())flags.push({cls:'flag-info',label:'❀ CBD'});
+  if(tx.alcu&&tx.alcu.trim())flags.push({cls:'flag-warn',label:tx.alcu});
+  if(tx.cbdu&&tx.cbdu.trim())flags.push({cls:'flag-info',label:'CBD'});
   if(t.ee==='Sì')flags.push({cls:'flag-warn',label:'Em. eating'});
   if(s.rap>0)flags.push({cls:'flag-info',label:'Rapporti: '+s.rap});
-  if(t.farm==='No')flags.push({cls:'flag-warn',label:'◆ Farmaci saltati'});
+  if(t.farm==='No')flags.push({cls:'flag-warn',label:'Farmaci saltati'});
   return flags.map(f=>'<span class="flag '+f.cls+'">'+f.label+'</span>').join('');
 }
 
@@ -413,168 +425,142 @@ function mkStatPair(a,b){
 function renderPatientOverview(){
   if(!currentPatient)return;
   const entries=currentPatient.entries;
-  const allKeys=Object.keys(entries).sort().reverse();
-  const realKeys=allKeys.filter(k=>!isDayEmpty(entries[k]));
   const sg=document.getElementById('pat-stats');
   const flagsEl=document.getElementById('pat-flags-today');
-  sg.innerHTML=''; flagsEl.innerHTML='';
-  if(!realKeys.length){
-    flagsEl.innerHTML='<div style="color:var(--muted);padding:2rem;text-align:center">Nessun giorno compilato.</div>';
+  sg.innerHTML='';
+
+  const mKeys=patKeys(entries,false);
+  if(!mKeys.length){
+    flagsEl.innerHTML='<div style="color:var(--dc-muted);padding:2rem;text-align:center">Nessun giorno compilato.</div>';
     return;
   }
 
-  // ── 7-day summary widgets (compact, 2 per row) ──
-  // finestra = periodo scelto col selettore (7 / 14 / tutti)
-  const weekKeys=patKeys(entries,false);
-  const rangeLabel = patRange===0 ? 'tutto lo storico' : 'ultimi '+patRange+' giorni';
-  sg.innerHTML='';   // il conteggio ora sta nell'intestazione qui sotto
-
-
-  // ── Media del periodo: resoconto immediato ──────────────────────────
-  const mKeys = weekKeys;
-  const nGG = mKeys.length;
-
-  const avgS = k2 => {
-    const v = mKeys.map(k=>entries[k]?.scales?.[k2]).filter(x=>x!=null);
-    return v.length ? Math.round((v.reduce((x,y)=>x+y,0)/v.length)*10)/10 : null;
+  const avgS = k => {
+    const v=mKeys.map(x=>entries[x]?.scales?.[k]).filter(x=>x!=null);
+    return v.length ? v.reduce((a,b)=>a+b,0)/v.length : 0;
   };
-  const aggT = k2 => {
-    const v = mKeys.map(k=>entries[k]?.toggles?.[k2]).filter(x=>x);
-    if(!v.length) return null;
-    const si = v.filter(x=>x==='Sì').length;
-    return { val: si>0 ? 'Sì' : 'No', gg: si };
-  };
+  const contaSi = k => mKeys.filter(x=>entries[x]?.toggles?.[k]==='Sì').length;
 
-  // 'rap' (rapporti occasionali) non e' un'intensita' da mediare:
-  // si riporta come si'/no con il numero di giornate.
-  const CRIT=['sp','ai','alci','cbdi','atti'];
-  const EMO =['ser','gio','pau','rab','tri','ver','col','vuo','sf','se','abb','fid'];
-  const TOG =['sa','aa','ee','farm'];
-
-  // Scale "negative": 0 e' neutro, qualunque valore sopra e' arancione,
-  // da 4 in su rosso. Scale "positive" (serenita', gioia, fiducia): al
-  // contrario, un valore alto e' verde e uno basso preoccupa.
-  const lvlNeg = v => v>=4 ? 'danger' : v>0 ? 'warn' : 'neutral';
-  const lvlPos = v => v>=3.5 ? 'ok' : v>=2 ? 'warn' : 'danger';
-  const POSITIVE = ['ser','gio','fid'];
-
-  const tile = (label,val,max,lvl) => {
-    const pct = Math.min(100, (val/(max||5))*100);
-    const col = lvl==='danger'?'#C85250':lvl==='warn'?'#B98230':lvl==='neutral'?'var(--muted)':'var(--teal)';
-    return '<div class="avg-tile">'
-      +'<div class="avg-top"><span class="avg-lbl">'+label+'</span><span class="avg-val" style="color:'+col+'">'+val+'</span></div>'
-      +'<div class="avg-bar"><i style="width:'+pct+'%;background:'+col+'"></i></div>'
+  // ── "Emozioni · media del periodo": sette scale fisse, come nel documento ──
+  const EMO7=[['se','Sofferenza emotiva'],['tri','Tristezza'],['vuo','Vuoto'],['rab','Rabbia'],
+              ['pau','Paura'],['ser','Serenità'],['gio','Gioia']];
+  let emoHtml='';
+  EMO7.forEach(([k,nome])=>{
+    const v=avgS(k);
+    const pct=Math.min(100,(v/5)*100);
+    const colore = v>=3 ? 'var(--dc-terra)' : 'var(--dc-hero)';
+    emoHtml+='<div style="display:flex;align-items:center;gap:10px">'
+      +'<span style="font-size:13px;font-weight:500;width:96px;flex:none;color:var(--dc-ink)">'+nome+'</span>'
+      +'<span style="flex:1;height:8px;border-radius:999px;background:var(--dc-line);position:relative;overflow:hidden">'
+      +'<i style="position:absolute;left:0;top:0;bottom:0;width:'+pct+'%;border-radius:999px;background:'+colore+'"></i></span>'
+      +'<span style="font-size:12px;font-weight:700;color:var(--dc-terra-ink);width:22px;text-align:right;flex:none">'+v.toFixed(1)+'</span>'
       +'</div>';
-  };
-
-  let html='';
-  html+='<div class="pat-section">';
-  html+='<div class="pat-section-head pat-head-row">'
-        +'<span>Media del periodo — '+rangeLabel+'</span>'
-        +'<span class="pat-head-count">'+nGG+' <small>giornate compilate</small></span>'
-      +'</div>';
-  html+='<div class="pat-section-body">';
-
-  // 2. Comportamenti: prima i valori presenti, gli zero raggruppati in fondo
-  const critAttivi=CRIT.filter(k2=>avgS(k2)!=null && avgS(k2)>0).sort((a,b)=>avgS(b)-avgS(a));
-  const critZero  =CRIT.filter(k2=>avgS(k2)===0);
-  if(critAttivi.length){
-    html+='<div class="pat-sub" style="color:#C85250">Comportamenti e sostanze</div>';
-    html+='<div class="avg-grid">';
-    critAttivi.forEach(k2=>{ const v=avgS(k2); html+=tile(SCALE_LABELS[k2],v,5,lvlNeg(v)); });
-    html+='</div>';
-  }
-  const togRows=TOG.map(k2=>({k2,r:aggT(k2)})).filter(x=>x.r);
-  const rapGG = mKeys.filter(k=>(entries[k]?.scales?.rap||0)>0).length;
-  if(togRows.length || nGG){
-    html+='<div class="avg-chips">';
-    html+='<span class="avg-chip '+(rapGG?'warn':'muted')+'">Rapporti occasionali: <strong>'
-         +(rapGG? 'Sì ('+rapGG+' gg)' : 'No')+'</strong></span>';
-    togRows.forEach(({k2,r})=>{
-      // Per i farmaci il "Sì" e' una buona notizia: aderenza alla terapia.
-      // Per tutti gli altri e' il contrario.
-      let cls;
-      if(k2==='farm'){
-        cls = r.val==='Sì' ? 'ok' : 'warn';
-      } else if(r.val==='Sì'){
-        cls = (k2==='sa'||k2==='aa') ? 'danger' : 'warn';
-      } else {
-        cls = 'muted';
-      }
-      html+='<span class="avg-chip '+cls+'">'+TOG_LABELS[k2]+': <strong>'+r.val+(r.gg?' ('+r.gg+' gg)':'')+'</strong></span>';
-    });
-    html+='</div>';
-  }
-  if(critZero.length){
-    html+='<div class="avg-zero">A zero: '+critZero.map(k2=>SCALE_LABELS[k2]).join(' · ')+'</div>';
-  }
-
-  // 3. Emozioni ordinate per intensita'
-  // prima le negative alte, poi le positive (dove conta il valore basso)
-  const emoAttive=EMO.filter(k2=>avgS(k2)!=null).sort((a,b)=>{
-    const pa=POSITIVE.includes(a), pb=POSITIVE.includes(b);
-    if(pa!==pb) return pa?1:-1;
-    return pa ? avgS(a)-avgS(b) : avgS(b)-avgS(a);
   });
-  if(emoAttive.length){
-    html+='<div class="pat-sub">Emozioni e benessere</div>';
-    html+='<div class="avg-grid">';
-    emoAttive.forEach(k2=>{ const v=avgS(k2);
-      // 'se' e' sofferenza emotiva e 'abb' e' abbandonare la terapia:
-      // erano classificate per errore fra le positive.
-      html+=tile(SCALE_LABELS[k2], v, 5, POSITIVE.includes(k2)?lvlPos(v):lvlNeg(v));
-    });
-    html+='</div>';
-  }
 
-  // 4. Abilita'
+  // ── "Comportamenti · sì/no nel periodo": quattro conteggi fissi ──
+  const SINO4=[['sa','Azione suicidaria'],['aa','Azione autolesività'],['ee','Emotional eating'],['farm','Farmaci saltati']];
+  let sinoHtml='';
+  SINO4.forEach(([k,nome])=>{
+    const n=contaSi(k);
+    const colore = n===0 ? 'var(--dc-muted)' : 'var(--dc-terra)';
+    sinoHtml+='<div style="background:var(--dc-bg);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:3px">'
+      +'<span style="font-size:23px;font-weight:800;letter-spacing:-.03em;line-height:1;color:'+colore+'">'+n+'</span>'
+      +'<span style="font-size:11.5px;font-weight:500;color:var(--dc-muted);line-height:1.3">'+nome+'</span>'
+      +'</div>';
+  });
+
+  // ── "Abilità più usate": le prime cinque per conteggio nel periodo ──
   const skCount={};
   mKeys.forEach(k=>{
     const sk=entries[k]?.skills||{};
     Object.keys(sk).filter(x=>sk[x]).forEach(x=>{ skCount[x]=(skCount[x]||0)+1; });
   });
-  const skTop=Object.entries(skCount).sort((x,y)=>y[1]-x[1]).slice(0,10);
+  const skTop=Object.entries(skCount).sort((a,b)=>b[1]-a[1]).slice(0,5)
+    .map(([skid])=>skid.replace(/^sk_/,'').split('_').slice(1).join(' '));
+  let abilitaHtml=skTop.map(nome=>
+    '<span style="background:var(--dc-cella);color:var(--dc-terra-ink);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+nome+'</span>'
+  ).join('');
+
+  // ── Piano di crisi: nessuna data salvata nella struttura vera
+  //    (pcSalva, forms.js) - si puo' solo dire se e' compilato o no.
+  const pc=(currentPatient.fogli||{}).pianoCrisi||{};
+  const pcCompilato = pc.segnali||pc.a1||pc.a2||pc.a3||pc.a4||pc.p1||pc.p2||pc.p3||pc.motivi;
+
+  let html='<div style="display:flex;flex-direction:column;gap:12px">';
+  html+='<div style="background:var(--dc-surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">'
+      +'<span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-terra)">Emozioni · media del periodo</span>'
+      +'<div style="display:flex;flex-direction:column;gap:11px">'+emoHtml+'</div></div>';
+  html+='<div style="background:var(--dc-surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">'
+      +'<span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-terra)">Comportamenti · sì/no nel periodo</span>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+sinoHtml+'</div></div>';
   if(skTop.length){
-    html+='<div class="pat-sub">Abilità più usate</div><div class="avg-chips">';
-    skTop.forEach(([skid,n])=>{
-      const parts=skid.replace(/^sk_/,'').split('_');
-      html+='<span class="avg-chip ok">'+parts.slice(1).join(' ')+' <strong>'+n+'</strong></span>';
-    });
-    html+='</div>';
+    html+='<div style="background:var(--dc-surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">'
+        +'<span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-terra)">Abilità più usate</span>'
+        +'<div style="display:flex;flex-wrap:wrap;gap:8px">'+abilitaHtml+'</div></div>';
   }
-
-  html+='</div></div>';
-
-  // ── Piano di crisi: documento unico, sempre visibile in panoramica ──
-  const pc = (currentPatient.fogli||{}).pianoCrisi || {};
-  const PC_ETICHETTE = {
-    segnali:'Segnali di allarme',
-    a1:'Abilità 1', a2:'Abilità 2', a3:'Abilità 3', a4:'Abilità 4',
-    p1:'Persona 1', p2:'Persona 2', p3:'Persona 3',
-    numeri:'Numeri utili', motivi:'Motivi per resistere'
-  };
-  const pcRighe = Object.keys(PC_ETICHETTE)
-    .filter(k => pc[k] && String(pc[k]).trim())
-    .map(k => '<div class="foglio-riga"><strong>'+PC_ETICHETTE[k]+':</strong> '+pc[k]+'</div>');
-
-  if(pcRighe.length){
-    html+='<div class="pat-section" style="margin-top:1rem">'
-       +'<div class="pat-section-head" style="background:var(--red-l);color:#C85250">Piano di crisi</div>'
-       +'<div class="pat-section-body">'+pcRighe.join('')+'</div></div>';
-  }
+  html+='<div onclick="apriCrisiPaziente()" style="background:var(--dc-hero);border-radius:26px;padding:20px;display:flex;align-items:center;gap:12px;cursor:pointer">'
+      +'<div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">'
+      +'<span style="font-size:15.5px;font-weight:800;letter-spacing:-.02em;color:var(--dc-hero-ink)">Piano di crisi</span>'
+      +'<span style="font-size:12.5px;color:var(--dc-line)">'+(pcCompilato?'Compilato':'Non ancora compilato')+'</span></div>'
+      +'<svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-senape)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      +'</div>';
+  html+='</div>';
 
   flagsEl.innerHTML=html;
 }
 
+// Apre il Piano di crisi di QUESTA paziente in sola lettura - non il
+// modulo di modifica del terapeuta (che leggerebbe i suoi dati, non
+// quelli della paziente). Popola il pannello direttamente, senza
+// passare dal meccanismo di openScheda() che sposta una pagina vera.
+function apriCrisiPaziente(){
+  const pc=(currentPatient.fogli||{}).pianoCrisi||{};
+  const nome=(currentPatient.profile.nome||'')+' '+(currentPatient.profile.cognome||'');
+  // Struttura vera (pcSalva, forms.js): segnali, a1-a4, p1-p3 (testo
+  // libero, non nome+telefono separati), motivi - nessuna data salvata.
+  const compilato = pc.segnali || pc.a1 || pc.a2 || pc.a3 || pc.a4 || pc.p1 || pc.p2 || pc.p3 || pc.motivi;
+
+  const riga=(etichetta,valore)=>{
+    if(!valore || !String(valore).trim()) return '';
+    return '<div style="margin-bottom:14px"><div class="dc-thome-kicker" style="margin-bottom:4px">'+etichetta+'</div>'
+      +'<div style="font-size:14px;color:var(--dc-ink);line-height:1.5">'+valore+'</div></div>';
+  };
+
+  let corpo='';
+  if(!compilato){
+    corpo='<div style="text-align:center;padding:2rem 1rem;color:var(--dc-muted)">'+nome+' non ha ancora compilato un piano di crisi.</div>';
+  } else {
+    corpo += riga('Segnali di allarme', pc.segnali);
+    const abilita=[pc.a1,pc.a2,pc.a3,pc.a4].filter(x=>x&&x.trim());
+    if(abilita.length){
+      corpo += '<div style="margin-bottom:14px"><div class="dc-thome-kicker" style="margin-bottom:4px">Abilità che funzionano</div>';
+      abilita.forEach((a,i)=>{ corpo += '<div style="font-size:14px;color:var(--dc-ink);line-height:1.6">'+(i+1)+'. '+a+'</div>'; });
+      corpo += '</div>';
+    }
+    const persone=[pc.p1,pc.p2,pc.p3].filter(x=>x&&x.trim());
+    if(persone.length){
+      corpo += '<div style="margin-bottom:14px"><div class="dc-thome-kicker" style="margin-bottom:4px">Persone da chiamare</div>';
+      persone.forEach(p=>{ corpo += '<div style="font-size:14px;color:var(--dc-ink);line-height:1.6">'+p+'</div>'; });
+      corpo += '</div>';
+    }
+    corpo += riga('Motivi per resistere', pc.motivi);
+  }
+
+  const modal=document.getElementById('scheda-modal');
+  const body=document.getElementById('scheda-body');
+  document.getElementById('scheda-title').textContent='Piano di crisi · '+nome;
+  body.innerHTML='<div style="padding:0 22px 26px">'+corpo+'</div>';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
 
 
 function renderPatientSkillsAndActs(){
   if(!currentPatient)return;
   const entries=currentPatient.entries;
-  // rispetta il selettore 7/14/tutti come le altre schede
   const keys=patKeys(entries,true);
+  const nGG=keys.length||1;
 
-  // Skills count
   const skillCount={};
   keys.forEach(k=>{
     const sk=entries[k]?.skills||{};
@@ -585,133 +571,110 @@ function renderPatientSkillsAndActs(){
       skillCount[name]=(skillCount[name]||0)+1;
     });
   });
-  const skillEl=document.getElementById('pat-skills-chips');
-  skillEl.innerHTML='';
-  const sorted=Object.entries(skillCount).sort((a,b)=>b[1]-a[1]);
-  if(!sorted.length){skillEl.innerHTML='<div style="color:var(--muted);font-size:13px">Nessuna abilità registrata.</div>';return;}
-  sorted.forEach(([name,count])=>{
-    const chip=document.createElement('div');chip.className='skill-count-chip';
-    chip.innerHTML='<span class="scc-n">'+count+'</span>'+name;
-    skillEl.appendChild(chip);
-  });
 
-  // Activities count from planner
-  const actCount={};
-  keys.forEach(k=>{
-    const plan=entries[k]?.planner||{};
-    Object.values(plan).forEach(arr=>{
-      (arr||[]).forEach(a=>{actCount[a]=(actCount[a]||0)+1;});
-    });
-  });
-  const actEl=document.getElementById('pat-act-chips');
-  actEl.innerHTML='';
-  const actSorted=Object.entries(actCount).sort((a,b)=>b[1]-a[1]).slice(0,20);
-  if(!actSorted.length){actEl.innerHTML='<div style="color:var(--muted);font-size:13px">Nessuna attività pianificata.</div>';return;}
-  actSorted.forEach(([name,count])=>{
-    const chip=document.createElement('div');chip.className='skill-count-chip';
-    chip.innerHTML='<span class="scc-n">'+count+'</span>'+name;
-    actEl.appendChild(chip);
-  });
+  const skillEl=document.getElementById('pat-skills-chips');
+  const sorted=Object.entries(skillCount).sort((a,b)=>b[1]-a[1]);
+  if(!sorted.length){
+    skillEl.innerHTML='<div style="color:var(--dc-muted);font-size:13px;padding:14px 0">Nessuna abilità registrata.</div>';
+    return;
+  }
+  skillEl.innerHTML=sorted.map(([name,count])=>{
+    const pct=Math.min(100,(count/nGG)*100);
+    return '<div style="display:flex;align-items:center;gap:12px;padding:14px 0">'
+      +'<span style="font-size:14px;font-weight:600;color:var(--dc-ink);flex:1;line-height:1.3">'+name+'</span>'
+      +'<span style="flex:none;width:78px;height:7px;border-radius:999px;background:var(--dc-line);position:relative;overflow:hidden">'
+      +'<i style="position:absolute;left:0;top:0;bottom:0;width:'+pct+'%;border-radius:999px;background:var(--dc-hero)"></i></span>'
+      +'<span style="font-size:12px;font-weight:700;color:var(--dc-terra-ink);width:34px;text-align:right;flex:none">'+count+'/'+nGG+'</span>'
+      +'</div>';
+  }).join('');
 }
+
 
 function renderPatientPlanner(){
   if(!currentPatient)return;
   const entries=currentPatient.entries;
-  const keys=patKeys(entries,true);          // segue il periodo scelto
   const el=document.getElementById('pat-planner-view');
   const vuoto='<div class="planner-empty"><img class="vuoto-ill" src="illustrazioni/vuoti/vuoto-attivita.svg" alt="" width="160" height="160">Nessuna giornata pianificata in questo periodo.</div>';
   el.innerHTML='';
-  if(!keys.length){ el.innerHTML=vuoto; return; }
 
-  const slots=[
-    {id:'mattina',    icona:'🌅', nome:'Mattina'},
-    {id:'pomeriggio', icona:'☀️', nome:'Pomeriggio'},
-    {id:'sera',       icona:'🌙', nome:'Sera'}
-  ];
-
-  let out='';
-  keys.forEach(k=>{
+  const keys=patKeys(entries,true);
+  const konPiano=keys.filter(k=>{
     const plan=entries[k]?.planner;
-    if(!plan || !Object.values(plan).some(a=>a&&a.length>0)) return;
-    const tot=slots.reduce((n,s2)=>n+((plan[s2.id]||[]).length),0);
-
-    out+='<div class="planner-day">'
-       +'<div class="planner-day-head">'
-         +'<span class="planner-day-date">'+fmtL(k)+'</span>'
-         +'<span class="planner-day-count">'+tot+' '+(tot===1?'attività':'attività')+'</span>'
-       +'</div>'
-       +'<div class="planner-day-body">';
-
-    slots.forEach(s2=>{
-      const items=(plan&&plan[s2.id])||[];
-      out+='<div class="planner-slot'+(items.length?'':' vuoto')+'">'
-         +'<div class="planner-slot-name"><span>'+s2.icona+'</span>'+s2.nome+'</div>'
-         +'<div class="planner-slot-items">'
-         +(items.length
-            ? items.map(x=>'<span class="planner-chip">'+x+'</span>').join('')
-            : '<span class="planner-none">—</span>')
-         +'</div></div>';
-    });
-
-    out+='</div></div>';
+    return plan && Object.values(plan).some(a=>a&&a.length>0);
   });
+  if(!konPiano.length){ el.innerHTML=vuoto; return; }
 
-  el.innerHTML = out || vuoto;
+  const FASCE=[['mattina','Mattina'],['pomeriggio','Pomeriggio'],['sera','Sera']];
+  let html='';
+  konPiano.forEach(k=>{
+    const plan=entries[k].planner;
+    html+='<div style="font-size:12px;font-weight:700;color:var(--dc-muted);letter-spacing:.04em;text-transform:uppercase;margin:18px 0 8px">'+fmtL(k)+'</div>';
+    FASCE.forEach(([id,nome])=>{
+      const voci=(plan[id]||[]);
+      if(!voci.length) return;
+      html+='<div style="background:var(--dc-surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:12px;margin-bottom:10px">'
+        +'<span class="dc-thome-kicker">'+nome+'</span>'
+        +'<div style="display:flex;flex-wrap:wrap;gap:8px">'
+        +voci.map(a=>'<span style="background:var(--dc-cella);color:var(--dc-terra-ink);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+a+'</span>').join('')
+        +'</div></div>';
+    });
+  });
+  el.innerHTML = html || vuoto;
 }
-
 
 
 let thRows={};   // righe delle pazienti caricate dalla Home
 
 // ── HOME TERAPEUTA ───────────────────────────────────────────────────────
-// Panoramica di cio' che il terapeuta puo' fare: stato delle pazienti,
-// segnalazioni recenti e accesso rapido al materiale di consultazione.
+// Struttura letterale dal documento del progetto: solo nome e i due
+// numeri dentro l'intestazione, scheda username separata, "Segnalazioni"
+// come etichetta semplice col conteggio - niente saluto/data/schede
+// triple/sezione rossa/accesso rapido, che nel documento non ci sono.
 async function buildTherapistHome(){
   const box=document.getElementById('terap-home');
   if(!box) return;
 
-  const now=new Date(), hh=now.getHours();
-  const saluto = hh<5?'Notte insonne':hh<12?'Buongiorno':hh<17?'Buon pomeriggio':hh<21?'Buona sera':'Buonanotte';
-  const nome = profile.nome ? ', '+profile.nome : '';
-  const fascia = hh<5?'notte':hh<12?'mattino':hh<17?'giorno':hh<21?'sera':'notte';
+  const cognome = profile.cognome ? ' '+profile.cognome : '';
 
   box.innerHTML =
-    '<div class="home-hero page-hero" data-time="'+fascia+'">'
-      +'<div class="hero-mesh"></div><div class="hero-grain"></div>'
-      +'<div style="position:relative">'
-        +'<div style="display:flex;align-items:flex-start;gap:12px">'
-          +'<div style="flex:1;min-width:0">'
-            +'<div style="font-size:24px;font-weight:800;letter-spacing:-.02em">'+saluto+nome+'</div>'
-            +'<div style="opacity:.85;margin-top:2px">'+now.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'})+'</div>'
+    '<div class="dc-thero" id="terap-home-hero">'
+      +'<img src="illustrazioni/decorative/deco-tratti-chiaro.svg" alt="" style="position:absolute;right:-26px;top:20px;width:190px;opacity:.35;pointer-events:none">'
+      +'<svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>'
+      +'<div style="position:relative;display:flex;align-items:flex-start;gap:12px">'
+        +'<div style="flex:1;min-width:0">'
+          +'<h2 class="dc-thero-nome">Dott.ssa'+cognome+'</h2>'
+          +'<div class="dc-thero-numeri">'
+            +'<div class="dc-thero-num"><span id="th-n-pazienti">—</span><span>pazienti</span></div>'
+            +'<div class="dc-thero-num"><span id="th-n-oggi">—</span><span>hanno compilato oggi</span></div>'
           +'</div>'
-          +'<button onclick="refreshTherapistHome(this)" class="hero-btn">↻ Aggiorna</button>'
         +'</div>'
-        +'<div class="hero-user">'
-          +'<div>'
-            +'<div class="hero-user-label">Il tuo username</div>'
-            +'<div class="hero-user-code">'+(profile.code||'—')+'</div>'
-            +'<div class="hero-user-hint">Comunicalo alle tue pazienti per collegarvi</div>'
-          +'</div>'
-          +'<button class="hero-btn" onclick="copiaUsername(this)">Copia</button>'
-        +'</div>'
-      +'</div></div>'
-    +'<div id="th-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1rem">'
-      +'<div class="pat-stat-card"><div class="sl">Caricamento…</div></div></div>'
-    +'<div id="th-alerts"></div>'
-    +'<div class="pat-sub">Accesso rapido</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">'
-      +'<button class="strumenti-card" onclick="goPage(\'pazienti\',this)" style="text-align:left"><div style="font-size:22px">👥</div><div style="font-weight:700;margin-top:4px">Le mie pazienti</div><div style="font-size:12px;color:var(--muted)">Diari, trend e note</div></button>'
-      +'<button class="strumenti-card" onclick="goPage(\'guida\',this)" style="text-align:left"><div style="font-size:22px">📖</div><div style="font-weight:700;margin-top:4px">Guida DBT</div><div style="font-size:12px;color:var(--muted)">Moduli e concetti</div></button>'
-
+        +'<button class="dc-hero-imp" onclick="goPage(\'impostazioni\',null)" aria-label="Impostazioni">'
+          +'<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.6" stroke="#FFFFFF" stroke-width="2"/><circle cx="9" cy="9" r="6.6" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3.2 3.4"/></svg>'
+        +'</button>'
+      +'</div>'
+    +'</div>'
+    +'<div style="padding:16px 20px 0">'
+    +'<div class="dc-thome-username">'
+      +'<div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">'
+        +'<span class="dc-thome-kicker">Il tuo username</span>'
+        +'<span class="dc-thome-user">'+(profile.code||'—')+'</span>'
+        +'<span class="dc-thome-hint">Comunicalo alle pazienti in prima seduta.</span>'
+      +'</div>'
+    +'</div>'
+    +'<div style="display:flex;align-items:baseline;gap:8px;margin-top:6px">'
+      +'<span class="dc-thome-kicker" style="flex:1">Segnalazioni · 7 giorni</span>'
+      +'<span style="font-size:12px;font-weight:500;color:var(--dc-muted);opacity:.7" id="th-n-segnalazioni"></span>'
+    +'</div>'
+    +'<div id="th-alerts" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div>'
+    +'<button onclick="goPage(\'pazienti\',null)" class="dc-thome-btn">Tutte le pazienti</button>'
     +'</div>';
 
-  // dati reali delle pazienti
   try{
     const url=SUPA_URL+'/rest/v1/diary_data?select=code,data,updated_at&data->profile->>terapeutaCode=eq.'+encodeURIComponent(profile.code);
     const r=await fetch(url,{headers:getAuthHeaders()});
     if(!r.ok) throw new Error('HTTP '+r.status);
     const rows=await r.json();
-    thRows={}; rows.forEach(x=>{ thRows[x.code]=x; });   // servono per aprire la scheda
+    thRows={}; rows.forEach(x=>{ thRows[x.code]=x; });
 
     const oggi=dk(new Date());
     const set7=new Date(); set7.setDate(set7.getDate()-6);
@@ -730,32 +693,28 @@ async function buildTherapistHome(){
       });
     });
 
-    document.getElementById('th-stats').innerHTML =
-       '<div class="pat-stat-card" style="box-shadow:inset 3px 0 0 var(--teal), var(--shadow-sm)"><div><div class="sv">'+rows.length+'</div><div class="sl">Pazienti</div></div></div>'
-      +'<div class="pat-stat-card" style="box-shadow:inset 3px 0 0 '+(compilateOggi?'var(--teal)':'var(--border-l)')+', var(--shadow-sm)"><div><div class="sv">'+compilateOggi+'</div><div class="sl">Hanno compilato oggi</div></div></div>'
-      +'<div class="pat-stat-card" style="box-shadow:inset 3px 0 0 '+(segnalazioni.length?'#C85250':'var(--border-l)')+', var(--shadow-sm)"><div><div class="sv" style="color:'+(segnalazioni.length?'#C85250':'var(--text)')+'">'+segnalazioni.length+'</div><div class="sl">Segnalazioni (7 gg)</div></div></div>';
+    document.getElementById('th-n-pazienti').textContent=rows.length;
+    document.getElementById('th-n-oggi').textContent=compilateOggi;
+    const contaEl=document.getElementById('th-n-segnalazioni');
+    if(contaEl)contaEl.textContent=segnalazioni.length+(segnalazioni.length===1?' riga':' righe');
 
     const al=document.getElementById('th-alerts');
-    if(segnalazioni.length){
-      let hh2='<div class="pat-section"><div class="pat-section-head" style="background:var(--red-l);color:#C85250">⚠ Da rivedere — ultimi 7 giorni</div><div class="pat-section-body">';
-      segnalazioni.slice(0,8).forEach(x=>{
-        // la riga apre direttamente la scheda di quella paziente
-        hh2+='<div class="modal-row th-alert" style="border-radius:8px;margin-bottom:4px;background:var(--surface-2);cursor:pointer" '
-           +'onclick="openPatientFromHome(\''+x.code+'\')">'
-           +'<span style="font-weight:600">'+x.nome+' <span style="opacity:.5">›</span></span>'
-           +'<strong style="color:#C85250">'+x.tipo+' · '+fmtL(x.giorno)+'</strong></div>';
-      });
-      hh2+='</div></div>';
-      al.innerHTML=hh2;
-    } else {
-      al.innerHTML='';
-    }
+    al.innerHTML='';
+    segnalazioni.slice(0,8).forEach(x=>{
+      const row=document.createElement('div');
+      row.className='dc-thome-seg';
+      row.onclick=()=>openPatientFromHome(x.code);
+      row.innerHTML='<span class="dc-thome-seg-dot"></span>'
+        +'<div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0">'
+        +'<span class="dc-thome-seg-nome">'+x.nome+'</span>'
+        +'<span class="dc-thome-seg-cosa">'+x.tipo+' · '+fmtL(x.giorno)+'</span></div>';
+      al.appendChild(row);
+    });
   }catch(err){
-    document.getElementById('th-stats').innerHTML=
-      '<div class="pat-stat-card" style="grid-column:1/-1"><div class="sl">Dati non disponibili: '+err.message+'</div></div>';
+    document.getElementById('th-n-pazienti').textContent='—';
+    document.getElementById('th-alerts').innerHTML='<div style="color:var(--red);padding:.5rem 0;font-size:13px">Dati non disponibili: '+err.message+'</div>';
   }
 }
-
 
 // Dalla Home si entra direttamente nella scheda della paziente:
 // openPatient ha bisogno della riga completa, non del solo codice.
@@ -850,7 +809,6 @@ function renderPatientFogli(){
   const fogli = currentPatient.fogli || {};
   const vuoto = '<div class="planner-empty"><img class="vuoto-ill" src="illustrazioni/vuoti/vuoto-fogli.svg" alt="" width="160" height="160">Nessun foglio di lavoro compilato in questo periodo.</div>';
 
-  // raggruppa per giorno, rispettando il periodo scelto
   const perGiorno = {};
   Object.keys(FOGLI_ETICHETTE).forEach(tipo=>{
     (fogli[tipo]||[]).forEach(d=>{
@@ -868,23 +826,40 @@ function renderPatientFogli(){
   const giorni = Object.keys(perGiorno).sort().reverse();
   if(!giorni.length){ el.innerHTML = vuoto; return; }
 
-  let out='';
+  const chevron='<svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  window._fogliTerapCache=[];
+  let out='<div style="display:flex;flex-direction:column;gap:18px">';
   giorni.forEach(giorno=>{
     const voci = perGiorno[giorno].sort((a,b)=>new Date(b.quando)-new Date(a.quando));
-    out+='<div class="planner-day">'
-       +'<div class="planner-day-head">'
-         +'<span class="planner-day-date">'+fmtL(giorno)+'</span>'
-         +'<span class="planner-day-count">'+voci.length+' '+(voci.length===1?'foglio':'fogli')+'</span>'
-       +'</div><div class="planner-day-body">';
-    voci.forEach(({tipo,d,quando})=>{
+    out+='<div style="display:flex;flex-direction:column;gap:10px">';
+    out+='<span class="dc-thome-kicker">'+fmtL(giorno)+'</span>';
+    voci.forEach(({tipo,d})=>{
       const et=FOGLI_ETICHETTE[tipo];
-      const ora=new Date(quando).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
-      out+='<div class="foglio-blocco">'
-         +'<div class="foglio-blocco-tit">'+et.icona+' '+et.nome+' <span>'+ora+'</span></div>'
-         +fogliRiassunto(tipo,d).map(r=>'<div class="foglio-riga">'+r+'</div>').join('')
-         +'</div>';
+      const righe=fogliRiassunto(tipo,d);
+      const anteprima=(righe[0]||'').replace(/<\/?strong>/g,'');
+      const idx=window._fogliTerapCache.length;
+      window._fogliTerapCache.push({tipo,nome:et.nome,giorno,righe});
+      out+='<div class="dc-riga" onclick="apriFoglioTerap('+idx+')">'
+        +'<div class="dc-riga-testo"><span class="dc-riga-tit">'+et.nome+'</span><span class="dc-riga-sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+anteprima+'</span></div>'
+        +chevron+'</div>';
     });
-    out+='</div></div>';
+    out+='</div>';
   });
+  out+='</div>';
   el.innerHTML = out;
+}
+
+// Apre il foglio di questa paziente in sola lettura, riusando le
+// stesse righe gia' formattate da fogliRiassunto() per l'anteprima.
+function apriFoglioTerap(idx){
+  const voce=window._fogliTerapCache[idx];
+  if(!voce)return;
+  const modal=document.getElementById('scheda-modal');
+  document.getElementById('scheda-title').textContent=voce.nome+' · '+fmtL(voce.giorno);
+  const body=document.getElementById('scheda-body');
+  const corpo=voce.righe.map(r=>'<div style="font-size:14px;color:var(--dc-ink);line-height:1.6;margin-bottom:12px">'+r+'</div>').join('');
+  body.innerHTML='<div style="padding:0 22px 26px">'+(corpo||'<div style="text-align:center;padding:2rem 1rem;color:var(--dc-muted)">Nessun contenuto.</div>')+'</div>';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
 }

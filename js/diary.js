@@ -13,7 +13,7 @@ function scrollPageTop(){
 // ════════════════════════════════════════════════════════════════
 // ── SCALES / TOGGLES ──
 function sel(b,on){
-  if(on){b.classList.add('on');b.style.background='#1A7A6E';b.style.borderColor='#1A7A6E';b.style.color='#fff';}
+  if(on){b.classList.add('on');b.style.background='var(--dc-hero)';b.style.borderColor='var(--dc-hero)';b.style.color='var(--dc-hero-ink)';}
   else{b.classList.remove('on');b.style.background='';b.style.borderColor='';b.style.color='';}
 }
 function mkScale(id,max){
@@ -190,7 +190,16 @@ function goPage(name,btn){
   if(name==='pianocrisi'){pcCarica();}
   if(name==='catena'){caRenderLista();}
   if(name==='eventi'){epRender();}
-  if(name==='guida'){setTimeout(()=>{renderGuide();renderEmozioni();},50);}
+  if(name==='guida'){setTimeout(()=>{
+    try{renderGuide();}catch(e){document.getElementById('guida-content').innerHTML='<div style="background:#F7E7DC;color:#C1714A;padding:16px;border-radius:16px;font-size:12px;white-space:pre-wrap">ERRORE renderGuide: '+e.message+'\n'+e.stack+'</div>';}
+    try{renderEmozioni();}catch(e){document.getElementById('emozioni-content').innerHTML='<div style="background:#F7E7DC;color:#C1714A;padding:16px;border-radius:16px;font-size:12px;white-space:pre-wrap">ERRORE renderEmozioni: '+e.message+'\n'+e.stack+'</div>';}
+  },50);}
+  if(name==='fogli'){setTimeout(()=>{
+    try{renderFogli();}catch(e){document.getElementById('fogli-content').innerHTML='<div style="background:#F7E7DC;color:#C1714A;padding:16px;border-radius:16px;font-size:12px;white-space:pre-wrap">ERRORE renderFogli: '+e.message+'\n'+e.stack+'</div>';}
+  },50);}
+  if(name==='emozioni-lista'){setTimeout(()=>{
+    try{renderEmozioni();}catch(e){document.getElementById('emozioni-content').innerHTML='<div style="background:#F7E7DC;color:#C1714A;padding:16px;border-radius:16px;font-size:12px;white-space:pre-wrap">ERRORE renderEmozioni: '+e.message+'\n'+e.stack+'</div>';}
+  },50);}
   if(name==='dearman'){/* nothing needed */}
 
   // I renderer sopra cambiano l'altezza della pagina, e iOS puo' ripristinare
@@ -339,7 +348,14 @@ function openScheda(name){
 
 function closeScheda(){
   const modal=document.getElementById('scheda-modal');
-  if(!_schedaAperta){ if(modal) modal.classList.remove('open'); return; }
+  if(!_schedaAperta){
+    // Pannelli aperti a mano (piano di crisi, dettaglio giornata, fogli
+    // della terapeuta) non impostano _schedaAperta: il ritorno anticipato
+    // qui saltava sempre il ripristino dello scorrimento sotto.
+    if(modal) modal.classList.remove('open');
+    document.body.style.overflow='';
+    return;
+  }
   const page=document.getElementById('page-'+_schedaAperta);
   if(page && page._segnaposto && page._segnaposto.parentElement){
     page._segnaposto.parentElement.insertBefore(page, page._segnaposto);

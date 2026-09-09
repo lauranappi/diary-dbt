@@ -171,14 +171,14 @@ function sessRender(){
   const key='sess_'+currentPatient?.code;
   const list=JSON.parse(localStorage.getItem(ukey(key))||'[]');
   el.innerHTML='';
-  if(!list.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;padding:1rem">Nessuna nota ancora.</div>';return;}
+  if(!list.length){el.innerHTML='<div style="color:var(--dc-muted);font-size:13px;padding:1rem">Nessuna nota ancora.</div>';return;}
   list.slice().reverse().forEach(s=>{
     const d=document.createElement('div');
-    d.className='card';d.style.marginBottom='.5rem';
-    d.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px">${s.data||''}</div>`+
-      (s.temi?`<div style="font-size:13px;margin-bottom:4px"><b>Temi:</b> ${s.temi}</div>`:'')+ 
-      (s.abilita?`<div style="font-size:13px;margin-bottom:4px"><b>Abilità:</b> ${s.abilita}</div>`:'')+ 
-      (s.note?`<div style="font-size:13px;color:var(--text-2)">${s.note}</div>`:'');
+    d.style.cssText='background:var(--dc-surface);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:6px';
+    d.innerHTML=`<span style="font-size:11.5px;font-weight:600;color:var(--dc-terra)">${s.data||''}</span>`+
+      (s.temi?`<div style="font-size:13.5px;line-height:1.55;color:var(--dc-ink)"><strong>Temi:</strong> ${s.temi}</div>`:'')+
+      (s.abilita?`<div style="font-size:13.5px;line-height:1.55;color:var(--dc-ink)"><strong>Abilità:</strong> ${s.abilita}</div>`:'')+
+      (s.note?`<div style="font-size:13.5px;line-height:1.55;color:var(--dc-ink)">${s.note}</div>`:'');
     el.appendChild(d);
   });
 }
@@ -217,10 +217,10 @@ function applyTheme(mode){
   document.documentElement.setAttribute('data-theme',dark?'dark':'light');
 }
 function initTheme(){
-  const mode=localStorage.getItem('theme')||'auto';
-  applyTheme(mode);
-  // Update button states after DOM ready
-  setTimeout(()=>setTheme(mode),100);
+  // Il tema scuro non ha ancora uno stile equivalente per tutto quello
+  // ricostruito oggi: forzato chiaro a prescindere dalla preferenza
+  // salvata o dal tema di sistema, finche' non e' pronto per davvero.
+  applyTheme('light');
 }
 // Listen to system preference changes
 window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{

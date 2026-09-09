@@ -155,7 +155,11 @@ async function loadUserData(user){
 function showLoginScreen(){
   document.getElementById('onboard').style.display='flex';
   document.getElementById('app').style.display='none';
-  setThemeColor('#1A7A6E');
+  // .bottom-nav e' fuori da #app (fratello, non figlio): nasconderlo
+  // richiede un tocco a parte, altrimenti resta visibile sopra il login.
+  const bn=document.querySelector('.bottom-nav');
+  if(bn) bn.style.display='none';
+  setThemeColor('#1B4B4A');
   document.documentElement.classList.add('login-mode');
   document.documentElement.classList.remove('app-mode');
   document.getElementById('ob-login').style.display='block';
@@ -165,6 +169,8 @@ function showLoginScreen(){
 function enterApp(){
   document.getElementById('onboard').style.display='none';
   document.getElementById('app').style.display='flex';
+  const bn=document.querySelector('.bottom-nav');
+  if(bn) bn.style.display='';
   setThemeColor('#1B4B4A');   // si atterra sulla Home, che ha l'intestazione petrolio
   document.documentElement.classList.remove('login-mode');
   document.documentElement.classList.add('app-mode');
@@ -239,7 +245,7 @@ function initApp(){
     // riferimento): si nascondono solo Home e Storico, che mostrerebbero
     // dati personali inesistenti per il terapeuta.
     // Abilita' esce dal menu: le schede DBT stanno tutte sotto "Schede".
-    const HIDE_FOR_TERAP=["'storico'","'attivita'","'abilita'"];
+    const HIDE_FOR_TERAP=["\'storico\'","\'attivita\'","\'abilita\'","\'oggi\'"];
     const keepForTerap = oc => !HIDE_FOR_TERAP.some(p=>oc.includes(p));
     document.querySelectorAll('.ni').forEach(b=>{
       const oc=b.getAttribute('onclick')||'';
@@ -282,9 +288,30 @@ function initApp(){
     const tcInput=document.getElementById('set-tcode-input');
     if(tcInput)tcInput.value=profile.terapeutaCode||'';
   }
+  // Impostazioni terapeuta: pagina separata, campi propri
+  const terapSettings=document.getElementById('terap-settings');
+  const pazSettings=document.getElementById('page-impostazioni-paziente');
+  if(profile.role==='terapeuta'){
+    if(terapSettings)terapSettings.style.display='block';
+    if(pazSettings)pazSettings.style.display='none';
+    const tsNome=document.getElementById('ts-nome');
+    if(tsNome)tsNome.value=(profile.nome||'')+(profile.cognome?' '+profile.cognome:'');
+    const tsUser=document.getElementById('ts-username');
+    if(tsUser)tsUser.value=profile.code||'';
+    const tsCodice=document.getElementById('ts-codice-invito');
+    if(tsCodice)tsCodice.textContent=profile.code||'—';
+    const tsRischio=document.getElementById('ts-tog-rischio');
+    if(tsRischio)tsRischio.checked = settings.terapRischio!==false;   // acceso di default
+    const tsRiepilogo=document.getElementById('ts-tog-riepilogo');
+    if(tsRiepilogo)tsRiepilogo.checked = settings.terapRiepilogo!==false;
+    const tsScuro=document.getElementById('ts-tog-scuro');
+    if(tsScuro)tsScuro.checked = document.documentElement.getAttribute('data-theme')==='dark';
+  }
   if(settings.notifTime)document.getElementById('notif-time').value=settings.notifTime;
   if(settings.notifOn)document.getElementById('notif-toggle').checked=true;
-  if(channel)document.getElementById('sync-desc').textContent='Canale: '+channel;
+  // #sync-desc rimosso dall'interfaccia (sezione Sincronizzazione tolta):
+  // questa riga andava in errore su ogni avvio, bloccando tutto cio' che
+  // segue in initApp() - Home restava vuota finche' non si cambiava pagina.
   // build UI
   buildScales();buildSkills();
   updDL();setForm(allData[dk(cur)]||null);

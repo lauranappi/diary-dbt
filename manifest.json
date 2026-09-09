@@ -1,7 +1,7 @@
 {
-  "name": "Diary Card DBT",
-  "short_name": "Diary DBT",
-  "description": "Diary Card DBT — compilazione giornaliera",
+  "name": "Marea",
+  "short_name": "Marea",
+  "description": "Marea — la tua diary card DBT quotidiana",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",

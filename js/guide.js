@@ -9,7 +9,8 @@ const MINIATURA_MODULO = {
   reg:'illustrazioni/miniature/modulo-regolazione.svg',
   inter:'illustrazioni/miniature/modulo-interpersonale.svg',
   mind:'illustrazioni/miniature/modulo-mindfulness.svg',
-  gen:'illustrazioni/miniature/strumenti-generali.svg'
+  gen:'illustrazioni/miniature/strumenti-generali.svg',
+  dip:'illustrazioni/miniature/modulo-dipendenze.svg'
 };
 const MINIATURA_EMOZIONE = {
   epau:'illustrazioni/miniature/emo-paura.svg',
@@ -61,7 +62,7 @@ function toggleGuideSkill(id){
   const arr=document.getElementById('sarr-'+id);
   if(!steps)return;
   const open=steps.classList.toggle('open');
-  if(arr)arr.style.transform=open?'rotate(90deg)':'';
+  if(arr)arr.style.transform=open?'rotate(180deg)':'';
 }
 function renderGuide(){
   const el=document.getElementById('guida-content');
@@ -75,7 +76,7 @@ function renderGuide(){
      intro:'Queste abilità servono quando provi un dolore intenso che non puoi alleviare subito, quando agiresti sulla spinta delle emozioni ma questo peggiorerebbe la situazione, o quando la mente emotiva minaccia di prendere il sopravvento. Non sono per i problemi quotidiani — sono per le crisi.',
      skills:[
        {id:'stop',badge:'STOP',name:'Interrompi la reazione impulsiva',
-        desc:'Fermati prima di agire. Per ogni situazione in cui stai per reagire d\'impulso.',
+        desc:'Fermati prima di reagire d\'impulso.',
         steps:[
           '<b>S — Stop.</b> Non reagire. Congelati. Non muovere un muscolo. Le emozioni vogliono farti agire senza pensare — non lasciarle.',
           '<b>T — fai un passo indieT​ro.</b> Prendi distanza fisica o mentale. Fai un respiro profondo. Non lasciare che i sentimenti ti spingano ad agire impulsivamente.',
@@ -83,7 +84,7 @@ function renderGuide(){
           '<b>P — Procedi in maniera mindful.</b> Agisci con consapevolezza. Considera la situazione, le emozioni tue e altrui. Chiedi alla mente saggia: quale azione migliorerebbe la situazione? Quale la peggiorerebbe?'
         ]},
        {id:'tip',badge:'TIP',name:'Cambia la chimica del corpo',
-        desc:'Per ridurre rapidamente emozioni intense che dominano la mente. Cambia la fisiologia del corpo in pochi minuti.',
+        desc:'Cambia la fisiologia del corpo in pochi minuti.',
         steps:[
           '<b>T — Temperatura.</b> Immergi il viso in acqua fredda (min 10°C) trattenendo il fiato per 30 secondi, oppure applica un impacco freddo sugli occhi e guance. Il "riflesso da immersione" rallenta il battito cardiaco e calma il sistema nervoso.',
           '<b>I — esercizio fisico Intenso.</b> Corri, salta, fai squat per almeno 20 minuti. Consuma l\'energia fisica accumulata dalle emozioni intense.',
@@ -92,7 +93,7 @@ function renderGuide(){
           '⚠ <b>Attenzione:</b> consulta il medico prima di usare TIP se hai problemi cardiaci, prendi farmaci betabloccanti, o hai disturbi alimentari.'
         ]},
        {id:'procontro',badge:'PRO/CONTRO',name:'Valuta pro e contro',
-        desc:'Quando senti un forte impulso a fare qualcosa di potenzialmente dannoso, fai una lista prima.',
+        desc:'Prima di agire d\'impulso, fai una lista.',
         steps:[
           '<b>Scrivi i pro</b> del cedere all\'impulso: cosa otterresti nel breve termine?',
           '<b>Scrivi i contro</b> del cedere all\'impulso: quali sarebbero le conseguenze a lungo termine?',
@@ -101,7 +102,7 @@ function renderGuide(){
           'Conserva la lista con te. Rileggila quando senti l\'impulso. Ricorda le conseguenze passate di quando hai ceduto impulsivamente.'
         ]},
        {id:'accept',badge:'ACCETTA',name:'Distrarsi con mente saggia',
-        desc:'Sette strategie per spostare l\'attenzione dalla sofferenza senza negarla.',
+        desc:'Sette strategie per distrarti senza negare il dolore.',
         steps:[
           '<b>A — Attività.</b> Fai qualcosa che assorba l\'attenzione: sport, hobby, pulizie, film. Qualsiasi cosa che occupi mente e corpo.',
           '<b>C — Contribuire.</b> Aiuta qualcun altro: chiama un\'amica, fai volontariato, scrivi un messaggio incoraggiante. Uscire da se stesse aiuta.',
@@ -112,7 +113,7 @@ function renderGuide(){
           '<b>A — Azioni intense.</b> Qualcosa che richieda concentrazione totale: sport, videogiochi impegnativi, suonare uno strumento, cantare.'
         ]},
        {id:'sensi',badge:'5 SENSI',name:'Autoconsolati attraverso i 5 sensi',
-        desc:'Usa i sensi per portare calma e conforto nel momento presente.',
+        desc:'Calma e conforto attraverso i cinque sensi.',
         steps:[
           '<b>Vista.</b> Guarda le stelle nel cielo notturno. Osserva la natura. Guarda immagini che ti piacciono. Trova qualcosa di bello nell\'ambiente intorno a te.',
           '<b>Udito.</b> Ascolta musica che ti calma o ti piace. I suoni della natura. Il silenzio consapevole. Nota ogni suono senza giudicarlo.',
@@ -121,7 +122,7 @@ function renderGuide(){
           '<b>Tatto.</b> Fai un bagno caldo. Avvolgiti in una coperta morbida. Accarezza un animale. Il contatto fisico confortante regola il sistema nervoso.'
         ]},
        {id:'migliora',badge:'MIGLIORA',name:'Migliora il momento presente',
-        desc:'Sette strategie per rendere il momento presente più tollerabile quando stai soffrendo.',
+        desc:'Sette strategie per rendere il momento più tollerabile.',
         steps:[
           '<b>M — Immagini mentali (Meaning).</b> Usa immagini mentali che ti calmano: un posto sicuro, la natura, un ricordo felice. Oppure dai un senso alla sofferenza — cosa ti sta insegnando?',
           '<b>I — Intenzione (Intention).</b> Focalizzati su un\'intenzione per il momento: "Voglio superare questa ora". Un\'intenzione piccola e concreta.',
@@ -132,7 +133,7 @@ function renderGuide(){
           '<b>R — Riposo e relax (Relaxation).</b> Rilassamento muscolare, respirazione lenta, musica rilassante, doccia calda, tisana.'
         ]},
        {id:'sorriso',badge:'MEZZO SORRISO',name:'Abbozzare un sorriso e mani aperte',
-        desc:'Accettare la realtà attraverso il corpo — la postura e l’espressione comunicano con il cervello.',
+        desc:'Accetta la realtà attraverso postura ed espressione.',
         steps:[
           '<b>Il mezzo sorriso:</b> rilassa il viso dalla sommità del capo alla mandibola. Lascia che entrambe le estremità della bocca salgano leggermente — il minimo che ti permetta di accorgertene. Non un ghigno: labbra leggermente sollevate in un volto rilassato.',
           '<b>Mani aperte in piedi:</b> lascia cadere le braccia lungo i fianchi, mani aperte girate verso l’esterno, palmi verso l’alto, dita rilassate.',
@@ -153,7 +154,7 @@ function renderGuide(){
          '<b>5. Quando l\'ostinazione è inamovibile</b>, chiediti qual è la minaccia che senti, e torna al passo 1.'
        ]},
       {id:'autoincor',badge:'AUTOINCORAGGIAMENTO',name:'Frasi che ti sostengono',
-       desc:'Nei momenti di crisi, quando la mente ripete che non ce la farai.',
+       desc:'Per i momenti in cui pensi di non farcela.',
        steps:[
          'Sostieni te stessa come faresti con una persona a cui vuoi bene: «Vai! Sei grande!», «Ce la posso fare».',
          'Ricorda che la crisi ha una fine: «Passerà anche questo», «Non durerà per sempre», «Ne verrò fuori».',
@@ -162,7 +163,7 @@ function renderGuide(){
          'Scrivi le frasi che funzionano per te e tienile pronte: nel momento di crisi non si inventano.'
        ]},
       {id:'accrad',badge:'ACCETT. RADICALE',name:'Accettazione radicale',
-        desc:'Smettere di combattere contro la realtà per uscire dalla sofferenza — non significa approvare, ma accettare i fatti così come sono.',
+        desc:'Smettere di lottare contro ciò che non puoi cambiare.',
         steps:[
           '<b>Cos\'è:</b> accettazione radicale significa accettare completamente — con mente, cuore e corpo — la realtà così com\'è. Non è arrendersi, è smettere di lottare contro ciò che non si può cambiare ora.',
           '<b>Perché:</b> rifiutare la realtà non la cambia, ma trasforma il dolore in sofferenza. Il dolore è inevitabile; la sofferenza è opzionale.',
@@ -177,7 +178,7 @@ function renderGuide(){
      intro:'La mindfulness è la pratica di prestare attenzione intenzionalmente al momento presente, senza giudicarlo. Non è meditazione formale — puoi praticarla mentre fai qualsiasi cosa. Le abilità di mindfulness sono la base di tutta la DBT.',
      skills:[
        {id:'mstati',badge:'STATI MENTE',name:'I tre stati della mente',
-        desc:'Comprendere in quale stato ti trovi aiuta a scegliere come rispondere.',
+        desc:'Capire in quale stato mentale ti trovi.',
         steps:[
           '<b>Mente razionale.</b> Fredda, logica, guidata da fatti e ragione. Utile per risolvere problemi pratici. Ignora emozioni e valori — può portare a decisioni corrette ma vuote di significato.',
           '<b>Mente emotiva.</b> Calda, impulsiva, governata dai sentimenti. Le emozioni controllano pensieri e azioni. Utile per amore, creatività, connessione — pericolosa nelle crisi e per decisioni importanti.',
@@ -185,21 +186,21 @@ function renderGuide(){
           '💡 Come trovare la mente saggia: fai un respiro profondo. Chiediti: "Nel profondo, so cosa è giusto fare?" Aspetta la risposta che sale dal centro, non dalla testa né dal cuore.'
         ]},
        {id:'mcosa',badge:'COSA',name:'Osservare, Descrivere, Partecipare',
-        desc:'Le tre abilità del "cosa" — cosa fare quando pratichi la mindfulness.',
+        desc:'Cosa fare quando pratichi la mindfulness.',
         steps:[
           '<b>Osservare.</b> Nota l\'esperienza senza aggrapparti ad essa o respingerla. I pensieri sono come nuvole che passano, le emozioni come onde. Osserva senza reagire. "Sto notando una sensazione di tensione."',
           '<b>Descrivere.</b> Metti in parole l\'esperienza — "Sto avendo il pensiero che...", "Sento una stretta al petto". Descrivere crea distanza dall\'emozione e riduce la sua intensità.',
           '<b>Partecipare.</b> Buttati completamente nell\'attività del momento, senza autoconsapevolezza. Diventa una con ciò che fai — ballare, cucinare, parlare. Non osservare da fuori: entra dentro l\'esperienza.'
         ]},
        {id:'mcome',badge:'COME',name:'Non giudicare, Una cosa, Efficacia',
-        desc:'Le tre abilità del "come" — come praticare la mindfulness.',
+        desc:'Come praticare la mindfulness.',
         steps:[
           '<b>Astenersi dal giudizio.</b> Osserva senza valutare come buono/cattivo, giusto/sbagliato. Invece di "questo è terribile", prova "questo è quello che sta succedendo". Nota quando giudichi e lascia andare il giudizio — senza giudicarti per aver giudicato.',
           '<b>Una cosa per volta.</b> Concentra tutta l\'attenzione sull\'attività del momento. Se la mente vaga, riportala gentilmente. Non fare più cose contemporaneamente — né fisicamente né mentalmente.',
           '<b>Essere efficaci.</b> Fai ciò che funziona nella situazione reale, non ciò che è "giusto" in assoluto o ciò che vorresti dover fare. Lascia perdere l\'orgoglio e i principi astratti — fai quello che serve per raggiungere i tuoi obiettivi.'
         ]},
        {id:'memozioni',badge:'EMOZIONI ORA',name:'Mindfulness delle emozioni del momento',
-        desc:'Osservare un’emozione senza agire su di essa — cavalcare l’onda invece di esserne travolti.',
+        desc:'Osserva l\'emozione senza agire su di essa.',
         steps:[
           '<b>Osserva l’emozione.</b> Fai un passo indietro e limitati a osservarla. Come un’onda che va e viene. Non bloccarla, non respingerla, non aggrappartici, non amplificarla.',
           '<b>Pratica la consapevolezza corporea.</b> Nota dove nel corpo senti le sensazioni dell’emozione. Sperimenta le sensazioni il più completamente possibile. Osserva quanto ci vuole perché l’emozione diminuisca.',
@@ -208,7 +209,7 @@ function renderGuide(){
           '💡 Gestire emozioni estreme: se sei al punto di rottura (sofferenza estrema, mente che si spegne), prima usa TIP o ACCETTA per ridurre l’attivazione, poi torna alla mindfulness delle emozioni.'
         ]},
        {id:'mpensieri',badge:'PENSIERI ORA',name:'Mindfulness dei pensieri del momento',
-        desc:'Osservare i pensieri come eventi mentali che passano — non come fatti su di te.',
+        desc:'I pensieri come eventi che passano, non fatti.',
         steps:[
           '<b>Osserva i tuoi pensieri</b> come onde che vanno e vengono. Senza analizzarli, senza sopprimerli, senza giudicarli. Fai un passo indietro e guardali correre fuori e dentro la mente.',
           '<b>Adotta una mente curiosa.</b> Chiediti: "Da dove arrivano i miei pensieri?" Nota che ogni pensiero che entra, esce. Non trattenere.',
@@ -217,7 +218,7 @@ function renderGuide(){
           '<b>Gioca con i tuoi pensieri.</b> Ripetili ad alta voce più volte velocemente. Cantali. Immagina i pensieri come parole di un clown o come un bel colore che attraversa la mente. Prova ad amarli.'
         ]},
        {id:'mrespiro',badge:'RESPIRO',name:'Mindfulness del respiro',
-        desc:'Il respiro come ancora al momento presente — un esercizio pratico in qualsiasi momento.',
+        desc:'Il respiro come ancora al momento presente.',
         steps:[
           '<b>Posizione:</b> siediti comodamente o sdraiati. Chiudi gli occhi o abbassa lo sguardo. Rilassa le spalle.',
           '<b>Osserva il ventre:</b> quando inspiri, lascia che il ventre si sollevi. Quando espiri, nota prima il ventre, poi il petto scendere. Non forzare.',
@@ -242,7 +243,7 @@ function renderGuide(){
      intro:'Le emozioni non sono nemiche — ci motivano, comunicano agli altri e ci danno informazioni. Il problema è quando sono troppo intense, durano troppo, o ci spingono ad azioni che peggiorano la situazione. Queste abilità aiutano a capire, accettare e modificare le emozioni.',
      skills:[
        {id:'rperche',badge:'EMOZIONI',name:'A cosa servono le emozioni',
-        desc:'Prima di regolare le emozioni, è utile capire perché le proviamo.',
+        desc:'Perché proviamo le emozioni, prima di regolarle.',
         steps:[
           '<b>Ci motivano all\'azione.</b> La paura ci fa fuggire dal pericolo. La rabbia ci fa difendere. La tristezza ci fa cercare conforto. Le emozioni abbreviano i tempi di reazione in situazioni importanti.',
           '<b>Comunicano agli altri.</b> Le espressioni facciali e il tono della voce trasmettono emozioni anche involontariamente. Influenzano chi ci sta intorno prima ancora che parliamo.',
@@ -250,7 +251,7 @@ function renderGuide(){
           '⚠ <b>Attenzione:</b> le emozioni non sono fatti. "Mi sento in colpa" non significa aver sbagliato. "Ho paura" non significa che ci sia davvero un pericolo. Controlla sempre i fatti prima di agire.'
         ]},
        {id:'rcheck',badge:'CONTROLLA',name:'Controllare i fatti',
-        desc:'Le emozioni rispondono ai pensieri e alle interpretazioni, non solo agli eventi reali.',
+        desc:'Le emozioni rispondono ai pensieri, non solo ai fatti.',
         steps:[
           '<b>Identifica l\'emozione</b> che vuoi cambiare. Come si chiama? Quanto è intensa (0-5)?',
           '<b>Identifica l\'evento scatenante.</b> Cosa è successo esattamente? Descrivi i fatti puri, senza interpretazioni.',
@@ -268,7 +269,7 @@ function renderGuide(){
           '💡 L\'azione opposta deve essere <b>completa</b> — non solo esterna ma anche interna (postura, espressione, pensieri).'
         ]},
        {id:'rplease',badge:'PLEASE',name:'Ridurre la vulnerabilità emotiva',
-        desc:'Prendersi cura del corpo riduce quanto facilmente le emozioni ci sopraffanno.',
+        desc:'Cura del corpo, meno vulnerabilità emotiva.',
         steps:[
           '<b>PL — tratta le malattie Fisiche (PHysicaL).</b> Vai dal medico. Prendi le medicine. Non ignorare sintomi fisici — il corpo influenza direttamente le emozioni.',
           '<b>E — alimentazione Equilibrata.</b> Non saltare pasti. Evita cibi che alterano l\'umore. L\'ipoglicemia rende emotivamente reattive.',
@@ -285,7 +286,7 @@ function renderGuide(){
           '<b>PLEASE</b> — vedi la skill dedicata: prendersi cura del corpo riduce la vulnerabilità emotiva.'
         ]},
        {id:'rmastery',badge:'MASTERY',name:'Diventare bravi nella mastery',
-        desc:'Fare cose che ti rendono competente combatte la disperazione e costruisce autostima.',
+        desc:'Ti rende competente e costruisce autostima.',
         steps:[
           'Pianifica almeno una cosa ogni giorno che ti dia un senso di realizzazione. Non deve essere grande — anche piccola.',
           'Fai piani per il successo, non per il fallimento. Inizia da qualcosa di difficile ma possibile.',
@@ -294,7 +295,7 @@ function renderGuide(){
           '<b>Gestisci in anticipo:</b> pensa a situazioni future che potrebbero essere difficili. Decidi quale abilità usare. Immagina di essere in quella situazione e prova mentalmente come gestirla.'
         ]},
        {id:'rproblem',badge:'PROBLEM SOLVING',name:'Problem solving — 7 passi',
-        desc:'Quando un problema è reale e risolvibile, affrontarlo direttamente riduce le emozioni negative.',
+        desc:'Affrontare direttamente un problema reale e risolvibile.',
         steps:[
           '<b>Passo 1:</b> Analizza e descrivi la situazione problematica in modo specifico.',
           '<b>Passo 2:</b> Controlla i fatti. Sei sicura di avere inquadrato correttamente il problema?',
@@ -305,7 +306,7 @@ function renderGuide(){
           '<b>Passo 7:</b> Valuta i risultati. Ha funzionato? Bene! No? Torna al passo 5 e scegline un’altra.'
         ]},
        {id:'rvalori',badge:'VALORI',name:'Identifica i tuoi valori',
-        desc:'Costruire una vita che vale la pena di essere vissuta inizia dall’identificare cosa conta davvero.',
+        desc:'Cosa conta davvero per te.',
         steps:[
           '<b>Perché i valori:</b> le emozioni positive a lungo termine nascono da una vita allineata con ciò che per te è importante. Non da ciò che vuoi tu, ma da ciò che ti dà significato.',
           '<b>Passo 1:</b> Chiediti: "Nella mia mente saggia, cosa è davvero importante per me?" Esempi: relazioni, far parte di un gruppo, salute, lavoro significativo, crescita personale, creatività, integrità.',
@@ -324,7 +325,7 @@ function renderGuide(){
           '⚠ Non cercare di usare abilità complesse al punto di rottura — non funzionerà e ti farà sentire più in fallimento. Prima calma il sistema nervoso.'
         ]},
        {id:'rpositivo',badge:'POSITIVO',name:'Costruire emozioni positive',
-        desc:'Non aspettare che le emozioni positive arrivino da sole — costruiscile attivamente.',
+        desc:'Costruisci attivamente le emozioni positive.',
         steps:[
           '<b>Breve termine:</b> ogni giorno fai almeno una cosa piacevole. Non aspettare di "avere voglia". Scegli attività che di solito ti piacciono e falle, anche se non ne hai voglia in questo momento.',
           '<b>Lungo termine:</b> lavora verso obiettivi che ti stanno a cuore. Costruisci una vita che vale la pena di essere vissuta — relazioni, lavoro, valori, salute.',
@@ -349,7 +350,7 @@ function renderGuide(){
           '<b>N — Negozia.</b> Sii disposta a dare per ricevere. Chiedi all\'altra persona cosa farebbe. Proponi soluzioni alternative.'
         ]},
        {id:'ifermezza',badge:'FERMEZZA',name:'Quanto devo essere ferma?',
-        desc:'Come decidere quanta energia e insistenza usare nelle richieste e nel dire di no.',
+        desc:'Quanta energia usare in una richiesta o un no.',
         steps:[
           '<b>Fattori che aumentano la fermezza:</b> sei nel giusto. Hai chiaramente espresso le tue necessità in passato. La relazione è paritaria. L’altra persona te lo chiederebbe a sua volta.',
           '<b>Fattori che la riducono:</b> non sei sicura di essere nel giusto. Non hai comunicato chiaramente in passato. La richiesta potrebbe danneggiare la relazione. L’altra persona è in difficoltà.',
@@ -358,7 +359,7 @@ function renderGuide(){
           '💡 Non esiste una risposta giusta universale. La mente saggia sa bilanciare i tuoi bisogni con la realtà della situazione.'
         ]},
        {id:'give',badge:'GIVE',name:'Mantenere le relazioni',
-        desc:'Come comportarsi con gli altri per mantenere e rafforzare i legami.',
+        desc:'Mantenere e rafforzare i legami.',
         steps:[
           '<b>G — sii Gentile.</b> Non attaccare, non minacciare, non giudicare, non mostrarti superiore. Tollera un no. Esprimi la rabbia con le parole, non con le azioni.',
           '<b>I — mostrati Interessata.</b> Ascolta davvero. Guarda negli occhi. Non interrompere. Sii curiosa del punto di vista dell\'altra persona, anche quando non sei d\'accordo.',
@@ -366,7 +367,7 @@ function renderGuide(){
           '<b>E — comportati in modo Educato.</b> Usa un tono leggero quando possibile. Sorridi. Mostra interesse genuino. Evita l\'umorismo che ferisce.'
         ]},
        {id:'fast',badge:'FAST',name:'Mantenere il rispetto di sé',
-        desc:'Come comportarsi per non perdere la stima di te stessa nelle relazioni.',
+        desc:'Non perdere la stima di te nelle relazioni.',
         steps:[
           '<b>F — sii Franca.</b> Sii giusta con te stessa e con l\'altra persona. Valida i tuoi sentimenti e desideri come validi tanto quanto quelli degli altri.',
           '<b>A — sii Assertiva.</b> Non scusarti di esistere o di avere bisogni. Non scusarti di avere opinioni. Non assumere posture di inferiorità.',
@@ -374,7 +375,7 @@ function renderGuide(){
           '<b>T — sii Trasparente.</b> Non mentire, non fingere di essere d\'accordo quando non lo sei, non recitare. L\'onestà protegge il rispetto di sé a lungo termine.'
         ]},
        {id:'idialettica',badge:'DIALETTICA',name:'Pensiero dialettico',
-        desc:'La dialettica è la capacità di stare nel paradosso: due cose opposte possono essere entrambe vere.',
+        desc:'Stare nel paradosso: due cose opposte, entrambe vere.',
         steps:[
           '<b>Principio 1:</b> ogni situazione ha sempre una controparte. Cerca entrambi i lati della medaglia. Cambia gli "o-o" in "sia-sia", i "sempre-mai" in "talvolta".',
           '<b>Principio 2:</b> siamo tutti in connessione. Comportati con gli altri come vorresti facessero con te. Cerca le somiglianze, non le differenze.',
@@ -383,7 +384,7 @@ function renderGuide(){
           '<b>Esempi pratici:</b> "Voglio stare da sola E voglio anche connessione." "Posso voler cambiare E aver ancora bisogno di fare meglio." Entrambe sono vere.'
         ]},
        {id:'isentiero',badge:'SENTIERO DI MEZZO',name:'Percorrere il sentiero di mezzo',
-        desc:'Trovare equilibrio tra gli estremi — tra accettazione e cambiamento, tra i tuoi bisogni e quelli degli altri.',
+        desc:'Equilibrio tra accettazione e cambiamento.',
         steps:[
           '<b>Accettazione e cambiamento insieme:</b> accettare la realtà non significa rinunciare al cambiamento. Anzi: l’accettazione è il primo passo verso il cambiamento efficace.',
           '<b>Evita gli estremi:</b> osserva dove ti poni rispetto al sentiero di mezzo. Stai andando troppo verso un estremo (troppo dipendente, troppo isolata; troppo rigida, troppo cedevole)?',
@@ -391,7 +392,7 @@ function renderGuide(){
           'Chiedi alla mente saggia: "Sto tralasciando qualcosa? Dove c’è un nocciolo di verità nell’altra posizione?"'
         ]},
        {id:'ivalida',badge:'VALIDAZIONE',name:'Come validare gli altri (e se stesse)',
-        desc:'La validazione riconosce che le emozioni e i pensieri di una persona hanno senso — anche senza essere d’accordo.',
+        desc:'Riconoscere che i pensieri altrui hanno senso.',
         steps:[
           '<b>Livello 1: Prestare attenzione.</b> Mostrarti presente. Contatto visivo. Non fare altro mentre ascolti. Annuisci. Rispondi con il volto.',
           '<b>Livello 2: Rispecchiare.</b> Ripeti ciò che hai sentito per verificare di aver capito. "Dunque sei arrabbiata perché... Ho capito bene?"',
@@ -401,7 +402,7 @@ function renderGuide(){
           '<b>Importante:</b> validazione non significa essere d’accordo. Non validare ciò che in effetti non ha valore.'
         ]},
        {id:'imiti',badge:'CREDENZE',name:'Credenze che ostacolano le relazioni',
-        desc:'Riconosci i pensieri automatici che ti impediscono di essere efficace nelle relazioni.',
+        desc:'I pensieri automatici che ti ostacolano nelle relazioni.',
         steps:[
           '"Non mi merito ciò che desidero o di cui ho bisogno." → Le tue necessità sono valide quanto quelle degli altri.',
           '"Se faccio una domanda, dimostro di essere debole." → Chiedere è un atto di rispetto — verso te stessa e verso l\'altra persona.',
@@ -417,7 +418,7 @@ function renderGuide(){
      intro:'Sei dipendente quando non riesci a interrompere un pattern di comportamento nonostante le conseguenze negative. Queste abilità aiutano a costruire l’astinenza, gestire il craving e prevenire le ricadute.',
      skills:[
        {id:'dastinenza',badge:'ASTINENZA',name:'Astinenza dialettica',
-        desc:'Due obiettivi in tensione: impegnarsi al 100% per smettere, ma avere un piano per quando si ricade.',
+        desc:'Impegnarsi al 100%, con un piano per la ricaduta.',
         steps:[
           '<b>Obiettivo principale:</b> astinenza completa e permanente.',
           '<b>Se si ricade:</b> minimizzare il danno e tornare all’astinenza il prima possibile.',
@@ -478,7 +479,7 @@ function renderGuide(){
           '\U0001f4a1 Non serve a colpevolizzarti \u2014 serve a capire e pianificare come fare meglio.'
         ]},
        {id:'gcheck',badge:'CONTROLLA I FATTI',name:'Foglio di lavoro — Controlla i fatti',
-        desc:'Usa questo schema quando senti un’emozione intensa e vuoi capire se corrisponde ai fatti.',
+        desc:'Capire se un\'emozione intensa corrisponde ai fatti.',
         steps:[
           '<b>Passo 1:</b> Qual è l’emozione che voglio cambiare? Quanto è intensa (0-5)?',
           '<b>Passo 2:</b> Qual è l’evento che l’ha attivata? Descrivi solo i fatti osservabili — senza interpretazioni.',
@@ -489,7 +490,7 @@ function renderGuide(){
           'Usa la pagina "Diario emozioni" nell’app per compilare questo schema in modo strutturato.'
         ]},
        {id:'gprocontro',badge:'PRO/CONTRO ABILITÀ',name:'Foglio di lavoro — Usare le abilità?',
-        desc:'Quando non sei sicura se usare le abilità o cedere all’impulso in una situazione.',
+        desc:'Usare le abilità o cedere all\'impulso?',
         steps:[
           '<b>Descrivi la situazione:</b> cosa sta succedendo? Qual è il tuo obiettivo?',
           '<b>PRO del praticare le abilità:</b> cosa otterresti a breve e lungo termine?',
@@ -500,7 +501,7 @@ function renderGuide(){
           'Usa questa struttura ogni volta che senti di voler rinunciare alle abilità.'
         ]},
        {id:'gvita',badge:'VITA DEGNA',name:'Costruire una vita degna di essere vissuta',
-        desc:'L\u2019obiettivo finale della DBT: una vita che vale la pena, basata sui propri valori.',
+        desc:'Una vita che vale la pena, sui tuoi valori.',
         steps:[
           'Una vita degna di essere vissuta \u00e8 diversa per ognuno. Non perfetta \u2014 ma con abbastanza significato, connessione e soddisfazione da valere la pena.',
           '<b>Identifica i tuoi valori:</b> cosa \u00e8 davvero importante per te? Relazioni? Lavoro? Creativit\u00e0? Salute? Integrit\u00e0?',
@@ -515,7 +516,7 @@ function renderGuide(){
     MODULES.forEach(function(mod){
     const mDiv=document.createElement('div');mDiv.className='guide-module';
     const hdr=document.createElement('div');hdr.className='guide-module-header';
-    hdr.onclick=function(){toggleGuideModule(mod.id);};
+    hdr.onclick=function(){apriModuloPagina(mod.id);};
     const miniMod = MINIATURA_MODULO[mod.id];
     hdr.className='dc-riga';
     hdr.innerHTML=(miniMod ? '<img class="dc-riga-ill" src="'+miniMod+'" alt="">' : '')
@@ -546,9 +547,8 @@ function renderGuide(){
         skHdr.onclick=function(){toggleGuideSkill(sk.id);};
       }
       skHdr.innerHTML='<div class="guide-skill-badge">'+sk.badge+'</div>'
-        +'<div style="flex:1"><div class="guide-skill-name">'+sk.name+'</div>'
-        +'<div class="guide-skill-desc">'+sk.desc+'</div></div>'
-        +'<span style="color:var(--muted);font-size:18px;margin-left:8px;transition:transform .2s" id="sarr-'+sk.id+'">›</span>';
+        +'<div class="guide-skill-name" style="flex:1">'+sk.name+'</div>'
+        +'<svg width="19" height="11" viewBox="0 0 19 11" fill="none" id="sarr-'+sk.id+'" style="flex:none;transition:transform .18s ease"><path d="M2.5 2.5L9.5 8L16.5 2.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       skDiv.appendChild(skHdr);
       const steps=document.createElement('div');steps.className='guide-skill-steps';steps.id='steps-'+sk.id;
       if(!pagLettura){
@@ -578,7 +578,7 @@ function renderGuide(){
       // aprire una scheda e' navigazione: resta attivo anche in sola
       // consultazione (modalita' terapeuta)
       b.setAttribute('data-nav','');
-      b.textContent=sc.label+' →';
+      b.textContent=sc.label;
       b.addEventListener('click', function(ev){
         ev.preventDefault(); ev.stopPropagation();
         openScheda(sc.page);
@@ -645,13 +645,28 @@ function updAbiPill(){
 
 
 function showDaySummary(k,d){
-  const modal=document.getElementById('day-modal');
-  document.getElementById('day-modal-title').textContent=new Date(k+'T12:00:00').toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const body=document.getElementById('day-modal-body');
+  const modal=document.getElementById('scheda-modal');
+  document.getElementById('scheda-title').textContent=new Date(k+'T12:00:00').toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const body=document.getElementById('scheda-body');
   const s=d.scales||{}, t=d.toggles||{}, tx=d.texts||{};
+
+  const kicker=testo=>'<span class="dc-thome-kicker">'+testo+'</span>';
+  const card=(titolo,contenuto)=>'<div style="background:var(--dc-surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px;margin-bottom:12px">'
+    +kicker(titolo)+contenuto+'</div>';
+  const barra=(nome,val,max,colore)=>{
+    const pct=Math.min(100,(val/max)*100);
+    return '<div style="display:flex;align-items:center;gap:10px">'
+      +'<span style="font-size:13px;font-weight:500;width:120px;flex:none;color:var(--dc-ink)">'+nome+'</span>'
+      +'<span style="flex:1;height:8px;border-radius:999px;background:var(--dc-line);position:relative;overflow:hidden">'
+      +'<i style="position:absolute;left:0;top:0;bottom:0;width:'+pct+'%;border-radius:999px;background:'+colore+'"></i></span>'
+      +'<span style="font-size:12px;font-weight:700;color:var(--dc-terra-ink);width:20px;text-align:right;flex:none">'+val+'</span>'
+      +'</div>';
+  };
+  const testoLibero=(etichetta,valore)=>'<div><div class="dc-thome-kicker" style="margin-bottom:4px">'+etichetta+'</div>'
+    +'<div style="font-size:14px;color:var(--dc-ink);line-height:1.5">'+valore+'</div></div>';
+
   let html='';
 
-  // Sezione 1: comportamenti
   const critScales=['sp','ai','alci','cbdi','rap','atti'];
   const critTog=['sa','aa','ee','farm'];
   const critTxKeys=['alcu','cbdu'];
@@ -659,82 +674,86 @@ function showDaySummary(k,d){
   const ctRows=critTog.filter(k2=>t[k2]);
   const cxRows=critTxKeys.filter(k2=>tx[k2]&&tx[k2].trim());
   if(csRows.length||ctRows.length||cxRows.length){
-    html+='<div class="modal-section"><div class="modal-section-title" style="color:#C85250">⚠ Comportamenti e sostanze</div>';
-    if(csRows.length){html+='<div class="modal-grid">';csRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2]);});html+='</div>';}
-    if(ctRows.length){html+='<div style="margin-top:8px">';ctRows.forEach(k2=>{
-      const val=t[k2];
-      const isDanger=val==="Sì"&&(k2==="sa"||k2==="aa");
-      const color=isDanger?"var(--red)":val==="Sì"?"var(--teal)":"var(--muted)";
-      const bg=isDanger?"#F8E8DF":val==="Sì"?"var(--teal-ll)":"var(--surface-2)";
-      html+='<div class="modal-row" style="background:'+bg+';border-radius:8px;margin-bottom:4px"><span style="font-weight:600">'+TOG_LABELS[k2]+'</span><strong style="color:'+color+'">'+val+'</strong></div>';
-    });html+='</div>';}
-    if(cxRows.length){html+='<div style="margin-top:8px">';cxRows.forEach(k2=>{html+='<div class="modal-text-row"><div class="ms-label">'+TEXT_LABELS[k2]+'</div><div class="ms-text">'+tx[k2]+'</div></div>';});html+='</div>';}
-    html+='</div>';
+    let c='<div style="display:flex;flex-direction:column;gap:11px">';
+    csRows.forEach(k2=>{c+=barra(SCALE_LABELS[k2],s[k2],5,scaleColor(s[k2],POSITIVE_SCALES.has(k2)));});
+    c+='</div>';
+    if(ctRows.length){
+      c+='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:2px">';
+      ctRows.forEach(k2=>{
+        const val=t[k2];
+        const isDanger=val==='Sì'&&(k2==='sa'||k2==='aa');
+        const bg=isDanger?'var(--dc-cella)':val==='Sì'?'var(--dc-petrolio-chiaro)':'var(--dc-bg)';
+        const fg=isDanger?'var(--dc-terracotta)':val==='Sì'?'var(--dc-petrolio)':'var(--dc-muted)';
+        c+='<span style="background:'+bg+';color:'+fg+';font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+TOG_LABELS[k2]+': '+val+'</span>';
+      });
+      c+='</div>';
+    }
+    cxRows.forEach(k2=>{ c+='<div style="margin-top:8px">'+testoLibero(TEXT_LABELS[k2],tx[k2])+'</div>'; });
+    html+=card('Comportamenti e sostanze', c);
   }
 
-  // Sezione 2: emozioni
   const emoScales=['ser','gio','pau','rab','tri','ver','col','vuo','sf','se','abb','fid'];
   const emoRows=emoScales.filter(k2=>s[k2]!=null);
   if(emoRows.length){
-    html+='<div class="modal-section"><div class="modal-section-title">Emozioni e benessere</div><div class="modal-grid">';
-    emoRows.forEach(k2=>{html+=mkScaleRow(SCALE_LABELS[k2],s[k2],k2);});
-    html+='</div></div>';
+    let c='<div style="display:flex;flex-direction:column;gap:11px">';
+    emoRows.forEach(k2=>{c+=barra(SCALE_LABELS[k2],s[k2],5,scaleColor(s[k2],POSITIVE_SCALES.has(k2)));});
+    c+='</div>';
+    html+=card('Emozioni e benessere', c);
   }
 
-  // Sezione 3: piano giornata
   const plan=d.planner;
-  const slotL={mattina:'🌅 Mattina',pomeriggio:'☀️ Pomeriggio',sera:'🌙 Sera'};
+  const slotLabels={mattina:'Mattina',pomeriggio:'Pomeriggio',sera:'Sera'};
   if(plan&&Object.values(plan).some(a=>a&&a.length>0)){
-    html+='<div class="modal-section"><div class="modal-section-title">Piano giornata</div>';
+    let c='<div style="display:flex;flex-direction:column;gap:14px">';
     ['mattina','pomeriggio','sera'].forEach(slot=>{
       const items=(plan[slot])||[];
       if(!items.length)return;
-      html+='<div class="pat-planner-slot"><div class="pat-planner-slot-title">'+slotL[slot]+'</div>';
-      html+='<div class="pat-planner-items">'+items.map(i=>'<span class="pat-planner-chip">'+i+'</span>').join('')+'</div></div>';
+      c+='<div><div class="dc-thome-kicker" style="margin-bottom:8px">'+slotLabels[slot]+'</div>'
+        +'<div style="display:flex;flex-wrap:wrap;gap:8px">'
+        +items.map(x=>'<span style="background:var(--dc-cella);color:var(--dc-terra-ink);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+x+'</span>').join('')
+        +'</div></div>';
     });
-    html+='</div>';
+    c+='</div>';
+    html+=card('Piano giornata', c);
   }
 
-  // Sezione 4: abilità
   const sk=d.skills||{};
   const skUsed=Object.keys(sk).filter(k2=>sk[k2]);
   if(skUsed.length){
-    html+='<div class="modal-section"><div class="modal-section-title">Abilità DBT</div><div class="modal-chips">';
-    skUsed.forEach(skid=>{const parts=skid.replace(/^sk_/,'').split('_');html+='<span class="modal-chip">'+parts.slice(1).join(' ')+'</span>';});
-    html+='</div></div>';
+    let c='<div style="display:flex;flex-wrap:wrap;gap:8px">';
+    skUsed.forEach(skid=>{
+      const parts=skid.replace(/^sk_/,'').split('_');
+      c+='<span style="background:var(--dc-cella);color:var(--dc-terra-ink);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+parts.slice(1).join(' ')+'</span>';
+    });
+    c+='</div>';
+    html+=card('Abilità DBT usate', c);
   }
 
-  if(!html)html='<div style="color:var(--muted);padding:2rem;text-align:center">Nessun dato compilato.</div>';
-  body.innerHTML=html;
-  modal.style.display='flex';
-  modal.style.alignItems='center';
-  modal.style.justifyContent='center';
+  if(!html)html='<div style="text-align:center;padding:2rem 1rem;color:var(--dc-muted)">Nessun dato compilato.</div>';
+  body.innerHTML='<div style="padding:0 22px 26px">'+html+'</div>';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
 }
 
-
 function openGuideSkill(moduleId,skillId){
+  // Prima assicura che la Guida sia gia' stata costruita (renderGuide()
+  // e' chiamata solo al primo arrivo su quella pagina): senza, il
+  // modulo/passo cercati potrebbero non esistere ancora nel documento.
   goPage('guida',null);
   setTimeout(()=>{
-    const body=document.getElementById('body-'+moduleId);
-    const arr=document.getElementById('arr-'+moduleId);
-    if(body&&!body.classList.contains('open')){
-      body.classList.add('open');
-      if(arr)arr.classList.add('open');
-    }
+    apriModuloPagina(moduleId);
     if(skillId){
       setTimeout(()=>{
         const steps=document.getElementById('steps-'+skillId);
         const sarr=document.getElementById('sarr-'+skillId);
         if(steps&&!steps.classList.contains('open')){
           steps.classList.add('open');
-          if(sarr)sarr.style.transform='rotate(90deg)';
+          if(sarr)sarr.style.transform='rotate(180deg)';
         }
         if(steps)steps.scrollIntoView({behavior:'smooth',block:'center'});
       },150);
-    } else if(body){
-      setTimeout(()=>body.scrollIntoView({behavior:'smooth',block:'start'}),150);
     }
-  },200);
+  },100);
 }
 
 
@@ -779,60 +798,55 @@ const PLEASE_ITEMS=[
 function renderPlease(){
   const el=document.getElementById('please-week');
   if(!el)return;
-  // Get last 7 days
-  const days=[];
-  for(let i=0;i<=6;i++){const d=new Date();d.setDate(d.getDate()-i);days.push(d);}
-  
-  const stored=JSON.parse(localStorage.getItem(ukey('please_data'))||'{}');
-  
   el.innerHTML='';
-  
-  // Summary row
-  const summary=document.createElement('div');
-  summary.className='card';
-  summary.style.cssText='margin-bottom:1rem';
-  let sumHtml='<div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Questa settimana</div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">';
-  PLEASE_ITEMS.forEach(item=>{
-    let count=0;
-    days.forEach(d=>{
-      const k=dk(d);
-      if(stored[k]&&stored[k][item.id])count++;
-    });
-    const pct=Math.round(count/7*100);
-    const color=pct>=80?'var(--teal)':pct>=50?'var(--amber)':'#C9714B';
-    sumHtml+=`<div style="text-align:center"><div style="font-size:20px;margin-bottom:4px">${item.icon}</div><div style="font-size:18px;font-weight:800;color:${color}">${count}/7</div><div style="font-size:10px;color:var(--muted);line-height:1.3">${item.label}</div></div>`;
+
+  // Griglia 5 righe (voci PLEASE) x 7 giorni, come nel prototipo:
+  // ogni cella si tocca per segnare/togliere quella voce quel giorno.
+  const RIGHE=[
+    {id:'pl',nome:'P\u00b7L Malattie curate'},
+    {id:'eq',nome:'E Mangiare bene'},
+    {id:'al',nome:'A Evitare sostanze'},
+    {id:'so',nome:'S Dormire abbastanza'},
+    {id:'ex',nome:'E Movimento'},
+  ];
+  const GIORNI_LBL=['lun','mar','mer','gio','ven','sab','dom'];
+  // lunedi'-domenica di questa settimana, come le etichette del prototipo
+  const oggi=new Date();
+  const scarto=(oggi.getDay()+6)%7; // 0=lunedi'
+  const lunedi=new Date(oggi); lunedi.setDate(oggi.getDate()-scarto);
+  const giorni=Array.from({length:7},(_,i)=>{const d=new Date(lunedi);d.setDate(lunedi.getDate()+i);return d;});
+
+  const stored=JSON.parse(localStorage.getItem(ukey('please_data'))||'{}');
+
+  const grid=document.createElement('div');
+  grid.className='card';
+  grid.style.cssText='display:flex;flex-direction:column;gap:14px';
+
+  let html='<div style="display:flex;gap:6px;padding-left:112px">';
+  GIORNI_LBL.forEach(g=>{
+    html+='<span style="flex:1;text-align:center;font-size:10.5px;font-weight:600;color:var(--dc-muted);opacity:.7;text-transform:uppercase">'+g+'</span>';
   });
-  sumHtml+='</div>';
-  summary.innerHTML=sumHtml;
-  el.appendChild(summary);
-  
-  // Day by day
-  days.forEach(d=>{
-    const k=dk(d);
-    const isToday=k===today();
-    const dayData=stored[k]||{};
-    const card=document.createElement('div');
-    card.className='card';
-    card.style.cssText='margin-bottom:.75rem;'+(isToday?'border:2px solid var(--teal)':'');
-    
-    const label=isToday?'Oggi':fmtS(k);
-    let html=`<div style="font-size:13px;font-weight:700;color:${isToday?'var(--teal)':'var(--text)'};margin-bottom:10px">${label}</div>`;
-    html+='<div style="display:flex;flex-direction:column;gap:8px">';
-    
-    PLEASE_ITEMS.forEach(item=>{
-      const checked=!!dayData[item.id];
-      html+=`<div style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="togglePlease('${k}','${item.id}')">
-        <div style="width:24px;height:24px;border-radius:6px;border:2px solid ${checked?'var(--teal)':'var(--border)'};background:${checked?'var(--teal)':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s">
-          ${checked?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}
-        </div>
-        <div style="font-size:18px;flex-shrink:0">${item.icon}</div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">${item.label}</div><div style="font-size:11px;color:var(--muted)">${item.desc}</div></div>
-      </div>`;
+  html+='</div>';
+
+  RIGHE.forEach(r=>{
+    html+='<div style="display:flex;align-items:center;gap:6px">';
+    html+='<span style="width:106px;flex:none;font-size:12.5px;font-weight:600;color:var(--dc-ink);line-height:1.25">'+r.nome+'</span>';
+    giorni.forEach(d=>{
+      const k=dk(d);
+      const on=!!(stored[k]&&stored[k][r.id]);
+      html+='<span onclick="togglePlease(\''+k+'\',\''+r.id+'\')" style="flex:1;height:26px;border-radius:9px;cursor:pointer;background:'+(on?'var(--dc-senape)':'var(--dc-cella)')+'"></span>';
     });
     html+='</div>';
-    card.innerHTML=html;
-    el.appendChild(card);
   });
+  grid.innerHTML=html;
+  el.appendChild(grid);
+
+  const nota=document.createElement('div');
+  nota.className='card';
+  nota.style.cssText='background:var(--dc-surface-2)!important;display:flex;flex-direction:column;gap:6px';
+  nota.innerHTML='<span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-terra)">Come si legge</span>'
+    +'<span style="font-size:13.5px;line-height:1.5;color:var(--dc-ink)">Una casella per ogni giorno in cui hai curato quella voce. Le settimane con pi\u00f9 caselle vuote sono quelle in cui le emozioni salgono pi\u00f9 facilmente.</span>';
+  el.appendChild(nota);
 }
 
 function togglePlease(dateKey,itemId){
@@ -882,7 +896,7 @@ function renderEmozioni(){
      azioni:'Chiedere perdono, scusarsi, fare regali per rimediare, piegarsi su se stessi.',
      opposta:'Se la colpa è giustificata: scusati, rimedia al danno, impegnati a non ripetere, perdonati. Se non è giustificata: non scusarti, raccogli le informazioni, postura dignitosa, valida il tuo comportamento.'
     },
-    {id:'ejal',emoji:'💚',label:'Gelosia',color:'#DCE8E6',border:'#1B4B4A',
+    {id:'egel',emoji:'💚',label:'Gelosia',color:'#DCE8E6',border:'#1B4B4A',
      quando:'Una relazione importante è minacciata o in pericolo. Qualcuno minaccia di portarti via qualcosa di prezioso.',
      scatenanti:'Partner che dà attenzione ad altri, possibile rivale, sentirsi ignorati, scoprire tradimenti.',
      interpretazioni:'"Il mio partner non tiene più a me." "Non sono all\'altezza." "Mi lascerà." "Sono stata imbrogliata."',
@@ -926,20 +940,13 @@ function renderEmozioni(){
         +'<span class="dc-riga-sub">'+(DC_SOTTO_EMO[emo.id]||emo.quando)+'</span>'
       +'</div>'
       +'<span id="earr-'+emo.id+'">'+DC_CHEV+'</span>';
-    hdr.onclick=()=>{
-      const body=document.getElementById('ebody-'+emo.id);
-      const arr=document.getElementById('earr-'+emo.id);
-      const open=body.style.display!=='none';
-      body.style.display=open?'none':'block';
-      arr.style.transform=open?'':'rotate(90deg)';
-    };
+    hdr.onclick=()=>{ apriEmozionePagina(emo.id); };
     card.appendChild(hdr);
     
     const body=document.createElement('div');
     body.id='ebody-'+emo.id;
-    body.style.display='none';
     body.className='guide-module-body';
-    body.style.cssText='display:none;padding:0 16px 16px';
+    body.style.cssText='display:none;padding:0';
     
     const rows=[
       {label:'Quando corrisponde ai fatti',val:emo.quando},
@@ -962,4 +969,106 @@ function renderEmozioni(){
   });
 }
 
+// ══════════════════════════════════════════════════════════════════
+// Guardare un modulo o un'emozione e' una pagina vera, non un accordion
+// dentro la lista - come nel prototipo. Il contenuto (introduzione,
+// fogli di lavoro, abilita' con i passi) e' gia' tutto costruito da
+// renderGuide()/renderEmozioni(): qui lo spostiamo semplicemente dentro
+// la pagina, con la stessa tecnica di openScheda() - un commento
+// segnaposto per sapere dove rimetterlo quando si torna indietro.
+// ══════════════════════════════════════════════════════════════════
+function apriModuloPagina(id){
+  const body=document.getElementById('body-'+id);
+  const corpo=document.getElementById('modulo-corpo');
+  if(!body||!corpo) return;
+  // il titolo va letto PRIMA di spostare il blocco: una volta dentro
+  // la pagina nuova il fratello precedente non e' piu' la riga della
+  // lista, quindi cercarlo dopo restituiva sempre niente.
+  const riga=body.previousElementSibling;
+  const titolo = riga ? riga.querySelector('.dc-riga-tit').textContent : '';
+  body._segnaposto=document.createComment('modulo '+id);
+  body.parentElement.insertBefore(body._segnaposto, body);
+  corpo.appendChild(body);
+  body.classList.add('open');
+  body.style.display='block';
+  const miniMod=MINIATURA_MODULO[id];
+  document.getElementById('modulo-ill').src=miniMod||'';
+  document.getElementById('modulo-ill').style.display=miniMod?'':'none';
+  document.getElementById('modulo-titolo').textContent = titolo;
+  goPage('modulo',null);
+}
+function chiudiModuloPagina(){
+  document.querySelectorAll('.guide-module-body.open').forEach(body=>{
+    if(body._segnaposto){
+      body._segnaposto.parentElement.insertBefore(body, body._segnaposto);
+      body._segnaposto.remove();
+      body._segnaposto=null;
+    }
+    body.classList.remove('open');
+    body.style.display='';
+  });
+  goPage('guida',null);
+}
+
+function apriEmozionePagina(id){
+  const body=document.getElementById('ebody-'+id);
+  const corpo=document.getElementById('emozione-corpo');
+  if(!body||!corpo) return;
+  const riga=body.previousElementSibling;
+  const titolo = riga ? riga.querySelector('.dc-riga-tit').textContent : '';
+  body._segnaposto=document.createComment('emozione '+id);
+  body.parentElement.insertBefore(body._segnaposto, body);
+  corpo.appendChild(body);
+  body.classList.add('open');
+  body.style.display='block';
+  const miniEmo=MINIATURA_EMOZIONE[id];
+  document.getElementById('emozione-ill').src=miniEmo||'';
+  document.getElementById('emozione-ill').style.display=miniEmo?'':'none';
+  document.getElementById('emozione-titolo').textContent = titolo;
+  goPage('emozione',null);
+}
+function chiudiEmozionePagina(){
+  document.querySelectorAll('[id^="ebody-"].open').forEach(body=>{
+    if(body._segnaposto){
+      body._segnaposto.parentElement.insertBefore(body, body._segnaposto);
+      body._segnaposto.remove();
+      body._segnaposto=null;
+    }
+    body.classList.remove('open');
+    body.style.display='';
+  });
+  goPage('guida',null);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// Pagina "Fogli di lavoro": l'elenco completo di tutti i fogli
+// compilabili, riusando i titoli gia' definiti in SCHEDA_TITOLI (in
+// diary.js) - nessun dato duplicato.
+// ══════════════════════════════════════════════════════════════════
+const FOGLI_SOTTOTITOLO = {
+  please:'Checklist settimanale sulla vulnerabilita\'',
+  dearman:'Sette campi guidati, poi il copione',
+  fatti:'Sei passi e una scala finale',
+  procontro:'Griglia a quattro celle',
+  diarioemo:'Voci datate con intensita\' e pensieri',
+  pianocrisi:'Segnali, abilita\', persone, motivi',
+  catena:'Dall\'evento alle soluzioni',
+  eventi:'Elenco per categorie',
+  give:'Sola lettura', fast:'Sola lettura', abc:'Sola lettura', sentiero:'Sola lettura'
+};
+function renderFogli(){
+  const el=document.getElementById('fogli-content');
+  if(!el)return;
+  el.innerHTML='';
+  Object.keys(SCHEDA_TITOLI).forEach(function(key){
+    const row=document.createElement('div');
+    row.className='dc-foglio-riga';
+    row.onclick=function(){ openScheda(key); };
+    row.innerHTML='<div class="dc-riga-testo">'
+      +'<span class="dc-riga-tit">'+SCHEDA_TITOLI[key]+'</span>'
+      +'<span class="dc-riga-sub">'+(FOGLI_SOTTOTITOLO[key]||'')+'</span>'
+      +'</div>'+DC_CHEV;
+    el.appendChild(row);
+  });
+}
 

@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Diary Card DBT</title>
+<title>Marea</title>
 <style id="critico-pagine">.page{display:none}.page.active{display:block}</style>
 
-<meta name="theme-color" content="#F6F3EE">
+<meta name="theme-color" content="#1B4B4A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Diary DBT">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" type="image/svg+xml" href="illustrazioni/icona-app.svg">
+<link rel="icon" type="image/svg+xml" href="illustrazioni/icona-app-piccola.svg">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css?v=202609082158">
-<link rel="stylesheet" href="css/dc.css?v=202609082158">
+<link rel="stylesheet" href="css/app.css?v=202609092156">
+<link rel="stylesheet" href="css/dc.css?v=202609092156">
 </head>
 <body>
 
@@ -27,32 +27,34 @@
 <div id="onboard" class="onboard" style="display:none">
 
   <!-- PANNELLO LOGIN -->
-  <div id="ob-login" class="onboard-card">
-    <h1>Diary Card DBT</h1>
-    <p style="margin-bottom:1.5rem">Bentornata. Accedi con la tua email.</p>
-    <div class="ob-field">
-      <label>Email</label>
-      <input type="email" id="ob-email" placeholder="es. laura@email.com" autocapitalize="none" autocomplete="email" style="width:100%;box-sizing:border-box"/>
-    </div>
-    <div class="ob-field">
-      <label>Password</label>
-      <input type="password" id="ob-password" placeholder="••••••••" autocomplete="current-password" style="width:100%;box-sizing:border-box"
-        onkeydown="if(event.key==='Enter')doLogin()"/>
-    </div>
-    <div id="ob-login-msg" style="font-size:12px;margin-bottom:8px;color:var(--muted);min-height:16px"></div>
-    <button class="bpri" style="width:100%;margin-top:.25rem" onclick="doLogin()">Accedi →</button>
-    <div class="ob-flip-link">
-      Prima volta? <button onclick="switchToRegister()">Registrati</button>
-    </div>
-    <div style="text-align:center;margin-top:.75rem">
-      <button onclick="doResetPassword()" style="background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;font-family:var(--font-ui);text-decoration:underline">Password dimenticata?</button>
+  <div id="ob-login" class="dc-onboard-wrap">
+    <img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-onboard-ramo">
+    <h1 class="dc-onboard-h1">Bentornata</h1>
+    <p class="dc-onboard-sub">La diary di ieri è al sicuro: riprendi da dove eri.</p>
+    <div class="dc-onboard-card">
+      <div class="ob-field">
+        <label>Email</label>
+        <input type="email" id="ob-email" placeholder="nome@esempio.it" autocapitalize="none" autocomplete="email" style="width:100%;box-sizing:border-box"/>
+      </div>
+      <div class="ob-field">
+        <label>Password</label>
+        <input type="password" id="ob-password" placeholder="••••••••" autocomplete="current-password" style="width:100%;box-sizing:border-box"
+          onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+      <div id="ob-login-msg" style="font-size:12px;margin-bottom:8px;color:var(--dc-muted);min-height:16px"></div>
+      <button class="bpri" style="width:100%;margin-top:.25rem" onclick="doLogin()">Accedi</button>
+      <div class="dc-onboard-links">
+        <button onclick="switchToRegister()" class="dc-onboard-link-forte">Non hai un account?<br>Registrati</button>
+        <button onclick="doResetPassword()" class="dc-onboard-link-lieve">Password<br>dimenticata</button>
+      </div>
     </div>
   </div>
 
   <!-- PANNELLO REGISTRAZIONE -->
-  <div id="ob-register" class="onboard-card" style="display:none">
-    <h1>Diary Card DBT</h1>
-    <p style="margin-bottom:1.5rem">Crea il tuo account.</p>
+  <div id="ob-register" class="dc-onboard-wrap" style="display:none">
+    <h1 class="dc-onboard-h1">Registrati</h1>
+    <p class="dc-onboard-sub">Pochi passi e la tua diary è pronta.</p>
+    <div class="dc-onboard-card">
     <div class="ob-field">
       <label>Come ti chiami?</label>
       <input type="text" id="ob-nome" placeholder="Nome"/>
@@ -93,6 +95,7 @@
     <div class="ob-flip-link">
       Hai già un account? <button onclick="switchToLogin()">Accedi</button>
     </div>
+    </div>
   </div>
 
 </div>
@@ -102,27 +105,27 @@
 
 <nav class="sidebar">
   <div class="sidebar-scroll">
-  <div class="logo" style="flex-shrink:0">
-    <div class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22px" height="22px" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z M9 7h7 M9 11h7"/></svg></div>
-    <div><div class="logo-text">Diary Card</div><div class="logo-sub">DBT</div></div>
+  <div class="dc-desk-logo" style="flex-shrink:0">
+    <img src="illustrazioni/icona-app.svg" width="40" height="40" alt="" style="border-radius:20px;border:.5px solid var(--dc-bg)">
+    <span class="dc-desk-logo-testo">Marea</span>
   </div>
-    <button class="ni" onclick="goPage('home',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/></svg></span> Home</button>
-    <button class="ni" onclick="goPage('oggi',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9 M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span> DBT Diary</button>
-    <button class="ni" onclick="goPage('attivita',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19.2 2.96c1.4 9.3 2.8 17.04-8.2 17.04z M2 21c0-3 1.85-5.36 5.08-6"/></svg></span> Attività</button>
-    <button class="ni" onclick="goPage('storico',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M16 2v4 M8 2v4 M3 10h18"/></svg></span> Storico & Trend</button>
-  <button class="ni" onclick="goPage('abilita',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3v-16a3 3 0 0 0-3-3z M15 2a3 3 0 0 1 3 3 3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3v-16a3 3 0 0 1 3-3z"/></svg></span> Abilità</button>
-  <button class="ni" id="ni-pazienti" onclick="goPage('pazienti',this)" style="display:none"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Pazienti</button>
-  <button class="ni" onclick="goPage('guida',this)"><span class="ic" style="display:inline-block;width:18px;height:18px;color:inherit;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span> Guida DBT</button>
+    <button class="ni" onclick="goPage('home',this)"><span class="dc-desk-nav-mark"></span><span class="dc-desk-nav-lbl">Home</span></button>
+    <button class="ni" onclick="goPage('oggi',this)"><span class="dc-desk-nav-mark"></span><span class="dc-desk-nav-lbl">Diary card</span><span class="dc-desk-nav-badge" id="ni-badge-oggi"></span></button>
+    <button class="ni" onclick="goPage('attivita',this)"><span class="dc-desk-nav-mark"></span><span class="dc-desk-nav-lbl">Attività</span></button>
+    <button class="ni" onclick="goPage('storico',this)"><span class="dc-desk-nav-mark"></span><span class="dc-desk-nav-lbl">Storico & Trend</span></button>
+  <button class="ni" onclick="goPage('abilita',this)"><span class="dc-desk-nav-mark"></span><span class="dc-desk-nav-lbl">Abilità</span></button>
+  <button class="ni" id="ni-pazienti" onclick="goPage('pazienti',this)" style="display:none"><span class="dc-desk-nav-mark"></span><span class="dc-desk-nav-lbl">Pazienti</span></button>
+  <button class="ni" onclick="goPage('guida',this)"><span class="dc-desk-nav-mark"></span><span class="dc-desk-nav-lbl">Guida DBT</span></button>
 
   </div><!-- end sidebar-scroll -->
   <div class="sidebar-footer">
-    <button class="user-menu-btn" onclick="goPage('impostazioni',this)">
-      <div class="user-avatar" id="sidebar-avatar">?</div>
-      <div style="min-width:0;flex:1">
-        <div style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="sidebar-name">—</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:1px" id="sidebar-role">—</div>
+    <button class="dc-desk-user-btn" onclick="goPage('impostazioni',this)">
+      <div class="dc-desk-user-avatar" id="sidebar-avatar">?</div>
+      <div style="min-width:0;flex:1;text-align:left">
+        <div class="dc-desk-user-nome" id="sidebar-name">—</div>
+        <div class="dc-desk-user-ruolo" id="sidebar-role">—</div>
       </div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-petrolio-chiaro)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </button>
   </div>
 </nav>
@@ -164,6 +167,7 @@
 <div id="page-home" class="page active">
 
   <div id="terap-home" style="display:none"></div>
+  <div id="desktop-home" style="display:none"></div>
 
   <!-- 1. INTESTAZIONE -->
   <div id="home-hero" class="dc-hero">
@@ -198,7 +202,7 @@
     </div>
 
     <!-- 3. ABILITÀ DI OGGI -->
-    <div id="home-suggest-box" class="dc-card dc-skill" onclick="goPage('guida',null)"></div>
+    <div id="home-suggest-box" class="dc-card dc-skill" onclick="goPage('guida',null)" style="background:#FDF3D5"></div>
 
     <!-- 4. ULTIMI 7 GIORNI -->
     <div class="dc-card dc-week-card" onclick="goPage('storico',null)">
@@ -316,7 +320,6 @@
   <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
 
     <div style="position:relative">
-      <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Abilità DBT</div>
       <div style="font-size:13px;opacity:.85">Quali abilità hai usato oggi?</div>
     </div>
@@ -442,8 +445,8 @@
   </div>
 
   <div id="trend-panel" style="display:none">
-    <div class="cwrap"><div class="ctitle">⚠ Pensieri suicidari &amp; azione</div><div style="height:220px"><div id="cSuic1" style="min-height:200px"></div></div></div>
-    <div class="cwrap"><div class="ctitle">⚠ Intenzione autolesività &amp; azione</div><div style="height:220px"><div id="cSuic2" style="min-height:200px"></div></div></div>
+    <div class="cwrap"><div class="ctitle">Pensieri suicidari &amp; azione</div><div style="height:220px"><div id="cSuic1" style="min-height:200px"></div></div></div>
+    <div class="cwrap"><div class="ctitle">Intenzione autolesività &amp; azione</div><div style="height:220px"><div id="cSuic2" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">Intenzione alcol &amp; CBD</div><div style="height:220px"><div id="cSost" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">Emotional eating</div><div style="height:220px"><div id="cEmoEat" style="min-height:200px"></div></div></div>
     <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="height:220px"><div id="cEmoPos" style="min-height:200px"></div></div></div>
@@ -457,7 +460,7 @@
 <!-- ══ PAGE: STRUMENTI ══ -->
 <div id="page-dearman" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
-    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Copione DEAR MAN</div>
     <div style="font-size:13px;opacity:.85">Prepara una conversazione difficile passo per passo</div>
   </div>
@@ -580,7 +583,6 @@
 <div id="page-give" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:relative">
-      <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:800;margin-bottom:4px">Relazione — GIVE</div>
       <div style="font-size:13px;opacity:.85">Mantieni relazioni positive e fai sentire bene l'altro</div>
     </div>
@@ -647,7 +649,6 @@
 <div id="page-fast" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:relative">
-      <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:800;margin-bottom:4px">Rispetto di sé — FAST</div>
       <div style="font-size:13px;opacity:.85">Agisci in modo da mantenere il rispetto di te stessa</div>
     </div>
@@ -693,7 +694,6 @@
 <div id="page-abc" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#C9714B,#D8845C);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:relative">
-      <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:800;margin-bottom:4px">ABC — Costruisci emozioni positive</div>
       <div style="font-size:13px;opacity:.85">Regolazione emotiva a lungo termine</div>
     </div>
@@ -745,7 +745,6 @@
 <div id="page-sentiero" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#E0A23A,#EFC03B);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
     <div style="position:relative">
-      <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:800;margin-bottom:4px">Sentiero di mezzo</div>
       <div style="font-size:13px;opacity:.85">Pensare e agire in modo dialettico</div>
     </div>
@@ -792,7 +791,7 @@
 <!-- ══ PAGE: PLEASE ══ -->
 <div id="page-please" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
-    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Checklist PLEASE</div>
     <div style="font-size:13px;opacity:.85">Prenditi cura del corpo per ridurre la vulnerabilità emotiva</div>
   </div>
@@ -804,7 +803,7 @@
 <!-- ══ PAGE: DIARIO EMOZIONI ══ -->
 <div id="page-diarioemo" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#C9714B,#D8845C);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
-    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Diario delle emozioni</div>
     <div style="font-size:13px;opacity:.85">Analizza un episodio emotivo difficile</div>
   </div>
@@ -845,7 +844,7 @@
 <!-- ══ PAGE: PIANO CRISI ══ -->
 <div id="page-pianocrisi" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#B4593A,#D8845C);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
-    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Piano di crisi</div>
     <div style="font-size:13px;opacity:.85">Le mie abilità e contatti per i momenti difficili</div>
   </div>
@@ -857,14 +856,10 @@
   <div class="card" style="margin-bottom:1rem">
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Le mie abilità — in ordine</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Cosa faccio prima, poi, poi ancora. Dalla più semplice alla più difficile.</div>
-    <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">1. Prima cosa</label>
-    <input id="pc-a1" type="text" placeholder="Es. Acqua fredda sul viso (TIP)" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;margin-bottom:8px">
-    <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">2. Seconda cosa</label>
-    <input id="pc-a2" type="text" placeholder="Es. Respiro 5 dentro, 7 fuori per 5 minuti" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;margin-bottom:8px">
-    <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">3. Terza cosa</label>
-    <input id="pc-a3" type="text" placeholder="Es. Metto della musica e mi distraggo (ACCETTA)" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;margin-bottom:8px">
-    <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">4. Se non basta</label>
-    <input id="pc-a4" type="text" placeholder="Es. Chiamo una persona di fiducia" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box">
+    <div class="dc-pc-riga"><span class="dc-pc-numero">1</span><input id="pc-a1" type="text" placeholder="Es. Acqua fredda sul viso (TIP)"></div>
+    <div class="dc-pc-riga"><span class="dc-pc-numero">2</span><input id="pc-a2" type="text" placeholder="Es. Respiro 5 dentro, 7 fuori per 5 minuti"></div>
+    <div class="dc-pc-riga"><span class="dc-pc-numero">3</span><input id="pc-a3" type="text" placeholder="Es. Metto della musica e mi distraggo (ACCETTA)"></div>
+    <div class="dc-pc-riga"><span class="dc-pc-numero">4</span><input id="pc-a4" type="text" placeholder="Es. Chiamo una persona di fiducia"></div>
   </div>
   <div class="card" style="margin-bottom:1rem">
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Persone di fiducia</div>
@@ -895,7 +890,7 @@
 <!-- ══ PAGE: CATENA ══ -->
 <div id="page-catena" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
-    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Analisi della catena</div>
     <div style="font-size:13px;opacity:.85">Capire cosa ha scatenato un comportamento problematico</div>
   </div>
@@ -924,7 +919,7 @@
 <!-- ══ PAGE: EVENTI PIACEVOLI ══ -->
 <div id="page-eventi" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A,#2A6866);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
-    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">La mia lista piacevole</div>
     <div style="font-size:13px;opacity:.85">Seleziona le attività che ti piacciono dalla lista Linehan</div>
   </div>
@@ -943,7 +938,7 @@
 
 <div id="page-fatti" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A 0%,#123534 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
-    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Controlla i fatti</div>
     <div style="font-size:13px;opacity:.9">L'emozione corrisponde ai fatti, o all'interpretazione dei fatti?</div>
   </div>
@@ -1010,7 +1005,7 @@
 
 <div id="page-procontro" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,#1B4B4A 0%,#123534 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg)">
-    <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
+    
     <div style="font-size:22px;font-weight:800;margin-bottom:4px">Pro e contro dell'usare le abilità</div>
     <div style="font-size:13px;opacity:.9">Qual è il modo più efficace per ottenere ciò che vuoi? Sono i tuoi obiettivi, non quelli di altri.</div>
   </div>
@@ -1052,7 +1047,7 @@
 
 <div id="page-pazienti" class="page">
   <!-- LIST VIEW -->
-  <div id="pat-list-view">
+  <div id="pat-list-view" style="display:none">
     <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
 
       <div style="display:flex;align-items:center;gap:12px;position:relative">
@@ -1113,8 +1108,8 @@
 
     <!-- TAB: TREND -->
     <div class="pat-tab-content" id="ptab-trend">
-    <div class="cwrap"><div class="ctitle">⚠ Comportamenti suicidari</div><div style="height:220px"><div id="pc4" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">⚠ Autolesività</div><div style="height:220px"><div id="pc5" style="min-height:200px"></div></div></div>
+    <div class="cwrap"><div class="ctitle">Comportamenti suicidari</div><div style="height:220px"><div id="pc4" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Autolesività</div><div style="height:220px"><div id="pc5" style="min-height:200px"></div></div></div>
       <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="height:220px"><div id="pc6" style="min-height:200px"></div></div></div>
       <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="height:220px"><div id="pc1" style="min-height:200px"></div></div></div>
       <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="height:220px"><div id="pc2" style="min-height:200px"></div></div></div>
@@ -1123,41 +1118,34 @@
 
     <!-- TAB: GIORNATA -->
     <div class="pat-tab-content" id="ptab-giornata">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:1rem">Piano giornata più recente compilato dalla paziente.</div>
       <div id="pat-planner-view"></div>
     </div>
 
     <!-- TAB: ABILITÀ & ATTIVITÀ -->
     <div class="pat-tab-content" id="ptab-abilita">
-      <div class="card">
-        <div class="slbl">Abilità DBT usate (ultimi 14 giorni)</div>
-        <div id="pat-skills-chips" class="skill-count-grid" style="margin-top:.5rem"></div>
-      </div>
-      <div class="card" style="margin-top:.75rem">
-        <div class="slbl">Attività pianificate più frequenti</div>
-        <div id="pat-act-chips" class="skill-count-grid" style="margin-top:.5rem"></div>
-      </div>
+      <div style="background:var(--dc-surface);border-radius:26px;padding:8px 20px" id="pat-skills-chips"></div>
     </div>
 
-    <!-- TAB: STORICO -->
+    <!-- TAB: FOGLI DI LAVORO -->
     <div class="pat-tab-content" id="ptab-fogli">
       <div style="font-size:13px;color:var(--muted);margin-bottom:1rem">Fogli di lavoro compilati dalla paziente, raggruppati per giorno.</div>
       <div id="pat-fogli-view"></div>
     </div>
 
+    <!-- TAB: STORICO -->
     <div class="pat-tab-content" id="ptab-storico">
       <div class="slbl">Storico giornaliero</div>
     <!-- TAB: NOTE SESSIONE -->
     <div class="pat-tab-content" id="ptab-sessioni" style="display:none">
-      <div class="card" style="margin-bottom:.75rem">
-        <div class="slbl">Aggiungi nota sessione</div>
-        <input id="sess-data" type="date" style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;margin-bottom:8px">
-        <textarea id="sess-temi" rows="2" placeholder="Temi principali della sessione..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:8px"></textarea>
-        <textarea id="sess-abilita" rows="2" placeholder="Abilit&#224; lavorate o assegnate..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:8px"></textarea>
-        <textarea id="sess-note" rows="3" placeholder="Osservazioni cliniche, progressi, difficolt&#224;..." style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;resize:vertical;margin-bottom:10px"></textarea>
-        <button onclick="sessAdd()" style="padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-ui)">Aggiungi</button>
+      <div style="background:var(--dc-surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:12px;margin-bottom:14px">
+        <span class="dc-thome-kicker">Nuova nota di sessione</span>
+        <input id="sess-data" type="date" style="border:0;background:var(--dc-bg);color:var(--dc-ink);border-radius:999px;padding:12px 16px;font-size:13px;font-family:var(--font-ui);box-sizing:border-box">
+        <textarea id="sess-temi" rows="2" placeholder="Temi principali della sessione..." style="border:0;background:var(--dc-bg);color:var(--dc-ink);border-radius:18px;padding:12px 16px;font-size:13px;font-family:var(--font-ui);box-sizing:border-box;resize:vertical"></textarea>
+        <textarea id="sess-abilita" rows="2" placeholder="Abilit&#224; lavorate o assegnate..." style="border:0;background:var(--dc-bg);color:var(--dc-ink);border-radius:18px;padding:12px 16px;font-size:13px;font-family:var(--font-ui);box-sizing:border-box;resize:vertical"></textarea>
+        <textarea id="sess-note" rows="3" placeholder="Osservazioni cliniche, progressi, difficolt&#224;..." style="border:0;background:var(--dc-bg);color:var(--dc-ink);border-radius:18px;padding:12px 16px;font-size:13px;font-family:var(--font-ui);box-sizing:border-box;resize:vertical"></textarea>
+        <button onclick="sessAdd()" style="align-self:flex-start;border:0;background:var(--dc-hero);color:var(--dc-hero-ink);font-size:13.5px;font-weight:600;padding:12px 20px;border-radius:18px;cursor:pointer">Aggiungi</button>
       </div>
-      <div id="sess-lista"></div>
+      <div id="sess-lista" style="display:flex;flex-direction:column;gap:10px"></div>
     </div>
       <div id="pat-hist"></div>
     </div>
@@ -1166,6 +1154,77 @@
 
 <!-- ══ PAGE: IMPOSTAZIONI ══ -->
 <div id="page-impostazioni" class="page">
+
+  <!-- IMPOSTAZIONI TERAPEUTA: pagina separata, mostrata al posto di
+       quella condivisa quando il ruolo e' terapeuta. -->
+  <div id="terap-settings" style="display:none">
+    <h2 class="dc-modulo-titolo" style="margin-bottom:20px">Impostazioni</h2>
+
+    <div class="card">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <label class="dc-thome-kicker" style="display:block;margin-bottom:8px">Nome e cognome</label>
+          <input type="text" id="ts-nome" style="width:100%;box-sizing:border-box" onchange="saveTherapistSettings()"/>
+        </div>
+        <div>
+          <label class="dc-thome-kicker" style="display:block;margin-bottom:8px">Username professionale</label>
+          <input type="text" id="ts-username" style="width:100%;box-sizing:border-box" autocapitalize="none" onchange="saveTherapistSettings()"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="dc-thome-username" style="margin-top:14px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span class="dc-thome-kicker">Codice invito</span>
+        <span class="dc-thome-user" id="ts-codice-invito">—</span>
+        <span class="dc-thome-hint">Le pazienti lo inseriscono in registrazione per collegarsi a te.</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="settings-section">
+        <div class="setting-row">
+          <div><div class="setting-label">Segnalazioni di rischio</div><div class="setting-desc">Avviso subito su intenzioni ≥ 3</div></div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="ts-tog-rischio" onchange="saveTherapistSettings()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Riepilogo settimanale</div><div class="setting-desc">Lunedì mattina, tutte le pazienti</div></div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="ts-tog-riepilogo" onchange="saveTherapistSettings()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row" style="display:none"><!-- tema scuro non ancora pronto nel nuovo stile -->
+          <div><div class="setting-label">Tema scuro</div><div class="setting-desc">Per la sera</div></div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="ts-tog-scuro" onchange="setTheme(this.checked?'dark':'light')">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="setting-row">
+        <div onclick="goPage('pazienti',null)" style="display:flex;align-items:center;gap:12px;cursor:pointer;flex:1">
+          <div style="flex:1"><div class="setting-label">Gestisci le pazienti</div></div>
+          <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div onclick="doLogout()" style="display:flex;align-items:center;gap:12px;cursor:pointer;flex:1">
+          <div style="flex:1"><div class="setting-label">Esci</div></div>
+          <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="page-impostazioni-paziente">
   <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
 
     <div style="position:relative">
@@ -1174,7 +1233,7 @@
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:1rem">
+  <div class="card" style="margin-bottom:1rem;display:none"><!-- tema scuro non ancora pronto nel nuovo stile -->
     <div class="settings-section">
       <h3>Aspetto</h3>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0">
@@ -1183,9 +1242,9 @@
           <div style="font-size:12px;color:var(--muted)">Chiaro, scuro o segui il sistema</div>
         </div>
         <div style="display:flex;gap:6px">
-          <button id="theme-light" onclick="setTheme('light')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">☀️</button>
-          <button id="theme-dark" onclick="setTheme('dark')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">🌙</button>
-          <button id="theme-auto" onclick="setTheme('auto')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">⚙️ Auto</button>
+          <button id="theme-light" onclick="setTheme('light')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">Chiaro</button>
+          <button id="theme-dark" onclick="setTheme('dark')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">Scuro</button>
+          <button id="theme-auto" onclick="setTheme('auto')" style="padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;font-family:var(--font-ui);color:var(--text)">Auto</button>
         </div>
       </div>
     </div>
@@ -1196,18 +1255,18 @@
       <div class="setting-row">
         <div><div class="setting-label">Nome e cognome</div></div>
         <div style="display:flex;gap:8px">
-          <input type="text" id="set-nome" placeholder="Nome" style="width:100px"/>
-          <input type="text" id="set-cognome" placeholder="Cognome" style="width:110px"/>
+          <input type="text" id="set-nome" placeholder="Nome" style="width:100px" onchange="saveSettings()"/>
+          <input type="text" id="set-cognome" placeholder="Cognome" style="width:110px" onchange="saveSettings()"/>
         </div>
       </div>
       <div class="setting-row">
         <div><div class="setting-label">Il tuo codice canale</div><div class="setting-desc">Condividilo con la terapeuta — puoi modificarlo</div></div>
-        <input type="text" id="set-code" style="width:180px;font-family:monospace;font-size:13px" placeholder="es. laura-dbt"/>
+        <input type="text" id="set-code" style="width:180px;font-family:monospace;font-size:13px" placeholder="es. laura-dbt" onchange="saveSettings()"/>
       </div>
 
       <div class="setting-row" id="set-tcode-row" style="display:none">
         <div><div class="setting-label">Username della tua terapeuta</div><div class="setting-desc">Lasciare vuoto se non vuoi condividere i dati</div></div>
-        <input type="text" id="set-tcode-input" placeholder="es. dott.bianchi" style="width:180px;font-family:monospace;font-size:13px" autocapitalize="none"/>
+        <input type="text" id="set-tcode-input" placeholder="es. dott.bianchi" style="width:180px;font-family:monospace;font-size:13px" autocapitalize="none" onchange="saveSettings()"/>
       </div>
     </div>
 
@@ -1226,61 +1285,98 @@
       </div>
     </div>
 
-    <div class="settings-section">
-      <h3>Sincronizzazione</h3>
-      <div class="setting-row">
-        <div>
-          <div class="setting-label">Sync automatica</div>
-          <div class="setting-desc" id="sync-desc">I dati vengono inviati ad ogni salvataggio e ricevuti ogni 30 secondi</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)">
-          <div class="dot" id="sDot"></div><span id="sMsg">—</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="abar">
-      <button class="bpri" onclick="saveSettings()">Salva impostazioni</button>
-      <span class="toast" id="t-set">Salvato</span>
-    </div>
   </div>
 
   <div class="card" style="margin-top:1rem">
     <div class="settings-section">
       <h3>Account</h3>
       <div class="setting-row">
-        <div><div class="setting-label">Logout</div><div class="setting-desc">Torna alla schermata di accesso (i dati rimangono salvati)</div></div>
-        <button class="bdanger" onclick="doLogout()">Esci</button>
+        <div onclick="doLogout()" style="display:flex;align-items:center;gap:12px;cursor:pointer;flex:1"><div style="flex:1"><div class="setting-label">Logout</div><div class="setting-desc">Torna alla schermata di accesso (i dati rimangono salvati)</div></div><svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
       <div class="setting-row">
-        <div><div class="setting-label">Cancella tutti i dati</div><div class="setting-desc">Azione irreversibile</div></div>
-        <button class="bdanger" onclick="confirmReset()">Cancella tutto</button>
+        <div onclick="confirmReset()" style="display:flex;align-items:center;gap:12px;cursor:pointer;flex:1"><div style="flex:1"><div class="setting-label" style="color:var(--dc-terracotta)">Cancella tutti i dati</div><div class="setting-desc">Azione irreversibile</div></div><svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </div>
   </div>
 </div>
+  </div>
 
 
 
 <!-- ══ PAGE: GUIDA DBT ══ -->
 <div id="page-guida" class="page">
   <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
+    <img src="illustrazioni/decorative/deco-ramo-petrolio.svg" alt="" style="position:absolute;right:-34px;top:-16px;width:170px;opacity:.14;pointer-events:none">
     <div style="position:relative">
-      <button onclick="goBack()" aria-label="Indietro" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-ui);margin-bottom:12px">← Indietro</button>
       <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Guida DBT</div>
       <div style="font-size:13px;opacity:.85">Abilit&agrave; e tecniche dal manuale di Marsha Linehan</div>
     </div>
   </div>
   <div id="guida-content"></div>
 
-<!-- Emozioni widget — separate from guide modules -->
-<div style="margin-top:1.5rem">
-  <div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Schede emozioni</div>
-  <div id="emozioni-content"></div>
+<!-- Due schede raggruppate, come nel prototipo: portano alle rispettive pagine -->
+<div onclick="goPage('emozioni-lista',null)" class="dc-guida-scheda-emo">
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <span class="dc-guida-scheda-tit">Schede emozioni</span>
+    <span class="dc-guida-scheda-sub">Sette emozioni, azione opposta</span>
+  </div>
+  <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none;margin-right:4px"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-senape)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div onclick="goPage('fogli',null)" class="dc-guida-scheda-fogli">
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <span class="dc-guida-scheda-tit" style="color:var(--dc-ink)">Fogli di lavoro</span>
+    <span class="dc-guida-scheda-sub" style="color:var(--dc-muted)">Fogli compilabili e quelli salvati</span>
+  </div>
+  <svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none;margin-right:4px"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </div>
   <div style="font-size:11px;color:var(--muted);text-align:center;padding:1rem 0;line-height:1.6">
     Basata su: Marsha M. Linehan, <em>DBT Skills Training. Schede e fogli di lavoro</em>, 2a ed.
   </div>
+</div>
+
+<!-- ══ PAGINA: ELENCO EMOZIONI ══ -->
+<div id="page-emozioni-lista" class="page">
+  <button onclick="goPage('guida',null)" class="dc-tondo-indietro" aria-label="Indietro">
+    <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <h2 class="dc-emozione-titolo" style="margin-bottom:8px">Schede emozioni</h2>
+  <p style="margin:0 0 20px;font-size:13.5px;color:var(--dc-muted)">Quando corrisponde ai fatti, cosa la scatena, l'azione opposta.</p>
+  <div id="emozioni-content"></div>
+</div>
+
+<!-- ══ PAGINA: FOGLI DI LAVORO ══ -->
+<div id="page-fogli" class="page">
+  <button onclick="goPage('guida',null)" class="dc-tondo-indietro" aria-label="Indietro">
+    <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <h2 class="dc-emozione-titolo" style="margin-bottom:8px">Fogli di lavoro</h2>
+  <p style="margin:0 0 20px;font-size:13.5px;color:var(--dc-muted)">Si aprono in un pannello, si salvano con la data.</p>
+  <div id="fogli-content"></div>
+</div>
+
+<!-- ══ PAGINA: UN SOLO MODULO ══ -->
+<div id="page-modulo" class="page">
+  <button onclick="chiudiModuloPagina()" class="dc-tondo-indietro" aria-label="Indietro">
+    <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div style="display:flex;gap:16px;align-items:center;margin-bottom:18px">
+    <img id="modulo-ill" class="dc-modulo-ill" src="" alt="">
+    <h2 id="modulo-titolo" class="dc-modulo-titolo"></h2>
+  </div>
+  <div id="modulo-corpo"></div>
+</div>
+
+<!-- ══ PAGINA: UNA SOLA EMOZIONE ══ -->
+<div id="page-emozione" class="page">
+  <button onclick="chiudiEmozionePagina()" class="dc-tondo-indietro" aria-label="Indietro">
+    <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px">
+    <img id="emozione-ill" class="dc-emozione-ill" src="" alt="">
+    <h2 id="emozione-titolo" class="dc-emozione-titolo"></h2>
+  </div>
+  <div id="emozione-corpo"></div>
 </div>
 
 </div><!-- main-inner -->
@@ -1300,6 +1396,10 @@
     <button class="bn-btn" id="bn-guida" onclick="goPage('guida',this)">
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
       <span class="bn-lbl">Guida</span>
+    </button>
+    <button class="bn-btn" id="bn-pazienti" onclick="goPage('pazienti',this)" style="display:none">
+      <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <span class="bn-lbl">Pazienti</span>
     </button>
     <button class="bn-btn" id="bn-abilita" onclick="goPage('abilita',this)" style="display:none">
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3v-16a3 3 0 0 0-3-3z"/></svg></span>
@@ -1321,58 +1421,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 
-<script src="js/data.js?v=202609082158"></script>
-<script src="js/config.js?v=202609082158"></script>
-<script src="js/auth.js?v=202609082158"></script>
-<script src="js/diary.js?v=202609082158"></script>
-<script src="js/analytics.js?v=202609082158"></script>
-<script src="js/pazienti.js?v=202609082158"></script>
-<script src="js/settings.js?v=202609082158"></script>
-<script src="js/planner.js?v=202609082158"></script>
-<script src="js/guide.js?v=202609082158"></script>
-<script src="js/forms.js?v=202609082158"></script>
-<script src="js/init.js?v=202609082158"></script>
+<script src="js/data.js?v=202609092156"></script>
+<script src="js/config.js?v=202609092156"></script>
+<script src="js/auth.js?v=202609092156"></script>
+<script src="js/diary.js?v=202609092156"></script>
+<script src="js/analytics.js?v=202609092156"></script>
+<script src="js/pazienti.js?v=202609092156"></script>
+<script src="js/settings.js?v=202609092156"></script>
+<script src="js/planner.js?v=202609092156"></script>
+<script src="js/guide.js?v=202609092156"></script>
+<script src="js/forms.js?v=202609092156"></script>
+<script src="js/init.js?v=202609092156"></script>
 
 
-<!-- PATIENT DAY DETAIL MODAL -->
-<div id="pat-day-modal" style="display:none;position:fixed;inset:0;background:rgba(20,30,28,.6);z-index:200;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)">
-  <div style="background:var(--surface);border-radius:var(--r);max-width:560px;width:100%;box-shadow:0 12px 50px rgba(0,0,0,.25);max-height:calc(100vh - 2rem);display:flex;flex-direction:column;overflow:hidden">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border-l);position:sticky;top:0;background:var(--surface);border-radius:var(--r) var(--r) 0 0">
-      <div id="pat-day-title" style="font-size:16px;font-weight:700;color:var(--text)"></div>
-      <button onclick="closePatientDay()" style="background:var(--bg);border:none;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--muted)">×</button>
-    </div>
-    <div id="pat-day-body" style="padding:1.5rem;overflow-y:auto"></div>
-  </div>
-</div>
 
-<!-- Day summary modal (body level) -->
-<div id="day-modal" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;box-sizing:border-box">
-  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:560px;height:calc(100vh - 32px);height:calc(100dvh - 32px);display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.3);overflow:hidden">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border-l);flex-shrink:0;background:var(--surface)">
-      <div id="day-modal-title" style="font-size:15px;font-weight:700;color:var(--text)"></div>
-      <button onclick="document.getElementById('day-modal').style.display='none'" style="background:var(--surface-2);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--muted);flex-shrink:0">×</button>
-    </div>
-    <div id="day-modal-body" style="overflow-y:auto;padding:1rem 1.25rem;flex:1;-webkit-overflow-scrolling:touch"></div>
-  </div>
-</div>
-
-<!-- ══ USER MENU SHEET ══ -->
-<div class="user-menu-overlay" id="user-menu-overlay" onclick="closeUserMenu()"></div>
-<div class="user-menu-sheet" id="user-menu-sheet">
-  <div class="user-menu-handle"></div>
-  <div class="user-menu-header">
-    <div style="font-size:15px;font-weight:700;color:var(--text)" id="umenu-name">—</div>
-    <div style="font-size:12px;color:var(--muted);margin-top:2px" id="umenu-role">—</div>
-  </div>
-  <button class="user-menu-item" onclick="closeUserMenu();goPage('impostazioni',null)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    Impostazioni
-  </button>
-  <button class="user-menu-item danger" onclick="closeUserMenu();doLogout()">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9"/></svg>
-    Esci
-  </button>
-</div>
 
 
 

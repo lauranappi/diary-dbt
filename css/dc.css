@@ -634,8 +634,14 @@ a:hover { color: var(--dc-terracotta); }
    scritto a mano, nessuna stima.
    ══════════════════════════════════════════════════════════════════ */
 
-html.app-mode,html.app-mode body{background:var(--dc-bg)}   /* stesso errore corretto per la Home: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale delle pagine */
-html[data-pagina="home"],html[data-pagina="home"] body{background:var(--dc-petrolio)!important}
+html.app-mode,html.app-mode body{background:var(--dc-bg)}
+/* stessa eccezione della Home: durante il login il corpo deve essere
+   petrolio come .onboard, altrimenti un margine di arrotondamento
+   sulle aree sicure di iOS puo' lasciar vedere uno spicchio di crema
+   sotto la scheda. */
+html.login-mode,html.login-mode body{background:var(--dc-hero)!important;min-height:100%!important}
+.onboard{min-height:100vh!important;min-height:100dvh!important}   /* stesso errore corretto per la Home: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale delle pagine */
+html[data-pagina="home"],html[data-pagina="home"] body{background: var(--dc-petrolio)}
 html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!important}   /* stesso colore della crema dell'onda: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale */
 
 /* ── Intestazione con onda (Home) ── */
@@ -691,7 +697,7 @@ html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!impor
 .dc-skill{background:var(--dc-surface-2);position:relative;overflow:hidden;cursor:pointer}
 .dc-skill-deco{position:absolute;right:-18px;bottom:-18px;width:96px;opacity:.10;pointer-events:none}
 .dc-skill-in{position:relative;z-index:1;display:flex;flex-direction:column;gap:6px}
-.dc-skill-nome{font-size:var(--dc-size-sezione);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-sezione);color:var(--dc-ink)}
+.dc-skill-nome{font-family:var(--dc-font);font-size:var(--dc-size-sezione);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-sezione);color:var(--dc-ink)}
 .dc-skill-desc{font-size:var(--dc-size-corpo-s);line-height:var(--dc-lh-corpo);color:var(--dc-muted)}
 
 .dc-week-card{display:flex;flex-direction:column;gap:var(--dc-gap-m);cursor:pointer;min-height:0}
@@ -742,7 +748,7 @@ html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!impor
   display:flex;align-items:center;justify-content:center;flex:1;
 }
 #page-oggi .sb.on,#page-oggi .sb.sel,#page-oggi .sb.active,
-#page-oggi .tb.on,#page-oggi .tb.sel,#page-oggi .tb.active{background:var(--dc-hero)!important;color:var(--dc-hero-ink)!important}
+#page-oggi .tb.on,#page-oggi .tb.sel,#page-oggi .tb.active{background: var(--dc-hero)!important;color:var(--dc-hero-ink)!important}
 
 /* ── Barra di navigazione: usa i token della .dc-barra, non valori a mano ── */
 .bottom-nav{
@@ -838,7 +844,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 /* Intestazione: trasparente, nessuna ombra ne' sfumatura ereditata */
 #page-attivita > .page-hero{
   background:none!important;box-shadow:none!important;filter:none!important;
-  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
+  padding:8px 0 22px!important;margin-bottom:0!important;color: var(--dc-ink);
 }
 #page-attivita > .page-hero *{color:var(--dc-ink);opacity:1}
 #page-attivita > .page-hero::before,
@@ -877,12 +883,12 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 .dc-att-vuoto-testo{display:flex;flex-direction:column;gap:6px}
 .dc-att-vuoto-testo span:first-child{font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink)}
 .dc-att-vuoto-testo span:last-child{font-size:13.5px;line-height:1.5;color:var(--dc-muted)}
-#plan-empty-state .dc-cta-passo{
+.dc-cta-passo{
   flex:2;border:0;background:var(--dc-hero);color:var(--dc-hero-ink);
   font-family:var(--dc-font);font-size:14.5px;font-weight:600;
   padding:15px 20px;border-radius:var(--dc-radius-elemento);cursor:pointer;
 }
-#plan-empty-state #plan-empty-state .dc-cta-passo{flex:none;width:auto;margin-top:28px}
+#plan-empty-state .dc-cta-passo{flex:none;width:auto;margin-top:28px}
 
 /* Riepilogo: intestazione di fascia con il suo "+", pillole rimovibili */
 .plan-summary-slot{
@@ -948,7 +954,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 /* Schermata "Scegli le attivita'" */
 #act-step-pick{padding-top:8px}
 #act-step-pick > div > button[onclick="backToSlots()"]{
-  background:var(--dc-line)!important;border:0!important;color:var(--dc-muted)!important;
+  background:var(--dc-line)!important;border:0!important;color: var(--dc-muted);
   width:36px!important;height:36px!important;border-radius:999px!important;padding:0!important;font-size:0!important;
   display:flex!important;align-items:center;justify-content:center;margin-bottom:16px;
 }
@@ -1008,16 +1014,16 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 /* Intestazione: stesso stile inline delle altre pagine, stesso rimedio */
 #page-storico > .page-hero{
   background:none!important;box-shadow:none!important;filter:none!important;
-  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
+  padding:8px 0 22px!important;margin-bottom:0!important;color: var(--dc-ink);
 }
-#page-storico > .page-hero *{color:var(--dc-ink)!important;opacity:1!important}
+#page-storico > .page-hero *{color: var(--dc-ink);opacity:1!important}
 #page-storico > .page-hero::before,
 #page-storico > .page-hero::after{display:none!important}
 #page-storico > .page-hero div[style*="font-size:22px"]{
   font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
 }
 #page-storico > .page-hero div[style*="opacity:.85"]{
-  font-size:13.5px!important;color:var(--dc-muted)!important;margin-top:6px!important;
+  font-size:13.5px!important;color: var(--dc-muted);margin-top:6px!important;
 }
 
 /* Linguette Storico/Trend: stesso linguaggio delle linguette di categoria
@@ -1048,7 +1054,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 
 /* Schede dei grafici Trend */
 .cwrap{
-  background:var(--dc-surface)!important;border:0!important;box-shadow:none!important;
+  background: var(--dc-surface);border:0!important;box-shadow:none!important;
   border-radius:var(--dc-radius-scheda);padding:20px;margin-bottom:14px;
 }
 .cwrap::before{display:none!important}
@@ -1105,13 +1111,13 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    ══════════════════════════════════════════════════════════════════ */
 #page-guida > .page-hero{
   background:none!important;box-shadow:none!important;filter:none!important;
-  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
+  padding:8px 0 22px!important;margin-bottom:0!important;color: var(--dc-ink);
 }
-#page-guida > .page-hero *{color:var(--dc-ink)!important;opacity:1!important}
+#page-guida > .page-hero *:not(img){color: var(--dc-ink);opacity:1!important}
 #page-guida > .page-hero::before,
 #page-guida > .page-hero::after{display:none!important}
 #page-guida > .page-hero button[onclick="goBack()"]{
-  background:var(--dc-line)!important;border:0!important;color:var(--dc-muted)!important;
+  background:var(--dc-line)!important;border:0!important;color: var(--dc-muted);
   width:36px!important;height:36px!important;border-radius:999px!important;
   padding:0!important;font-size:0!important;
   display:flex!important;align-items:center!important;justify-content:center!important;
@@ -1121,7 +1127,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
 }
 #page-guida > .page-hero div[style*="opacity:.85"]{
-  font-size:13.5px!important;color:var(--dc-muted)!important;opacity:1!important;margin-top:6px!important;
+  font-size:13.5px!important;color: var(--dc-muted);opacity:1!important;margin-top:6px!important;
 }
 
 .dc-riga{
@@ -1133,3 +1139,555 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 .dc-riga-testo{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
 .dc-riga-tit{font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:1.2;color:var(--dc-ink)}
 .dc-riga-sub{font-size:12.5px;line-height:1.45;color:var(--dc-muted)}
+
+/* Stesso alone grigio predefinito di iOS gia' visto sulle pillole,
+   mai spento su .dc-riga (moduli ed emozioni della Guida). */
+.dc-riga{-webkit-tap-highlight-color:transparent}
+
+/* .spenta veniva attivata dal JS sul primo passo del Diary ("Indietro"
+   disattivato) ma non aveva mai ricevuto una regola: sembrava sempre
+   uguale, attivo o no. Valore esatto dal prototipo: opacita' .45 */
+.dc-indietro.spenta{opacity:.45;pointer-events:none}
+
+/* Bolle decorative sulla scheda "giorni compilati" dello Storico -
+   l'immagine vera va dentro il markup JS, qui serve solo il contenitore */
+#sgrid > div:first-child{position:relative;overflow:hidden}
+.dc-cerchi-storico{position:absolute;right:-24px;bottom:-30px;width:120px;opacity:.3;pointer-events:none}
+
+/* .dc-riga:hover/:active usavano color-mix(), non supportata ovunque:
+   se fallisce puo' mostrare un grigio di scorta invece della sfumatura
+   petrolio prevista. Valore diretto, sempre supportato. */
+.dc-riga:hover{background:var(--dc-surface)}
+.dc-riga:active{background:var(--dc-cella)}
+
+/* toggleGuideModule() aggiunge la classe 'open' alla freccia quando il
+   settore si apre, ma non era mai stata scritta la regola che la ruota:
+   la classe cambiava, ma niente rispondeva visivamente. */
+.dc-chev{transition:transform .18s ease}
+[id^="arr-"].open .dc-chev,
+[id^="earr-"].open .dc-chev{transform:rotate(90deg)}
+
+/* ══════════════════════════════════════════════════════════════════
+   FOGLI DI LAVORO — il pannello che scorre dal basso non era mai
+   stato restilizzato, usava ancora le variabili vecchie di app.css.
+   Valori letterali dal prototipo (pannelloAperto).
+   ══════════════════════════════════════════════════════════════════ */
+.scheda-modal{background:rgba(14,42,41,.46)!important}
+.scheda-box{
+  background: var(--dc-bg);
+  border-radius:30px 30px 0 0!important;
+  box-shadow:var(--dc-shadow-pannello, 0 -18px 50px rgba(20,32,31,.22))!important;
+}
+.scheda-head{
+  background:none!important;border-bottom:0!important;
+  padding:22px 22px 14px!important;align-items:flex-start!important;
+}
+.scheda-title{
+  font-size:21px!important;font-weight:800!important;letter-spacing:-.03em!important;
+  color: var(--dc-ink);line-height:1.15!important;
+}
+.scheda-close{
+  background:var(--dc-line)!important;color: var(--dc-muted);
+  width:34px!important;height:34px!important;border-radius:999px!important;
+  font-size:19px!important;
+}
+.scheda-body{padding:0 22px 26px!important}
+
+/* ══════════════════════════════════════════════════════════════════
+   PAGINA MODULO / EMOZIONE — valori letterali dal prototipo (vModulo,
+   vEmozione). Contenuto riusato da renderGuide()/renderEmozioni(),
+   solo spostato qui invece di restare accordion nella lista.
+   ══════════════════════════════════════════════════════════════════ */
+#page-modulo, #page-emozione{padding:48px 20px 24px}
+.dc-tondo-indietro{
+  border:0;background:var(--dc-line);width:36px;height:36px;border-radius:999px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
+  margin-bottom:16px;color:var(--dc-muted);
+}
+.dc-modulo-ill{flex:none;border-radius:20px;width:66px;height:66px}
+.dc-emozione-ill{flex:none;border-radius:22px;width:72px;height:72px}
+.dc-modulo-titolo{margin:0;font-size:24px;font-weight:800;letter-spacing:-.03em;color:var(--dc-ink);line-height:1.15}
+.dc-emozione-titolo{margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--dc-ink)}
+
+.guide-when{
+  background: var(--dc-surface-2);border-left:0!important;
+  border-radius:26px!important;padding:20px!important;margin:0 0 14px!important;
+  color: var(--dc-ink);font-size:14px;line-height:1.55;
+}
+.guide-when strong{
+  display:block;font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dc-terra);margin-bottom:7px;
+}
+
+.guide-schede-modulo{
+  background: var(--dc-surface);border-radius:26px!important;
+  padding:18px!important;margin:0 0 20px!important;
+}
+.guide-schede-titolo{
+  font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dc-terra);margin-bottom:8px;display:block;
+}
+.guide-scheda-link{
+  background:none!important;border:0!important;color: var(--dc-ink);
+  font-family:var(--dc-font);font-size:14px;font-weight:600;
+  padding:4px 0!important;text-align:left;
+  display:flex!important;align-items:center;gap:12px;
+}
+.guide-scheda-link::before{
+  content:'';width:9px;height:9px;border-radius:999px;background:var(--dc-senape);flex:none;
+}
+.guide-scheda-link::after{
+  content:'';flex:none;width:11px;height:19px;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='19' viewBox='0 0 11 19' fill='none'%3E%3Cpath d='M2.5 2.5L8 9.5L2.5 16.5' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='19' viewBox='0 0 11 19' fill='none'%3E%3Cpath d='M2.5 2.5L8 9.5L2.5 16.5' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+  background:var(--dc-muted);margin-left:auto;
+}
+
+.guide-module-body{border-top:0!important}
+.guide-skill{
+  background:var(--dc-surface);border-radius:22px;padding:16px 18px;
+  border-bottom:0!important;margin-bottom:10px;
+}
+.guide-skill-badge{
+  background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
+  border-radius:999px!important;font-size:11px;font-weight:800;
+}
+.guide-skill-name{font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink)}
+.guide-skill-desc{font-size:12.5px;color:var(--dc-muted);margin-top:2px}
+.guide-step-n{
+  width:22px;height:22px;border-radius:999px;background:var(--dc-cella);
+  color:var(--dc-terra-ink);font-size:11.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px;
+}
+.guide-step-text{font-size:13.5px;line-height:1.5;color:var(--dc-ink);flex:1}
+
+/* righe di dettaglio dell'emozione */
+#emozione-corpo > div > div{
+  background: var(--dc-surface);border:0!important;border-radius:20px!important;
+  margin-top:10px!important;padding:14px 16px!important;
+}
+
+/* Le due schede raggruppate sotto i moduli, e la lista dei fogli */
+.dc-guida-scheda-emo, .dc-guida-scheda-fogli{
+  border-radius:26px;padding:22px;display:flex;justify-content:space-between;
+  align-items:center;cursor:pointer;margin-top:6px;
+}
+.dc-guida-scheda-emo{background:var(--dc-hero)}
+.dc-guida-scheda-fogli{background:var(--dc-surface-2);margin-top:12px}
+.dc-guida-scheda-tit{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--dc-hero-ink)}
+.dc-guida-scheda-sub{font-size:12.5px;color:var(--dc-line)}
+
+.dc-foglio-riga{
+  background:var(--dc-surface);border-radius:22px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:10px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   FOGLI DI LAVORO — vestizione condivisa di tutti quelli che passano
+   dentro il pannello (openScheda muove la pagina vera in #scheda-body,
+   quindi ".scheda-body X" li raggiunge tutti). Nel prototipo il
+   pannello mostra gia' il proprio titolo: l'intestazione interna della
+   pagina diventerebbe un doppione, quindi va nascosta qui dentro.
+   ══════════════════════════════════════════════════════════════════ */
+.scheda-body .page-hero{display:none!important}
+
+.scheda-body .card{
+  background: var(--dc-surface);border:0!important;box-shadow:none!important;
+  border-radius:26px!important;padding:20px!important;margin-bottom:14px!important;
+}
+.scheda-body .card > div:first-child{
+  font-size:12px!important;font-weight:600!important;letter-spacing:.1em!important;
+  text-transform:uppercase!important;color:var(--dc-terra)!important;
+}
+.scheda-body label{
+  font-size:12px!important;font-weight:600!important;color: var(--dc-muted);
+  text-transform:none!important;letter-spacing:normal!important;
+}
+.scheda-body input[type="text"],
+.scheda-body input:not([type]),
+.scheda-body textarea{
+  border:0!important;background: var(--dc-bg);color: var(--dc-ink);
+  border-radius:18px!important;padding:14px 16px!important;font-size:14px!important;
+  font-family:var(--dc-font)!important;box-shadow:none!important;
+}
+.scheda-body input[type="text"]{border-radius:999px!important}
+.scheda-body button[onclick*="alva"],
+.scheda-body button[onclick*="Salva"]{
+  width:100%!important;border:0!important;background: var(--dc-hero);
+  color:var(--dc-hero-ink)!important;font-size:14.5px!important;font-weight:600!important;
+  padding:15px 20px!important;border-radius:20px!important;box-shadow:none!important;
+}
+
+.dc-pc-riga{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.dc-pc-riga:last-child{margin-bottom:0}
+.dc-pc-numero{
+  width:24px;height:24px;border-radius:999px;background:var(--dc-cella);
+  color:var(--dc-terra-ink);font-size:11.5px;font-weight:800;flex:none;
+  display:flex;align-items:center;justify-content:center;
+}
+.dc-pc-riga input{flex:1;min-width:0}
+
+/* ══════════════════════════════════════════════════════════════════
+   LOGIN / REGISTRAZIONE — mai vestita con i colori attuali, ancora su
+   var(--teal) e affini. Nessun riferimento nel prototipo (non ha una
+   schermata di login), quindi qui uso i token gia' stabiliti altrove.
+   ══════════════════════════════════════════════════════════════════ */
+.onboard{
+  background: var(--dc-hero);
+  align-items:center!important;
+  padding:28px 28px calc(4rem + env(safe-area-inset-bottom))!important;
+}
+.dc-onboard-wrap{position:relative;z-index:1}
+.dc-onboard-wrap{width:100%;max-width:460px;margin:0 auto;position:relative}
+.dc-onboard-ramo{position:fixed;right:-60px;top:calc(env(safe-area-inset-top,20px) + 60px);width:200px;opacity:.55;pointer-events:none;z-index:0}
+
+.dc-onboard-h1{
+  color:var(--dc-hero-ink)!important;font-size:34px!important;font-weight:800!important;
+  letter-spacing:-.03em!important;margin:0 0 10px!important;position:relative;
+}
+.dc-onboard-sub{
+  color:var(--dc-line)!important;font-size:15px!important;line-height:1.5!important;
+  margin:0 0 26px!important;position:relative;
+}
+
+.dc-onboard-card{
+  background:var(--dc-surface);border-radius:30px;padding:1.75rem;
+}
+.dc-onboard-card .ob-field label{
+  color: var(--dc-ink);font-size:15px!important;font-weight:700!important;
+}
+.dc-onboard-card .ob-field input,
+.dc-onboard-card .ob-field textarea{
+  border:0!important;background:var(--dc-cella)!important;color: var(--dc-ink);
+  border-radius:18px!important;font-size:15px!important;padding:15px 18px!important;
+}
+.dc-onboard-card .ob-field input::placeholder{color:var(--dc-muted)}
+.dc-onboard-card .ob-field input:focus,
+.dc-onboard-card .ob-field textarea:focus{
+  outline:none!important;box-shadow:inset 0 0 0 2px var(--dc-hero)!important;
+}
+
+.dc-onboard-card .bpri{
+  background: var(--dc-hero);color:var(--dc-hero-ink)!important;
+  border-radius:20px!important;box-shadow:none!important;font-weight:700!important;
+  font-size:16px!important;padding:16px!important;
+}
+
+.dc-onboard-links{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-top:18px;gap:14px;
+}
+.dc-onboard-link-forte{
+  background:none!important;border:0!important;text-align:left;padding:0;
+  color:var(--dc-terra)!important;font-size:13.5px!important;font-weight:600!important;
+  text-decoration:underline;line-height:1.4;font-family:var(--dc-font);cursor:pointer;
+}
+.dc-onboard-link-lieve{
+  background:none!important;border:0!important;text-align:right;padding:0;
+  color: var(--dc-muted);font-size:13.5px!important;font-weight:600!important;
+  line-height:1.4;font-family:var(--dc-font);cursor:pointer;
+}
+
+.dc-onboard-card .ob-role-btn{
+  border:0!important;background:var(--dc-cella)!important;border-radius:18px!important;
+}
+.dc-onboard-card .ob-role-btn .rb-label{color: var(--dc-ink)}
+.dc-onboard-card .ob-role-btn.selected{background: var(--dc-hero)}
+.dc-onboard-card .ob-role-btn.selected .rb-label{color:var(--dc-hero-ink)!important}
+
+/* ══════════════════════════════════════════════════════════════════
+   IMPOSTAZIONI — valori letterali dal prototipo (vImpostazioni): schede
+   bianche a 26px, kicker maiuscolo terracotta, righe con nome/sottotitolo
+   e un controllo a destra, azioni come righe con freccia.
+   ══════════════════════════════════════════════════════════════════ */
+#page-impostazioni > .page-hero{
+  background:none!important;box-shadow:none!important;filter:none!important;
+  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
+}
+#page-impostazioni > .page-hero *{color:var(--dc-ink)!important;opacity:1!important}
+#page-impostazioni > .page-hero div[style*="font-size:22px"]{
+  font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
+}
+#page-impostazioni > .page-hero div[style*="opacity:.85"]{
+  font-size:13.5px!important;color:var(--dc-muted)!important;opacity:1!important;margin-top:6px!important;
+}
+
+#page-impostazioni .card{
+  background:var(--dc-surface)!important;border:0!important;box-shadow:none!important;
+  border-radius:26px!important;padding:20px!important;margin-bottom:14px!important;
+}
+#page-impostazioni .settings-section h3{
+  font-size:12px!important;font-weight:600!important;letter-spacing:.1em!important;
+  color:var(--dc-terra)!important;text-transform:uppercase!important;
+}
+#page-impostazioni .setting-row{border-bottom:0!important;padding:15px 0!important}
+#page-impostazioni .setting-label{color:var(--dc-ink)!important;font-weight:600!important;font-size:14.5px!important}
+#page-impostazioni .setting-desc{color:var(--dc-muted)!important;opacity:.85}
+
+#page-impostazioni input[type="text"],
+#page-impostazioni input[type="time"]{
+  border:0!important;background:var(--dc-bg)!important;color:var(--dc-ink)!important;
+  border-radius:14px!important;padding:10px 12px!important;
+}
+
+#page-impostazioni button[id^="theme-"]{
+  border:0!important;background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
+}
+#page-impostazioni button[id^="theme-"].active{background:var(--dc-hero)!important;color:var(--dc-hero-ink)!important}
+
+/* Logout / cancella dati: righe con freccia, come "azioni" nel prototipo,
+   non piu' pulsanti rossi pieni - il colore di allarme resta solo sul testo */
+#page-impostazioni .bdanger{
+  background:none!important;border:0!important;color:var(--dc-terracotta)!important;
+  font-weight:600!important;padding:0!important;
+}
+
+/* Interruttori: petrolio/petrolio-chiaro sul binario, senape sul
+   pallino quando acceso - valori letterali dal prototipo (var(--hero)
+   / var(--line) / var(--acc)), non il grigio generico di prima. */
+.toggle-slider{background:var(--dc-line)!important}
+.toggle-switch input:checked+.toggle-slider{background:var(--dc-hero)!important}
+.toggle-switch input:checked+.toggle-slider:before{background:var(--dc-senape)!important}
+
+/* Impostazioni: la sfumatura decorativa di .page-hero::before era
+   pensata per il vecchio gradiente, orfana ora che lo sfondo e' piatto
+   - si vedeva come un'ombra sotto il titolo. E il rosso su "Cancella
+   tutti i dati" veniva vinto dalla regola generale su .setting-label. */
+#page-impostazioni > .page-hero::before,
+#page-impostazioni > .page-hero::after{display:none!important}
+#page-impostazioni .setting-label[style*="terracotta"]{color:var(--dc-terracotta)!important}
+
+/* ══════════════════════════════════════════════════════════════════
+   VISTA TERAPEUTA — pagina pazienti, stesso trattamento delle altre.
+   ══════════════════════════════════════════════════════════════════ */
+#page-pazienti .page-hero::before,
+#page-pazienti .page-hero::after{display:none!important}
+#page-pazienti .page-hero{
+  background:none!important;box-shadow:none!important;filter:none!important;
+  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
+}
+#page-pazienti .page-hero *{color:var(--dc-ink)!important;opacity:1!important}
+#page-pazienti .page-hero div[style*="font-size:22px"]{
+  font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
+}
+#page-pazienti .page-hero button[onclick="renderPatients()"]{
+  background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
+  border:0!important;backdrop-filter:none!important;
+}
+#pat-list-view > div[style*="teal-ll"]{
+  background:var(--dc-surface-2)!important;border:0!important;
+  color:var(--dc-ink)!important;border-radius:20px!important;
+}
+#pat-list-view > div[style*="teal-ll"] strong{color:var(--dc-ink)!important}
+
+/* Vista Dettaglio paziente: pulsante Indietro, nome, e le linguette
+   (riuso lo stile gia' pronto per Storico/Fogli, stessa pillola). */
+#pat-detail-view button[onclick="closePatient()"]{
+  background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
+  border:0!important;border-radius:999px!important;
+}
+#pat-detail-name{color:var(--dc-ink)!important;font-size:20px!important;font-weight:800!important;letter-spacing:-.02em!important}
+#pat-detail-meta{color:var(--dc-muted)!important}
+
+.pat-tabs{
+  background:none!important;box-shadow:none!important;padding:0!important;gap:8px!important;
+}
+.pat-tab{
+  background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
+  border-radius:999px!important;padding:11px 18px!important;
+  font-size:13.5px!important;font-weight:600!important;box-shadow:none!important;
+}
+.pat-tab.active{background:var(--dc-hero)!important;color:var(--dc-hero-ink)!important;box-shadow:none!important}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   HOME TERAPEUTA — struttura letterale dal documento del progetto,
+   ricostruita dopo aver tolto il doppione: solo nome e due numeri
+   dentro l'intestazione, scheda username separata, etichetta semplice.
+   ══════════════════════════════════════════════════════════════════ */
+.dc-thero{
+  background:var(--dc-hero);color:var(--dc-hero-ink);
+  position:relative;overflow:hidden;
+  margin:0 -.9rem;padding:calc(env(safe-area-inset-top,0px) + 20px) 26px 40px;
+}
+@media(min-width:700px){ .dc-thero{margin:0;border-radius:var(--dc-radius-scheda)} }
+.dc-thero .dc-onda path{fill:var(--dc-bg)}
+.dc-thero-nome{margin:0;font-size:24px;font-weight:800;letter-spacing:-.03em}
+.dc-thero-numeri{display:flex;gap:26px;margin-top:12px}
+.dc-thero-num{display:flex;flex-direction:column;gap:2px}
+.dc-thero-num span:first-child{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.dc-thero-num span:last-child{font-size:12px;font-weight:500;opacity:.8}
+
+.dc-thome-username{
+  background:var(--dc-surface-2);border-radius:26px;padding:20px;
+  display:flex;align-items:center;gap:14px;margin-bottom:1rem;
+}
+.dc-thome-kicker{
+  font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-terra);
+}
+.dc-thome-user{font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink)}
+.dc-thome-hint{font-size:12.5px;line-height:1.4;color:var(--dc-muted)}
+
+.dc-thome-seg{
+  background:var(--dc-surface);border-radius:22px;padding:16px 18px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+}
+.dc-thome-seg-dot{width:10px;height:10px;border-radius:999px;background:var(--dc-terra);flex:none}
+.dc-thome-seg-nome{font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink)}
+.dc-thome-seg-cosa{font-size:12.5px;color:var(--dc-muted);line-height:1.4}
+
+.dc-thome-btn{
+  margin-top:14px;width:100%;border:0;background:var(--dc-hero);color:var(--dc-hero-ink);
+  font-size:14.5px;font-weight:600;padding:15px 20px;border-radius:20px;cursor:pointer;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   PANORAMICA PAZIENTE — colori giusti sopra a una logica che resta
+   quella vera (media del periodo, mattonelle di rischio, abilita').
+   ══════════════════════════════════════════════════════════════════ */
+#ptab-overview .pat-section{
+  background:var(--dc-surface)!important;border-radius:26px!important;
+  box-shadow:none!important;padding:0!important;overflow:hidden;
+}
+#ptab-overview .pat-section-head{
+  background:var(--dc-surface-2)!important;color:var(--dc-ink)!important;
+  padding:16px 18px!important;font-weight:700!important;
+}
+#ptab-overview .pat-section-body{padding:16px 18px!important}
+#ptab-overview .pat-sub{
+  color:var(--dc-terra)!important;font-size:12px!important;font-weight:600!important;
+  letter-spacing:.08em!important;text-transform:uppercase!important;
+}
+#ptab-overview .avg-tile{background:var(--dc-bg)!important;border-radius:16px!important}
+#ptab-overview .avg-bar{background:var(--dc-line)!important}
+#ptab-overview .avg-chip{background:var(--dc-bg)!important;color:var(--dc-ink)!important}
+#ptab-overview .avg-chip.danger{background:var(--dc-cella)!important;color:var(--dc-terracotta)!important}
+#ptab-overview .avg-chip.warn{background:var(--dc-surface-2)!important;color:var(--dc-terra-ink)!important}
+#ptab-overview .avg-chip.ok{background:var(--dc-petrolio-chiaro)!important;color:var(--dc-petrolio)!important}
+#ptab-overview .card[style*="Le tue note"],
+#ptab-overview .card{
+  background:var(--dc-surface)!important;border:0!important;box-shadow:none!important;
+  border-radius:26px!important;
+}
+#ptab-overview .slbl{
+  color:var(--dc-terra)!important;font-size:12px!important;letter-spacing:.1em!important;
+}
+#ptab-overview textarea{
+  border:0!important;background:var(--dc-bg)!important;color:var(--dc-ink)!important;
+  border-radius:18px!important;
+}
+
+/* i colori delle mattonelle e del banner crisi sono scritti riga per
+   riga da JS (style="color:#C85250" ecc): serve colpire lo stile
+   preciso, non solo la classe, per vincere sull'inline. */
+#ptab-overview .avg-val[style*="C85250"]{color:var(--dc-terracotta)!important}
+#ptab-overview .avg-val[style*="B98230"]{color:var(--dc-terra-ink)!important}
+#ptab-overview .avg-bar i[style*="C85250"]{background:var(--dc-terracotta)!important}
+#ptab-overview .avg-bar i[style*="B98230"]{background:var(--dc-terra-ink)!important}
+#ptab-overview .pat-section-head[style*="red-l"]{
+  background:var(--dc-cella)!important;color:var(--dc-terracotta)!important;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HOME DESKTOP — prima versione (intestazione + stato diary + Costanza),
+   dal documento del progetto (Desktop Diary Card.dc.html). Visibile solo
+   da 701px in su, sostituisce il contenuto mobile della Home paziente.
+   ══════════════════════════════════════════════════════════════════ */
+.dc-desk-hero{
+  background:var(--dc-hero);color:var(--dc-hero-ink);position:relative;overflow:hidden;
+  border-radius:0;padding:4rem 2.75rem 4.5rem;margin:-1.75rem -2rem 1.5rem;
+  /* .main-inner ha 2rem di margine orizzontale su desktop: qui lo si
+     compensa per arrivare davvero al bordo, come fa l'intestazione
+     mobile con la sua stessa tecnica. */
+}
+.dc-desk-hero .dc-onda path{fill:var(--dc-bg)}
+.dc-desk-hero-deco{position:absolute;left:-75px;bottom:0;width:300px;opacity:.35;pointer-events:none}
+.dc-desk-hero-riga{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.dc-desk-hero-data{font-family:var(--dc-font);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-senape)}
+.dc-desk-hero-tit{font-family:var(--dc-font);margin:4px 0 6px;font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.dc-desk-hero-sub{font-family:var(--dc-font);margin:0;font-size:14.5px;color:var(--dc-petrolio-chiaro);max-width:60ch}
+.dc-desk-hero-cta{
+  border:0;background:var(--dc-senape);color:var(--dc-nero);font-weight:700;font-family:var(--dc-font);
+  padding:14px 24px;border-radius:999px;cursor:pointer;font-size:14.5px;flex:none;
+}
+
+.dc-desk-riga{display:flex;flex-wrap:wrap;gap:1.5rem;margin-bottom:1.5rem}
+.dc-desk-card{
+  background:var(--dc-surface);border-radius:22.6px;padding:1.75rem;min-width:0;
+}
+.dc-desk-card-tit{font-family:var(--dc-font);font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink)}
+.dc-desk-card-kicker{font-family:var(--dc-font);font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-terra)}
+.dc-desk-streak-num{font-family:var(--dc-font);font-size:52px;line-height:.9;color:#8E4C2C}
+.dc-desk-btn-secondario{
+  border:1.5px solid var(--dc-line);background:#FFFFFF;color:var(--dc-hero);font-weight:600;font-family:var(--dc-font);
+  padding:9.5px 20px;border-radius:999px;cursor:pointer;font-size:13.5px;
+}
+
+@media(max-width:700px){ #desktop-home{display:none!important} }
+@media(min-width:701px){
+  #desktop-home{display:block}
+  html[data-pagina="home"] #home-hero,
+  html[data-pagina="home"] .dc-stack{ display:none!important; }
+}
+
+/* La barra di navigazione mobile non e' mai stata nascosta da desktop:
+   restava fissa in fondo su ogni larghezza. C'e' gia' la barra laterale. */
+@media(min-width:701px){ .bottom-nav{display:none!important} }
+
+/* ══════════════════════════════════════════════════════════════════
+   BARRA LATERALE DESKTOP — logo Marea, voci solo testo con puntino
+   che diventa pillola quando attivo, dal documento del progetto.
+   ══════════════════════════════════════════════════════════════════ */
+.dc-desk-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.dc-desk-logo-testo{font-family:var(--dc-font);font-size:19px;line-height:1.1;color:var(--dc-hero-ink)}
+
+#ni-pazienti[style*="display:none"]{display:none!important}
+.sidebar .ni{
+  display:flex!important;align-items:center;gap:12px;
+  background:transparent!important;border:0!important;padding:10px 16px!important;
+  border-radius:999px!important;cursor:pointer;color:var(--dc-bg)!important;
+  font-family:var(--dc-font);font-size:14.5px;font-weight:600;
+}
+.dc-desk-nav-mark{width:9px;height:9px;border-radius:999px;background:var(--dc-petrolio-chiaro);flex:none}
+.dc-desk-nav-lbl{flex:1;text-align:left}
+.dc-desk-nav-badge{
+  font-family:var(--dc-font);font-size:11px;font-weight:700;background:var(--dc-terracotta);color:#FFFFFF;
+  border-radius:999px;padding:2px 8px;flex:none;display:none;
+}
+.sidebar .ni.active{background:var(--dc-bg)!important;color:var(--dc-petrolio-scurissimo)!important;font-weight:700}
+.sidebar .ni.active .dc-desk-nav-mark{background:var(--dc-terracotta)}
+
+/* La barra laterale in app.css e' un pannello "a isola" (margine,
+   angoli, gradiente, macchie sfocate) - lo stesso trattamento usato
+   per gli hero delle pagine. Il documento vuole una colonna piatta,
+   rettangolare, aderente al bordo sinistro. Azzerato tutto qui. */
+@media(min-width:701px){
+  .sidebar{
+    margin:0!important;border-radius:0!important;height:100vh!important;
+    background:var(--dc-hero)!important;box-shadow:none!important;
+  }
+  #app.shell{align-items:stretch!important}
+  .sidebar::before,.sidebar::after{display:none!important}
+}
+
+.dc-desk-user-btn{
+  display:flex!important;align-items:center;gap:12px;width:100%;
+  background:transparent!important;border:0!important;padding:8px 8px 8px 0!important;
+  cursor:pointer;border-radius:16px!important;
+}
+.dc-desk-user-avatar{
+  width:36px;height:36px;border-radius:999px;flex:none;
+  background:var(--dc-senape);color:var(--dc-petrolio-scurissimo);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;font-family:var(--dc-font);
+}
+.dc-desk-user-nome{font-family:var(--dc-font);font-size:14px;font-weight:600;color:var(--dc-bg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc-desk-user-ruolo{font-family:var(--dc-font);font-size:12px;color:var(--dc-petrolio-chiaro)}
+
+/* ── SUGGERIMENTO "Abilita' di oggi" — icona modulo + etichette,
+   dal documento (mancavano entrambe rispetto allo spec letterale) ── */
+.dc-skill-riga{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
+.dc-skill-icona{flex:none;border-radius:18px}
+.dc-skill .dc-card-tit{font-size:11.5px!important;font-weight:600!important;letter-spacing:.1em!important;text-transform:uppercase!important;color:var(--dc-terracotta)!important}
+.dc-skill-tag-riga{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.dc-tag-accent2{background:var(--dc-petrolio-chiaro);color:var(--dc-hero);font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px}
+.dc-tag-outline{border:1px solid var(--dc-line);color:var(--dc-muted);font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px}

@@ -270,3 +270,16 @@ function switchToLogin(){
   },220);
 }
 
+// ── IMPOSTAZIONI TERAPEUTA ──
+async function saveTherapistSettings(){
+  const nomeCompleto=(document.getElementById('ts-nome').value||'').trim();
+  const spazio=nomeCompleto.indexOf(' ');
+  profile.nome = spazio===-1 ? nomeCompleto : nomeCompleto.slice(0,spazio);
+  profile.cognome = spazio===-1 ? '' : nomeCompleto.slice(spazio+1);
+  settings.terapRischio=document.getElementById('ts-tog-rischio').checked;
+  settings.terapRiepilogo=document.getElementById('ts-tog-riepilogo').checked;
+  svLS();
+  showToast('t-set');
+  await pushChan();
+}
+

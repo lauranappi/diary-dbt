@@ -123,7 +123,8 @@ function renderHist(){
   const wideEl=document.createElement('div');
   wideEl.style.cssText='grid-column:1/-1;background:var(--dc-hero);border:0;border-radius:26px;padding:22px;display:flex;align-items:center;gap:18px;margin-bottom:4px';
   const totGiorni = storicoRange===0 ? keys.length : storicoRange;
-  wideEl.innerHTML='<span style="font-size:44px;font-weight:800;letter-spacing:-.04em;color:var(--dc-senape);line-height:1">'+keys.length+'</span><span style="font-size:13.5px;font-weight:500;color:var(--dc-hero-ink);line-height:1.4">giorni compilati<br>su '+totGiorni+'</span>';
+  wideEl.innerHTML='<img class="dc-cerchi-storico" src="illustrazioni/decorative/deco-cerchi-chiaro.svg" alt="">'
+    +'<span style="font-size:44px;font-weight:800;letter-spacing:-.04em;color:var(--dc-senape);line-height:1;position:relative">'+keys.length+'</span><span style="font-size:13.5px;font-weight:500;color:var(--dc-hero-ink);line-height:1.4;position:relative">giorni compilati<br>su '+totGiorni+'</span>';
   sg.appendChild(wideEl);
   // Pairs
   const pairs=[
@@ -215,13 +216,13 @@ function renderTrend(){
   function sv(f){return keys.map(k=>allData[k]?.scales?.[f]??null);}
   function tv(f){return keys.map(k=>{const d=allData[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0});}
 
-  mkApex('cSuic1',[{name:'Pensieri suicidari',data:sv('sp')},{name:'Azione suicidaria',data:tv('sa')}],['#D8845C','#B71C1C']);
-  mkApex('cSuic2',[{name:'Intenzione autolesività',data:sv('ai')},{name:'Azione autolesività',data:tv('aa')}],['#D8845C','#880E4F']);
-  mkApex('cSost',[{name:'Intenzione alcol',data:sv('alci')},{name:'Intenzione CBD',data:sv('cbdi')}],['#FFA726','#66BB6A']);
-  mkApex('cEmoEat',[{name:'Emotional eating',data:tv('ee')}],['#E0A23A'],1);
-  mkApex('cEmoPos',[{name:'Serenità',data:sv('ser')},{name:'Gioia',data:sv('gio')}],['#26A69A','#FFA726']);
-  mkApex('cEmoNeg1',[{name:'Tristezza',data:sv('tri')},{name:'Paura',data:sv('pau')},{name:'Rabbia',data:sv('rab')}],['#42A5F5','#D8845C','#D8845C']);
-  mkApex('cEmoNeg2',[{name:'Vergogna',data:sv('ver')},{name:'Colpa',data:sv('col')},{name:'Vuoto',data:sv('vuo')},{name:'Sof. emotiva',data:sv('se')}],['#9E9E9E','#757575','#424242','#26A69A']);
+  mkApex('cSuic1',[{name:'Pensieri suicidari',data:sv('sp')},{name:'Azione suicidaria',data:tv('sa')}],['#C1714A','#123534']);
+  mkApex('cSuic2',[{name:'Intenzione autolesività',data:sv('ai')},{name:'Azione autolesività',data:tv('aa')}],['#C1714A','#123534']);
+  mkApex('cSost',[{name:'Intenzione alcol',data:sv('alci')},{name:'Intenzione CBD',data:sv('cbdi')}],['#F5CE47','#1B4B4A']);
+  mkApex('cEmoEat',[{name:'Emotional eating',data:tv('ee')}],['#F5CE47'],1);
+  mkApex('cEmoPos',[{name:'Serenità',data:sv('ser')},{name:'Gioia',data:sv('gio')}],['#1B4B4A','#F5CE47']);
+  mkApex('cEmoNeg1',[{name:'Tristezza',data:sv('tri')},{name:'Paura',data:sv('pau')},{name:'Rabbia',data:sv('rab')}],['#1B4B4A','#C1714A','#8A4A30']);
+  mkApex('cEmoNeg2',[{name:'Vergogna',data:sv('ver')},{name:'Colpa',data:sv('col')},{name:'Vuoto',data:sv('vuo')},{name:'Sof. emotiva',data:sv('se')}],['#8FB5B0','#2A6866','#123534','#C1714A']);
 }
 
 // ── ATTIVITÀ ──
@@ -321,11 +322,18 @@ function buildHome(){
   document.querySelectorAll('#page-home > *').forEach(el=>{
     if(el.id==='terap-home') return;
     el.hidden = isTerap;
+    // hidden da solo ha una specificita' bassa: se una qualsiasi regola
+    // altrove imposta display su questi elementi (anche senza !important),
+    // lo vince e restano visibili. Lo stile diretto vince sempre di piu'.
+    el.style.display = isTerap ? 'none' : '';
   });
   if(isTerap){ buildTherapistHome(); return; }
   setTimeout(dcHome, 0);   // resa conforme al documento di design
-
-  buildSuggest();   // sceglie il suggerimento in base ai dati veri di oggi, non a rotazione cieca
+  // renderDesktopHome() e buildSuggest() vanno nello stesso setTimeout,
+  // in quest'ordine: buildSuggest() cerca #desktop-suggest-box, che
+  // renderDesktopHome() crea - se girassero separati, buildSuggest()
+  // arriverebbe prima che quell'elemento esista.
+  setTimeout(()=>{ renderDesktopHome(); buildSuggest(); }, 0);
 }
 
 // ── SUGGEST ──
@@ -464,27 +472,45 @@ function switchToActTab(tab){
     if(tabs[idx])switchActTab(tab,tabs[idx]);
   },100);
 }
+const GUIDE_INFO={
+  tol:  {nome:'Tolleranza',icona:'modulo-tolleranza'},
+  reg:  {nome:'Regolazione emotiva',icona:'modulo-regolazione'},
+  inter:{nome:'Interpersonale',icona:'modulo-interpersonale'},
+  mind: {nome:'Mindfulness',icona:'modulo-mindfulness'},
+  gen:  {nome:'Strumenti generali',icona:'strumenti-generali'}
+};
 function buildSuggest(){
-  const box=document.getElementById('home-suggest-box');if(!box)return;
   const k=today();
   const d=allData[k]||{scales:{},toggles:{},texts:{}};
-  // Sort by priority: lower number = higher priority
   const matching=SPOOL.filter(s=>{try{return s.cond(d)}catch(e){return false}})
     .sort((a,b)=>(a.prio||4)-(b.prio||4));
-  if(!matching.length){box.innerHTML='';return;}
   const idx=parseInt(localStorage.getItem('sg_'+k)||'0');
-  const pick=matching[idx%matching.length];
-  const action=pick.guide?`openGuideSkill('${pick.guide}','${pick.skill||''}')`:(pick.skill?`openDbtSkill('${pick.skill}')`:'goPage("attivita",null)');
-  const rotBtn=matching.length>1?'<button class="dc-skill-altro" onclick="event.stopPropagation();rotateSuggest(\''+k+'\','+matching.length+')">↻ Altro</button>':'';
-  box.setAttribute('onclick', action);
-  box.innerHTML =
-      '<img class="dc-skill-deco" src="illustrazioni/decorative/deco-macchia-petrolio.svg" alt="">'
-    +'<div class="dc-skill-in">'
-      +'<span class="dc-card-tit">Abilità di oggi</span>'
-      +'<span class="dc-skill-nome">'+pick.title+'</span>'
-      +'<span class="dc-skill-desc">'+pick.desc+'</span>'
-      +'<div class="dc-skill-azioni">'+rotBtn+'</div>'
-    +'</div>';
+  const contenuto = box => {
+    if(!matching.length){box.innerHTML='';box.style.display='none';return;}
+    box.style.display='';
+    const pick=matching[idx%matching.length];
+    const gi=GUIDE_INFO[pick.guide]||{nome:'DBT',icona:'strumenti-generali'};
+    const action=pick.guide?`openGuideSkill('${pick.guide}','${pick.skill||''}')`:(pick.skill?`openDbtSkill('${pick.skill}')`:'goPage("attivita",null)');
+    const rotBtn=matching.length>1?'<button class="dc-skill-altro" onclick="event.stopPropagation();rotateSuggest(\''+k+'\','+matching.length+')">↻ Altro</button>':'';
+    box.setAttribute('onclick', action);
+    box.innerHTML =
+        '<img class="dc-skill-deco" src="illustrazioni/decorative/deco-macchia-petrolio.svg" alt="">'
+      +'<div class="dc-skill-riga">'
+        +'<img src="illustrazioni/miniature/'+gi.icona+'.svg" width="46" height="46" class="dc-skill-icona" alt="">'
+        +'<div class="dc-skill-in">'
+          +'<span style="font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#C1714A">Abilità di oggi</span>'
+          +'<span style="font-family:\'Plus Jakarta Sans\',system-ui,sans-serif;font-size:18px;line-height:1.15;color:#14201F">'+pick.title+'</span>'
+          +'<span class="dc-skill-desc">'+pick.desc+'</span>'
+          +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">'
+            +'<span style="background:#F0F5F4;color:#1B4B4A;font-size:11px;font-weight:600;padding:6px 11px;border-radius:999px">'+gi.nome+'</span>'
+            +'<span style="border:1px solid #C1714A;color:#C1714A;font-size:11px;font-weight:600;padding:6px 11px;border-radius:999px">3 min</span>'
+          +'</div>'
+        +'</div>'
+      +'</div>'
+      +'<div class="dc-skill-azioni">'+rotBtn+'</div>';
+  };
+  const box=document.getElementById('home-suggest-box');if(box)contenuto(box);
+  const boxD=document.getElementById('desktop-suggest-box');if(boxD)contenuto(boxD);
 }
 function rotateSuggest(k,total){
   localStorage.setItem('sg_'+k,String((parseInt(localStorage.getItem('sg_'+k)||'0')+1)%total));
@@ -520,7 +546,7 @@ function dcAbilitaOggi(){
   box.innerHTML =
     '<img class="dc-skill-deco" src="illustrazioni/decorative/deco-macchia-petrolio.svg" alt="">'
    +'<div class="dc-skill-in">'
-     +'<span class="dc-card-tit">Abilità di oggi</span>'
+     +'<span style="font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#C1714A">Abilità di oggi</span>'
      +'<span class="dc-skill-nome">'+scelta.nome+'</span>'
      +'<span class="dc-skill-desc">'+scelta.gruppo+'</span>'
    +'</div>';
@@ -606,6 +632,32 @@ function dcHome(){
   }
 
   // colonne dei sette giorni
+  // Serie di giorni consecutivi compilati, terminante oggi o ieri
+  // (compilare oggi non deve azzerare la serie di ieri se non l'hai
+  // ancora fatto): mai calcolata finora, l'elemento restava fisso a 0.
+  // Badge sulla voce Diary della barra laterale (solo se non completa)
+  const badgeEl = document.getElementById('ni-badge-oggi');
+  if(badgeEl){
+    const scaleOk = d ? Object.values(d.scales||{}).filter(x=>x!=null).length : 0;
+    const togOk = d ? Object.values(d.toggles||{}).filter(x=>x!=null).length : 0;
+    const fatte = scaleOk+togOk;
+    if(fatte>0 && fatte<22){ badgeEl.textContent=fatte+'/22'; badgeEl.style.display='inline-block'; }
+    else { badgeEl.style.display='none'; }
+  }
+
+  const streakEl = document.getElementById('streak-num');
+  if(streakEl){
+    let n=0, cursore=new Date();
+    if(!compilata){ cursore.setDate(cursore.getDate()-1); }
+    while(true){
+      const voce=allData[dk(cursore)];
+      if(!voce || isDayEmpty(voce)) break;
+      n++;
+      cursore.setDate(cursore.getDate()-1);
+    }
+    streakEl.textContent=n;
+  }
+
   const tl = document.getElementById('home-timeline');
   if(tl){
     const lettere=['L','M','M','G','V','S','D'];
@@ -623,4 +675,119 @@ function dcHome(){
     }
     tl.innerHTML = out+'</div>';
   }
+}
+
+// ── HOME DESKTOP ─────────────────────────────────────────────────────────
+// Layout a colonne dal documento del progetto (Desktop Diary Card.dc.html):
+// intestazione, scheda stato-diary + Costanza affiancate, Abilita' di oggi.
+// Prima versione: rimanda alla Diary vera per la compilazione, non la
+// incorpora ancora riga per riga - quella e' un lavoro a se'.
+function renderDesktopHome(){
+  const box=document.getElementById('desktop-home');
+  if(!box) return;
+  if(typeof profile!=='undefined' && profile.role==='terapeuta') return;
+
+  const oggi=today();
+  const d=allData[oggi]||{scales:{},toggles:{}};
+  const compilata=allData[oggi] && !isDayEmpty(allData[oggi]);
+  const ora=new Date().getHours();
+  const saluto=ora<5?'Notte fonda':ora<12?'Buongiorno':ora<17?'Buon pomeriggio':ora<21?'Buonasera':'Buonanotte';
+
+  let n=0, cursore=new Date();
+  if(!compilata){ cursore.setDate(cursore.getDate()-1); }
+  while(true){
+    const voce=allData[dk(cursore)];
+    if(!voce || isDayEmpty(voce)) break;
+    n++; cursore.setDate(cursore.getDate()-1);
+  }
+  let record=0, correnti=0;
+  Object.keys(allData).sort().forEach(k=>{
+    if(allData[k] && !isDayEmpty(allData[k])){ correnti++; record=Math.max(record,correnti); }
+    else { correnti=0; }
+  });
+  record=Math.max(record,n);
+
+  const scaleOk=Object.values(d.scales||{}).filter(x=>x!=null).length;
+  const togOk=Object.values(d.toggles||{}).filter(x=>x!=null).length;
+  const fatte=scaleOk+togOk, totale=22;
+
+  const RAPIDE=[['ser','Serenità'],['gio','Gioia'],['pau','Paura'],['rab','Rabbia'],['tri','Tristezza'],['ver','Vergogna']];
+  const rapideHtml=RAPIDE.map(([k,nome])=>{
+    const val=d.scales?d.scales[k]:null;
+    const celle=[0,1,2,3,4,5].map(nn=>{
+      const on=val===nn;
+      return '<button onclick="dcDeskCella(\''+k+'\','+nn+')" style="flex:1;min-width:0;height:42px;min-height:42px;border:0;border-radius:15px;font-weight:600;cursor:pointer;background:'+(on?'var(--dc-hero)':'var(--dc-cella)')+';color:'+(on?'var(--dc-hero-ink)':'var(--dc-terra-ink)')+'">'+nn+'</button>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:13.5px;font-weight:600;color:var(--dc-ink)">'+nome+'</span><div style="display:flex;gap:6px">'+celle+'</div></div>';
+  }).join('');
+
+  const pallini=Array.from({length:14},(_,i)=>'<span style="width:9px;height:9px;min-width:9px;flex-shrink:0;border-radius:999px;background:'+(i<Math.min(n,14)?'var(--dc-hero)':'var(--dc-line)')+'"></span>').join('');
+
+  const gruppiHtml=SKG.map(g=>{
+    const righe=g.it.map(item=>{
+      const sid='sk_'+g.g+'_'+item;
+      const on=!!(d.skills&&d.skills[sid]);
+      const tick=on?'<svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 7L5 10L11 3" stroke="var(--dc-nero)" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/></svg>':'';
+      return '<button onclick="dcDeskSkill(\''+sid+'\')" style="display:flex;align-items:center;gap:12px;border:0;background:transparent;padding:6px 0;cursor:pointer;text-align:left;width:100%"><span style="width:24px;height:24px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;background:'+(on?'var(--dc-senape)':'var(--dc-cella)')+'">'+tick+'</span><span style="font-size:14px;font-weight:'+(on?600:500)+';color:var(--dc-ink)">'+item+'</span></button>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:6px"><span class="dc-desk-card-kicker">'+g.g+'</span>'+righe+'</div>';
+  }).join('');
+
+  box.innerHTML =
+    '<div class="dc-desk-hero">'
+      +'<img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-desk-hero-deco">'
+      +'<svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>'
+      +'<div class="dc-desk-hero-riga">'
+        +'<div>'
+          +'<span class="dc-desk-hero-data">'+new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'})+'</span>'
+          +'<h1 class="dc-desk-hero-tit">'+saluto+(profile.nome?', '+profile.nome:'')+'</h1>'
+          +'<p class="dc-desk-hero-sub">Un colpo d\'occhio sulla giornata e sugli ultimi quattordici giorni.</p>'
+        +'</div>'
+        +'<button class="dc-desk-hero-cta" onclick="goPage(\'oggi\',null)">'+(compilata?'Rivedi la diary':'Compila la diary')+'</button>'
+      +'</div>'
+    +'</div>'
+    +'<div class="dc-desk-riga">'
+      +'<div class="dc-desk-card" style="flex:2 1 420px">'
+        +'<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">'
+          +'<span class="dc-desk-card-tit" style="flex:1">Diary di oggi</span>'
+          +'<span style="font-size:13px;color:var(--dc-muted)">'+(fatte===0?'non iniziata':fatte+' voc'+(fatte===1?'e':'i')+' su '+totale)+'</span>'
+        +'</div>'
+        +'<div style="height:10px;border-radius:999px;background:var(--dc-line);overflow:hidden;margin:14px 0 18px">'
+          +'<div style="height:100%;width:'+Math.max(2,(fatte/totale)*100)+'%;background:var(--dc-terracotta);border-radius:999px"></div>'
+        +'</div>'
+        +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px 20px;margin-bottom:18px">'+rapideHtml+'</div>'
+        +'<button class="dc-desk-btn-secondario" onclick="goPage(\'oggi\',null)">Apri la diary completa</button>'
+      +'</div>'
+      +'<div class="dc-desk-card" style="flex:0 1 260px;max-width:260px">'
+        +'<span class="dc-desk-card-kicker">Costanza</span>'
+        +'<div style="display:flex;align-items:flex-end;gap:10px;margin:6px 0 10px">'
+          +'<span class="dc-desk-streak-num">'+n+'</span>'
+          +'<span style="font-size:13px;color:var(--dc-muted);padding-bottom:4px">giorni<br>di fila</span>'
+        +'</div>'        +'<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:14px">'+pallini+'</div>'
+        +'<span style="font-size:13px;color:var(--dc-muted);line-height:1.5">'+(record>n?'Il tuo record è '+record+' giorni.':'Questo è il tuo record.')+'</span>'
+      +'</div>'
+    +'</div>'
+    +'<div id="desktop-suggest-box" class="dc-desk-card" onclick="goPage(\'guida\',null)" style="cursor:pointer;background:#FFFFFF"></div>'
+    +'<div class="dc-desk-card" style="margin-top:1.5rem">'
+      +'<span class="dc-desk-card-tit">Abilità usate oggi</span>'
+      +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px 28px;margin-top:16px;max-width:900px">'+gruppiHtml+'</div>'
+    +'</div>';
+}
+
+
+function dcDeskCella(campo, val){
+  const oggi=today();
+  if(!allData[oggi]) allData[oggi]={scales:{},toggles:{},texts:{}};
+  if(!allData[oggi].scales) allData[oggi].scales={};
+  allData[oggi].scales[campo]=Number(val);
+  svLS(); if(typeof pushChan==='function')pushChan();
+  renderDesktopHome(); buildSuggest();
+}
+function dcDeskSkill(sid){
+  const oggi=today();
+  if(!allData[oggi]) allData[oggi]={scales:{},toggles:{},texts:{}};
+  if(!allData[oggi].skills) allData[oggi].skills={};
+  allData[oggi].skills[sid]=!allData[oggi].skills[sid];
+  svLS(); if(typeof pushChan==='function')pushChan();
+  renderDesktopHome(); buildSuggest();
 }
