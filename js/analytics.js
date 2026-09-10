@@ -86,7 +86,7 @@ function setStoricoRange(n, btn){
 // ANALYTICS — Storico, Trend, Attività, Home, Suggerimenti
 // ════════════════════════════════════════════════════════════════
 // ── STORICO ──
-function avg(keys,f){const v=keys.map(k=>allData[k]?.scales?.[f]).filter(x=>x!=null);if(!v.length)return'—';return(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1)}
+
 function buildFlags(d){
   if(!d)return'';const flags=[];
   const s=d.scales||{},t=d.toggles||{},tx=d.texts||{};
@@ -158,7 +158,7 @@ function renderHist(){
 }
 
 // ── TREND ──
-function last7(){const r=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);r.push(dk(d))}return r}
+
 let trendRange=7;
 function setTrendRange(n,btn){
   trendRange=n;
@@ -190,9 +190,9 @@ function renderTrend(){
   });
 
   const BASE_OPTS={
-    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400},dropShadow:{enabled:false}},
     stroke:{curve:'smooth',width:2.5},
-    fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
+    fill:{type:'solid',fillOpacity:0,opacity:0},
     grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
     xaxis:{categories:labels,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},rotate:0,trim:false},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
     yaxis:{min:0,max:5,tickAmount:5,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},formatter:v=>Math.round(v)}},
@@ -227,15 +227,7 @@ function renderTrend(){
 
 // ── ATTIVITÀ ──
 let currentActTab='dbt';
-function switchAbiTab(tab,btn){
-  document.querySelectorAll('#page-abilita .act-tab').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  const guida=document.getElementById('abt-tab-guida');
-  const oggi=document.getElementById('abt-tab-oggi');
-  if(guida)guida.style.display=tab==='guida'?'block':'none';
-  if(oggi)oggi.style.display=tab==='oggi'?'block':'none';
-  if(tab==='oggi')renderActTab();
-}
+
 function switchActTab(tab,btn){
   currentActTab=tab;
   document.querySelectorAll('.act-tab').forEach(b=>b.classList.remove('active'));
@@ -275,15 +267,7 @@ function toggleSkillCard(id){
   const el=document.getElementById(id);
   el.classList.toggle('open');
 }
-function triedInLast7Days(key){
-  const t=actTried[key];
-  if(!t)return false;
-  const dates=Array.isArray(t)?t:[t];
-  return dates.some(d=>{
-    const diff=(new Date()-new Date(d+'T12:00:00'))/86400000;
-    return diff>=0&&diff<=7;
-  });
-}
+
 function triedToday(key){
   const t=actTried[key];
   if(!t)return false;
@@ -463,15 +447,7 @@ function openDbtSkill(id){
     },150);
   },100);
 }
-function switchToActTab(tab){
-  const tabMap={dbt:0,vista:1,udito:2,olfatto:3,gusto:4,tatto:5,distrarsi:6,migliora:7};
-  goPage('attivita',null);
-  setTimeout(()=>{
-    const tabs=document.querySelectorAll('.act-tab');
-    const idx=tabMap[tab]||0;
-    if(tabs[idx])switchActTab(tab,tabs[idx]);
-  },100);
-}
+
 const GUIDE_INFO={
   tol:  {nome:'Tolleranza',icona:'modulo-tolleranza'},
   reg:  {nome:'Regolazione emotiva',icona:'modulo-regolazione'},
@@ -494,7 +470,7 @@ function buildSuggest(){
     const rotBtn=matching.length>1?'<button class="dc-skill-altro" onclick="event.stopPropagation();rotateSuggest(\''+k+'\','+matching.length+')">↻ Altro</button>':'';
     box.setAttribute('onclick', action);
     box.innerHTML =
-        '<img class="dc-skill-deco" src="illustrazioni/decorative/deco-macchia-petrolio.svg" alt="">'
+        ''
       +'<div class="dc-skill-riga">'
         +'<img src="illustrazioni/miniature/'+gi.icona+'.svg" width="46" height="46" class="dc-skill-icona" alt="">'
         +'<div class="dc-skill-in">'
@@ -544,7 +520,7 @@ function dcAbilitaOggi(){
   const mod  = MODULO_DI_ABILITA[skId] || '';
   box.setAttribute('onclick', skId ? "apriAbilitaGuida('"+mod+"','"+skId+"')" : "goPage('guida',null)");
   box.innerHTML =
-    '<img class="dc-skill-deco" src="illustrazioni/decorative/deco-macchia-petrolio.svg" alt="">'
+    ''
    +'<div class="dc-skill-in">'
      +'<span style="font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#C1714A">Abilità di oggi</span>'
      +'<span class="dc-skill-nome">'+scelta.nome+'</span>'
@@ -682,6 +658,7 @@ function dcHome(){
 // intestazione, scheda stato-diary + Costanza affiancate, Abilita' di oggi.
 // Prima versione: rimanda alla Diary vera per la compilazione, non la
 // incorpora ancora riga per riga - quella e' un lavoro a se'.
+const DESC_ABILITA={'Mente saggia':'L\'equilibrio tra ragione ed emozione, la voce più profonda.','Osservare':'Notare l\'esperienza senza reagire o allontanarla.','Descrivere':'Mettere in parole ciò che si osserva, senza giudizio.','Partecipare':'Buttarsi pienamente nell\'attività del momento.','Non giudicare':'Vedere i fatti senza etichettarli buoni o cattivi.','Stare focalizzato':'Fare una cosa alla volta, con tutta l\'attenzione.','Fare ciò che funziona':'Agire in modo efficace, non per avere ragione.','Identificare emozioni':'Riconoscere e nominare cosa si sta provando.','Controllare i fatti':'Verificare se l\'emozione corrisponde ai fatti reali.','PLEASE':'Curare corpo e sonno per ridurre la vulnerabilità emotiva.','Mastery':'Fare ogni giorno qualcosa che dà senso di competenza.','Cope ahead':'Provare mentalmente una situazione difficile in anticipo.','Strutturare tempo':'Bilanciare doveri e piacere nella giornata.','Obiettivi a lungo termine':'Tenere a mente cosa conta davvero, oltre l\'oggi.','Azione opposta':'Agire contro l\'impulso quando l\'emozione non è utile.','Problem solving':'Definire il problema e cercare soluzioni concrete.','Priorità nelle relazioni':'Capire cosa conta di più: obiettivo, relazione o rispetto di sé.','DEAR MAN':'Chiedere ciò che serve in modo chiaro ed efficace.','GIVE':'Mantenere la relazione mentre si chiede qualcosa.','FAST':'Chiedere senza perdere il rispetto per se stessi.','Frasi automotivanti':'Pensieri che aiutano ad affrontare situazioni difficili.','TIP':'Cambiare rapidamente la chimica del corpo nella crisi.','STOP':'Fermarsi prima di reagire d\'impulso.','Distrazione/auto-consolazione':'Spostare l\'attenzione e prendersi cura di sé nella crisi.','Pro e contro':'Valutare vantaggi e svantaggi prima di agire d\'impulso.','Accettazione radicale':'Accettare la realtà così com\'è, senza combatterla.','Mezzo sorriso':'Un gesto fisico che aiuta ad accettare il momento.','Disponibilità':'Essere aperti alla realtà invece di opporsi.','Rinforzi positivi':'Premiare i comportamenti che si vogliono mantenere.','Validare se stessi':'Riconoscere come valide le proprie emozioni ed esperienze.','Validare qualcun altro':'Riconoscere come valida l\'esperienza di un\'altra persona.','Pensiero dialettico':'Tenere insieme due verità che sembrano opposte.','Agire dialettico':'Trovare una via di mezzo tra estremi nel comportamento.'};
 function renderDesktopHome(){
   const box=document.getElementById('desktop-home');
   if(!box) return;
@@ -705,6 +682,9 @@ function renderDesktopHome(){
     if(allData[k] && !isDayEmpty(allData[k])){ correnti++; record=Math.max(record,correnti); }
     else { correnti=0; }
   });
+  const chiavi14=Object.keys(allData).filter(k=>!isDayEmpty(allData[k])).sort().slice(-14);
+  const valoriSoff=chiavi14.map(k=>allData[k]?.scales?.se).filter(v=>v!=null);
+  const soffMediaHome = valoriSoff.length ? (valoriSoff.reduce((a,b)=>a+b,0)/valoriSoff.length).toFixed(1) : '—';
   record=Math.max(record,n);
 
   const scaleOk=Object.values(d.scales||{}).filter(x=>x!=null).length;
@@ -716,14 +696,14 @@ function renderDesktopHome(){
     const val=d.scales?d.scales[k]:null;
     const celle=[0,1,2,3,4,5].map(nn=>{
       const on=val===nn;
-      return '<button onclick="dcDeskCella(\''+k+'\','+nn+')" style="flex:1;min-width:0;height:42px;min-height:42px;border:0;border-radius:15px;font-weight:600;cursor:pointer;background:'+(on?'var(--dc-hero)':'var(--dc-cella)')+';color:'+(on?'var(--dc-hero-ink)':'var(--dc-terra-ink)')+'">'+nn+'</button>';
+      return '<button onclick="dcDeskCella(\''+k+'\','+nn+')" style="flex:none;width:42px;height:42px;border:0;border-radius:12px;font-weight:600;cursor:pointer;background:'+(on?'var(--dc-hero)':'var(--dc-cella)')+';color:'+(on?'var(--dc-hero-ink)':'var(--dc-terra-ink)')+'">'+nn+'</button>';
     }).join('');
-    return '<div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:13.5px;font-weight:600;color:var(--dc-ink)">'+nome+'</span><div style="display:flex;gap:6px">'+celle+'</div></div>';
+    return '<div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:13.5px;font-weight:600;color:var(--dc-ink)">'+nome+'</span><div style="display:flex;justify-content:space-between">'+celle+'</div></div>';
   }).join('');
 
   const pallini=Array.from({length:14},(_,i)=>'<span style="width:9px;height:9px;min-width:9px;flex-shrink:0;border-radius:999px;background:'+(i<Math.min(n,14)?'var(--dc-hero)':'var(--dc-line)')+'"></span>').join('');
 
-  const gruppiHtml=SKG.map(g=>{
+const gruppiHtml=SKG.map(g=>{
     const righe=g.it.map(item=>{
       const sid='sk_'+g.g+'_'+item;
       const on=!!(d.skills&&d.skills[sid]);
@@ -755,22 +735,33 @@ function renderDesktopHome(){
         +'<div style="height:10px;border-radius:999px;background:var(--dc-line);overflow:hidden;margin:14px 0 18px">'
           +'<div style="height:100%;width:'+Math.max(2,(fatte/totale)*100)+'%;background:var(--dc-terracotta);border-radius:999px"></div>'
         +'</div>'
-        +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px 20px;margin-bottom:18px">'+rapideHtml+'</div>'
+        +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 20px;margin-bottom:18px">'+rapideHtml+'</div>'
         +'<button class="dc-desk-btn-secondario" onclick="goPage(\'oggi\',null)">Apri la diary completa</button>'
       +'</div>'
-      +'<div class="dc-desk-card" style="flex:0 1 260px;max-width:260px">'
-        +'<span class="dc-desk-card-kicker">Costanza</span>'
-        +'<div style="display:flex;align-items:flex-end;gap:10px;margin:6px 0 10px">'
-          +'<span class="dc-desk-streak-num">'+n+'</span>'
-          +'<span style="font-size:13px;color:var(--dc-muted);padding-bottom:4px">giorni<br>di fila</span>'
-        +'</div>'        +'<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:14px">'+pallini+'</div>'
-        +'<span style="font-size:13px;color:var(--dc-muted);line-height:1.5">'+(record>n?'Il tuo record è '+record+' giorni.':'Questo è il tuo record.')+'</span>'
+      +'<div style="display:flex;flex-direction:column;gap:1.5rem;flex:0 1 260px;max-width:260px">'
+        +'<div class="dc-desk-card">'
+          +'<span class="dc-desk-card-kicker">Costanza</span>'
+          +'<div style="display:flex;align-items:flex-end;gap:10px;margin:6px 0 10px">'
+            +'<span class="dc-desk-streak-num">'+n+'</span>'
+            +'<span style="font-size:13px;color:var(--dc-muted);padding-bottom:4px">giorni<br>di fila</span>'
+          +'</div>'
+          +'<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:14px">'+pallini+'</div>'
+          +'<span style="font-size:13px;color:var(--dc-muted);line-height:1.5">'+(record>n?'Il tuo record è '+record+' giorni.':'Questo è il tuo record.')+'</span>'
+        +'</div>'
+        +'<div class="dc-desk-card">'
+          +'<span class="dc-desk-card-kicker">Sofferenza emotiva media</span>'
+          +'<div style="display:flex;align-items:baseline;gap:6px;margin:6px 0 4px">'
+            +'<span class="dc-desk-streak-num">'+soffMediaHome+'</span>'
+            +'<span style="font-size:13px;color:var(--dc-muted)">su 5</span>'
+          +'</div>'
+          +'<span style="font-size:13px;color:var(--dc-muted);line-height:1.5">Ultimi 14 giorni compilati.</span>'
+        +'</div>'
       +'</div>'
-    +'</div>'
++'</div>'
     +'<div id="desktop-suggest-box" class="dc-desk-card" onclick="goPage(\'guida\',null)" style="cursor:pointer;background:#FFFFFF"></div>'
     +'<div class="dc-desk-card" style="margin-top:1.5rem">'
       +'<span class="dc-desk-card-tit">Abilità usate oggi</span>'
-      +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px 28px;margin-top:16px;max-width:900px">'+gruppiHtml+'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px 20px;margin-top:16px">'+gruppiHtml+'</div>'
     +'</div>';
 }
 
@@ -790,4 +781,228 @@ function dcDeskSkill(sid){
   allData[oggi].skills[sid]=!allData[oggi].skills[sid];
   svLS(); if(typeof pushChan==='function')pushChan();
   renderDesktopHome(); buildSuggest();
+}
+
+// ── STORICO & TREND DESKTOP — versione ricca ────────────────────────────
+// Riusa esattamente gli stessi dieci contatori e sette grafici gia'
+// costruiti per il mobile (stessa logica di renderHist()/renderTrend()),
+// solo dentro il layout desktop a colonne.
+let desktopStoricoRange = 7;
+function renderDesktopStorico(){
+  const box=document.getElementById('desktop-storico');
+  if(!box) return;
+  if(typeof profile!=='undefined' && profile.role==='terapeuta') return;
+
+  const allKeys=Object.keys(allData).filter(k=>!isDayEmpty(allData[k])).sort();
+  let keys;
+  if(desktopStoricoRange===0){ keys=allKeys; }
+  else {
+    const cutoff=new Date(); cutoff.setDate(cutoff.getDate()-(desktopStoricoRange-1));
+    const cutoffStr=dk(cutoff);
+    keys=allKeys.filter(k=>k>=cutoffStr);
+    if(!keys.length) keys=allKeys.slice(-desktopStoricoRange);
+  }
+  const nG = desktopStoricoRange===0 ? allKeys.length : desktopStoricoRange;
+
+  // ── dieci contatori, stessa logica di renderHist() ──
+  const cF=(fn)=>keys.filter(k=>fn(allData[k])).length;
+  const nSuic=cF(d=>d.toggles?.sa==='Sì'), nAuto=cF(d=>d.toggles?.aa==='Sì');
+  const nAlcol=cF(d=>d.texts?.alcu?.trim()), nCbd=cF(d=>d.texts?.cbdu?.trim());
+  const nEe=cF(d=>d.toggles?.ee==='Sì');
+  const nRap=keys.reduce((acc,k)=>{const v=allData[k]?.scales?.rap;return acc+(v>0?v:0)},0);
+  const nFarmSalt=cF(d=>d.toggles?.farm==='No');
+  const abilitaUsate=keys.reduce((acc,k)=>acc+Object.values(allData[k]?.skills||{}).filter(Boolean).length,0);
+  const nIntense=cF(d=>{const s=d.scales||{}; return ['sp','tri','vuo','rab'].some(c=>s[c]>=3);});
+  const mediaScala=(campo)=>{const v=keys.map(k=>allData[k]?.scales?.[campo]).filter(x=>x!=null);return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):'—';};
+  const intSuic=mediaScala('sp'), intAuto=mediaScala('ai');
+
+  const contatori=[
+    ['Azioni suicidarie', nSuic], ['Azioni autolesività', nAuto],
+    ['Intenzione suicidaria', intSuic], ['Intenzione autolesività', intAuto],
+    ['Giorni con alcol', nAlcol], ['Giorni con CBD', nCbd],
+    ['Emotional eating', nEe], ['Abilità DBT usate', abilitaUsate],
+    ['Farmaci saltati', nFarmSalt], ['Rapporti occasionali', nRap],
+  ];
+  const contatoriHtml=contatori.map(([nome,val])=>{
+    const allarme = (typeof val==='number' && val>0 && (nome.startsWith('Azioni')||nome==='Farmaci saltati'));
+    return '<div class="dc-desk-card" style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:4px">'
+    +'<span style="font-size:23px;font-weight:800;letter-spacing:-.03em;line-height:1;color:'+(allarme?'#C1714A':'#14201F')+'">'+val+'</span>'
+    +'<span style="font-size:12.5px;color:#5B6D6A;line-height:1.35">'+nome+'</span>'
+    +'</div>';
+  }).join('');
+
+  // ── pillole periodo ──
+  const periodi=[[7,'7 giorni'],[14,'14 giorni'],[30,'30 giorni'],[0,'Tutti']];
+  const periodiHtml=periodi.map(([n,nome])=>{
+    const on=desktopStoricoRange===n;
+    return '<button onclick="desktopStoricoRange='+n+';renderDesktopStorico()" style="border:0;padding:10px 18px;border-radius:999px;font-size:13.5px;font-weight:600;cursor:pointer;background:'+(on?'#1B4B4A':'#F7E7DC')+';color:'+(on?'#FFFFFF':'#C1714A')+'">'+nome+'</button>';
+  }).join('');
+
+  // ── sette grafici, gli stessi contenitori/id usati dal mobile ──
+  const graficiDef=[
+    ['dsCSuic1','Pensieri e azione suicidaria'],
+    ['dsCSuic2','Autolesività'],
+    ['dsCSost','Alcol e CBD'],
+    ['dsCEmoEat','Emotional eating'],
+    ['dsCEmoPos','Emozioni positive'],
+    ['dsCEmoNeg1','Tristezza, paura, rabbia'],
+    ['dsCEmoNeg2','Vergogna, colpa, vuoto'],
+    ['dsCSoffisica','Sofferenza fisica ed emotiva'],
+    ['dsCIntSuic','Intenzione suicidio'],
+    ['dsCIntAuto','Intenzione autolesività'],
+  ];
+  const graficiHtml=graficiDef.map(([id])=>
+    '<div class="dc-desk-card"><div id="'+id+'" style="min-height:200px"></div></div>'
+  ).join('');
+
+  // ── giornate: stesse righe del mobile (data, etichette, freccia) ──
+  const giorniTab=keys.slice().reverse();
+  const righeTab=giorniTab.map(k=>{
+    const d=allData[k];
+    const flags=buildFlags(d);
+    return '<div class="hi" onclick="showDaySummary(\''+k+'\', allData[\''+k+'\'])" style="cursor:pointer;border:.75px solid #F0C7AE">'
+      +'<div style="flex:1"><div class="hd">'+fmtS(k)+'</div><div class="flags">'+flags+'</div></div>'
+      +'<svg width="11" height="19" viewBox="0 0 11 19" fill="none" style="flex:none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      +'</div>';
+  }).join('');
+
+  box.innerHTML =
+    '<div class="dc-desk-hero">'
+      +'<img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-desk-hero-deco">'
+      +'<svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>'
+      +'<div class="dc-desk-hero-riga">'
+        +'<div>'
+          +'<span class="dc-desk-hero-data">'+new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'})+'</span>'
+          +'<h1 class="dc-desk-hero-tit">Storico & Trend</h1>'
+          +'<p class="dc-desk-hero-sub">Come si muovono le scale nel periodo scelto.</p>'
+        +'</div>'
+      +'</div>'
+    +'</div>'
+    +'<div style="padding:2rem 0 0">'
+    +'<div style="display:flex;gap:8px;margin-bottom:1.5rem">'+periodiHtml+'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:1.5rem">'+contatoriHtml+'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-bottom:1.5rem">'+graficiHtml+'</div>'
+    +'<div class="dc-desk-card">'
+      +'<span class="dc-desk-card-tit">Le giornate</span>'
+      +'<div style="display:flex;flex-direction:column;gap:2px;margin-top:14px">'+(righeTab||'<div style="padding:20px;text-align:center;color:#5B6D6A">Nessuna giornata nel periodo.</div>')+'</div>'
+    +'</div>'
+    +'</div>';
+
+  setTimeout(()=>{
+    if(typeof ApexCharts==='undefined') return;
+    const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric'}));
+    const BASE_OPTS={
+      chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400},dropShadow:{enabled:false}},
+      stroke:{curve:'smooth',width:2.5},
+      fill:{type:'solid',fillOpacity:0,opacity:0},
+      grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
+      xaxis:{categories:labels,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},rotate:0,trim:false},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
+      yaxis:{min:0,max:5,tickAmount:5,labels:{style:{fontSize:'10px',colors:'rgba(120,140,135,.7)'},formatter:v=>Math.round(v)}},
+      tooltip:{theme:'dark',x:{show:true},shared:true,intersect:false,style:{fontSize:'12px'}},
+      legend:{position:'bottom',fontSize:'11px',fontWeight:500,markers:{width:8,height:8,radius:8},itemMargin:{horizontal:6,vertical:0},offsetY:0},
+      markers:{size:0,hover:{size:5,sizeOffset:2}},
+      dataLabels:{enabled:false},
+    };
+    function mkApex(id,series,colors,ymax,extra){
+      const el=document.getElementById(id);if(!el)return;
+      el.innerHTML='';
+      const opts={...BASE_OPTS,...(extra||{}),series,colors,
+        yaxis:{...BASE_OPTS.yaxis,max:ymax||5},
+        chart:{...BASE_OPTS.chart,id}
+      };
+      new ApexCharts(el,opts).render();
+    }
+    function sv(f){return keys.map(k=>allData[k]?.scales?.[f]??null);}
+    function tv(f){return keys.map(k=>{const d=allData[k];if(!d)return null;return d.toggles?.[f]==='Sì'?1:0});}
+
+    mkApex('dsCSuic1',[{name:'Pensieri suicidari',data:sv('sp')},{name:'Azione suicidaria',data:tv('sa')}],['#C1714A','#123534']);
+    mkApex('dsCSuic2',[{name:'Intenzione autolesività',data:sv('ai')},{name:'Azione autolesività',data:tv('aa')}],['#C1714A','#123534']);
+    mkApex('dsCIntSuic',[{name:'Intenzione suicidio',data:sv('sp')}],['#C1714A']);
+    mkApex('dsCIntAuto',[{name:'Intenzione autolesività',data:sv('ai')}],['#123534']);
+    mkApex('dsCSost',[{name:'Intenzione alcol',data:sv('alci')},{name:'Intenzione CBD',data:sv('cbdi')}],['#F5CE47','#1B4B4A']);
+    mkApex('dsCEmoEat',[{name:'Emotional eating',data:tv('ee')}],['#F5CE47'],1,{title:{text:'Emotional eating',style:{fontSize:'13px',fontWeight:700,color:'#14201F'}}});
+    mkApex('dsCEmoPos',[{name:'Serenità',data:sv('ser')},{name:'Gioia',data:sv('gio')}],['#1B4B4A','#F5CE47']);
+    mkApex('dsCEmoNeg1',[{name:'Tristezza',data:sv('tri')},{name:'Paura',data:sv('pau')},{name:'Rabbia',data:sv('rab')}],['#1B4B4A','#C1714A','#8A4A30']);
+    mkApex('dsCEmoNeg2',[{name:'Vergogna',data:sv('ver')},{name:'Colpa',data:sv('col')},{name:'Vuoto',data:sv('vuo')}],['#8FB5B0','#2A6866','#123534']);
+    mkApex('dsCSoffisica',[{name:'Sofferenza fisica',data:sv('sf')},{name:'Sofferenza emotiva',data:sv('se')}],['#C1714A','#8A4A30']);
+  },0);
+}
+
+// ── ABILITÀ DBT DESKTOP ──────────────────────────────────────────────
+// Stessa lista di abilità della Home desktop ("Abilità usate oggi"),
+// copiata identica come richiesto - stesso SKG, stesso stile di riga.
+// ── ABILITÀ DBT DESKTOP ──────────────────────────────────────────────
+// Copiata dallo spec letterale mobile (vAbilita): titolo + conteggio,
+// gruppi impilati in colonna, ognuno con icona modulo e una sola scheda
+// che contiene tutte le sue righe - non la griglia usata prima.
+const GRUPPO_ICONA={
+  'Mindfulness':'modulo-mindfulness',
+  'Regolazione emotiva':'modulo-regolazione',
+  'Efficacia interpersonale':'modulo-interpersonale',
+  'Tolleranza della sofferenza':'modulo-tolleranza',
+  'Sentiero di mezzo':'strumenti-generali'
+};
+function renderDesktopAbilita(){
+  const box=document.getElementById('desktop-abilita');
+  if(!box) return;
+  if(typeof profile!=='undefined' && profile.role==='terapeuta') return;
+
+  const oggi=today();
+  const d=allData[oggi]||{};
+
+  let totale=0, fatte=0;
+  const gruppiHtml=SKG.map(g=>{
+    const righe=g.it.map(item=>{
+      totale++;
+      const sid='sk_'+g.g+'_'+item;
+      const on=!!(d.skills&&d.skills[sid]);
+      if(on) fatte++;
+      const tick=on?'<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 7L5 10L11 3" stroke="#14201F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>':'';
+      const descr=DESC_ABILITA[item]||'';
+      return '<div onclick="dcDeskAbilitaSkill(\''+sid+'\')" style="display:flex;align-items:center;gap:14px;padding:10px 0;cursor:pointer"><span style="width:24px;height:24px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;background:'+(on?'var(--dc-senape)':'var(--dc-cella)')+'">'+tick+'</span><span style="font-size:15px;font-weight:'+(on?600:500)+';color:var(--dc-ink);flex:none;min-width:190px">'+item+'</span>'
+        +(descr?'<span style="font-size:12.5px;color:var(--dc-muted);line-height:1.4;flex:1">'+descr+'</span>':'')
+      +'</div>';
+
+    }).join('');
+    const icona=GRUPPO_ICONA[g.g]||'strumenti-generali';
+    return '<div style="display:flex;flex-direction:column;gap:10px">'
+      +'<div style="display:flex;align-items:center;gap:12px">'
+        +'<img src="illustrazioni/miniature/'+icona+'.svg" width="34" height="34" style="border-radius:12px;flex:none" alt="">'
+        +'<span class="dc-desk-card-kicker">'+g.g+'</span>'
+      +'</div>'
+      +'<div class="dc-desk-card" style="padding:8px 18px 8px">'+righe+'</div>'
+    +'</div>';
+  }).join('');
+
+  box.innerHTML =
+    '<div class="dc-desk-hero">'
+      +'<img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-desk-hero-deco">'
+      +'<svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>'
+      +'<div class="dc-desk-hero-riga">'
+        +'<div>'
+          +'<span class="dc-desk-hero-data">'+new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'})+'</span>'
+          +'<h1 class="dc-desk-hero-tit">Abilità di oggi</h1>'
+          +'<p class="dc-desk-hero-sub">'+fatte+' su '+totale+' spuntate oggi</p>'
+        +'</div>'
+      +'</div>'
+    +'</div>'
+    +'<div style="padding:2rem 0 0;display:flex;flex-direction:column;gap:22px;max-width:800px;margin:0 auto">'+gruppiHtml+'</div>';
+}
+
+function dcDeskAbilitaSkill(sid){
+  const oggi=today();
+  if(!allData[oggi]) allData[oggi]={scales:{},toggles:{},texts:{}};
+  if(!allData[oggi].skills) allData[oggi].skills={};
+  allData[oggi].skills[sid]=!allData[oggi].skills[sid];
+  svLS(); if(typeof pushChan==='function')pushChan();
+  renderDesktopAbilita();
+}
+
+function dcDeskAbilitaSkill(sid){
+  const oggi=today();
+  if(!allData[oggi]) allData[oggi]={scales:{},toggles:{},texts:{}};
+  if(!allData[oggi].skills) allData[oggi].skills={};
+  allData[oggi].skills[sid]=!allData[oggi].skills[sid];
+  svLS(); if(typeof pushChan==='function')pushChan();
+  renderDesktopAbilita();
 }

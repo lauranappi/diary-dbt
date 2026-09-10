@@ -25,12 +25,7 @@ const isFut=d=>{const t=new Date();t.setHours(0,0,0,0);const x=new Date(d);x.set
 function fmtL(d){const dd=d instanceof Date?d:new Date(d+'T12:00:00');if(dk(dd)===today())return'Oggi';return dd.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
 function fmtS(d){return new Date(d+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})}
 
-function genCode(nome,cognome){
-  const n=(nome||'').toLowerCase().replace(/[^a-z]/g,'');
-  const c=(cognome||'').toLowerCase().replace(/[^a-z]/g,'');
-  const rnd=Math.random().toString(36).slice(2,6);
-  return [n,c,rnd].filter(Boolean).join('-');
-}
+
 
 // ── STORAGE ──
 // Load profile (which user is logged in) - SHARED across all users

@@ -787,14 +787,6 @@ function dmGenera(){
 }
 
 
-const PLEASE_ITEMS=[
-  {id:'pl',icon:'💊',label:'Farmaci / salute fisica',desc:'Hai preso le medicine? Hai ascoltato il tuo corpo?'},
-  {id:'eq',icon:'🥗',label:'Alimentazione equilibrata',desc:'Hai mangiato regolarmente senza saltare pasti?'},
-  {id:'al',icon:'🚫',label:'Evitato sostanze',desc:'Hai evitato alcol e altre sostanze alteranti?'},
-  {id:'so',icon:'😴',label:'Sonno bilanciato',desc:'Hai dormito in modo regolare e sufficiente?'},
-  {id:'ex',icon:'🏃',label:'Esercizio fisico',desc:'Hai fatto almeno 20 minuti di attività fisica?'},
-];
-
 function renderPlease(){
   const el=document.getElementById('please-week');
   if(!el)return;

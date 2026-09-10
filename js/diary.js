@@ -34,20 +34,46 @@ function buildScales(){
   mkScaleRap();
 }
 function mkSkills(){
-  const c=document.getElementById('skwrap');c.innerHTML='';
+  const c=document.getElementById('skwrap');if(!c)return;
+  const oggi=today();
+  const d=allData[oggi]||{};
+  let out='';
+  let totale=0, fatte=0;
   SKG.forEach(g=>{
-    const gd=document.createElement('div');
-    gd.innerHTML='<div class="sgt">'+g.g+'</div>';
-    const grid=document.createElement('div');grid.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px';
+    const icona=(typeof GRUPPO_ICONA!=='undefined'&&GRUPPO_ICONA[g.g])||'strumenti-generali';
+    let righe='';
     g.it.forEach(item=>{
+      totale++;
       const sid='sk_'+g.g+'_'+item;
-      const btn=document.createElement('button');btn.className='sk-chip';btn.dataset.sk=sid;btn.textContent=item;
-      btn.onclick=()=>{if(btn.classList.contains('on'))sel(btn,false);else sel(btn,true)};
-      grid.appendChild(btn);
+      const on=!!(d.skills&&d.skills[sid]);
+      if(on) fatte++;
+      const tick=on?'<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 7L5 10L11 3" stroke="#14201F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>':'';
+      righe+='<button onclick="toggleSkillMobile(\''+sid+'\')" style="display:flex;align-items:center;gap:14px;padding:13px 0;cursor:pointer;border:0;background:transparent;width:100%;text-align:left">'
+        +'<span style="width:24px;height:24px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;background:'+(on?'var(--dc-senape)':'var(--dc-cella)')+'">'+tick+'</span>'
+        +'<span style="font-size:15px;font-weight:'+(on?600:500)+';color:var(--dc-ink)">'+item+'</span>'
+      +'</button>';
     });
-    gd.appendChild(grid);c.appendChild(gd);
+    out += '<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">'
+      +'<div style="display:flex;align-items:center;gap:12px">'
+        +'<img src="illustrazioni/miniature/'+icona+'.svg" width="34" height="34" style="border-radius:12px;flex:none" alt="">'
+        +'<span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-terra)">'+g.g+'</span>'
+      +'</div>'
+      +'<div class="card" style="padding:8px 18px">'+righe+'</div>'
+    +'</div>';
   });
+  c.innerHTML=out;
+  const conta=document.getElementById('ski-conta');
+  if(conta) conta.textContent=fatte+' su '+totale+' spuntate oggi';
 }
+function toggleSkillMobile(sid){
+  const oggi=today();
+  if(!allData[oggi]) allData[oggi]={scales:{},toggles:{},texts:{}};
+  if(!allData[oggi].skills) allData[oggi].skills={};
+  allData[oggi].skills[sid]=!allData[oggi].skills[sid];
+  svLS(); if(typeof pushChan==='function')pushChan();
+  mkSkills();
+}
+
 function buildSkills(){mkSkills()}
 
 // ── FORM GET/SET ──
@@ -168,7 +194,7 @@ function goPage(name,btn){
   // resta petrolio ovunque (coerente con l'intestazione della Home).
   if(typeof setThemeColor==='function') setThemeColor('#1B4B4A');
 
-  const showTopheader=name==='oggi'||name==='attivita'||name==='abilita';
+  const showTopheader=false; // .topheader e' display:none per sempre in dc.css: nessuna pagina deve piu' riservare i 74px per lui
   // Al terapeuta la barra dei giorni non serve: consulta, non compila.
   const terap = (typeof profile!=='undefined' && profile.role==='terapeuta');
   document.getElementById('topheader').style.display=(showTopheader && !terap)?'':'none';
@@ -181,8 +207,8 @@ function goPage(name,btn){
   const sidebarEl=document.getElementById('sidebar');
   if(sidebarEl)sidebarEl.style.display=name==='guida'?'none':'';
   if(name==='home')buildHome();
-  if(name==='storico'){renderHist();switchStoricoTab('storico');}
-  if(name==='abilita'){updDL();updAbiPill();renderActTab();}
+  if(name==='storico'){renderHist();switchStoricoTab('storico');if(typeof renderDesktopStorico==='function'){try{renderDesktopStorico();}catch(e){const bx=document.getElementById('desktop-storico');if(bx)bx.innerHTML='<div style="background:#F7E7DC;color:#C1714A;padding:16px;border-radius:16px;font-size:12px;white-space:pre-wrap">ERRORE renderDesktopStorico: '+e.message+'\n'+e.stack+'</div>';}}}
+  if(name==='abilita'){updDL();updAbiPill();renderActTab();mkSkills();if(typeof renderDesktopAbilita==='function')renderDesktopAbilita();}
   if(name==='attivita'){buildSuggest();curPlan=new Date();plannerData={mattina:[],pomeriggio:[],sera:[]};updPlanDL();renderPlanner();}
   if(name==='pazienti')renderPatients();
   if(name==='please'){renderPlease();}
@@ -215,7 +241,6 @@ function goPage(name,btn){
 
 
 
-function goBack(){ goPage(window._prevPage || 'strumenti'); }
 
 
 // Doppio tocco su Home = ricarica l'app (prende il codice aggiornato).
@@ -292,7 +317,7 @@ function applyReadOnlyForTerapeuta(name){
     const n=document.createElement('div');
     n.className='readonly-note';
     n.textContent='Sola consultazione — in modalità terapeuta queste schede non si compilano.';
-    const hero=page.querySelector('.page-hero');
+    const hero=page.querySelector('.page-hero,.dc-desk-hero');
     if(hero && hero.nextSibling) page.insertBefore(n, hero.nextSibling);
     else page.insertBefore(n, page.firstChild);
   }
@@ -391,7 +416,13 @@ function dcVaiPasso(n){
   const schede = dcSchede();
   if(!schede.length) return;
   dcPasso = Math.max(0, Math.min(schede.length-1, n));
-  schede.forEach((c,idx)=>{ c.style.display = idx===dcPasso ? '' : 'none'; });
+  schede.forEach((c,idx)=>{
+    c.classList.toggle('dc-passo-off', idx!==dcPasso);
+    const etichetta = c.previousElementSibling;
+    if(etichetta && etichetta.classList.contains('dc-kicker-diary')){
+      etichetta.classList.toggle('dc-passo-off', idx!==dcPasso);
+    }
+  });
 
   const barra = document.getElementById('dc-passi');
   if(barra){
@@ -409,7 +440,7 @@ function dcVaiPasso(n){
   // non due gruppi di pulsanti separati che si scambiano di posto.
   const ultimoPasso = dcPasso === schede.length - 1;
   const cta = document.getElementById('dc-cta-passo');
-  if(cta) cta.textContent = ultimoPasso ? '⤓ Salva giornata' : 'Avanti';
+  if(cta) cta.textContent = (window.innerWidth>=701 || ultimoPasso) ? '⤓ Salva giornata' : 'Avanti';
   const indietro = document.getElementById('dc-indietro');
   if(indietro){ indietro.disabled = dcPasso === 0; indietro.classList.toggle('spenta', dcPasso === 0); }
   window.scrollTo(0,0);
@@ -419,7 +450,8 @@ function dcStriscia(){
   const el = document.getElementById('dc-strip');
   if(!el) return;
   let out = '';
-  for(let i=9;i>=0;i--){
+  const nGiorni = window.innerWidth>=701 ? 16 : 10;
+  for(let i=nGiorni-1;i>=0;i--){
     const gg = new Date(); gg.setDate(gg.getDate()-i);
     const k = dk(gg);
     const voce = allData[k];
@@ -453,7 +485,7 @@ function dcDiary(){
   const gg = cur;   // 'cur' e' l'unica variabile del giorno corrente: la usano anche salvataggio e caricamento
   const oggiQ = dk(gg) === today();
   const ieriD = new Date(); ieriD.setDate(ieriD.getDate()-1);
-  if(t) t.textContent = oggiQ ? 'Oggi' : (dk(gg)===dk(ieriD) ? 'Ieri' : gg.toLocaleDateString('it-IT',{weekday:'long'}));
+  if(t) t.textContent = 'Diary di ' + (oggiQ ? 'oggi' : (dk(gg)===dk(ieriD) ? 'ieri' : gg.toLocaleDateString('it-IT',{weekday:'long'})));
   if(d) d.textContent = gg.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
   const succ = document.getElementById('dc-succ');
   if(succ){ succ.disabled = oggiQ; succ.classList.toggle('spenta', oggiQ); }
@@ -465,6 +497,7 @@ function dcDiary(){
 // Il pulsante principale del passo: avanza, o salva se e' l'ultimo -
 // stessa etichetta dinamica del prototipo, non due pulsanti diversi.
 function dcAzionePasso(){
+  if(window.innerWidth>=701){ if(typeof saveDay==='function') saveDay(); return; }
   const schede = dcSchede();
   if(dcPasso === schede.length - 1){ if(typeof saveDay==='function') saveDay(); }
   else { dcVaiPasso(dcPasso+1); }

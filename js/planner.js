@@ -187,29 +187,13 @@ function renderPlanSummary(){
   });
 }
 
-function removeSummaryItem(slot,idx){
-  if(plannerData[slot])plannerData[slot].splice(idx,1);
-  updateSlotCounts();
-  renderPlanSummary();
-  savePlanner();
-}
+
 
 function getPlannerData(){return {...plannerData};}
 
-function setPlannerData(plan){
-  plannerData={mattina:[],pomeriggio:[],sera:[]};
-  if(plan){
-    PLANNER_SLOTS.forEach(s=>{if(plan[s])plannerData[s]=[...plan[s]];});
-  }
-  updateSlotCounts();
-  renderPlanSummary();
-}
 
-function clearPlanner(){
-  plannerData={mattina:[],pomeriggio:[],sera:[]};
-  updateSlotCounts();
-  renderPlanSummary();
-}
+
+
 
 async function savePlanner(){
   const key=dkD(curPlan);

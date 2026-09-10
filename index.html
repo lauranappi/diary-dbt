@@ -18,8 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css?v=202609092156">
-<link rel="stylesheet" href="css/dc.css?v=202609092156">
+<link rel="stylesheet" href="css/dc.css?v=139">
 </head>
 <body>
 
@@ -167,7 +166,7 @@
 <div id="page-home" class="page active">
 
   <div id="terap-home" style="display:none"></div>
-  <div id="desktop-home" style="display:none"></div>
+  <div id="desktop-home"></div>
 
   <!-- 1. INTESTAZIONE -->
   <div id="home-hero" class="dc-hero">
@@ -193,8 +192,7 @@
       <div class="dc-card dc-streak">
         <span class="dc-streak-num" id="streak-num">0</span>
         <span class="dc-streak-lbl">giorni<br>di fila</span>
-        <span id="streak-sub" hidden></span><span id="streak-dots" hidden></span><span id="streak-days-label" hidden></span>
-      </div>
+        </div>
       <div class="dc-card dc-ieri">
         <span class="dc-card-tit">Ieri</span>
         <div id="home-emo-yesterday"></div>
@@ -213,27 +211,35 @@
       <div id="home-timeline"></div>
     </div>
 
-    <div id="home-diary-card" hidden></div>
   </div>
 
 </div>
 
 <div id="page-oggi" class="page">
 
-  <div class="dc-testata">
-    <div class="dc-testata-testo">
-      <h2 id="dc-giorno-tit">Oggi</h2>
-      <p id="dc-giorno-data"></p>
+  <div class="dc-desk-hero dc-hero-solo-desktop">
+    <img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-desk-hero-deco">
+    <svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>
+    <div class="dc-desk-hero-riga">
+      <div>
+        <span class="dc-desk-hero-data dc-data-oggi"></span>
+        <h1 class="dc-desk-hero-tit" id="dc-giorno-tit">Oggi</h1>
+        <p class="dc-desk-hero-sub" id="dc-giorno-data"></p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="dc-tondo" onclick="chDay(-1)" aria-label="Giorno precedente">
+          <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="dc-tondo" id="dc-succ" onclick="chDay(1)" aria-label="Giorno successivo">
+          <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
-    <button class="dc-tondo" onclick="chDay(-1)" aria-label="Giorno precedente">
-      <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button class="dc-tondo" id="dc-succ" onclick="chDay(1)" aria-label="Giorno successivo">
-      <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
   </div>
+  <div style="padding:2rem 0 0">
 
   <div class="dc-strip" id="dc-strip"></div>
+</div>
 
   <div class="dc-passi-barra">
     <div class="dc-passi" id="dc-passi"></div>
@@ -245,8 +251,8 @@
 
   
 
+  <div class="dc-kicker-diary" style="margin-bottom:10px">Comportamenti suicidari / autolesivi</div>
   <div class="card">
-    <div class="dc-kicker-diary">Comportamenti suicidari / autolesivi</div>
     <div class="g2">
       <div class="field"><span class="flbl">Pensieri suicidari (0–5)</span><div class="sr" id="s-sp"></div></div>
       <div class="field"><span class="flbl">Azione suicidaria</span><div class="dc-sino-riga" id="t-sa"></div></div>
@@ -255,8 +261,8 @@
     </div>
   </div>
 
+  <div class="dc-kicker-diary" style="margin-bottom:10px">Comportamenti disfunzionali</div>
   <div class="card">
-    <div class="dc-kicker-diary">Comportamenti disfunzionali</div>
     <div class="g2">
       <div class="field"><span class="flbl">Alcol — intenzione (0–5)</span><div class="sr" id="s-alci"></div></div>
       <div class="field"><span class="flbl">Alcol — uso (cosa e quanto?)</span><input type="text" id="tx-alcu" placeholder="Es. un bicchiere di vino"/></div>
@@ -275,8 +281,8 @@
     </div>
   </div>
 
+  <div class="dc-kicker-diary" style="margin-bottom:10px">Emozioni (0–5)</div>
   <div class="card">
-    <div class="dc-kicker-diary">Emozioni (0–5)</div>
     <div class="g2">
       <div class="field"><span class="flbl">Serenità</span><div class="sr" id="s-ser"></div></div>
       <div class="field"><span class="flbl">Gioia</span><div class="sr" id="s-gio"></div></div>
@@ -293,8 +299,8 @@
     </div>
   </div>
 
+  <div class="dc-kicker-diary" style="margin-bottom:10px">Terapia & attività</div>
   <div class="card">
-    <div class="dc-kicker-diary">Terapia & attività</div>
     <div class="g3">
       <div class="field"><span class="flbl">Abbandonare la terapia (0–5)</span><div class="sr" id="s-abb"></div></div>
       <div class="field"><span class="flbl">Fiducia nel cambiamento (0–5)</span><div class="sr" id="s-fid"></div></div>
@@ -317,38 +323,30 @@
 
 <!-- ══ PAGE: ABILITÀ ══ -->
 <div id="page-abilita" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
-
-    <div style="position:relative">
-      <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Abilità DBT</div>
-      <div style="font-size:13px;opacity:.85">Quali abilità hai usato oggi?</div>
-    </div>
-  </div>
+<div id="desktop-abilita"></div>
+  <h2 class="dc-hero-solo-desktop" style="margin:0;font-family:var(--dc-font);font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--dc-ink)">Abilità di oggi</h2>
+  <p style="margin:6px 0 22px;font-size:13.5px;color:var(--dc-muted)" id="ski-conta"></p>
 
   <!-- TAB: USATE OGGI (only tab) -->
   <div id="abt-tab-oggi">
-    <div class="card">
-      <div class="slbl">Abilità DBT usate oggi</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">Tocca le abilità che hai usato oggi. Vengono salvate con la giornata corrente.</div>
       <div id="skwrap"></div>
-    </div>
-    <div class="abar">
-      <button class="bpri" onclick="saveDay()">⤓ Salva</button>
-      <span class="toast" id="t2">Salvato</span>
-    </div>
   </div>
 </div>
 
 <!-- ══ PAGE: ATTIVITÀ ══ -->
 <div id="page-attivita" class="page">
-<img src="illustrazioni/decorative/deco-ramo-petrolio.svg" class="dc-att-ramo" alt="">
-<!-- Hero -->
-<div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
-  <div style="position:relative">
-    <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Attività</div>
-    <div style="font-size:13px;opacity:.85" id="planner-day-label">Pianifica la tua giornata</div>
+<div class="dc-desk-hero dc-hero-solo-desktop">
+  <img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-desk-hero-deco">
+  <svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>
+  <div class="dc-desk-hero-riga">
+    <div>
+      <span class="dc-desk-hero-data dc-data-oggi"></span>
+      <h1 class="dc-desk-hero-tit">Attività</h1>
+      <p class="dc-desk-hero-sub" id="planner-day-label">Pianifica la tua giornata</p>
+    </div>
   </div>
 </div>
+<div style="padding:2rem 0 0">
 <!-- STEP 1: scegli slot -->
 <div id="act-step-slot">
   <div id="dc-slot-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem">
@@ -383,7 +381,9 @@
 <!-- STEP 2: scegli attività (appare dopo aver selezionato lo slot) -->
 <div id="act-step-pick" style="display:none">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
-    <button onclick="backToSlots()" style="background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--rs);padding:7px 14px;font-size:13px;cursor:pointer;font-family:var(--font-ui)">← Indietro</button>
+    <button onclick="backToSlots()" class="dc-tondo-indietro" aria-label="Indietro" style="margin-bottom:0">
+      <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <h2 class="dc-scegli-titolo" style="margin:0">Scegli le attività</h2>
     <div style="display:none" id="pick-slot-label">Mattina</div>
   </div>
@@ -411,14 +411,20 @@
   </div>
 </div>
 </div>
+</div>
 
 <!-- ══ PAGE: STORICO ══ -->
 <div id="page-storico" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
-
-    <div style="position:relative">
-      <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Storico & Trend</div>
-      <div style="font-size:13px;opacity:.85">I tuoi dati nel tempo</div>
+<div id="desktop-storico"></div>
+  <div class="dc-desk-hero dc-hero-solo-desktop">
+    <img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-desk-hero-deco">
+    <svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>
+    <div class="dc-desk-hero-riga">
+      <div>
+        <span class="dc-desk-hero-data dc-data-oggi"></span>
+        <h1 class="dc-desk-hero-tit">Storico &amp; Trend</h1>
+        <p class="dc-desk-hero-sub">Come si muovono le scale nel periodo scelto.</p>
+      </div>
     </div>
   </div>
 
@@ -469,9 +475,7 @@
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Situazione</div>
     <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Con chi devi parlare?</label>
     <input id="dm-chi" type="text" placeholder="Es. il mio ragazzo, la mia amica..." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:14px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box;margin-bottom:12px">
-    <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Qual è l'obiettivo della conversazione?</label>
-    <input id="dm-obiettivo" type="text" placeholder="Es. vorrei che mi avvisasse quando fa tardi..." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:14px;font-family:var(--font-ui);background:var(--surface);color:var(--text);box-sizing:border-box">
-  </div>
+    </div>
 
   <div class="card" style="margin-bottom:1rem">
     <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">DEAR MAN — passo per passo</div>
@@ -1048,17 +1052,19 @@
 <div id="page-pazienti" class="page">
   <!-- LIST VIEW -->
   <div id="pat-list-view" style="display:none">
-    <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
-
-      <div style="display:flex;align-items:center;gap:12px;position:relative">
-        <div style="flex:1">
-          <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Le mie pazienti</div>
-          <div style="font-size:13px;opacity:.85" id="pat-count">Caricamento...</div>
+    <div class="dc-desk-hero dc-hero-solo-desktop">
+      <img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-desk-hero-deco">
+      <svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>
+      <div class="dc-desk-hero-riga">
+        <div>
+          <span class="dc-desk-hero-data dc-data-oggi"></span>
+          <h1 class="dc-desk-hero-tit">Le mie pazienti</h1>
+          <p class="dc-desk-hero-sub" id="pat-count">Caricamento...</p>
         </div>
         <button onclick="renderPatients()" style="background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.25);padding:8px 16px;font-size:13px;border-radius:999px;cursor:pointer;font-family:inherit;font-weight:600;backdrop-filter:blur(4px)">↻ Aggiorna</button>
       </div>
     </div>
-    <div style="background:var(--teal-ll);border:1px solid var(--teal-l);border-radius:var(--rs);padding:12px 14px;margin-bottom:1.25rem;font-size:13px;color:var(--teal-d);line-height:1.6">
+    <div style="background:var(--dc-surface-2);border-radius:20px;padding:12px 14px;margin-bottom:1.25rem;font-size:13px;color:var(--dc-ink);line-height:1.6">
       <strong>Il tuo username: <span id="pat-myusername" style="font-family:monospace">—</span></strong><br>
       <span style="font-size:12px;color:var(--muted)">Comunicalo alle tue pazienti per collegarvi.</span>
     </div>
@@ -1108,12 +1114,12 @@
 
     <!-- TAB: TREND -->
     <div class="pat-tab-content" id="ptab-trend">
-    <div class="cwrap"><div class="ctitle">Comportamenti suicidari</div><div style="height:220px"><div id="pc4" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Autolesività</div><div style="height:220px"><div id="pc5" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="height:220px"><div id="pc6" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="height:220px"><div id="pc1" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="height:220px"><div id="pc2" style="min-height:200px"></div></div></div>
-      <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="height:220px"><div id="pc3" style="min-height:200px"></div></div></div>
+    <div class="cwrap"><div class="ctitle">Comportamenti suicidari</div><div style="height:150px"><div id="pc4" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Autolesività</div><div style="height:150px"><div id="pc5" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Sostanze (alcol, CBD)</div><div style="height:150px"><div id="pc6" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Emozioni positive</div><div style="height:150px"><div id="pc1" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Tristezza, Paura, Rabbia</div><div style="height:150px"><div id="pc2" style="min-height:200px"></div></div></div>
+      <div class="cwrap"><div class="ctitle">Vergogna, Colpa, Vuoto, Sof. emotiva</div><div style="height:150px"><div id="pc3" style="min-height:200px"></div></div></div>
     </div>
 
     <!-- TAB: GIORNATA -->
@@ -1225,13 +1231,8 @@
   </div>
 
   <div id="page-impostazioni-paziente">
-  <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
-
-    <div style="position:relative">
-      <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Impostazioni</div>
-      <div style="font-size:13px;opacity:.85">Profilo e preferenze</div>
-    </div>
-  </div>
+  <h2 style="margin:0 0 6px;font-family:var(--dc-font);font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--dc-ink)">Impostazioni</h2>
+  <p style="margin:0 0 22px;font-size:13.5px;color:var(--dc-muted)">Profilo e preferenze</p>
 
   <div class="card" style="margin-bottom:1rem;display:none"><!-- tema scuro non ancora pronto nel nuovo stile -->
     <div class="settings-section">
@@ -1306,11 +1307,15 @@
 
 <!-- ══ PAGE: GUIDA DBT ══ -->
 <div id="page-guida" class="page">
-  <div class="page-hero" style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-3) 100%);border-radius:var(--r);padding:1.5rem 1.75rem;margin-bottom:1.25rem;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden">
-    <img src="illustrazioni/decorative/deco-ramo-petrolio.svg" alt="" style="position:absolute;right:-34px;top:-16px;width:170px;opacity:.14;pointer-events:none">
-    <div style="position:relative">
-      <div style="font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em">Guida DBT</div>
-      <div style="font-size:13px;opacity:.85">Abilit&agrave; e tecniche dal manuale di Marsha Linehan</div>
+  <div class="dc-desk-hero dc-hero-solo-desktop">
+    <img src="illustrazioni/decorative/deco-ramo-chiaro.svg" alt="" class="dc-desk-hero-deco">
+    <svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>
+    <div class="dc-desk-hero-riga">
+      <div>
+        <span class="dc-desk-hero-data dc-data-oggi"></span>
+        <h1 class="dc-desk-hero-tit">Guida DBT</h1>
+        <p class="dc-desk-hero-sub">Quattro moduli e gli strumenti generali, con le abilit&agrave; passo a passo.</p>
+      </div>
     </div>
   </div>
   <div id="guida-content"></div>
@@ -1401,7 +1406,7 @@
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
       <span class="bn-lbl">Pazienti</span>
     </button>
-    <button class="bn-btn" id="bn-abilita" onclick="goPage('abilita',this)" style="display:none">
+    <button class="bn-btn" id="bn-abilita" onclick="goPage('abilita',this)">
       <span class="bn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3v-16a3 3 0 0 0-3-3z"/></svg></span>
       <span class="bn-lbl">Abilità</span>
     </button>
@@ -1421,17 +1426,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 
-<script src="js/data.js?v=202609092156"></script>
-<script src="js/config.js?v=202609092156"></script>
-<script src="js/auth.js?v=202609092156"></script>
-<script src="js/diary.js?v=202609092156"></script>
-<script src="js/analytics.js?v=202609092156"></script>
-<script src="js/pazienti.js?v=202609092156"></script>
-<script src="js/settings.js?v=202609092156"></script>
-<script src="js/planner.js?v=202609092156"></script>
-<script src="js/guide.js?v=202609092156"></script>
-<script src="js/forms.js?v=202609092156"></script>
-<script src="js/init.js?v=202609092156"></script>
+<script src="js/data.js?v=139"></script>
+<script src="js/config.js?v=139"></script>
+<script src="js/auth.js?v=139"></script>
+<script src="js/diary.js?v=139"></script>
+<script src="js/analytics.js?v=139"></script>
+<script src="js/pazienti.js?v=139"></script>
+<script src="js/settings.js?v=139"></script>
+<script src="js/planner.js?v=139"></script>
+<script src="js/guide.js?v=139"></script>
+<script src="js/forms.js?v=139"></script>
+<script src="js/init.js?v=139"></script>
 
 
 

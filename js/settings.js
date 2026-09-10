@@ -107,22 +107,7 @@ async function pushChan(){
     else{const err=await r.text();console.error('Push error:',r.status,err);setSt('err','Errore '+r.status+': '+err.slice(0,80));}
   }catch(e){setSt('err','Errore di rete')}
 }
-async function pullChan(){
-  if(!channel){setSt('err','Nessun canale configurato.');return}
-  setSt('spin','Ricezione...');
-  try{
-    const since=Math.floor((Date.now()-86400000)/1000);const r=await fetch('https://ntfy.sh/'+channel+'/json?poll=1&since='+since);
-    if(!r.ok){setSt('err','Errore '+r.status);return}
-    const text=await r.text();
-    const lines=text.trim().split('\n').filter(Boolean);
-    let found=null;
-    for(let i=lines.length-1;i>=0;i--){
-      try{const msg=JSON.parse(lines[i]);if(msg.message){const dec=JSON.parse(decodeURIComponent(atob(msg.message)));if(dec&&dec.data){found=dec;break}}}catch(e){}
-    }
-    if(found){allData=found.data;svLS();setForm(allData[dk(cur)]||null);updDL();setSt('ok','Aggiornato — '+new Date().toLocaleTimeString('it-IT'));}
-    else setSt('ok','Nessun dato nelle ultime 24h.');
-  }catch(e){setSt('err','Errore di rete')}
-}
+async 
 
 // ── AUTO SYNC ──
 let autoPullTimer=null;

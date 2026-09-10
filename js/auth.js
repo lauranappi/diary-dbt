@@ -237,6 +237,7 @@ function initApp(){
   document.getElementById('sidebar-role').textContent=profile.role==='terapeuta'?'Terapeuta':'Paziente';
 
   // ───── THERAPIST MODE: hide patient pages, show only pazienti ─────
+  document.documentElement.dataset.ruolo = profile.role||'';
   if(profile.role==='terapeuta'){
     // Al terapeuta nascondiamo solo le pagine legate ai SUOI dati personali:
     // diario, storico e pianificazione. Tutto il materiale di consultazione

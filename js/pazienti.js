@@ -111,7 +111,7 @@ function renderPatientStats(){
   });
 }
 
-function last14(){const r=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);r.push(dk(d))}return r}
+
 
 let patRange=7;
 function setPatRange(n,btn){
@@ -152,7 +152,7 @@ function renderPatientCharts(){
   const labels=keys.map(k=>new Date(k+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'}));
 
   const BASE={
-    chart:{type:'area',height:200,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400}},
+    chart:{type:'area',height:150,toolbar:{show:false},zoom:{enabled:false},fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',animations:{enabled:true,speed:400},dropShadow:{enabled:false}},
     stroke:{curve:'smooth',width:2.5},
     fill:{type:'gradient',gradient:{shadeIntensity:.8,opacityFrom:.35,opacityTo:.02,stops:[0,100]}},
     grid:{borderColor:'rgba(120,160,155,.1)',strokeDashArray:3,xaxis:{lines:{show:false}},padding:{bottom:0}},
@@ -209,29 +209,12 @@ const SCALE_LABELS={
 const TOG_LABELS={sa:'Azione suicidaria',aa:'Azione autolesività',ee:'Emotional eating',farm:'Farmaci prescritti'};
 const TEXT_LABELS={rim:'Rimuginio',att:'Attività piacevoli / sociali',note:'Note libere',alcu:'Uso alcol',cbdu:'Uso CBD',rap:'Rapporti occasionali (dettagli)'};
 
-function scaleBar(val,max,color){
-  if(val==null)return'';
-  const pct=Math.round((val/max)*100);
-  return'<div style="display:flex;align-items:center;gap:8px;margin-top:4px">'
-    +'<div style="flex:1;height:8px;background:var(--border-l);border-radius:4px;overflow:hidden">'
-    +'<div style="height:100%;width:'+pct+'%;background:'+color+';border-radius:4px"></div>'
-    +'</div>'
-    +'<span style="font-size:15px;font-weight:700;color:'+color+';min-width:18px;text-align:right">'+val+'</span>'
-    +'</div>';
-}
 function scaleColor(val,positive){
-  if(positive) return val>=4?'#1B4B4A':val>=2?'#26A69A':val>=1?'#E0A23A':'#bbb';
-  return val>=4?'#C85250':val>=3?'#E0A23A':val>=1?'#1B4B4A':'#bbb';
+  if(positive) return val>=4?'#1B4B4A':val>=2?'#4E7B79':val>=1?'#F5CE47':'#C6DAD7';
+  return val>=4?'#C1714A':val>=3?'#F5CE47':val>=1?'#1B4B4A':'#C6DAD7';
 }
 const POSITIVE_SCALES=new Set(['ser','gio','fid','sf','atti']);
-function mkScaleRow(label,val,key){
-  if(val==null)return'';
-  const c=scaleColor(val,POSITIVE_SCALES.has(key));
-  return'<div class="modal-stat" style="flex-direction:column;align-items:flex-start;gap:2px">'
-    +'<div class="ms-label">'+label+'</div>'
-    +scaleBar(val,5,c)
-    +'</div>';
-}
+
 
 function showPatientDay(k){
   const entries=currentPatient.entries;
@@ -343,9 +326,7 @@ function showPatientDay(k){
   document.body.style.overflow='hidden';
 }
 
-function closePatientDay(){
-  closeScheda();
-}
+
 
 function buildFlagsData(d){
   if(!d)return'';const flags=[];
@@ -405,22 +386,7 @@ function isDayEmpty(d){
   return!hasScale&&!hasToggle&&!hasText&&!hasSkill&&!hasPlan;
 }
 
-function mkStatPair(a,b){
-  function mkOne(c){
-    const isDanger=c.danger&&c.v>0;
-    const isWarn=c.warn&&c.v>0;
-    const isOk=c.ok&&c.v>0;
-    const bg=isDanger?'var(--red-l)':isWarn?'var(--amber-l)':isOk?'#EDFAF4':'var(--surface)';
-    const border=isDanger?'#EFC0BF':isWarn?'#F0D898':isOk?'#A8DFC7':'var(--border-l)';
-    const col=isDanger?'#C85250':isWarn?'#7A5010':isOk?'#0A6647':'var(--text-2)';
-    return '<div style="flex:1;background:'+bg+';border:1.5px solid '+border+';border-radius:var(--rs);padding:12px 10px;text-align:center">'
-      +'<div style="font-size:20px;margin-bottom:4px">'+c.icon+'</div>'
-      +'<div style="font-size:24px;font-weight:800;color:'+col+'">'+c.v+'</div>'
-      +'<div style="font-size:11px;color:var(--muted);line-height:1.3;margin-top:3px">'+c.label+'</div>'
-      +'</div>';
-  }
-  return '<div style="display:flex;gap:8px;margin-bottom:8px">'+(a?mkOne(a):'')+(b?mkOne(b):'')+'</div>';
-}
+
 
 function renderPatientOverview(){
   if(!currentPatient)return;
@@ -608,16 +574,19 @@ function renderPatientPlanner(){
   let html='';
   konPiano.forEach(k=>{
     const plan=entries[k].planner;
-    html+='<div style="font-size:12px;font-weight:700;color:var(--dc-muted);letter-spacing:.04em;text-transform:uppercase;margin:18px 0 8px">'+fmtL(k)+'</div>';
+    let fasceHtml='';
     FASCE.forEach(([id,nome])=>{
       const voci=(plan[id]||[]);
       if(!voci.length) return;
-      html+='<div style="background:var(--dc-surface);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:12px;margin-bottom:10px">'
+      fasceHtml+='<div style="padding:14px 18px;border-bottom:1px solid var(--dc-line)">'
         +'<span class="dc-thome-kicker">'+nome+'</span>'
-        +'<div style="display:flex;flex-wrap:wrap;gap:8px">'
+        +'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">'
         +voci.map(a=>'<span style="background:var(--dc-cella);color:var(--dc-terra-ink);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px">'+a+'</span>').join('')
         +'</div></div>';
     });
+    if(!fasceHtml) return;
+    html+='<div style="font-size:12px;font-weight:700;color:var(--dc-muted);letter-spacing:.04em;text-transform:uppercase;margin:18px 0 8px">'+fmtL(k)+'</div>'
+      +'<div style="background:var(--dc-surface);border-radius:26px;overflow:hidden;margin-bottom:10px">'+fasceHtml+'</div>';
   });
   el.innerHTML = html || vuoto;
 }
@@ -637,7 +606,7 @@ async function buildTherapistHome(){
   const cognome = profile.cognome ? ' '+profile.cognome : '';
 
   box.innerHTML =
-    '<div class="dc-thero" id="terap-home-hero">'
+    '<div class="dc-desk-hero" id="terap-home-hero">'
       +'<img src="illustrazioni/decorative/deco-tratti-chiaro.svg" alt="" style="position:absolute;right:-26px;top:20px;width:190px;opacity:.35;pointer-events:none">'
       +'<svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"></path></svg>'
       +'<div style="position:relative;display:flex;align-items:flex-start;gap:12px">'
@@ -728,39 +697,11 @@ function openPatientFromHome(code){
 
 
 // Ricarica i dati delle pazienti senza uscire dalla Home.
-async function refreshTherapistHome(btn){
-  if(btn){ btn.disabled=true; btn.textContent='Aggiorno…'; }
-  try{
-    await buildTherapistHome();   // ridisegna con i dati appena scaricati
-  }catch(e){
-    console.warn('aggiornamento home terapeuta', e);
-    if(btn){ btn.disabled=false; btn.textContent='↻ Riprova'; }
-  }
-}
+async 
 
 
 // Copia l'username negli appunti: e' il dato che serve dare alle pazienti.
-function copiaUsername(btn){
-  const code = profile.code || '';
-  if(!code) return;
-  const done = () => {
-    const prima = btn.textContent;
-    btn.textContent = 'Copiato ✓';
-    btn.classList.add('ok');
-    setTimeout(()=>{ btn.textContent = prima; btn.classList.remove('ok'); }, 1800);
-  };
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(code).then(done).catch(()=>fallback());
-  } else fallback();
 
-  function fallback(){
-    // Safari senza permessi sugli appunti: selezione manuale
-    const t=document.createElement('textarea');
-    t.value=code; document.body.appendChild(t); t.select();
-    try{ document.execCommand('copy'); done(); }catch(e){ alert('Username: '+code); }
-    document.body.removeChild(t);
-  }
-}
 
 
 // ── FOGLI DI LAVORO DELLA PAZIENTE ───────────────────────────────────────

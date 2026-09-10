@@ -26,17 +26,8 @@ if('serviceWorker' in navigator){
 }
 
 // ── USER MENU ──
-function openUserMenu(){
-  const name=(profile.nome||'')+(profile.cognome?' '+profile.cognome:'');
-  document.getElementById('umenu-name').textContent=name||'—';
-  document.getElementById('umenu-role').textContent=profile.role==='terapeuta'?'Terapeuta':'Paziente';
-  document.getElementById('user-menu-overlay').classList.add('open');
-  setTimeout(()=>document.getElementById('user-menu-sheet').classList.add('open'),10);
-}
-function closeUserMenu(){
-  document.getElementById('user-menu-sheet').classList.remove('open');
-  setTimeout(()=>document.getElementById('user-menu-overlay').classList.remove('open'),260);
-}
+
+
 
 // ── STORICO TABS ──
 function switchStoricoTab(tab){
@@ -52,13 +43,7 @@ function switchStoricoTab(tab){
 }
 
 // ── SIDEBAR COLLAPSIBLE ──
-function toggleSiSection(id,hdr){
-  const body=document.getElementById(id);
-  const arrow=hdr.querySelector('.si-arrow');
-  const isOpen=body.classList.contains('open');
-  body.classList.toggle('open',!isOpen);
-  if(arrow)arrow.style.transform=isOpen?'':'rotate(180deg)';
-}
+
 
 
 
@@ -69,3 +54,9 @@ function setThemeColor(color){
   if(m) m.content = color;
 }
 
+
+// ── Data di oggi nelle intestazioni verdi delle pagine desktop ──────────
+document.addEventListener('DOMContentLoaded', function(){
+  const testo = new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+  document.querySelectorAll('.dc-data-oggi').forEach(function(el){ el.textContent = testo; });
+});

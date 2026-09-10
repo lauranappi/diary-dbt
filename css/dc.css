@@ -1,3 +1,94 @@
+/* ══════════════════════════════════════════════════════════════════
+   Variabili di base e reset (prima erano in app.css, separato):
+   consolidate qui perche' non c'era piu' motivo di avere due file. ══
+   ══════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* Palette petrolio */
+  --teal:#1B4B4A;
+  --teal-l:#DCE8E6;
+  --teal-ll:#EDF3F2;
+  --teal-d:#123534;
+  --teal-2:#2A6866;
+  --teal-3:#0E2A29;
+  --sage:#8FB5B0;
+  --sand:#F5F0E8;
+  --sand-d:#EDE7D9;
+  --warm:#FDFAF6;
+  /* Semantics */
+  --green:#1D9E75;--green-l:#E6F7F0;
+  --red:#C85250;--red-l:#FCEAEA;
+  --amber:#D4882A;--amber-l:#FEF6E4;
+  --muted-red:#E07070;
+  /* Neutrals — Light mode: allineate alla radice ai token del sistema
+     attuale (dc.css), cosi' ogni uso di queste variabili nelle pagine
+     non ancora restilizzate eredita gia' i colori giusti, invece di
+     restare bloccato sulla vecchia palette in attesa di essere trovato
+     una regola alla volta. */
+  --bg:#FBF3E7;
+  --surface:#FFFFFF;
+  --surface-2:#FDF3D5;
+  --border:#DCE8E6;
+  --border-l:#EDE9E3;
+  --text:#14201F;
+  --text-2:#3D5450;
+  --muted:#1B4B4A;
+  /* Type */
+  --font:'Georgia',serif;
+  --font-ui:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  /* Shape */
+  /* Scala concentrica: l'elemento interno usa il raggio esterno meno
+     la sua distanza dal bordo, come nelle linee guida Apple. */
+  --r:22px;--rs:14px;--r-sm:10px;--r-pill:999px;
+  --nav-h:68px;
+  /* Shadows */
+  /* Due livelli (contatto + diffusa) piu' un riflesso interno in alto:
+     e' cio' che da' l'aria di vetro multistrato. */
+  --shadow-sm:0 1px 2px rgba(16,40,36,.06), 0 4px 14px rgba(16,40,36,.05), inset 0 1px 0 rgba(255,255,255,.6);
+  --shadow:0 2px 4px rgba(16,40,36,.07), 0 8px 24px rgba(16,40,36,.07), inset 0 1px 0 rgba(255,255,255,.6);
+  --shadow-lg:0 4px 8px rgba(16,40,36,.08), 0 16px 40px rgba(16,40,36,.10), inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+body{background:var(--bg);touch-action:pan-y}
+/* In login lo sfondo del documento e' verde: niente bordi bianchi
+   sopra la status bar o sotto la home bar */
+html.login-mode,html.login-mode body{background:var(--teal)}
+/* Stesso colore delle pagine: durante il rimbalzo non compare piu'
+   una fascia bianca diversa dallo sfondo */
+html.app-mode,html.app-mode body{background:var(--bg)}
+body{font-family:var(--font-ui);background:var(--bg);color:var(--text);line-height:1.5;
+  /* rimbalzo elastico attivo in verticale (comportamento iOS naturale),
+     bloccato solo in orizzontale per evitare trascinamenti laterali */
+  overscroll-behavior-y:auto;overscroll-behavior-x:none}
+
+/* ══════════════════════════════════════════════════════════════════
+   Ogni sezione di questo file (barra laterale, pulsanti, storico,
+   guida, planner, schede a comparsa, fogli di lavoro compilabili
+   ecc.) e' stata verificata una per una e migrata in css/dc.css,
+   che e' il vero foglio di stile del sistema attuale. Restano qui
+   solo le variabili di base e il reset che serve gia' al primissimo
+   disegno della pagina, prima ancora che dc.css si carichi.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Scala mobile: alcune classi (.g2/.g3, .sgrid, .leisure-grid,
+   .ob-role) restano qui perche' e' l'unico posto dove la versione
+   mobile (sotto i 700px) e' definita accanto a quella condivisa. ── */
+@media(max-width:700px){
+  .main-inner{padding:.75rem .9rem;padding-bottom:calc(78px + env(safe-area-inset-bottom,0px) + 1rem)}
+  .g2,.g3{grid-template-columns:1fr}
+  .sgrid{grid-template-columns:repeat(2,1fr)}
+  .leisure-grid{grid-template-columns:1fr}
+  .ob-role{flex-direction:column}
+}
+
+/* #page-oggi ridefinisce quasi per intero .sb (dc.css, con !important
+   su bordo/sfondo/colore): qui restano solo le proprieta' che dc.css
+   non tocca - stesso trattamento gia' dato a .tb. */
+.sb{width:42px;cursor:pointer;transition:all .12s;-webkit-appearance:none;box-shadow:var(--shadow-sm)}
+.sb.on{box-shadow:0 2px 8px rgba(26,122,110,.3)}
+
 /* ==========================================================================
    Diary Card DBT — design system
    Estratto dal prototipo mobile. Palette vincolata a quattro tinte,
@@ -112,27 +203,6 @@
   --dc-shadow-pannello: 0 -18px 50px rgba(20, 32, 31, .22);
 }
 
-/* --- Ruoli: tema scuro --------------------------------------------------- */
-
-.dc-scuro,
-[data-tema="scuro"] {
-  --dc-bg:         var(--dc-petrolio-scurissimo);
-  --dc-surface:    var(--dc-petrolio-scuro);
-  --dc-surface-2:  var(--dc-petrolio);
-  --dc-ink:        var(--dc-crema);
-  --dc-muted:      var(--dc-petrolio-chiaro);
-  --dc-line:       var(--dc-petrolio);
-  --dc-acc:        var(--dc-senape);
-  --dc-terra:      var(--dc-terracotta);
-  --dc-terra-ink:  var(--dc-senape);
-  --dc-tint-terra: var(--dc-petrolio);
-  --dc-hero:       var(--dc-petrolio-scuro);
-  --dc-hero-ink:   var(--dc-bianco);
-  --dc-hero-sub:   var(--dc-petrolio-chiaro);
-  --dc-barra:      var(--dc-petrolio-scuro);
-  --dc-cella:      var(--dc-petrolio);
-}
-
 /* --------------------------------------------------------------------------
    2. Base
    -------------------------------------------------------------------------- */
@@ -144,23 +214,6 @@ body {
   color: var(--dc-ink);
 }
 
-.dc-app {
-  background: var(--dc-bg);
-  color: var(--dc-ink);
-  font-family: var(--dc-font);
-}
-
-.dc-schermo {
-  width: 390px;
-  height: 844px;
-  border-radius: var(--dc-radius-schermo);
-  overflow: hidden;
-  position: relative;
-  flex: none;
-  background: var(--dc-bg);
-  box-shadow: var(--dc-shadow-schermo);
-}
-
 button, input, textarea, select { font-family: var(--dc-font); }
 
 a { color: var(--dc-petrolio); }
@@ -168,78 +221,12 @@ a:hover { color: var(--dc-terracotta); }
 
 :focus-visible { outline: 2px solid var(--dc-terracotta); outline-offset: 2px; }
 
-/* --------------------------------------------------------------------------
-   3. Tipografia
-   -------------------------------------------------------------------------- */
-
-.dc-display {
-  font-size: var(--dc-size-display);
-  font-weight: var(--dc-w-bold);
-  letter-spacing: -.04em;
-  line-height: 1;
-  color: var(--dc-acc);
-}
-
-.dc-titolo {
-  margin: 0;
-  font-size: var(--dc-size-titolo);
-  font-weight: var(--dc-w-bold);
-  letter-spacing: var(--dc-ls-titolo);
-  line-height: var(--dc-lh-titolo);
-}
-
-.dc-titolo-s {
-  margin: 0;
-  font-size: var(--dc-size-titolo-s);
-  font-weight: var(--dc-w-bold);
-  letter-spacing: var(--dc-ls-titolo);
-  line-height: var(--dc-lh-titolo);
-}
-
-.dc-sezione {
-  font-size: var(--dc-size-sezione);
-  font-weight: var(--dc-w-bold);
-  letter-spacing: var(--dc-ls-sezione);
-  line-height: 1.2;
-  color: var(--dc-ink);
-}
-
 .dc-kicker {
   font-size: var(--dc-size-kicker);
   font-weight: var(--dc-w-semi);
   letter-spacing: var(--dc-ls-kicker);
   text-transform: uppercase;
   color: var(--dc-terra);
-}
-
-.dc-corpo {
-  margin: 0;
-  font-size: var(--dc-size-corpo);
-  font-weight: var(--dc-w-regular);
-  line-height: var(--dc-lh-corpo);
-  color: var(--dc-ink);
-}
-
-.dc-sotto {
-  margin: 0;
-  font-size: var(--dc-size-corpo-s);
-  font-weight: var(--dc-w-regular);
-  line-height: 1.5;
-  color: var(--dc-muted);
-}
-
-.dc-meta {
-  font-size: var(--dc-size-meta);
-  font-weight: var(--dc-w-medium);
-  line-height: var(--dc-lh-meta);
-  color: var(--dc-muted);
-}
-
-.dc-dato {
-  font-size: var(--dc-size-titolo-xl);
-  font-weight: var(--dc-w-bold);
-  letter-spacing: var(--dc-ls-titolo);
-  color: var(--dc-muted);
 }
 
 /* --------------------------------------------------------------------------
@@ -253,103 +240,6 @@ a:hover { color: var(--dc-terracotta); }
   overflow: hidden;
 }
 
-.dc-hero .dc-titolo,
-.dc-hero .dc-titolo-s { color: var(--dc-hero-ink); }
-
-.dc-hero .dc-sotto { color: var(--dc-hero-sub); }
-
-/* L'onda: un <svg> in fondo all'intestazione, riempito col colore del fondo.
-   <svg class="dc-onda" viewBox="0 0 390 40" preserveAspectRatio="none">
-     <path d="M0 13C52 33 104 3 156 13C208 23 260 -1 312 8C342 13 368 19 390 15V41H0V13Z"
-           fill="var(--dc-bg)"/>
-   </svg> */
-.dc-hero-contenuto {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: var(--dc-gap-m);
-}
-
-/* Decorazione SVG dentro l'intestazione */
-/* Pulsante tondo sull'intestazione (impostazioni) */
-.dc-hero-icona {
-  border: 0;
-  background: rgba(255, 255, 255, .14);
-  width: 38px;
-  height: 38px;
-  border-radius: var(--dc-radius-pill);
-  cursor: pointer;
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.dc-hero-icona:hover { background: rgba(255, 255, 255, .24); }
-.dc-hero-icona:active { background: rgba(255, 255, 255, .3); }
-
-/* --------------------------------------------------------------------------
-   5. Schede
-   -------------------------------------------------------------------------- */
-
-.dc-scheda {
-  background: var(--dc-surface);
-  border-radius: var(--dc-radius-scheda);
-  padding: var(--dc-pad-scheda);
-  display: flex;
-  flex-direction: column;
-  gap: var(--dc-gap-m);
-}
-
-.dc-scheda-s { padding: var(--dc-pad-scheda-s); }
-
-/* Variante tinta senape chiara, per contenuti di richiamo */
-.dc-scheda-tinta { background: var(--dc-surface-2); }
-
-/* Variante petrolio piena, per il dato principale */
-.dc-scheda-hero {
-  background: var(--dc-hero);
-  color: var(--dc-hero-ink);
-}
-.dc-scheda-hero .dc-sezione { color: var(--dc-hero-ink); }
-.dc-scheda-hero .dc-meta { color: var(--dc-hero-sub); }
-
-/* Contatore compatto in griglia */
-.dc-contatore {
-  background: var(--dc-surface);
-  border-radius: var(--dc-radius-elemento);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-/* Avviso in linea (giornata in sola lettura) */
-.dc-avviso {
-  background: var(--dc-tint-terra);
-  border-radius: var(--dc-radius-interno);
-  padding: 13px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: var(--dc-size-meta);
-  font-weight: var(--dc-w-semi);
-  color: var(--dc-terra-ink);
-  line-height: 1.4;
-}
-.dc-avviso::before {
-  content: "";
-  width: 9px;
-  height: 9px;
-  border-radius: var(--dc-radius-pill);
-  background: var(--dc-terra);
-  flex: none;
-}
-
-/* Pila di schede e sezioni */
-.dc-pila     { display: flex; flex-direction: column; gap: var(--dc-gap-m); }
-.dc-pila-l   { display: flex; flex-direction: column; gap: var(--dc-gap-l); }
-.dc-sezioni  { display: flex; flex-direction: column; gap: var(--dc-gap-sezione); }
-.dc-contenuto { padding: var(--dc-pad-schermo); }
 
 /* --------------------------------------------------------------------------
    6. Righe di elenco con miniatura
@@ -371,149 +261,12 @@ a:hover { color: var(--dc-terracotta); }
 .dc-riga:hover  { background: color-mix(in srgb, var(--dc-surface) 92%, var(--dc-petrolio)); }
 .dc-riga:active { background: color-mix(in srgb, var(--dc-surface) 86%, var(--dc-petrolio)); }
 
-/* Riga senza miniatura, più compatta (elenco giornate, fogli di lavoro) */
-.dc-riga-compatta {
-  border-radius: var(--dc-radius-riga);
-  padding: var(--dc-pad-riga);
-  gap: var(--dc-gap-l);
-}
-
-.dc-miniatura {
-  flex: none;
-  width: 66px;
-  height: 66px;
-  border-radius: var(--dc-radius-elemento);
-}
-.dc-miniatura-s { width: 52px; height: 52px; border-radius: var(--dc-radius-interno); }
-.dc-miniatura-l { width: 72px; height: 72px; border-radius: var(--dc-radius-riga); }
-
 .dc-riga-testo {
   display: flex;
   flex-direction: column;
   gap: var(--dc-gap-xs);
   flex: 1;
   min-width: 0;
-}
-
-/* --------------------------------------------------------------------------
-   7. Barra di navigazione in basso — senza icone
-   -------------------------------------------------------------------------- */
-
-.dc-barra {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: var(--dc-h-barra);
-  background: var(--dc-barra);
-  border-radius: var(--dc-radius-barra) var(--dc-radius-barra) 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 var(--dc-gap-s) 12px;
-}
-
-.dc-tab {
-  border: 0;
-  background: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 4px;
-  flex: 1;
-  min-width: 0;
-}
-
-/* Il segno al posto dell'icona: un trattino che si allunga sulla voce attiva */
-.dc-tab-segno {
-  width: 9px;
-  height: 9px;
-  border-radius: var(--dc-radius-pill);
-  background: var(--dc-line);
-  transition: width .18s ease;
-}
-.dc-tab[aria-current="page"] .dc-tab-segno {
-  width: 24px;
-  background: var(--dc-acc);
-}
-
-.dc-tab-label {
-  font-size: var(--dc-size-tab);
-  font-weight: var(--dc-w-medium);
-  color: var(--dc-ink);
-  opacity: .55;
-}
-.dc-tab[aria-current="page"] .dc-tab-label {
-  font-weight: var(--dc-w-semi);
-  opacity: 1;
-}
-
-/* --------------------------------------------------------------------------
-   8. Pulsanti
-   -------------------------------------------------------------------------- */
-
-/* Principale — petrolio pieno, a piena larghezza in fondo alle schermate */
-.dc-btn {
-  border: 0;
-  background: var(--dc-hero);
-  color: var(--dc-hero-ink);
-  font-size: var(--dc-size-riga);
-  font-weight: var(--dc-w-semi);
-  padding: 15px 20px;
-  border-radius: var(--dc-radius-elemento);
-  cursor: pointer;
-  font-family: var(--dc-font);
-}
-.dc-btn:hover  { background: var(--dc-petrolio-scuro); }
-.dc-btn:active { background: var(--dc-petrolio-scurissimo); }
-.dc-btn-larga  { width: 100%; }
-
-/* Accento senape — richiamo sull'intestazione petrolio */
-.dc-btn-acc {
-  background: var(--dc-acc);
-  color: var(--dc-nero);
-  font-size: var(--dc-size-corpo);
-  padding: 12px 22px;
-  border-radius: var(--dc-radius-interno);
-}
-.dc-btn-acc:hover  { background: color-mix(in srgb, var(--dc-senape) 88%, var(--dc-terracotta)); }
-.dc-btn-acc:active { background: color-mix(in srgb, var(--dc-senape) 78%, var(--dc-terracotta)); }
-
-/* Secondario — su fondo tinta */
-.dc-btn-2 {
-  background: var(--dc-cella);
-  color: var(--dc-terra-ink);
-}
-.dc-btn-2:hover  { background: color-mix(in srgb, var(--dc-cella) 88%, var(--dc-terracotta)); }
-.dc-btn-2:active { background: color-mix(in srgb, var(--dc-cella) 78%, var(--dc-terracotta)); }
-
-.dc-btn:disabled, .dc-btn-acc:disabled, .dc-btn-2:disabled {
-  opacity: .45;
-  cursor: default;
-}
-
-/* --------------------------------------------------------------------------
-   9. Celle delle scale 0–5
-   -------------------------------------------------------------------------- */
-
-.dc-scala {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.dc-scala-nome {
-  font-size: var(--dc-size-riga);
-  font-weight: var(--dc-w-semi);
-  color: var(--dc-ink);
-  line-height: 1.3;
-}
-
-.dc-celle {
-  display: flex;
-  gap: 6px;
 }
 
 .dc-cella {
@@ -553,79 +306,6 @@ a:hover { color: var(--dc-terracotta); }
   gap: var(--dc-gap-m);
 }
 
-.dc-sino-nome {
-  flex: 1;
-  min-width: 0;
-  font-size: var(--dc-size-corpo);
-  font-weight: var(--dc-w-medium);
-  color: var(--dc-ink);
-  line-height: 1.3;
-}
-
-.dc-capsule { display: flex; gap: var(--dc-gap-s); }
-
-.dc-capsula {
-  border: 0;
-  padding: 11px 18px;
-  border-radius: var(--dc-radius-pill);
-  font-family: var(--dc-font);
-  font-size: var(--dc-size-corpo-s);
-  font-weight: var(--dc-w-semi);
-  cursor: pointer;
-  white-space: nowrap;
-  background: var(--dc-cella);
-  color: var(--dc-terra-ink);
-}
-.dc-capsula:hover  { background: color-mix(in srgb, var(--dc-cella) 88%, var(--dc-terracotta)); }
-.dc-capsula:active { background: color-mix(in srgb, var(--dc-cella) 78%, var(--dc-terracotta)); }
-
-.dc-capsula[aria-pressed="true"] {
-  background: var(--dc-hero);
-  color: var(--dc-hero-ink);
-}
-
-.dc-capsula[disabled] { cursor: default; opacity: .55; }
-.dc-capsula[disabled][aria-pressed="true"] { opacity: 1; }
-
-/* Capsula-filtro (periodi, linguette) — stessa forma, testo più piccolo */
-.dc-filtro {
-  flex: none;
-  padding: 11px 18px;
-  border-radius: var(--dc-radius-pill);
-  font-size: 13px;
-}
-
-/* --------------------------------------------------------------------------
-   11. Campi di testo
-   -------------------------------------------------------------------------- */
-
-.dc-campo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--dc-gap-s);
-}
-
-.dc-campo > span {
-  font-size: 13px;
-  font-weight: var(--dc-w-semi);
-  color: var(--dc-muted);
-}
-
-.dc-input,
-.dc-textarea {
-  border: 0;
-  background: var(--dc-bg);
-  color: var(--dc-ink);
-  border-radius: var(--dc-radius-interno);
-  padding: 13px 16px;
-  font-family: var(--dc-font);
-  font-size: var(--dc-size-corpo);
-  line-height: 1.5;
-  resize: none;
-}
-.dc-input::placeholder,
-.dc-textarea::placeholder { color: var(--dc-muted); opacity: .6; }
-
 
 /* ══════════════════════════════════════════════════════════════════
    PONTE — l'app usa nomi propri (#home-hero, .bn-btn, .dc-cta...)
@@ -640,9 +320,9 @@ html.app-mode,html.app-mode body{background:var(--dc-bg)}
    sulle aree sicure di iOS puo' lasciar vedere uno spicchio di crema
    sotto la scheda. */
 html.login-mode,html.login-mode body{background:var(--dc-hero)!important;min-height:100%!important}
-.onboard{min-height:100vh!important;min-height:100dvh!important}   /* stesso errore corretto per la Home: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale delle pagine */
+.onboard{min-height:100vh!important;min-height:100dvh!important;display:flex;justify-content:center;}   /* stesso errore corretto per la Home: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale delle pagine */
 html[data-pagina="home"],html[data-pagina="home"] body{background: var(--dc-petrolio)}
-html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!important}   /* stesso colore della crema dell'onda: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale */
+html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0;}   /* stesso colore della crema dell'onda: --dc-crema-scura e' per il retroscena del mockup, non per lo sfondo reale */
 
 /* ── Intestazione con onda (Home) ── */
 #home-hero{
@@ -695,7 +375,6 @@ html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!impor
 .dc-bar-val{font-size:11px;font-weight:var(--dc-w-semi);color:var(--dc-terra)}
 
 .dc-skill{background:var(--dc-surface-2);position:relative;overflow:hidden;cursor:pointer}
-.dc-skill-deco{position:absolute;right:-18px;bottom:-18px;width:96px;opacity:.10;pointer-events:none}
 .dc-skill-in{position:relative;z-index:1;display:flex;flex-direction:column;gap:6px}
 .dc-skill-nome{font-family:var(--dc-font);font-size:var(--dc-size-sezione);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-sezione);color:var(--dc-ink)}
 .dc-skill-desc{font-size:var(--dc-size-corpo-s);line-height:var(--dc-lh-corpo);color:var(--dc-muted)}
@@ -707,16 +386,9 @@ html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!impor
 .dc-week-bar.vuota{background:var(--dc-line);height:8px}
 .dc-week-bar.oggi{background:var(--dc-acc)}
 .dc-week-d{font-size:11px;font-weight:var(--dc-w-medium);color:var(--dc-muted);opacity:.7}
-
-
-/* ── Diary: testata, striscia dei giorni, passi ── */
-.dc-testata{display:flex;align-items:center;gap:var(--dc-gap-s);padding:8px 0 0}
-.dc-testata-testo{flex:1;min-width:0}
-.dc-testata h2{margin:0;font-size:var(--dc-size-titolo-s);font-weight:var(--dc-w-bold);letter-spacing:var(--dc-ls-titolo);color:var(--dc-ink)}
-.dc-testata p{margin:4px 0 0;font-size:var(--dc-size-corpo-s);color:var(--dc-muted)}
 .dc-tondo{border:0;background:var(--dc-line);color:var(--dc-muted);width:36px;height:36px;border-radius:var(--dc-radius-pill);flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 
-.dc-strip{display:flex;gap:var(--dc-gap-s);overflow-x:auto;padding:16px 0;scrollbar-width:none}
+.dc-strip{display:flex;gap:var(--dc-gap-s);overflow-x:auto;padding:16px 20px;scrollbar-width:none}
 .dc-strip::-webkit-scrollbar{display:none}
 .dc-giorno{flex:none;width:54px;border:0;cursor:pointer;font-family:var(--dc-font);background:var(--dc-surface);border-radius:var(--dc-radius-elemento);padding:10px 0 9px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--dc-ink)}
 .dc-giorno.sel{background:var(--dc-hero);color:var(--dc-hero-ink)}
@@ -724,10 +396,6 @@ html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!impor
 .dc-giorno-num{font-size:17px;font-weight:var(--dc-w-bold);letter-spacing:-.02em}
 .dc-giorno-dot{width:5px;height:5px;border-radius:var(--dc-radius-pill);background:transparent}
 .dc-giorno-dot.piena{background:var(--dc-acc)}
-
-.dc-lettura{background:var(--dc-tint-terra);border-radius:var(--dc-radius-interno);padding:13px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.dc-lettura i{width:9px;height:9px;border-radius:var(--dc-radius-pill);background:var(--dc-terra);flex:none}
-.dc-lettura span{font-size:var(--dc-size-meta);font-weight:var(--dc-w-semi);color:var(--dc-terra-ink);line-height:1.4}
 
 .dc-passi-barra{display:flex;flex-direction:column;gap:10px;padding:0 0 14px}
 .dc-passi{display:flex;gap:7px}
@@ -745,42 +413,21 @@ html[data-pagina="home"] .main-inner{background:var(--dc-bg);padding-top:0!impor
   height:var(--dc-h-cella);border-radius:var(--dc-radius-cella)!important;border:0!important;
   background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
   font-family:var(--dc-font);font-size:var(--dc-size-riga);font-weight:var(--dc-w-semi);
-  display:flex;align-items:center;justify-content:center;flex:1;
+  display:flex;align-items:center;justify-content:center;flex:1;  cursor:pointer;transition:all .12s;-webkit-appearance:none;
 }
+#page-oggi .tb{padding:10px 22px;box-shadow:var(--shadow-sm)}
 #page-oggi .sb.on,#page-oggi .sb.sel,#page-oggi .sb.active,
-#page-oggi .tb.on,#page-oggi .tb.sel,#page-oggi .tb.active{background: var(--dc-hero)!important;color:var(--dc-hero-ink)!important}
-
-/* ── Barra di navigazione: usa i token della .dc-barra, non valori a mano ── */
-.bottom-nav{
-  position:fixed;left:0;right:0;bottom:0;z-index:100;margin:0;border:0;
-  border-radius:var(--dc-radius-barra) var(--dc-radius-barra) 0 0;
-  background:var(--dc-barra);box-shadow:var(--dc-shadow-pannello);
-  padding:12px var(--dc-gap-s) calc(10px + env(safe-area-inset-bottom,0px));
-}
+#page-oggi .tb.on,#page-oggi .tb.sel,#page-oggi .tb.active{background: var(--dc-hero)!important;color:var(--dc-hero-ink)!important;box-shadow:0 2px 8px rgba(26,122,110,.3)}
 .bottom-nav-inner{display:flex;justify-content:space-around;align-items:center;gap:2px;max-width:560px;margin:0 auto}
 .bn-btn{flex:1;min-width:0;background:none;border:0;cursor:pointer;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:7px;font-family:var(--dc-font)}
-.bn-btn .bn-icon{display:none}
+.bn-btn .bn-icon{display:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-style:normal;}
 .bn-btn::before{content:'';width:9px;height:9px;border-radius:var(--dc-radius-pill);background:var(--dc-line);transition:width .18s ease,background .18s ease}
 .bn-btn.active::before{width:24px;background:var(--dc-acc)}
 .bn-lbl{font-size:var(--dc-size-tab);font-weight:var(--dc-w-medium);color:var(--dc-ink);opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .bn-btn.active .bn-lbl{font-weight:var(--dc-w-semi);opacity:1}
 .main-inner{padding-bottom:calc(var(--dc-h-barra) + 20px + env(safe-area-inset-bottom,0px))}
 
-/* ── Pulsante profilo nella barra: nessuna regola lo copriva finora,
-   quindi prendeva lo stile predefinito del bottone e sbilanciava la riga. ── */
-.bn-user-btn{
-  flex:1;min-width:0;background:none;border:0;cursor:pointer;padding:6px 4px;
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-  font-family:var(--dc-font);-webkit-appearance:none;appearance:none;
-}
-.bn-user-avatar{
-  width:22px;height:22px;border-radius:var(--dc-radius-pill);
-  background:var(--dc-petrolio-chiaro);color:var(--dc-hero);
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:var(--dc-w-bold);line-height:1;
-}
-.bn-user-btn .bn-lbl{opacity:.55}
-.bn-user-btn.active .bn-lbl,html[data-pagina="impostazioni"] .bn-user-btn .bn-lbl{opacity:1;font-weight:var(--dc-w-semi)}
+
 
 /* ══ #topheader: nascosto per default ═══════════════════════════════
    Prima veniva nascosto solo da una riga JS dentro goPage(). La Home
@@ -818,13 +465,13 @@ html[data-pagina="home"] #home-hero{
   padding-top:calc(env(safe-area-inset-top,0px) + clamp(16px, 4dvh, 30px))!important;
   padding-bottom:clamp(28px, 5dvh, 48px)!important;
 }
-html[data-pagina="home"] .dc-hero-nome{font-size:clamp(24px, 6dvh, 30px)!important}
+html[data-pagina="home"] .dc-hero-nome{font-size:clamp(24px, 6dvh, 30px)}
 html[data-pagina="home"] .dc-stack{
-  gap:clamp(8px, 1.6dvh, 12px)!important;
-  padding-top:clamp(10px, 2dvh, 16px)!important;
-  padding-bottom:clamp(8px, 1.5dvh, 14px)!important;
+  gap:clamp(8px, 1.6dvh, 12px);
+  padding-top:clamp(10px, 2dvh, 16px);
+  padding-bottom:clamp(8px, 1.5dvh, 14px);
 }
-html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
+html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)}
 
 /* ── PIEDE DEI PASSI DEL DIARY, come nel prototipo ──
    Indietro + un solo pulsante principale che cambia etichetta,
@@ -842,19 +489,11 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    ══════════════════════════════════════════════════════════════════ */
 
 /* Intestazione: trasparente, nessuna ombra ne' sfumatura ereditata */
-#page-attivita > .page-hero{
-  background:none!important;box-shadow:none!important;filter:none!important;
-  padding:8px 0 22px!important;margin-bottom:0!important;color: var(--dc-ink);
-}
-#page-attivita > .page-hero *{color:var(--dc-ink);opacity:1}
-#page-attivita > .page-hero::before,
-#page-attivita > .page-hero::after{display:none}
-#page-attivita > .page-hero div[style*="font-size:22px"]{
-  font-size:27px;font-weight:800;letter-spacing:-.03em;
-}
-#page-attivita > .page-hero div[style*="opacity:.85"]{
-  font-size:13.5px;color:var(--dc-muted);opacity:1;margin-top:6px;
-}
+
+
+
+
+
 
 /* Le tre fasce (schermata iniziale, prima di scegliere qualcosa) */
 .slot-btn{
@@ -863,11 +502,8 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 }
 .slot-btn.has-items{background:var(--dc-surface)}
 #dc-slot-grid{display:none!important}  /* mai visibile, ne' da vuoto ne' da pieno */
-.slot-btn span[style*="font-size:28px"]{display:none}
-.slot-btn span[style*="font-size:13px"]{
-  font-size:12px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--dc-terra);
-}
+
+
 .slot-btn span[style*="font-size:11px"]{
   font-size:13.5px;color:var(--dc-muted);opacity:.7;
 }
@@ -934,8 +570,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   padding:10px 18px;border-radius:18px;font-size:13px;font-weight:600;
   white-space:nowrap;flex:none;cursor:pointer;
   background:var(--dc-surface);color:var(--dc-terra-ink);
-  border:1.5px solid var(--dc-cella);box-shadow:none;transition:none;
-}
+  border:1.5px solid var(--dc-cella);box-shadow:none;transition:none;font-family:var(--font-ui);}
 .act-tab.active{background:var(--dc-hero);color:var(--dc-hero-ink);border-color:var(--dc-hero)}
 .act-tab:hover{background:var(--dc-surface);color:var(--dc-terra-ink);border-color:var(--dc-cella)}
 .act-tab.active:hover{background:var(--dc-hero);color:var(--dc-hero-ink)}
@@ -943,8 +578,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 /* Attivita' personalizzata */
 .planner-add-btn{
   border:0;background:var(--dc-hero);color:var(--dc-hero-ink);
-  width:36px;height:36px;border-radius:999px;font-size:17px;cursor:pointer;flex:none;
-}
+  width:36px;height:36px;border-radius:999px;font-size:17px;cursor:pointer;flex:none;padding:7px 14px;font-weight:700;font-family:var(--font-ui);white-space:nowrap;}
 #custom-act-input{
   border:0;background:var(--dc-bg);color:var(--dc-ink);
   border-radius:18px;padding:13px 16px;
@@ -953,12 +587,6 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 
 /* Schermata "Scegli le attivita'" */
 #act-step-pick{padding-top:8px}
-#act-step-pick > div > button[onclick="backToSlots()"]{
-  background:var(--dc-line)!important;border:0!important;color: var(--dc-muted);
-  width:36px!important;height:36px!important;border-radius:999px!important;padding:0!important;font-size:0!important;
-  display:flex!important;align-items:center;justify-content:center;margin-bottom:16px;
-}
-#act-step-pick > div > button[onclick="backToSlots()"]::after{content:'‹';font-size:20px;line-height:1}
 #pick-slot-label{display:none}
 .dc-scegli-titolo{margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--dc-ink);flex:1;min-width:0}
 .dc-scegli-sotto{margin:6px 0 18px;font-size:13.5px;color:var(--dc-muted)}
@@ -967,7 +595,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    doppio tocco per ricaricare - persa per sbaglio nella ripulitura */
 #bn-home.caricando::before{display:none}
 #bn-home.caricando .bn-icon{
-  display:flex!important;align-items:center;justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   width:18px;height:18px;color:var(--dc-hero);
 }
 #bn-home.caricando .bn-icon svg{animation:dc-ruota .7s linear infinite}
@@ -1012,19 +640,11 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    ══════════════════════════════════════════════════════════════════ */
 
 /* Intestazione: stesso stile inline delle altre pagine, stesso rimedio */
-#page-storico > .page-hero{
-  background:none!important;box-shadow:none!important;filter:none!important;
-  padding:8px 0 22px!important;margin-bottom:0!important;color: var(--dc-ink);
-}
-#page-storico > .page-hero *{color: var(--dc-ink);opacity:1!important}
-#page-storico > .page-hero::before,
-#page-storico > .page-hero::after{display:none!important}
-#page-storico > .page-hero div[style*="font-size:22px"]{
-  font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
-}
-#page-storico > .page-hero div[style*="opacity:.85"]{
-  font-size:13.5px!important;color: var(--dc-muted);margin-top:6px!important;
-}
+
+
+
+
+
 
 /* Linguette Storico/Trend: stesso linguaggio delle linguette di categoria
    dell'Attivita' - vuote a riposo, petrolio piene da attive */
@@ -1032,9 +652,8 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 .storico-tab{
   padding:11px 18px;font-size:13.5px;font-weight:600;
   border-radius:999px;border:0;cursor:pointer;
-  background:var(--dc-cella);color:var(--dc-terra-ink);box-shadow:none;
-}
-.storico-tab.active{background:var(--dc-hero);color:var(--dc-hero-ink)}
+  background:var(--dc-cella);color:var(--dc-terra-ink);box-shadow:none;font-family:var(--font-ui);transition:all .15s;border-color:var(--teal);}
+.storico-tab.active{background:var(--dc-hero);color:var(--dc-hero-ink);border-color:var(--dc-hero)}
 
 /* Pillole dei periodi (7gg/14gg/Tutti): valori letterali del prototipo,
    gli stessi delle attivita' e delle categorie */
@@ -1042,8 +661,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 .chart-range-btn{
   padding:11px 18px;font-size:13.5px;font-weight:600;
   border-radius:999px;border:0;cursor:pointer;
-  background:var(--dc-cella);color:var(--dc-terra-ink);box-shadow:none;
-}
+  background:var(--dc-cella);color:var(--dc-terra-ink);box-shadow:none;font-family:var(--font-ui);transition:all .12s;}
 .chart-range-btn.active{background:var(--dc-hero);color:var(--dc-hero-ink)}
 
 /* Etichetta di sezione ("Giorni compilati") */
@@ -1054,23 +672,22 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 
 /* Schede dei grafici Trend */
 .cwrap{
-  background: var(--dc-surface);border:0!important;box-shadow:none!important;
-  border-radius:var(--dc-radius-scheda);padding:20px;margin-bottom:14px;
-}
-.cwrap::before{display:none!important}
+  background: var(--dc-surface);border:0;box-shadow:none;
+  border-radius:var(--dc-radius-scheda);padding:20px;margin-bottom:14px;position:relative;overflow:hidden;text-transform:uppercase;}
+.cwrap::before{display:none}
 .ctitle{
   font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink);
-  margin-bottom:16px;display:flex;align-items:center;gap:8px;
-}
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;position:relative;overflow:hidden;text-transform:uppercase;}
 
 /* Elenco delle giornate: stessa riga bianca ad angolo 22 usata altrove
    (fogli salvati, pazienti) invece del vecchio bordo sottile */
 .hi{
   background:var(--dc-surface);border:0;border-radius:var(--dc-radius-riga);
   padding:16px 18px;box-shadow:none;
+  display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;cursor:pointer;gap:10px;transition:all .12s;
 }
 .hi:hover{box-shadow:none;transform:none;border-color:transparent}
-.hd{color:var(--dc-ink);font-weight:800;letter-spacing:-.02em}
+.hd{color:var(--dc-ink);font-weight:800;letter-spacing:-.02em;font-size:14px;margin-bottom:6px}
 
 
 /* Etichette nell'elenco delle giornate: uno stile solo, quello letterale
@@ -1081,20 +698,15 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   background:var(--dc-cella);color:var(--dc-terra-ink);
   font-size:11px;font-weight:600;padding:6px 11px;border-radius:999px;
 }
-.flag-danger,.flag-warn,.flag-info,.flag-ok{background:var(--dc-cella);color:var(--dc-terra-ink)}
+.flag-danger,.flag-warn,.flag-info{background:var(--dc-cella);color:var(--dc-terra-ink)}
 
 /* Ramo decorativo sullo sfondo dell'Attivita', in basso a sinistra,
    sotto tutto il resto - colore tenue, puramente ornamentale */
 #page-attivita{position:relative}
-.dc-att-ramo{
-  position:fixed;right:-60px;bottom:calc(84px + env(safe-area-inset-bottom,0px));
-  width:280px;opacity:.12;pointer-events:none;z-index:0;
-}
-#page-attivita > *:not(.dc-att-ramo){position:relative;z-index:1}
 
 /* .sc (contatori) in app.css ha bordo e ombra: lo stile scritto da
    JavaScript non li tocca, quindi restavano attivi sotto. */
-.sc{border:0;box-shadow:none}
+.sc{border:0;box-shadow:none;background:var(--surface);border-radius:var(--r);padding:1rem;text-align:center}
 
 /* .dc-sino-riga non era mai stato reso un contenitore flessibile:
    i due pulsanti Si'/No avevano flex:1 ma senza un genitore flex quella
@@ -1109,26 +721,13 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    letterali dal prototipo (modulo: padding:16px, radius:26,
    miniatura 66x66/radius:20).
    ══════════════════════════════════════════════════════════════════ */
-#page-guida > .page-hero{
-  background:none!important;box-shadow:none!important;filter:none!important;
-  padding:8px 0 22px!important;margin-bottom:0!important;color: var(--dc-ink);
-}
-#page-guida > .page-hero *:not(img){color: var(--dc-ink);opacity:1!important}
-#page-guida > .page-hero::before,
-#page-guida > .page-hero::after{display:none!important}
-#page-guida > .page-hero button[onclick="goBack()"]{
-  background:var(--dc-line)!important;border:0!important;color: var(--dc-muted);
-  width:36px!important;height:36px!important;border-radius:999px!important;
-  padding:0!important;font-size:0!important;
-  display:flex!important;align-items:center!important;justify-content:center!important;
-}
-#page-guida > .page-hero button[onclick="goBack()"]::after{content:'‹';font-size:20px;line-height:1}
-#page-guida > .page-hero div[style*="font-size:22px"]{
-  font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
-}
-#page-guida > .page-hero div[style*="opacity:.85"]{
-  font-size:13.5px!important;color: var(--dc-muted);opacity:1!important;margin-top:6px!important;
-}
+
+
+
+
+
+
+
 
 .dc-riga{
   background:var(--dc-surface);border-radius:26px;padding:16px;
@@ -1158,7 +757,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    se fallisce puo' mostrare un grigio di scorta invece della sfumatura
    petrolio prevista. Valore diretto, sempre supportato. */
 .dc-riga:hover{background:var(--dc-surface)}
-.dc-riga:active{background:var(--dc-cella)}
+.dc-riga:active{background:transparent}
 
 /* toggleGuideModule() aggiunge la classe 'open' alla freccia quando il
    settore si apre, ma non era mai stata scritta la regola che la ruota:
@@ -1172,26 +771,29 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    stato restilizzato, usava ancora le variabili vecchie di app.css.
    Valori letterali dal prototipo (pannelloAperto).
    ══════════════════════════════════════════════════════════════════ */
-.scheda-modal{background:rgba(14,42,41,.46)!important}
+.scheda-modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(14,42,41,.46)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
+.scheda-modal.open{display:flex}
 .scheda-box{
   background: var(--dc-bg);
   border-radius:30px 30px 0 0!important;
   box-shadow:var(--dc-shadow-pannello, 0 -18px 50px rgba(20,32,31,.22))!important;
+  width:100%;max-width:640px;max-height:calc(100dvh - 2rem);
+  display:flex;flex-direction:column;overflow:hidden;
+  animation:schedaIn .22s var(--spring, cubic-bezier(.34,1.56,.64,1));
 }
+@keyframes schedaIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
 .scheda-head{
-  background:none!important;border-bottom:0!important;
-  padding:22px 22px 14px!important;align-items:flex-start!important;
-}
+  background:none;border-bottom:0;
+  padding:22px 22px 14px;align-items:flex-start;display:flex;justify-content:space-between;gap:12px;flex-shrink:0;}
 .scheda-title{
-  font-size:21px!important;font-weight:800!important;letter-spacing:-.03em!important;
-  color: var(--dc-ink);line-height:1.15!important;
+  font-size:21px;font-weight:800;letter-spacing:-.03em;
+  color: var(--dc-ink);line-height:1.15;
 }
 .scheda-close{
-  background:var(--dc-line)!important;color: var(--dc-muted);
-  width:34px!important;height:34px!important;border-radius:999px!important;
-  font-size:19px!important;
-}
-.scheda-body{padding:0 22px 26px!important}
+  background:var(--dc-line);color: var(--dc-muted);
+  width:34px;height:34px;border-radius:999px;
+  font-size:19px;border:none;flex-shrink:0;cursor:pointer;}
+.scheda-body{padding:0 22px 26px!important;overflow-y:auto;-webkit-overflow-scrolling:touch;contain:none!important;contain-intrinsic-size:auto!important;pointer-events:auto;}
 
 /* ══════════════════════════════════════════════════════════════════
    PAGINA MODULO / EMOZIONE — valori letterali dal prototipo (vModulo,
@@ -1210,8 +812,8 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 .dc-emozione-titolo{margin:0;font-size:27px;font-weight:800;letter-spacing:-.03em;color:var(--dc-ink)}
 
 .guide-when{
-  background: var(--dc-surface-2);border-left:0!important;
-  border-radius:26px!important;padding:20px!important;margin:0 0 14px!important;
+  background: var(--dc-surface-2);border-left:0;
+  border-radius:26px;padding:20px;margin:0 0 14px;
   color: var(--dc-ink);font-size:14px;line-height:1.55;
 }
 .guide-when strong{
@@ -1220,18 +822,18 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 }
 
 .guide-schede-modulo{
-  background: var(--dc-surface);border-radius:26px!important;
-  padding:18px!important;margin:0 0 20px!important;
+  background: var(--dc-surface);border-radius:26px;
+  padding:18px;margin:0 0 20px;
 }
 .guide-schede-titolo{
   font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
   color:var(--dc-terra);margin-bottom:8px;display:block;
 }
 .guide-scheda-link{
-  background:none!important;border:0!important;color: var(--dc-ink);
+  background:none;border:0;color: var(--dc-ink);
   font-family:var(--dc-font);font-size:14px;font-weight:600;
-  padding:4px 0!important;text-align:left;
-  display:flex!important;align-items:center;gap:12px;
+  padding:4px 0;text-align:left;
+  display:flex;align-items:center;gap:12px;
 }
 .guide-scheda-link::before{
   content:'';width:9px;height:9px;border-radius:999px;background:var(--dc-senape);flex:none;
@@ -1243,28 +845,26 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   background:var(--dc-muted);margin-left:auto;
 }
 
-.guide-module-body{border-top:0!important}
+.guide-module-body{border-top:0;display:none;}
+.guide-module-body.open{display:block}
 .guide-skill{
   background:var(--dc-surface);border-radius:22px;padding:16px 18px;
-  border-bottom:0!important;margin-bottom:10px;
+  border-bottom:0;margin-bottom:10px;
 }
 .guide-skill-badge{
-  background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
-  border-radius:999px!important;font-size:11px;font-weight:800;
-}
-.guide-skill-name{font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink)}
-.guide-skill-desc{font-size:12.5px;color:var(--dc-muted);margin-top:2px}
+  background:var(--dc-cella);color:var(--dc-terra-ink);
+  border-radius:999px;font-size:11px;font-weight:800;padding:4px 10px;flex-shrink:0;}
+.guide-skill-name{font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink);flex:1;}
 .guide-step-n{
   width:22px;height:22px;border-radius:999px;background:var(--dc-cella);
   color:var(--dc-terra-ink);font-size:11.5px;font-weight:800;
-  display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px;
-}
+  display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px;padding:0;flex-shrink:0;}
 .guide-step-text{font-size:13.5px;line-height:1.5;color:var(--dc-ink);flex:1}
 
 /* righe di dettaglio dell'emozione */
 #emozione-corpo > div > div{
-  background: var(--dc-surface);border:0!important;border-radius:20px!important;
-  margin-top:10px!important;padding:14px 16px!important;
+  background: var(--dc-surface);border:0;border-radius:20px;
+  margin-top:10px;padding:14px 16px;
 }
 
 /* Le due schede raggruppate sotto i moduli, e la lista dei fogli */
@@ -1292,30 +892,30 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 .scheda-body .page-hero{display:none!important}
 
 .scheda-body .card{
-  background: var(--dc-surface);border:0!important;box-shadow:none!important;
-  border-radius:26px!important;padding:20px!important;margin-bottom:14px!important;
+  background: var(--dc-surface);border:0;box-shadow:none;
+  border-radius:26px;padding:20px;margin-bottom:14px;
 }
 .scheda-body .card > div:first-child{
-  font-size:12px!important;font-weight:600!important;letter-spacing:.1em!important;
-  text-transform:uppercase!important;color:var(--dc-terra)!important;
+  font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dc-terra);
 }
 .scheda-body label{
-  font-size:12px!important;font-weight:600!important;color: var(--dc-muted);
-  text-transform:none!important;letter-spacing:normal!important;
+  font-size:12px;font-weight:600;color: var(--dc-muted);
+  text-transform:none;letter-spacing:normal;
 }
 .scheda-body input[type="text"],
 .scheda-body input:not([type]),
 .scheda-body textarea{
-  border:0!important;background: var(--dc-bg);color: var(--dc-ink);
-  border-radius:18px!important;padding:14px 16px!important;font-size:14px!important;
-  font-family:var(--dc-font)!important;box-shadow:none!important;
+  border:0;background: var(--dc-bg);color: var(--dc-ink);
+  border-radius:18px;padding:14px 16px;font-size:14px;
+  font-family:var(--dc-font);box-shadow:none;
 }
-.scheda-body input[type="text"]{border-radius:999px!important}
+.scheda-body input[type="text"]{border-radius:999px}
 .scheda-body button[onclick*="alva"],
 .scheda-body button[onclick*="Salva"]{
-  width:100%!important;border:0!important;background: var(--dc-hero);
-  color:var(--dc-hero-ink)!important;font-size:14.5px!important;font-weight:600!important;
-  padding:15px 20px!important;border-radius:20px!important;box-shadow:none!important;
+  width:100%;border:0;background: var(--dc-hero);
+  color:var(--dc-hero-ink);font-size:14.5px;font-weight:600;
+  padding:15px 20px;border-radius:20px;box-shadow:none;
 }
 
 .dc-pc-riga{display:flex;align-items:center;gap:12px;margin-bottom:10px}
@@ -1337,148 +937,120 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   align-items:center!important;
   padding:28px 28px calc(4rem + env(safe-area-inset-bottom))!important;
 }
-.dc-onboard-wrap{position:relative;z-index:1}
-.dc-onboard-wrap{width:100%;max-width:460px;margin:0 auto;position:relative}
+
+.dc-onboard-wrap{width:100%;max-width:460px;margin:0 auto;position:relative;z-index:1}
 .dc-onboard-ramo{position:fixed;right:-60px;top:calc(env(safe-area-inset-top,20px) + 60px);width:200px;opacity:.55;pointer-events:none;z-index:0}
 
 .dc-onboard-h1{
-  color:var(--dc-hero-ink)!important;font-size:34px!important;font-weight:800!important;
-  letter-spacing:-.03em!important;margin:0 0 10px!important;position:relative;
+  color:var(--dc-hero-ink);font-size:34px;font-weight:800;
+  letter-spacing:-.03em;margin:0 0 10px;position:relative;
 }
 .dc-onboard-sub{
-  color:var(--dc-line)!important;font-size:15px!important;line-height:1.5!important;
-  margin:0 0 26px!important;position:relative;
+  color:var(--dc-line);font-size:15px;line-height:1.5;
+  margin:0 0 26px;position:relative;
 }
 
 .dc-onboard-card{
   background:var(--dc-surface);border-radius:30px;padding:1.75rem;
 }
 .dc-onboard-card .ob-field label{
-  color: var(--dc-ink);font-size:15px!important;font-weight:700!important;
+  color: var(--dc-ink);font-size:15px;font-weight:700;
 }
 .dc-onboard-card .ob-field input,
 .dc-onboard-card .ob-field textarea{
-  border:0!important;background:var(--dc-cella)!important;color: var(--dc-ink);
-  border-radius:18px!important;font-size:15px!important;padding:15px 18px!important;
+  border:0;background:var(--dc-cella);color: var(--dc-ink);
+  border-radius:18px;font-size:15px;padding:15px 18px;
 }
 .dc-onboard-card .ob-field input::placeholder{color:var(--dc-muted)}
 .dc-onboard-card .ob-field input:focus,
 .dc-onboard-card .ob-field textarea:focus{
-  outline:none!important;box-shadow:inset 0 0 0 2px var(--dc-hero)!important;
+  outline:none;box-shadow:inset 0 0 0 2px var(--dc-hero);
 }
 
 .dc-onboard-card .bpri{
-  background: var(--dc-hero);color:var(--dc-hero-ink)!important;
-  border-radius:20px!important;box-shadow:none!important;font-weight:700!important;
-  font-size:16px!important;padding:16px!important;
-}
+  background: var(--dc-hero);color:var(--dc-hero-ink);
+  border-radius:20px;box-shadow:none;font-weight:700;
+  font-size:16px;padding:16px;border:none;cursor:pointer;font-family:var(--font-ui);transition:all .12s;transform:translateY(0);}
 
 .dc-onboard-links{
   display:flex;justify-content:space-between;align-items:flex-start;
   margin-top:18px;gap:14px;
 }
 .dc-onboard-link-forte{
-  background:none!important;border:0!important;text-align:left;padding:0;
-  color:var(--dc-terra)!important;font-size:13.5px!important;font-weight:600!important;
+  background:none;border:0;text-align:left;padding:0;
+  color:var(--dc-terra);font-size:13.5px;font-weight:600;
   text-decoration:underline;line-height:1.4;font-family:var(--dc-font);cursor:pointer;
 }
 .dc-onboard-link-lieve{
-  background:none!important;border:0!important;text-align:right;padding:0;
-  color: var(--dc-muted);font-size:13.5px!important;font-weight:600!important;
+  background:none;border:0;text-align:right;padding:0;
+  color: var(--dc-muted);font-size:13.5px;font-weight:600;
   line-height:1.4;font-family:var(--dc-font);cursor:pointer;
 }
 
 .dc-onboard-card .ob-role-btn{
-  border:0!important;background:var(--dc-cella)!important;border-radius:18px!important;
+  border:0;background:var(--dc-cella);border-radius:18px;
 }
-.dc-onboard-card .ob-role-btn .rb-label{color: var(--dc-ink)}
+.dc-onboard-card .ob-role-btn .rb-label{color: var(--dc-ink);font-size:13px;font-weight:600;}
 .dc-onboard-card .ob-role-btn.selected{background: var(--dc-hero)}
-.dc-onboard-card .ob-role-btn.selected .rb-label{color:var(--dc-hero-ink)!important}
+.dc-onboard-card .ob-role-btn.selected .rb-label{color:var(--dc-hero-ink)}
 
 /* ══════════════════════════════════════════════════════════════════
    IMPOSTAZIONI — valori letterali dal prototipo (vImpostazioni): schede
    bianche a 26px, kicker maiuscolo terracotta, righe con nome/sottotitolo
    e un controllo a destra, azioni come righe con freccia.
    ══════════════════════════════════════════════════════════════════ */
-#page-impostazioni > .page-hero{
-  background:none!important;box-shadow:none!important;filter:none!important;
-  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
-}
-#page-impostazioni > .page-hero *{color:var(--dc-ink)!important;opacity:1!important}
-#page-impostazioni > .page-hero div[style*="font-size:22px"]{
-  font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
-}
-#page-impostazioni > .page-hero div[style*="opacity:.85"]{
-  font-size:13.5px!important;color:var(--dc-muted)!important;opacity:1!important;margin-top:6px!important;
-}
+
+
+
+
 
 #page-impostazioni .card{
-  background:var(--dc-surface)!important;border:0!important;box-shadow:none!important;
-  border-radius:26px!important;padding:20px!important;margin-bottom:14px!important;
+  background:var(--dc-surface);border:0;box-shadow:none;
+  border-radius:26px;padding:20px;margin-bottom:14px;
 }
 #page-impostazioni .settings-section h3{
-  font-size:12px!important;font-weight:600!important;letter-spacing:.1em!important;
-  color:var(--dc-terra)!important;text-transform:uppercase!important;
+  font-size:12px;font-weight:600;letter-spacing:.1em;
+  color:var(--dc-terra);text-transform:uppercase;
 }
-#page-impostazioni .setting-row{border-bottom:0!important;padding:15px 0!important}
-#page-impostazioni .setting-label{color:var(--dc-ink)!important;font-weight:600!important;font-size:14.5px!important}
-#page-impostazioni .setting-desc{color:var(--dc-muted)!important;opacity:.85}
+#page-impostazioni .setting-row{border-bottom:0;padding:15px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+#page-impostazioni .setting-label{color:var(--dc-ink);font-weight:600;font-size:14.5px}
+#page-impostazioni .setting-desc{color:var(--dc-muted);opacity:.85;font-size:12px;margin-top:3px;line-height:1.4;}
 
 #page-impostazioni input[type="text"],
 #page-impostazioni input[type="time"]{
-  border:0!important;background:var(--dc-bg)!important;color:var(--dc-ink)!important;
-  border-radius:14px!important;padding:10px 12px!important;
+  border:0;background:var(--dc-bg);color:var(--dc-ink);
+  border-radius:14px;padding:10px 12px;
 }
 
 #page-impostazioni button[id^="theme-"]{
-  border:0!important;background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
+  border:0;background:var(--dc-cella);color:var(--dc-terra-ink);
 }
-#page-impostazioni button[id^="theme-"].active{background:var(--dc-hero)!important;color:var(--dc-hero-ink)!important}
-
-/* Logout / cancella dati: righe con freccia, come "azioni" nel prototipo,
-   non piu' pulsanti rossi pieni - il colore di allarme resta solo sul testo */
-#page-impostazioni .bdanger{
-  background:none!important;border:0!important;color:var(--dc-terracotta)!important;
-  font-weight:600!important;padding:0!important;
-}
+#page-impostazioni button[id^="theme-"].active{background:var(--dc-hero);color:var(--dc-hero-ink)}
 
 /* Interruttori: petrolio/petrolio-chiaro sul binario, senape sul
    pallino quando acceso - valori letterali dal prototipo (var(--hero)
    / var(--line) / var(--acc)), non il grigio generico di prima. */
-.toggle-slider{background:var(--dc-line)!important}
-.toggle-switch input:checked+.toggle-slider{background:var(--dc-hero)!important}
-.toggle-switch input:checked+.toggle-slider:before{background:var(--dc-senape)!important}
+.toggle-slider{background:var(--dc-line);position:absolute;inset:0;border-radius:28px;cursor:pointer;transition:.3s}
+.toggle-switch input:checked+.toggle-slider{background:var(--dc-hero)}
+.toggle-slider:before{content:'';position:absolute;width:22px;height:22px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(18px)}
 
 /* Impostazioni: la sfumatura decorativa di .page-hero::before era
    pensata per il vecchio gradiente, orfana ora che lo sfondo e' piatto
    - si vedeva come un'ombra sotto il titolo. E il rosso su "Cancella
    tutti i dati" veniva vinto dalla regola generale su .setting-label. */
-#page-impostazioni > .page-hero::before,
-#page-impostazioni > .page-hero::after{display:none!important}
+
 #page-impostazioni .setting-label[style*="terracotta"]{color:var(--dc-terracotta)!important}
 
 /* ══════════════════════════════════════════════════════════════════
    VISTA TERAPEUTA — pagina pazienti, stesso trattamento delle altre.
    ══════════════════════════════════════════════════════════════════ */
-#page-pazienti .page-hero::before,
-#page-pazienti .page-hero::after{display:none!important}
-#page-pazienti .page-hero{
-  background:none!important;box-shadow:none!important;filter:none!important;
-  padding:8px 0 22px!important;margin-bottom:0!important;color:var(--dc-ink)!important;
-}
-#page-pazienti .page-hero *{color:var(--dc-ink)!important;opacity:1!important}
-#page-pazienti .page-hero div[style*="font-size:22px"]{
-  font-size:27px!important;font-weight:800!important;letter-spacing:-.03em!important;
-}
-#page-pazienti .page-hero button[onclick="renderPatients()"]{
-  background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
-  border:0!important;backdrop-filter:none!important;
-}
-#pat-list-view > div[style*="teal-ll"]{
-  background:var(--dc-surface-2)!important;border:0!important;
-  color:var(--dc-ink)!important;border-radius:20px!important;
-}
-#pat-list-view > div[style*="teal-ll"] strong{color:var(--dc-ink)!important}
+
+
+
+
+
+
 
 /* Vista Dettaglio paziente: pulsante Indietro, nome, e le linguette
    (riuso lo stile gia' pronto per Storico/Fogli, stessa pillola). */
@@ -1486,18 +1058,18 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
   border:0!important;border-radius:999px!important;
 }
-#pat-detail-name{color:var(--dc-ink)!important;font-size:20px!important;font-weight:800!important;letter-spacing:-.02em!important}
-#pat-detail-meta{color:var(--dc-muted)!important}
+#pat-detail-name{color:var(--dc-ink);font-size:20px;font-weight:800;letter-spacing:-.02em}
+#pat-detail-meta{color:var(--dc-muted)}
 
-.pat-tabs{
-  background:none!important;box-shadow:none!important;padding:0!important;gap:8px!important;
+html .pat-tabs{
+  background:none;box-shadow:none;padding:0;gap:8px;
 }
-.pat-tab{
-  background:var(--dc-cella)!important;color:var(--dc-terra-ink)!important;
-  border-radius:999px!important;padding:11px 18px!important;
-  font-size:13.5px!important;font-weight:600!important;box-shadow:none!important;
+html .pat-tab{
+  background:var(--dc-cella);color:var(--dc-terra-ink);
+  border-radius:999px;padding:11px 18px;
+  font-size:13.5px;font-weight:600;box-shadow:none;
 }
-.pat-tab.active{background:var(--dc-hero)!important;color:var(--dc-hero-ink)!important;box-shadow:none!important}
+.pat-tab.active{background:var(--dc-hero);color:var(--dc-hero-ink);box-shadow:none}
 
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1510,7 +1082,6 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   position:relative;overflow:hidden;
   margin:0 -.9rem;padding:calc(env(safe-area-inset-top,0px) + 20px) 26px 40px;
 }
-@media(min-width:700px){ .dc-thero{margin:0;border-radius:var(--dc-radius-scheda)} }
 .dc-thero .dc-onda path{fill:var(--dc-bg)}
 .dc-thero-nome{margin:0;font-size:24px;font-weight:800;letter-spacing:-.03em}
 .dc-thero-numeri{display:flex;gap:26px;margin-top:12px}
@@ -1540,52 +1111,20 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   margin-top:14px;width:100%;border:0;background:var(--dc-hero);color:var(--dc-hero-ink);
   font-size:14.5px;font-weight:600;padding:15px 20px;border-radius:20px;cursor:pointer;
 }
-
-/* ══════════════════════════════════════════════════════════════════
-   PANORAMICA PAZIENTE — colori giusti sopra a una logica che resta
-   quella vera (media del periodo, mattonelle di rischio, abilita').
-   ══════════════════════════════════════════════════════════════════ */
-#ptab-overview .pat-section{
-  background:var(--dc-surface)!important;border-radius:26px!important;
-  box-shadow:none!important;padding:0!important;overflow:hidden;
-}
-#ptab-overview .pat-section-head{
-  background:var(--dc-surface-2)!important;color:var(--dc-ink)!important;
-  padding:16px 18px!important;font-weight:700!important;
-}
-#ptab-overview .pat-section-body{padding:16px 18px!important}
-#ptab-overview .pat-sub{
-  color:var(--dc-terra)!important;font-size:12px!important;font-weight:600!important;
-  letter-spacing:.08em!important;text-transform:uppercase!important;
-}
-#ptab-overview .avg-tile{background:var(--dc-bg)!important;border-radius:16px!important}
-#ptab-overview .avg-bar{background:var(--dc-line)!important}
-#ptab-overview .avg-chip{background:var(--dc-bg)!important;color:var(--dc-ink)!important}
-#ptab-overview .avg-chip.danger{background:var(--dc-cella)!important;color:var(--dc-terracotta)!important}
-#ptab-overview .avg-chip.warn{background:var(--dc-surface-2)!important;color:var(--dc-terra-ink)!important}
-#ptab-overview .avg-chip.ok{background:var(--dc-petrolio-chiaro)!important;color:var(--dc-petrolio)!important}
+#ptab-overview 
+#ptab-overview 
+#ptab-overview 
 #ptab-overview .card[style*="Le tue note"],
 #ptab-overview .card{
   background:var(--dc-surface)!important;border:0!important;box-shadow:none!important;
   border-radius:26px!important;
 }
 #ptab-overview .slbl{
-  color:var(--dc-terra)!important;font-size:12px!important;letter-spacing:.1em!important;
+  color:var(--dc-terra);font-size:12px;letter-spacing:.1em;
 }
 #ptab-overview textarea{
-  border:0!important;background:var(--dc-bg)!important;color:var(--dc-ink)!important;
-  border-radius:18px!important;
-}
-
-/* i colori delle mattonelle e del banner crisi sono scritti riga per
-   riga da JS (style="color:#C85250" ecc): serve colpire lo stile
-   preciso, non solo la classe, per vincere sull'inline. */
-#ptab-overview .avg-val[style*="C85250"]{color:var(--dc-terracotta)!important}
-#ptab-overview .avg-val[style*="B98230"]{color:var(--dc-terra-ink)!important}
-#ptab-overview .avg-bar i[style*="C85250"]{background:var(--dc-terracotta)!important}
-#ptab-overview .avg-bar i[style*="B98230"]{background:var(--dc-terra-ink)!important}
-#ptab-overview .pat-section-head[style*="red-l"]{
-  background:var(--dc-cella)!important;color:var(--dc-terracotta)!important;
+  border:0;background:var(--dc-bg);color:var(--dc-ink);
+  border-radius:18px;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1601,10 +1140,10 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
      mobile con la sua stessa tecnica. */
 }
 .dc-desk-hero .dc-onda path{fill:var(--dc-bg)}
-.dc-desk-hero-deco{position:absolute;left:-75px;bottom:0;width:300px;opacity:.35;pointer-events:none}
+.dc-desk-hero-deco{position:absolute;right:-75px;bottom:0;width:300px;opacity:.35;pointer-events:none}
 .dc-desk-hero-riga{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
 .dc-desk-hero-data{font-family:var(--dc-font);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-senape)}
-.dc-desk-hero-tit{font-family:var(--dc-font);margin:4px 0 6px;font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.dc-desk-hero-tit{font-family:var(--dc-font);margin:4px 0 6px;font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--dc-crema)}
 .dc-desk-hero-sub{font-family:var(--dc-font);margin:0;font-size:14.5px;color:var(--dc-petrolio-chiaro);max-width:60ch}
 .dc-desk-hero-cta{
   border:0;background:var(--dc-senape);color:var(--dc-nero);font-weight:700;font-family:var(--dc-font);
@@ -1623,7 +1162,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
   padding:9.5px 20px;border-radius:999px;cursor:pointer;font-size:13.5px;
 }
 
-@media(max-width:700px){ #desktop-home{display:none!important} }
+@media(max-width:700px){ #desktop-home{display:none} }
 @media(min-width:701px){
   #desktop-home{display:block}
   html[data-pagina="home"] #home-hero,
@@ -1632,7 +1171,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 
 /* La barra di navigazione mobile non e' mai stata nascosta da desktop:
    restava fissa in fondo su ogni larghezza. C'e' gia' la barra laterale. */
-@media(min-width:701px){ .bottom-nav{display:none!important} }
+@media(min-width:701px){ .bottom-nav{display:none} }
 
 /* ══════════════════════════════════════════════════════════════════
    BARRA LATERALE DESKTOP — logo Marea, voci solo testo con puntino
@@ -1641,20 +1180,22 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
 .dc-desk-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px}
 .dc-desk-logo-testo{font-family:var(--dc-font);font-size:19px;line-height:1.1;color:var(--dc-hero-ink)}
 
-#ni-pazienti[style*="display:none"]{display:none!important}
+
+.sidebar .ni[style*="display:none"]{display:none!important}
 .sidebar .ni{
-  display:flex!important;align-items:center;gap:12px;
-  background:transparent!important;border:0!important;padding:10px 16px!important;
-  border-radius:999px!important;cursor:pointer;color:var(--dc-bg)!important;
-  font-family:var(--dc-font);font-size:14.5px;font-weight:600;
+  display:flex;align-items:center;gap:12px;
+  background:transparent;border:0;padding:10px 16px;
+  border-radius:999px;cursor:pointer;color:var(--dc-bg);
+  font-family:var(--dc-font);font-size:14.5px;font-weight:600;  width:100%;text-align:left;transition:all .15s;
 }
+.sidebar .ni:hover{background:rgba(255,255,255,.1);color:#fff}
 .dc-desk-nav-mark{width:9px;height:9px;border-radius:999px;background:var(--dc-petrolio-chiaro);flex:none}
 .dc-desk-nav-lbl{flex:1;text-align:left}
 .dc-desk-nav-badge{
-  font-family:var(--dc-font);font-size:11px;font-weight:700;background:var(--dc-terracotta);color:#FFFFFF;
+  font-family:var(--dc-font);font-size:11px;font-weight:700;background:var(--dc-terracotta-chiara);color:var(--dc-terracotta);
   border-radius:999px;padding:2px 8px;flex:none;display:none;
 }
-.sidebar .ni.active{background:var(--dc-bg)!important;color:var(--dc-petrolio-scurissimo)!important;font-weight:700}
+.sidebar .ni.active{background:var(--dc-bg);color:var(--dc-petrolio-scurissimo);font-weight:700;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.14)}
 .sidebar .ni.active .dc-desk-nav-mark{background:var(--dc-terracotta)}
 
 /* La barra laterale in app.css e' un pannello "a isola" (margine,
@@ -1662,18 +1203,18 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    per gli hero delle pagine. Il documento vuole una colonna piatta,
    rettangolare, aderente al bordo sinistro. Azzerato tutto qui. */
 @media(min-width:701px){
-  .sidebar{
-    margin:0!important;border-radius:0!important;height:100vh!important;
-    background:var(--dc-hero)!important;box-shadow:none!important;
+  html .sidebar{
+    margin:0;border-radius:0;height:100vh;
+    background:var(--dc-hero);box-shadow:none;
   }
-  #app.shell{align-items:stretch!important}
-  .sidebar::before,.sidebar::after{display:none!important}
+  #app.shell{align-items:stretch}
+  .sidebar::before,.sidebar::after{display:none}
 }
 
 .dc-desk-user-btn{
-  display:flex!important;align-items:center;gap:12px;width:100%;
-  background:transparent!important;border:0!important;padding:8px 8px 8px 0!important;
-  cursor:pointer;border-radius:16px!important;
+  display:flex;align-items:center;gap:12px;width:100%;
+  background:transparent;border:0;padding:8px 8px 8px 0;
+  cursor:pointer;border-radius:16px;
 }
 .dc-desk-user-avatar{
   width:36px;height:36px;border-radius:999px;flex:none;
@@ -1687,7 +1228,459 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)!important}
    dal documento (mancavano entrambe rispetto allo spec letterale) ── */
 .dc-skill-riga{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
 .dc-skill-icona{flex:none;border-radius:18px}
-.dc-skill .dc-card-tit{font-size:11.5px!important;font-weight:600!important;letter-spacing:.1em!important;text-transform:uppercase!important;color:var(--dc-terracotta)!important}
-.dc-skill-tag-riga{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
-.dc-tag-accent2{background:var(--dc-petrolio-chiaro);color:var(--dc-hero);font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px}
-.dc-tag-outline{border:1px solid var(--dc-line);color:var(--dc-muted);font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px}
+.dc-skill .dc-card-tit{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dc-terracotta)}
+
+/* Storico desktop: stesso schema della Home - sopra 700px si mostra
+   il contenuto costruito apposta, sotto quello mobile. */
+@media(max-width:700px){ #desktop-storico{display:none} }
+@media(min-width:701px){
+  #desktop-storico{display:block}
+  html:not([data-ruolo="terapeuta"])[data-pagina="storico"] #page-storico > *:not(#desktop-storico){ display:none!important; }
+}
+
+/* Diary desktop: tutte le schede insieme, niente più passi a scomparsa.
+   Le regole in linea di dcVaiPasso() (display:none per gli step non
+   attivi) vanno battute con !important, dato lo spazio in piu' che
+   c'e' su schermo largo. */
+#page-oggi > .card.dc-passo-off,#page-oggi > .dc-kicker-diary.dc-passo-off{display:none}
+@media(min-width:701px){
+  /* Su desktop tutti i passi si vedono insieme: l'ID batte la sola
+     classe .dc-passo-off per specificita', senza bisogno di forzare. */
+  #page-oggi > .card.dc-passo-off{ display:block; margin-bottom:1.25rem; }
+  #page-oggi > .dc-kicker-diary.dc-passo-off{ display:block; }
+  html .dc-passi-barra{ display:none; }
+  #dc-indietro{ display:none; }
+}
+
+/* Abilita' desktop: stesso schema di Home/Storico. */
+@media(max-width:700px){ #desktop-abilita{display:none} }
+@media(min-width:701px){
+  #desktop-abilita{display:block}
+  html[data-pagina="abilita"] #page-abilita > *:not(#desktop-abilita){ display:none!important; }
+}
+
+/* L'ingranaggio impostazioni sull'intestazione ha senso solo su mobile:
+   su desktop le impostazioni si aprono dall'avatar in fondo alla barra
+   laterale, quindi qui e' ridondante. */
+@media(min-width:701px){ html .dc-hero-imp{display:none} }
+
+/* Intestazione terapeuta: la stessa tecnica usata per quella paziente -
+   su desktop .main-inner ha 2rem di margine che il -.9rem del mobile
+   non compensa, quindi non arrivava ai bordi veri. */
+@media(min-width:701px){
+  .dc-thero{ margin:-1.75rem -2rem 1.5rem; border-radius:0; }
+}
+
+/* Griglia dei sei grafici del Trend - come regola CSS vera, non in
+   linea sull'elemento: lo stile in linea batteva il sistema a classi
+   (.pat-tab-content.active) che mostra/nasconde le schede, facendola
+   restare visibile su ogni scheda invece che solo su Trend. */
+#ptab-trend.active{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+
+/* Migrate da app.css (sezione CARDS & LAYOUT): utili di griglia e
+   campo modulo, ancora usate ma mai copiate qui. */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem}
+.field{display:flex;flex-direction:column;gap:8px}
+
+/* URGENTE - regola vera del margine laterale desktop di .main-inner:
+   mancante del tutto, sopravviveva solo nei commenti che la citavano
+   come se esistesse. Ripristinata. */
+@media(min-width:701px){
+  .main-inner{padding:1.75rem 2rem;padding-bottom:3rem}
+}
+
+/* Migrata da app.css (SCALES): riga contenitore delle celle scala. */
+.sr{display:flex;gap:6px;flex-wrap:wrap}
+
+/* Migrata da app.css (INPUTS): stile di base per ogni campo di testo,
+   non ridefinito da dc.css. */
+textarea,input[type=text],input[type=password],input[type=time],select{
+  width:100%;padding:11px 14px;border-radius:var(--rs);
+  border:1.5px solid var(--border);
+  background:var(--surface-2);color:var(--text);
+  font-size:14px;font-family:var(--font-ui);line-height:1.5;
+  -webkit-appearance:none;appearance:none;
+  transition:border-color .12s,box-shadow .12s;
+}
+textarea{resize:vertical;min-height:56px}
+textarea:focus,input:focus,select:focus{
+  outline:none;border-color:var(--teal);
+  box-shadow:0 0 0 3px rgba(26,122,110,.1);
+  background:var(--surface);
+}
+
+/* URGENTE - mancava la versione mobile di .g2/.g3: quando li ho
+   migrati da app.css stamattina ho preso solo la versione desktop
+   (2-3 colonne), perdendo la regola che le comprime a una colonna
+   sola sotto i 700px. Le celle della diary si stiravano di conseguenza. */
+@media(max-width:700px){ .g2,.g3{grid-template-columns:1fr} }
+
+/* Su desktop la riga delle celle (.sr) ha molto piu' spazio a
+   disposizione: le celle a flex:1 (altezza fissa) si stiravano in
+   orizzontale invece di restare quadrate. Larghezza fissa solo qui,
+   il mobile resta com'era. */
+@media(min-width:701px){
+  #page-oggi .sr{justify-content:flex-start;gap:8px}
+  #page-oggi .sb{flex:none;width:var(--dc-h-cella)}
+}
+
+/* URGENTE - .card genuinamente cancellata ieri per errore: pensavo
+   fosse coperta del tutto da dc.css, ma li' esiste solo dentro
+   selettori composti/scoperti (#page-oggi > .card, .scheda-body .card
+   ecc), mai come regola autonoma. Ogni .card fuori da quei contesti
+   specifici (come le schede di Abilita) restava senza stile. Ripristino
+   la regola originale identica. */
+.card{
+  background:var(--surface);
+  border:none;
+  border-radius:var(--r);
+  padding:1.5rem;margin-bottom:1rem;
+  box-shadow:var(--shadow-sm);
+}
+
+/* URGENTE - stessa svista: .pat-tab-content esisteva solo dentro
+   contesti specifici, non come regola autonoma. Le schede fuori da
+   quei contesti (i moduli guida ecc) restavano senza nascondersi
+   correttamente. Ripristinata identica. */
+.pat-tab-content{display:none}
+
+/* Su desktop i 30 giorni spesso entrano tutti senza dover scorrere:
+   allineati a sinistra di default lasciavano un vuoto a destra.
+   Centrati quando c'e' spazio, restano scorrevoli quando non basta. */
+
+
+/* .dc-tondo (freccia giorno succ.) diventava disabled/.spenta via JS
+   ma non aveva mai avuto una regola visiva, come successo per
+   .dc-indietro. Stessa opacita'. */
+.dc-tondo:disabled,.dc-tondo.spenta{opacity:.45;pointer-events:none}
+
+/* Le tre intestazioni verdi scritte in HTML fisso (Guida/Attivita/Diary)
+   dovevano essere solo per desktop, come per Home/Storico/Abilita -
+   ma non avendo un contenitore separato apparivano anche su mobile. */
+@media(max-width:700px){
+  .dc-hero-solo-desktop{
+    background:transparent;padding:calc(env(safe-area-inset-top,0px) + 28px) 0 0;margin:0 0 1.25rem;
+    border-radius:0;overflow:visible;
+  }
+  .dc-hero-solo-desktop .dc-desk-hero-deco,.dc-hero-solo-desktop .dc-onda{display:none}
+  .dc-hero-solo-desktop .dc-desk-hero-data{display:none}
+  .dc-hero-solo-desktop .dc-desk-hero-tit{font-size:27px;color:var(--dc-ink);font-family:var(--dc-font)}
+  .dc-hero-solo-desktop .dc-desk-hero-sub{color:var(--dc-muted)}
+}
+
+.flag-ok{background:var(--dc-petrolio-chiaro);color:var(--dc-petrolio)}
+
+/* Migrata da app.css (BUTTONS): barra del pulsante Salva, stati del
+   pulsante primario, pulsante secondario - nessuna gia' coperta qui. */
+.abar{display:flex;align-items:center;gap:10px;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border-l);flex-wrap:wrap}
+.bpri:hover{background:var(--teal-d);box-shadow:0 4px 14px rgba(26,122,110,.35);transform:translateY(-1px)}
+.bpri:active{transform:translateY(0)}
+.bsec{
+  padding:12px 20px;background:var(--sand);color:var(--text-2);
+  border:1.5px solid var(--border);border-radius:var(--rs);
+  font-size:14px;cursor:pointer;font-family:var(--font-ui);
+  transition:all .12s;
+}
+.bsec:hover{background:var(--sand-d);border-color:var(--sage)}
+
+/* Migrate da app.css (STATS): griglia dei contatori e testo, mai
+   duplicate qui. */
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.sv{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.sl{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.3}
+
+.flags{display:flex;gap:5px;flex-wrap:wrap}
+
+/* Migrate da app.css (SETTINGS): schede abilita' vecchio stile ancora
+   usate (dbt-skill-*), attivita' del tempo libero (leisure-*), campi
+   e stati mai duplicati qui. */
+.settings-section{margin-bottom:2rem}
+.setting-row:last-child{border-bottom:none}
+.toggle-switch{position:relative;width:46px;height:28px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0}
+.time-input{width:100px;padding:9px 12px;border-radius:var(--rs);border:1.5px solid var(--border);font-size:14px;font-family:var(--font-ui);text-align:center}
+.dbt-skill-card{
+  background:var(--surface);border:1px solid var(--border-l);
+  border-radius:var(--r);margin-bottom:1rem;overflow:hidden;
+  box-shadow:var(--shadow-sm);transition:box-shadow .12s;
+}
+.dbt-skill-card:hover{box-shadow:var(--shadow)}
+.dbt-skill-header{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.25rem;cursor:pointer;gap:12px}
+.dbt-skill-header:hover{background:var(--teal-ll)}
+.dbt-skill-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1px solid rgba(0,0,0,.05)}
+.dbt-skill-info{flex:1}
+.dbt-skill-name{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+.dbt-skill-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4}
+.dbt-skill-body{display:none;padding:1rem 1.25rem 1.25rem;border-top:1px solid var(--border-l);background:var(--teal-ll)}
+.dbt-skill-body.open{display:block}
+.dbt-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(26,122,110,.1)}
+.dbt-step:last-child{border-bottom:none}
+.dbt-step-num{
+  width:24px;height:24px;background:var(--teal);color:#fff;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;
+}
+.dbt-step-text{font-size:13px;line-height:1.65;color:var(--text-2)}
+.dbt-try-btn{
+  margin-top:14px;padding:10px 20px;
+  background:var(--teal);color:#fff;border:none;
+  border-radius:var(--rs);font-size:13px;font-weight:700;
+  cursor:pointer;font-family:var(--font-ui);
+  box-shadow:0 2px 8px rgba(26,122,110,.3);
+}
+.dbt-tried-btn{
+  margin-top:14px;padding:10px 20px;
+  background:var(--green-l);color:#0A6647;
+  border:1.5px solid #A8DFC7;border-radius:var(--rs);
+  font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-ui);
+}
+.leisure-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.leisure-item{
+  background:var(--surface);border:1.5px solid var(--border-l);
+  border-radius:var(--rs);padding:12px 14px;cursor:pointer;
+  font-size:13px;line-height:1.4;transition:all .12s;
+  box-shadow:var(--shadow-sm);color:var(--text-2);
+}
+.leisure-item:hover{border-color:var(--teal);background:var(--teal-ll);transform:translateY(-1px)}
+.leisure-item.tried{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d);font-weight:600}
+.leisure-cat-title{
+  font-size:12px;font-weight:700;color:var(--teal);
+  text-transform:uppercase;letter-spacing:.06em;
+  margin:16px 0 8px;
+}
+
+/* Migrate da app.css (SHELL): base del pannello laterale (larghezza,
+   posizione, flessione, sfocatura) - dc.css sovrascrive solo alcune
+   proprieta' via !important per il look moderno, non tutta la regola.
+   .sidebar::after gia' permanentemente nascosta qui, non riportata. */
+.shell{display:flex;min-height:100vh;background:var(--bg)}
+.sidebar{
+  width:248px;
+  padding:0;
+  display:flex;flex-direction:column;
+  flex-shrink:0;position:sticky;top:0;height:100vh;
+  margin:12px 0 12px 12px;height:calc(100vh - 24px);
+  border-radius:var(--r);
+  background:linear-gradient(165deg,#1B4B4A 0%,#0D4A42 100%);
+  box-shadow:0 10px 34px rgba(16,40,36,.22), inset 0 1px 0 rgba(255,255,255,.18);
+  position:sticky;overflow:hidden;isolation:isolate;
+}
+.sidebar::before{
+  content:'';position:absolute;inset:-20%;z-index:0;
+  background:
+    radial-gradient(45% 30% at 20% 8%, rgba(140,236,206,.28), transparent 70%),
+    radial-gradient(50% 35% at 90% 40%, rgba(255,255,255,.12), transparent 72%),
+    radial-gradient(70% 40% at 40% 104%, rgba(0,0,0,.30), transparent 70%);
+  filter:blur(8px);
+}
+.sidebar > *{position:relative;z-index:1}
+.sidebar-scroll{
+  flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;
+  padding:1.75rem 1.25rem 1rem;
+  display:flex;flex-direction:column;gap:2px;
+}
+.sidebar-scroll::-webkit-scrollbar{display:none}
+.sidebar-footer{
+  padding:.75rem 1.25rem calc(.75rem + env(safe-area-inset-bottom,0px));
+  border-top:1px solid rgba(255,255,255,.15);
+  flex-shrink:0;
+}
+.main{flex:1;padding:0;overflow-x:hidden}
+
+/* URGENTE - la barra laterale (.sidebar) non aveva MAI avuto una
+   regola per nascondersi su mobile: la migrazione di oggi l'ha resa
+   visibile ovunque, occupando tutto lo schermo su telefono. Va
+   mostrata solo da 701px in su. */
+@media(max-width:700px){
+  html .sidebar{display:none}
+  html .shell{display:block}
+  html .main{width:100%}
+}
+
+/* Migrata da app.css (USER MENU): .user-avatar, mai duplicata qui. */
+.user-avatar{
+  width:32px;height:32px;border-radius:10px;
+  background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+
+/* Migrata da app.css (ONBOARDING): animazioni di scorrimento e campi
+   del modulo di registrazione, tutte confermate vive e mai duplicate
+   qui. */
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideOutLeft{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-40px)}}
+@keyframes slideOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+.ob-field{margin-bottom:1.25rem}
+.ob-field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:var(--text-2)}
+.ob-field input,.ob-field textarea{width:100%;box-sizing:border-box;padding:13px 14px;font-size:15px;min-height:48px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--surface-2);font-family:var(--font-ui);color:var(--text)}
+.ob-field input:focus,.ob-field textarea:focus{outline:none;border-color:var(--teal)}
+.ob-role{display:flex;gap:10px;margin-bottom:1.5rem}
+.ob-role-btn{
+  flex:1;padding:16px 12px;border-radius:var(--r);
+  border:2px solid var(--border);background:var(--surface-2);
+  cursor:pointer;text-align:center;font-family:var(--font-ui);
+  transition:all .15s;box-shadow:var(--shadow-sm);
+}
+.ob-role-btn.selected{border-color:var(--teal);background:var(--teal-ll);box-shadow:0 0 0 3px rgba(26,122,110,.15)}
+
+/* Migrate da app.css (PAT TABS): base strutturale (flessione, bordo,
+   cursore, scorrimento, transizione) - dc.css sovrascrive solo colore
+   e sfondo via !important, il resto serviva ancora tutto intero. */
+.pat-tabs{
+  display:flex;gap:4px;margin-bottom:1.25rem;padding:4px;
+  border:none;border-radius:var(--r-pill);
+  background:var(--surface-2);
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  box-shadow:inset 0 1px 3px rgba(16,40,36,.06);
+}
+.pat-tabs::-webkit-scrollbar{display:none}
+/* .pat-tab/.pat-tab.active gia' ridefiniti sopra con !important
+   (colore/sfondo/raggio/padding/font vincono comunque): qui restano
+   solo le proprieta' di struttura che quella regola non tocca. */
+.pat-tab{
+  flex:1 0 auto;cursor:pointer;white-space:nowrap;
+  border:none;border-right:none;
+  font-family:var(--font-ui);
+  transition:transform .28s var(--spring), background .18s ease, color .18s ease;
+  text-align:center;
+}
+.pat-tab:last-child{border-right:none}
+.pat-tab:active{transform:scale(.96)}
+.pat-tab-content.active{display:block}
+
+/* Migrate da app.css (GUIDA DBT): moduli della guida, non ancora
+   duplicate qui (.guide-module-body.open gia' presente, saltata). */
+.guide-module{background:var(--surface);border:1.5px solid var(--border-l);border-radius:var(--r);margin-bottom:1rem;overflow:hidden;box-shadow:var(--shadow-sm)}
+.guide-module-header{padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+.guide-skill-header{display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:0}
+.guide-skill-steps{display:none;margin-top:10px;background:var(--surface-2);border-radius:var(--rs);padding:10px 12px}
+.guide-skill-steps.open{display:block}
+.guide-step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.guide-step:last-child{margin-bottom:0}
+
+/* Migrate da app.css (ONBOARD FLIP): le @keyframes erano gia' state
+   migrate con ONBOARDING, qui solo le classi mancanti. */
+.ob-flip-link{
+  display:block;text-align:center;margin-top:1.25rem;
+  font-size:13px;color:var(--muted);
+}
+.ob-flip-link button{
+  background:none;border:none;color:var(--teal);font-weight:700;
+  font-size:13px;cursor:pointer;font-family:var(--font-ui);
+  text-decoration:underline;padding:0;
+}
+
+
+
+
+/* Migrate da app.css: .ni:active (transform, mai coperta da nessuna
+   regola composta) e .pat-stat-card, mai duplicate qui. */
+.ni:active{ transform:scale(.97); }
+.pat-stat-card{
+  background:var(--surface);border:none;border-radius:var(--rs);
+  padding:12px 14px;display:flex;align-items:center;gap:10px;
+  box-shadow:var(--shadow-sm);
+}
+
+/* Migrate da app.css (ultimo giro): sola-consultazione terapeuta,
+   riepilogo paziente, tab Giornata, schede a comparsa, fogli di
+   lavoro compilabili - tutte confermate vive e mai duplicate qui. */
+.readonly-note{
+  background:var(--amber-l);color:var(--text-2);
+  border-radius:var(--rs);padding:10px 14px;margin-bottom:1rem;
+  font-size:12.5px;font-weight:600;
+  box-shadow:inset 0 0 0 1.5px var(--amber);
+}
+.readonly-mode input,.readonly-mode textarea,.readonly-mode select{
+  background:var(--surface-2);opacity:.9;cursor:default;
+}
+.readonly-mode input[type="checkbox"],.readonly-mode input[type="radio"]{opacity:.55}
+.pat-hist-item{
+  background:var(--surface);border:none;border-radius:var(--rs);
+  box-shadow:var(--shadow-sm);padding:12px 14px;margin-bottom:8px;
+  transition:transform .28s var(--spring), box-shadow .28s var(--spring);
+}
+.pat-hist-item:active{transform:scale(.98)}
+.readonly-mode button:not([data-nav]),
+.readonly-mode input,
+.readonly-mode textarea,
+.readonly-mode select,
+.readonly-mode [onclick]:not([data-nav]),
+.readonly-mode .sb,.readonly-mode .tb,
+.readonly-mode .chip,.readonly-mode label{
+  pointer-events:none!important;
+}
+.readonly-mode .sb,.readonly-mode .tb{opacity:.9}
+.th-alert{transition:transform .2s var(--spring)}
+.th-alert:active{transform:scale(.98)}
+#pat-stats{display:block;margin-bottom:.75rem}
+#pat-stats > *{min-width:0}
+#pat-stats .sc{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:12px 14px;border-radius:var(--rs);background:var(--surface);
+  min-height:74px;
+}
+#pat-stats .sv{font-size:26px;font-weight:800;line-height:1.1}
+#pat-stats .sl{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.25}
+button{color:inherit}
+.page-hero button{color:#fff}
+#ptab-giornata > div:first-child{
+  background:var(--surface);border-radius:var(--rs);padding:12px 14px;
+  box-shadow:var(--shadow-sm);margin-bottom:1rem;
+  color:var(--text-2);font-size:13px;
+}
+.planner-day{
+  background:var(--surface);border-radius:var(--r);
+  box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:12px;
+}
+.planner-empty{
+  padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:13.5px;
+  background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow-sm);
+}
+.readonly-mode .guide-scheda-link,
+.readonly-mode [data-nav]{pointer-events:auto!important}
+/* .scheda-modal/.scheda-box gia' ridefinite sopra con lo stile
+   moderno (commento originale: "mai stato restilizzato"): qui restano
+   solo i pezzi genuinamente nuovi, non duplicati altrove. */
+.scheda-body .page{
+  display:block!important;padding:0;
+  content-visibility:visible!important;
+  contain:none!important;
+  contain-intrinsic-size:auto!important;
+}
+.scheda-body,.scheda-box{pointer-events:auto}
+@keyframes pop{ 0%{transform:scale(1)} 45%{transform:scale(1.22)} 100%{transform:scale(1.1)} }
+/* .guide-schede-modulo/.guide-scheda-link gia' ridefinite sopra con
+   lo stile moderno: la duplicazione vecchia qui e' stata tolta. */
+.cf-passo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;margin-bottom:6px}
+.cf-n{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:var(--teal);color:#fff;font-size:13px;font-weight:800;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.cf-aiuto{font-size:12.5px;color:var(--muted);line-height:1.45;margin-bottom:10px}
+.cf-check{
+  margin:12px 0 8px;padding:9px 12px;border-radius:var(--rs);
+  background:var(--amber-l);color:#8A6220;
+  font-size:12px;font-weight:700;line-height:1.4;
+}
+.cf-scala{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 14px}
+.cf-scala-btn{
+  width:42px;height:42px;border-radius:var(--rs);
+  border:1px solid var(--border-l);background:var(--surface);
+  color:var(--text);font-family:var(--font-ui);font-size:15px;font-weight:700;cursor:pointer;
+}
+.cf-scala-btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.foglio-item{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 12px;border-radius:var(--rs);background:var(--surface-2);
+  margin-bottom:8px;
+}
+.foglio-item .bsec{padding:6px 12px;font-size:12.5px;flex-shrink:0}
+.foglio-riga{
+  font-size:13px;color:var(--text-2);line-height:1.5;
+  padding:6px 10px;background:var(--surface-2);border-radius:8px;margin-bottom:5px;
+}
