@@ -216,6 +216,7 @@ function goPage(name,btn){
   if(name==='pianocrisi'){pcCarica();}
   if(name==='catena'){caRenderLista();}
   if(name==='eventi'){epRender();}
+  if(name==='gruppo' && typeof grMostraPagina==='function') grMostraPagina();
   if(name==='guida'){setTimeout(()=>{
     try{renderGuide();}catch(e){document.getElementById('guida-content').innerHTML='<div style="background:#F7E7DC;color:#C1714A;padding:16px;border-radius:16px;font-size:12px;white-space:pre-wrap">ERRORE renderGuide: '+e.message+'\n'+e.stack+'</div>';}
     try{renderEmozioni();}catch(e){document.getElementById('emozioni-content').innerHTML='<div style="background:#F7E7DC;color:#C1714A;padding:16px;border-radius:16px;font-size:12px;white-space:pre-wrap">ERRORE renderEmozioni: '+e.message+'\n'+e.stack+'</div>';}

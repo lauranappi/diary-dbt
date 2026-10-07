@@ -1851,3 +1851,10 @@ select.fg-in{appearance:none;-webkit-appearance:none;background-image:none}
 .gr-coll-ris{display:flex;flex-direction:column}
 .gr-ambito{margin:-4px 0 16px;font-size:13px;font-weight:700;color:var(--dc-petrolio)}
 .guide-schede-titolo.fg-mod{margin:22px 0 8px}
+
+/* Diario del gruppo: pagina a sé, riga pagina con ricerca nel titolo */
+#page-gruppo .fg-wrap{padding:0 0 24px}
+.gr-pag-sotto{margin-bottom:10px}
+.gr-pag-sotto .gr-pag{margin-bottom:0}
+.gr-pag-sotto .gr-link{margin-top:8px;max-width:100%;white-space:normal;text-align:left}
+.gr-pag-sotto .gr-coll-ris{margin-top:6px}
