@@ -681,17 +681,6 @@ function renderGuide(){
           '<b>Passo 6:</b> Punti di intervento. Dove nella catena avresti potuto fare diversamente? Quale abilit\u00e0 usare?',
           '\U0001f4a1 Non serve a colpevolizzarti \u2014 serve a capire e pianificare come fare meglio.'
         ]},
-       {id:'gprocontro',badge:'PRO/CONTRO ABILITÀ',name:'Foglio di lavoro — Usare le abilità?',
-        desc:'Usare le abilità o cedere all\'impulso?',
-        steps:[
-          '<b>Descrivi la situazione:</b> cosa sta succedendo? Qual è il tuo obiettivo?',
-          '<b>PRO del praticare le abilità:</b> cosa otterresti a breve e lungo termine?',
-          '<b>CONTRO del praticare le abilità:</b> cosa ti costerebbe ora?',
-          '<b>PRO del NON praticarle:</b> cosa otterresti cedendo all’impulso?',
-          '<b>CONTRO del NON praticarle:</b> quali sarebbero le conseguenze?',
-          '<b>Decisione:</b> cosa hai deciso di fare? La tua mente saggia è d’accordo?',
-          'Usa questa struttura ogni volta che senti di voler rinunciare alle abilità.'
-        ]},
        {id:'gvita',badge:'VITA DEGNA',name:'Costruire una vita degna di essere vissuta',
         desc:'Una vita che vale la pena, sui tuoi valori.',
         steps:[
