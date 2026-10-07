@@ -158,7 +158,7 @@ function rcCerca(q){
   window.GUIDE_INDEX.concat(rcLiberi()).forEach(function(e){
     if(fr.f.length && !rcRifOk(e, fr.f)) return;
     const titolo = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + rcFogli(e));
-    const tutto = titolo + ' ' + rcNorm(e.testo) + ' ' + rcNorm(e.modTitolo);
+    const tutto = titolo + ' ' + rcNorm(e.testo) + ' ' + rcNorm(e.modTitolo) + ' ' + rcRifCerca(e);
     if(!parole.every(function(w){ return tutto.indexOf(w) !== -1; })) return;
     // chi ha tutte le parole nel titolo viene prima
     const punti = parole.every(function(w){ return titolo.indexOf(w) !== -1; }) ? 0 : 1;
