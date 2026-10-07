@@ -1755,7 +1755,7 @@ body.pi-aperto{overflow:hidden}
 /* ═══════════════════════════════════════════════════════════════
    RICERCA E PREFERITI DELLA GUIDA (js/ricerca.js)
    ═══════════════════════════════════════════════════════════════ */
-.rc-zona{padding:6px var(--dc-gap-l,16px) 4px}
+.rc-zona{padding:6px var(--dc-gap-l,16px) 20px}
 .rc-campo{display:flex;align-items:center;gap:10px;background:var(--dc-surface);color:var(--dc-muted);
   border:1.5px solid var(--dc-line);border-radius:var(--dc-radius-pill);padding:0 18px;min-height:50px}
 .rc-campo:focus-within{border-color:var(--dc-petrolio)}
@@ -1774,7 +1774,7 @@ body.pi-aperto{overflow:hidden}
 .rc-mod{font-size:var(--dc-size-meta);color:var(--dc-muted)}
 .rc-vuoto{font-size:var(--dc-size-corpo-s);color:var(--dc-muted);padding:14px 4px;line-height:1.5}
 
-.pf-wrap{margin-top:12px}
+.pf-wrap{margin-top:16px}
 .pf-titolo{font-size:var(--dc-size-meta);font-weight:var(--dc-w-bold);letter-spacing:.06em;text-transform:uppercase;color:var(--dc-muted);margin-bottom:8px}
 .pf-chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .pf-chips::-webkit-scrollbar{display:none}
