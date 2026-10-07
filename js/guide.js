@@ -104,13 +104,13 @@ function renderGuide(){
        {id:'accept',badge:'ACCETTA',name:'Distrarsi con mente saggia',
         desc:'Sette strategie per distrarti senza negare il dolore.',
         steps:[
-          '<b>A — Attività.</b> Fai qualcosa che assorba l\'attenzione: sport, hobby, pulizie, film. Qualsiasi cosa che occupi mente e corpo.',
-          '<b>C — Contribuire.</b> Aiuta qualcun altro: chiama un\'amica, fai volontariato, scrivi un messaggio incoraggiante. Uscire da se stesse aiuta.',
-          '<b>C — Confronti.</b> Confrontati con momenti in cui stavi peggio, o con persone in situazioni più difficili — non per sminuire il dolore, ma per trovare prospettiva.',
-          '<b>E — Emozioni diverse.</b> Suscita emozioni opposte: commedie quando sei triste, film emozionanti quando ti senti vuota, musica che ti attiva.',
-          '<b>T — Tieni le distanze.</b> Allontanati fisicamente o mentalmente dalla situazione per un po\'. Costruisci un muro immaginario. "Metti in pausa" il problema.',
-          '<b>T — Thoughts (pensieri).</b> Distrai la mente: conta fino a 10, fai un puzzle, recita qualcosa a memoria, conta i colori intorno a te.',
-          '<b>A — Azioni intense.</b> Qualcosa che richieda concentrazione totale: sport, videogiochi impegnativi, suonare uno strumento, cantare.'
+          '<b>A — Attività.</b> Fai qualcosa che assorba l\'attenzione: una passeggiata, un film, pulire una stanza, un gioco, una telefonata a qualcuno.',
+          '<b>C — Contribuisci al benessere altrui.</b> Aiuta qualcuno: un messaggio gentile, un piccolo favore, volontariato. Uscire da te stessa dà respiro.',
+          '<b>C — Confronti.</b> Metti il momento in prospettiva: com\'era quando stavi peggio, o come altri affrontano cose simili. Non per sminuire il dolore.',
+          '<b>E — Emozioni diverse.</b> Provoca un\'emozione opposta a quella di adesso: una commedia, musica che ti smuove, una vecchia lettera. Scegli qualcosa che accende davvero un\'altra emozione.',
+          '<b>T — Tieni lontano.</b> Metti il problema da parte per un po\': immagina un muro, o di riporre il dolore in una scatola sul tavolo. È una pausa, non una negazione per sempre.',
+          '<b>A — AlTri pensieri.</b> Occupa la mente con altro: conta i colori di un quadro, ripeti le parole di una canzone, un puzzle, un cruciverba.',
+          '<b>A — altre sensAzioni.</b> Dai al corpo una sensazione forte ma sicura: stringere una pallina, musica a volume alto, una doccia fredda o un bagno caldo, uscire sotto la pioggia.'
         ]},
        {id:'sensi',badge:'5 SENSI',name:'Autoconsolati attraverso i 5 sensi',
         desc:'Calma e conforto attraverso i cinque sensi.',
@@ -124,13 +124,13 @@ function renderGuide(){
        {id:'migliora',badge:'MIGLIORA',name:'Migliora il momento presente',
         desc:'Sette strategie per rendere il momento più tollerabile.',
         steps:[
-          '<b>M — Immagini mentali (Meaning).</b> Usa immagini mentali che ti calmano: un posto sicuro, la natura, un ricordo felice. Oppure dai un senso alla sofferenza — cosa ti sta insegnando?',
-          '<b>I — Intenzione (Intention).</b> Focalizzati su un\'intenzione per il momento: "Voglio superare questa ora". Un\'intenzione piccola e concreta.',
-          '<b>G — Gioia (Gentleness).</b> Sii gentile con te stessa. Pensa a cosa diresti a un\'amica nella tua situazione — dillo a te stessa.',
-          '<b>L — Lasciati andare (Letting go).</b> Rilascia temporaneamente pensieri e preoccupazioni. Non devi risolvere tutto ora.',
-          '<b>I — Incoraggiamento (Incentive).</b> Ricorda le ragioni per cui vale la pena andare avanti. Cosa c\'è di bello nella tua vita? Cosa ti aspetti con piacere?',
-          '<b>O — Orientamento (One thing).</b> Fai una cosa sola alla volta. Concentra tutta l\'attenzione solo su questo momento, su questa attività.',
-          '<b>R — Riposo e relax (Relaxation).</b> Rilassamento muscolare, respirazione lenta, musica rilassante, doccia calda, tisana.'
+          '<b>IM — IMmaginazione.</b> Immagina scene che calmano: una stanza segreta dentro di te dove non entra ciò che ti ferisce, le emozioni dolorose che scorrono via come acqua, un ricordo felice rivissuto.',
+          '<b>SI — SIgnificato.</b> Cerca uno scopo o un senso nella situazione dolorosa, o un aspetto positivo da tenere a mente.',
+          '<b>G — PreGhiera.</b> Apri il cuore a qualcosa di più grande di te (come lo chiami tu) o alla tua mente saggia, e chiedi la forza di sopportare.',
+          '<b>L — riLassamento.</b> Un bagno caldo, un massaggio al collo, yoga, respiri profondi, un\'espressione del viso più morbida.',
+          '<b>PI — PIccoli passi.</b> Una cosa per volta: resta in quello che stai facendo, porta l\'attenzione sulle sensazioni del corpo.',
+          '<b>O — breve ripOso.</b> Concediti una mini-vacanza dalle responsabilità: una pausa dal lavoro, un pomeriggio al parco, telefono spento per un giorno.',
+          '<b>RA — AutoincoRAggiamento.</b> Parlati con gentilezza: "Ce la posso fare", "Passerà anche questo", "Sto facendo del mio meglio". Prepara in anticipo frasi che ti servono nelle crisi.'
         ]},
        {id:'sorriso',badge:'MEZZO SORRISO',name:'Abbozzare un sorriso e mani aperte',
         desc:'Accetta la realtà attraverso postura ed espressione.',
@@ -557,11 +557,16 @@ function renderGuide(){
           row.innerHTML='<div class="guide-step-n">'+(i+1)+'</div><div class="guide-step-text">'+step+'</div>';
           steps.appendChild(row);
         });
+        // post-it: appunti personali presi durante i gruppi (js/postit.js)
+        if(typeof piMount==='function') steps.appendChild(piMount('sk:'+sk.id,'Appunti dai gruppi'));
       }
       skDiv.appendChild(steps);body.appendChild(skDiv);
     });
+    // anche sul modulo intero (e per le schede di sola lettura, che si aprono in finestra)
+    if(typeof piMount==='function') body.appendChild(piMount('mod:'+mod.id,'Appunti sul modulo'));
     mDiv.appendChild(body);el.appendChild(mDiv);
   });
+  if(typeof piAggiornaTuttiIBadge==='function') piAggiornaTuttiIBadge();
 
   // Fogli di lavoro in cima al modulo: sono la parte operativa, chi apre
   // il modulo di solito cerca quelli prima della teoria.
@@ -955,7 +960,8 @@ function renderEmozioni(){
       div.innerHTML=`<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${row.label}</div><div style="font-size:13px;color:var(--text);line-height:1.55">${row.val}</div>`;
       body.appendChild(div);
     });
-    
+    if(typeof piMount==='function') body.appendChild(piMount('emo:'+emo.id,'Appunti sull’emozione'));
+
     card.appendChild(body);
     el.appendChild(card);
   });

@@ -697,7 +697,6 @@ function openPatientFromHome(code){
 
 
 // Ricarica i dati delle pazienti senza uscire dalla Home.
-async 
 
 
 // Copia l'username negli appunti: e' il dato che serve dare alle pazienti.
