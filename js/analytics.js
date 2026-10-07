@@ -420,7 +420,7 @@ const SPOOL=[
   {prio:4,cond:()=>true,icon:'▸',
    title:'Costruisci una vita degna',
    desc:'Ogni giorno un piccolo passo verso la vita che vuoi. Identifica un valore su cui lavorare.',
-   guide:'gen',skill:'gvita'},
+   guide:'reg',skill:'rvalori'},
   {prio:3,cond:d=>d.scales&&(d.scales.col>=2||d.scales.ver>=2),icon:'○',
    title:'Azione opposta alla vergogna',
    desc:'Vergogna ci spinge a nasconderci. L’azione opposta è mostrarsi, non nascondersi.',
@@ -428,11 +428,7 @@ const SPOOL=[
   {prio:3,cond:d=>d.scales&&d.scales.rab>=2,icon:'⊘',
    title:'GIVE — mantieni la relazione',
    desc:'Quando sei arrabbiata con qualcuno, GIVE aiuta a gestire la situazione senza danneggiare il legame.',
-   guide:'inter',skill:'give'},
-  {prio:3,cond:d=>d.texts&&d.texts.alcu&&d.texts.alcu.trim(),icon:'●',
-   title:'Analizza cosa ha scatenato il comportamento',
-   desc:'Capire la catena di eventi che ha portato all’uso di alcol è il primo passo per cambiarlo.',
-   guide:'gen',skill:'gcatena'}
+   guide:'inter',skill:'give'}
 
 
 ];
