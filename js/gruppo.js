@@ -113,7 +113,7 @@ function grCompilati(){
 }
 function grCatalogo(){
   const c = grCompilati();
-  FG_FOGLI.forEach(function(f){ c.push({k:'fg:' + f.id, n:f.t + ' (foglio vuoto)', tipo:'Foglio', extra:f.t}); });
+  FG_FOGLI.forEach(function(f){ c.push({k:'fg:' + f.id, n:f.t, tipo:'Foglio vuoto', extra:f.t}); });
   if(typeof SCHEDA_TITOLI !== 'undefined') Object.keys(SCHEDA_TITOLI).forEach(function(k){ c.push({k:'sc:' + k, n:SCHEDA_TITOLI[k], tipo:'Scheda'}); });
   (window.GUIDE_INDEX || []).forEach(function(e){ c.push({k:'sk:' + e.id, n:e.name, tipo:'Abilità', extra:e.badge + ' ' + e.desc}); });
   return c;
@@ -206,6 +206,13 @@ function grApriCollegamento(l){
     if(e && typeof rcApri === 'function') rcApri(e);
   }
 }
+// i post-it fatti nella scheda/foglio collegato (stessa chiave usata dentro la scheda)
+function grChiavePostit(l){
+  const p = String(l || '').split(':'), t = p[0], id = p.slice(1).join(':');
+  if(t === 'sc' || t === 'sk' || t === 'fg') return t + ':' + id;
+  if(t === 'fe') return 'fg:' + p[1];
+  return {cf:'sc:fatti', pc:'sc:procontro', de:'sc:diarioemo', ca:'sc:catena'}[t] || '';
+}
 function grNomeCollegamento(l){
   const c = grCatalogo().filter(function(x){ return x.k === l; })[0];
   return c ? c.n : '';
@@ -226,6 +233,8 @@ function grVista(x){
       const ap = grEl('button', 'fg-btn gr-apri', 'Apri: ' + nome); ap.type = 'button';
       ap.addEventListener('click', function(){ grApriCollegamento(y.l); });
       w.appendChild(ap);
+      const k = grChiavePostit(y.l);
+      if(k && piList(k).length) w.appendChild(piMount(k, 'Post-it di «' + nome.split(' · ')[0] + '»'));
     }
   });
   w.appendChild(piMount('gn:' + x.id, 'Appunti dai gruppi'));
@@ -291,7 +300,7 @@ function grForm(x){
         b.appendChild(grEl('span', 'fg-riga-data', c.tipo));
         b.appendChild(grEl('span', 'fg-riga-ant', c.n));
         b.addEventListener('click', function(){
-          riga.l = c.k; nt.value = c.n.split(' · ')[0].replace(' (foglio vuoto)', '');
+          riga.l = c.k; nt.value = c.n.split(' · ')[0];
           ris.innerHTML = ''; disegnaChip(); aggiornaAmbito();
         });
         ris.appendChild(b);
