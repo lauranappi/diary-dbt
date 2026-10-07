@@ -1897,3 +1897,29 @@ input:focus,textarea:focus,select:focus{outline:none}
 .guide-compila{margin:14px 0 6px}
 .guide-compila .guide-schede-titolo{margin:0 0 8px}
 .guide-compila .guide-scheda-link{margin-bottom:8px}
+
+/* ══ iPad e tablet ═══════════════════════════════════════════════
+   Da 701px a 1023px (iPad in verticale, mini in orizzontale) la barra
+   laterale da 248px toglieva un terzo della larghezza e c'era anche la
+   barra in basso (lo stile inline le imponeva display:block). Qui sotto
+   i 1024px si torna alla barra in basso con il contenuto centrato;
+   da 1024px in su c'e' solo la barra laterale. */
+@media(min-width:701px) and (max-width:1023px){
+  html .sidebar{display:none}
+  html .shell{display:block}
+  html .main{width:100%}
+  html .bottom-nav{display:block!important}
+  html .main-inner{width:100%;box-sizing:border-box;max-width:820px;margin-left:auto;margin-right:auto;
+    padding-bottom:calc(var(--dc-h-barra,64px) + 36px + env(safe-area-inset-bottom,0px))}
+  html .bn-lbl{font-size:12px}
+}
+@media(min-width:1024px){
+  html .bottom-nav{display:none!important}
+}
+/* Dito, non puntatore: bersagli di almeno 44px e testo leggibile */
+@media(min-width:701px) and (pointer:coarse){
+  .sidebar .ni{padding:13px 16px}
+  .page button,.page .btn{min-height:44px}
+  .page input:not([type=checkbox]):not([type=radio]),.page select{min-height:44px;font-size:16px}
+  .page textarea{font-size:16px}
+}
