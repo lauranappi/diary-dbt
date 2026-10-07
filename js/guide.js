@@ -132,6 +132,53 @@ function renderGuide(){
           '<b>O — breve ripOso.</b> Concediti una mini-vacanza dalle responsabilità: una pausa dal lavoro, un pomeriggio al parco, telefono spento per un giorno.',
           '<b>RA — AutoincoRAggiamento.</b> Parlati con gentilezza: "Ce la posso fare", "Passerà anche questo", "Sto facendo del mio meglio". Prepara in anticipo frasi che ti servono nelle crisi.'
         ]},
+       {id:'tacqua',badge:'ACQUA FREDDA',name:'Acqua fredda: il riflesso da immersione',
+        desc:'Calma il corpo in pochi minuti quando l\'emozione è fortissima.',
+        steps:[
+          '<b>Perché funziona.</b> Viso nell\'acqua fredda con il respiro trattenuto: il corpo reagisce come in un\'immersione. Il battito rallenta e questo aiuta a regolare l\'emozione. L\'effetto può iniziare dopo 15-30 secondi.',
+          '<b>Come.</b> Riempi una bacinella di acqua fredda (non ghiacciata), oppure appoggia sugli occhi e sulle guance un sacchetto chiuso con acqua fredda. Trattieni il respiro per qualche secondo.',
+          '<b>Stai ferma.</b> Funziona meglio seduta e tranquilla: muoverti o farti distrarre ne riduce l\'effetto.',
+          '<b>Quando usarla.</b> Emozioni molto forti e dolorose, oppure quando l\'impulso a farti del male o a fare qualcosa di pericoloso è fortissimo.',
+          '⚠ <b>Attenzione:</b> l\'acqua molto fredda rallenta il cuore. Se hai problemi cardiaci o altre condizioni, se prendi farmaci per il battito o betabloccanti, parlane prima con il medico. Non usare acqua ghiacciata se il freddo ti dà reazioni negative.'
+        ]},
+       {id:'trilass',badge:'RILASSAMENTO',name:'Rilassamento muscolare progressivo',
+        desc:'Contrai e rilascia i muscoli, uno alla volta, per sciogliere la tensione.',
+        steps:[
+          '<b>Prepara il luogo.</b> Le prime volte scegli un posto tranquillo e dedicaci tempo. Mettiti comoda, sdraiata o seduta, allenta ciò che stringe e non incrociare le braccia o le gambe.',
+          '<b>Contrai.</b> Tendi una parte del corpo mentre inspiri e senti la rigidità per 5-6 secondi.',
+          '<b>Rilascia.</b> Espirando lascia andare di colpo e ripeti piano nella mente "Rilassati". Osserva per 10-15 secondi come cambiano le sensazioni, poi passa alla parte successiva.',
+          '<b>Procedi per gradi.</b> All\'inizio lavora sui singoli muscoli (sono 16), poi sui gruppi medi, poi su quelli grandi. Alla fine puoi tendere e sciogliere tutto il corpo insieme: prima rigida come un robot, poi morbida come una bambola di pezza.',
+          '<b>Se arriva l\'ansia o il giudizio.</b> Osserva i pensieri e lasciali andare, riporta l\'attenzione all\'esercizio. Se l\'ansia sale, respira con la pancia: inspira contando fino a 5, espira contando fino a 7.',
+          '<b>Allenati.</b> Più lo pratichi (anche 3-4 volte al giorno, all\'inizio), più in fretta riuscirai a rilassarti quando serve davvero.'
+        ]},
+       {id:'triform',badge:'RIFORMULA',name:'Riformulare i pensieri',
+        desc:'Sostituisci i pensieri che ti agitano con frasi che ti aiutano, abbinandole al respiro.',
+        steps:[
+          '<b>1 — Evento.</b> Scrivi la situazione che di solito ti fa stare male e su cui vuoi essere meno reattiva.',
+          '<b>2 — Cosa mi dico.</b> Chiediti quali pensieri e interpretazioni hai su quell\'evento e scrivili (es. "non ce la farò mai", "sono fuori controllo").',
+          '<b>3 — Una lettura diversa.</b> Riguarda la situazione in modo che contraddica quei pensieri. Scrivi quante più frasi efficaci riesci a trovare.',
+          '<b>4 — Allenati a freddo.</b> Quando l\'evento non c\'è, immaginalo. Inspirando ripeti una frase che ti sostiene, espirando dì "Rilassati" e sciogli i muscoli.',
+          '<b>5 — Ripeti.</b> Continua finché diventa naturale.',
+          '<b>6 — Usala quando serve.</b> Nella situazione vera, applica la frase e il rilassamento insieme.'
+        ]},
+       {id:'tbody',badge:'BODY SCAN',name:'Meditazione body scan',
+        desc:'Porta l\'attenzione, parte per parte, in tutto il corpo.',
+        steps:[
+          '<b>Posizione.</b> Seduta o sdraiata, senza gambe incrociate, braccia in una posizione comoda. Occhi socchiusi. Se sei sdraiata puoi mettere un cuscino sotto le ginocchia.',
+          '<b>Respiro.</b> Fai qualche respiro profondo finché ti senti più a tuo agio. Poi immagina che il respiro segua la tua attenzione.',
+          '<b>Parti dal piede sinistro.</b> Porta l\'attenzione alle dita, poi all\'arco e al tallone. Chiediti con curiosità: "Che cosa sento qui?". Nota calore, freddo, peso, contatto.',
+          '<b>Sali lentamente.</b> Caviglia, polpaccio, ginocchio, coscia; poi ripeti con la gamba destra. Continua con bacino, schiena, addome, torace, braccia e mani, spalle, collo, viso e testa, restando un po\' su ogni zona.',
+          '<b>Se la mente vaga,</b> è normale: nota dove è andata e riportala con gentilezza alla parte del corpo in cui eri.'
+        ]},
+       {id:'tsensoriale',badge:'SENSORIALE',name:'Consapevolezza sensoriale guidata',
+        desc:'Domande brevi per tornare al corpo e al momento presente.',
+        steps:[
+          '<b>Prepara.</b> Mettiti in una posizione comoda e restaci. Puoi registrare le domande con la tua voce, leggerle da sola o chiedere a qualcuno di farle.',
+          '<b>Una domanda alla volta,</b> con circa 5 secondi di pausa. Ascolta cosa senti, senza giudicare.',
+          '<b>Esempi di domande sul corpo:</b> senti il respiro che muove la pancia? senti la pianta dei piedi? un braccio ti sembra più pesante dell\'altro? senti un cambio di temperatura dell\'aria sulla pelle?',
+          '<b>Esempi di immaginazione piacevole:</b> come ti sentiresti a galleggiare nell\'acqua calda? su una nuvola? come una bambola di pezza?',
+          '<b>Quando usarla.</b> Quando la testa corre e vuoi tornare al presente, o per prepararti al rilassamento.'
+        ]},
        {id:'sorriso',badge:'MEZZO SORRISO',name:'Abbozzare un sorriso e mani aperte',
         desc:'Accetta la realtà attraverso postura ed espressione.',
         steps:[
@@ -410,6 +457,33 @@ function renderGuide(){
           '"Dovrebbero sapere cosa voglio senza che io lo dica." → Gli altri non possono leggere nella tua mente. Comunicare è tuo compito.',
           '"Non posso sopportare che qualcuno si arrabbi con me." → Puoi tollerarlo. Il disappunto altrui non ti definisce.',
           '💡 Riconoscere queste credenze è già metà del lavoro. Non devi credere ai tuoi pensieri automatici.'
+        ]},
+       {id:'itrova',badge:'TROVARE PERSONE',name:'Trovare le persone giuste e piacere loro',
+        desc:'Come costruire nuove amicizie, un passo concreto alla volta.',
+        steps:[
+          '<b>Ricorda.</b> Ogni persona merita affetto. Trovare amicizie però può richiedere impegno.',
+          '<b>Cerca persone vicine.</b> Stare spesso negli stessi posti e farsi notare aiuta a piacersi: gruppi, corsi, lavoro, luoghi che frequenti.',
+          '<b>Cerca persone simili.</b> Interessi e valori in comune facilitano il legame. Essere d\'accordo con tutti non ti rende più simpatica, ma i punti in comune aiutano.',
+          '<b>Allena la conversazione.</b> Fai domande e rispondi dando qualcosa in più del minimo. Le chiacchiere leggere contano. Racconta di te quanto l\'altra persona. Non interrompere e lascia spazio.',
+          '<b>Dì cosa ti piace, con misura.</b> Apprezza in modo sincero e specifico. Niente adulazione, niente complimenti per ottenere favori, e non troppi.',
+          '<b>Prepara argomenti.</b> Osserva, leggi, prova esperienze nuove: avrai più cose di cui parlare.'
+        ]},
+       {id:'imindf',badge:'CON GLI ALTRI',name:'Essere presenti con le persone',
+        desc:'Le amicizie durano di più quando siamo davvero lì.',
+        steps:[
+          '<b>Osserva.</b> Presta attenzione a chi hai davanti con curiosità. Non fare più cose insieme e non preparare già cosa dirai. Stai sull\'altra persona, non su di te. Nota i giudizi e lasciali andare.',
+          '<b>Descrivi.</b> Usa parole che descrivono, non che giudicano. Non supporre cosa pensa di te senza verificare i fatti: nessuno vede dentro la testa di un altro. Dai il beneficio del dubbio.',
+          '<b>Partecipa.</b> Buttati nell\'interazione, segui il flusso invece di controllarlo, sii dentro la conversazione o l\'attività del gruppo.'
+        ]},
+       {id:'ichiudi',badge:'CHIUDERE RELAZIONI',name:'Quando e come chiudere una relazione',
+        desc:'Decidere con la mente saggia, mai con quella emotiva.',
+        steps:[
+          '<b>Distruttiva o interferente?</b> Una relazione distruttiva rovina la sicurezza, l\'autostima o la serenità tua o dell\'altra persona. Una interferente ti ostacola negli obiettivi, nel godere della vita o nelle altre relazioni.',
+          '<b>Decidi in mente saggia.</b> Mai in mente emotiva.',
+          '<b>Se la relazione è importante e non distruttiva,</b> e c\'è speranza, prova prima il problema solving per ripararla.',
+          '<b>Prepara con anticipo.</b> Allenati a risolvere i problemi e a chiudere prima che sia tardi. Sii diretta: usa DEAR MAN, GIVE e FAST.',
+          '<b>Se ami la persona sbagliata,</b> pratica l\'azione opposta all\'amore.',
+          '⚠ <b>Prima di tutto la tua sicurezza.</b> Se subisci abusi gravi o la tua vita è a rischio, chiama il 1522 (numero antiviolenza, gratuito) o un centro antiviolenza vicino a te, per costruire un piano di sicurezza con professioniste. Ci sono anche i centri della rete D.i.Re (direcontrolaviolenza.it).'
         ]}
      ]},
     {id:'dip',icon:'🔗',bg:'#F6EFE3',
