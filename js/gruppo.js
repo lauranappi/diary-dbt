@@ -11,7 +11,8 @@ const GR_CHIAVE = 'grp:pagine';
 const GR_MOD = [['mind','Mindfulness'],['tol','Tolleranza'],['reg','Regolazione emotiva'],['inter','Interpersonale'],['gen','Altro']];
 
 function grTutte(){ const a = piAll(); return a[GR_CHIAVE] || (a[GR_CHIAVE] = []); }
-function grLista(){ return grTutte().filter(function(x){ return !x.d; }); }
+// un incontro puo' avere piu' pagine (pp) e piu' collegamenti (ll); i vecchi
+// elementi con una sola pagina (p, t, l) vengono letti nello stesso formato
 function grSalva(item){
   const l = grTutte();
   const i = l.findIndex(function(x){ return x.id === item.id; });
@@ -21,7 +22,7 @@ function grSalva(item){
 }
 function grElimina(id){
   const x = grTutte().find(function(y){ return y.id === id; });
-  if(x){ x.d = 1; x.ts = Date.now(); x.n = ''; x.t = ''; piSave(); }
+  if(x){ x.d = 1; x.ts = Date.now(); x.n = ''; x.pp = []; x.ll = []; piSave(); }
 }
 function grOggi(){ const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function grDataLunga(g){
@@ -30,6 +31,50 @@ function grDataLunga(g){
 }
 function grModNome(m){ const x = GR_MOD.filter(function(y){ return y[0] === m; })[0]; return x ? x[1] : ''; }
 function grNorm(t){ return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+
+function grNormItem(x){
+  if(!x.pp) x.pp = (x.p || x.t) ? [{p: x.p || '', t: x.t || ''}] : [];
+  if(!x.ll) x.ll = x.l ? [x.l] : [];
+  return x;
+}
+function grLista(){ return grTutte().filter(function(x){ return !x.d; }).map(grNormItem); }
+function grRiepilogoPagine(x){
+  const nums = x.pp.map(function(y){ return y.p; }).filter(Boolean);
+  return nums.length ? (nums.length > 1 ? 'pp. ' : 'p. ') + nums.join(', ') : 'incontro';
+}
+function grTitoli(x){ return x.pp.map(function(y){ return y.t; }).filter(Boolean).join(' · '); }
+// catalogo per la ricerca dei collegamenti: prima i fogli GIA' COMPILATI
+// (uno per uno, con data e anteprima), poi fogli vuoti, schede e abilita'
+function grLeggi(k){ try{ const a = JSON.parse(localStorage.getItem(ukey(k)) || '[]'); return Array.isArray(a) ? a : []; }catch(e){ return []; } }
+function grDataCompilato(q){
+  const d = new Date(q);
+  return isNaN(d) ? '' : d.toLocaleDateString('it-IT', {day:'numeric', month:'short', year:'numeric'});
+}
+function grCompilati(){
+  const c = [];
+  function agg(k, nome, quando, anteprima){
+    const dt = grDataCompilato(quando);
+    c.push({k:k, n:nome + (dt ? ' · ' + dt : '') + (anteprima ? ' · ' + String(anteprima).slice(0, 40) : ''), tipo:'Compilato', extra:nome + ' ' + (anteprima || '') + ' ' + dt});
+  }
+  FG_FOGLI.forEach(function(f){
+    fgLista(f.id).forEach(function(e){
+      const prima = f.c.filter(function(x){ return !x.h && (x.tipo === 't' || x.tipo === 'a') && e.v && e.v[x.k]; })[0];
+      agg('fe:' + f.id + ':' + e.id, f.t, e.ts, prima ? e.v[prima.k] : '');
+    });
+  });
+  grLeggi('cf_fogli').forEach(function(d){ agg('cf:' + d.id, 'Controlla i fatti', d.data, d['cf-emozione']); });
+  grLeggi('pc2_fogli').forEach(function(d){ agg('pc:' + d.id, 'Pro e contro delle abilità', d.data, d['pc2-situazione']); });
+  grLeggi('diario_emo').forEach(function(d){ agg('de:' + d.id, 'Diario delle emozioni', d.data, d.emozione); });
+  grLeggi('catena_list').forEach(function(d){ agg('ca:' + d.id, 'Analisi della catena', d.data, d.comportamento); });
+  return c;
+}
+function grCatalogo(){
+  const c = grCompilati();
+  FG_FOGLI.forEach(function(f){ c.push({k:'fg:' + f.id, n:f.t + ' (foglio vuoto)', tipo:'Foglio', extra:f.t}); });
+  if(typeof SCHEDA_TITOLI !== 'undefined') Object.keys(SCHEDA_TITOLI).forEach(function(k){ c.push({k:'sc:' + k, n:SCHEDA_TITOLI[k], tipo:'Scheda'}); });
+  (window.GUIDE_INDEX || []).forEach(function(e){ c.push({k:'sk:' + e.id, n:e.name, tipo:'Abilità', extra:e.badge + ' ' + e.desc}); });
+  return c;
+}
 
 function grApri(){
   if(typeof _schedaAperta !== 'undefined' && _schedaAperta && typeof closeScheda === 'function') closeScheda();
@@ -45,8 +90,8 @@ function grMostraLista(q, mod){
   const body = fgCorpo(); if(!body) return;
   body.innerHTML = ''; body.scrollTop = 0;
   const w = grEl('div', 'fg-wrap');
-  w.appendChild(grEl('p', 'fg-intro', 'Le pagine che avete visto in gruppo, da ripassare quando vuoi. Aggiungile tu: bastano il numero e il titolo.'));
-  const nuovo = grEl('button', 'fg-btn fg-pri', '+ Aggiungi una pagina');
+  w.appendChild(grEl('p', 'fg-intro', 'Le pagine che avete visto in gruppo, da ripassare quando vuoi. Aggiungile tu: un incontro può avere più pagine e più schede collegate.'));
+  const nuovo = grEl('button', 'fg-btn fg-pri', '+ Aggiungi un incontro');
   nuovo.type = 'button';
   nuovo.addEventListener('click', function(){ grForm(null); });
   w.appendChild(nuovo);
@@ -69,16 +114,16 @@ function grMostraLista(q, mod){
       const parole = grNorm(cerca.value).split(/\s+/).filter(Boolean);
       const l = tutte.filter(function(x){
         if(mod && x.m !== mod) return false;
-        const hay = grNorm([x.p, x.t, x.n, grModNome(x.m)].join(' '));
+        const hay = grNorm([x.pp.map(function(y){ return y.p + ' ' + y.t; }).join(' '), x.n, grModNome(x.m)].join(' '));
         return parole.every(function(p){ return hay.indexOf(p) !== -1; });
       }).sort(function(a, b){ return (b.g || '').localeCompare(a.g || '') || (b.ts - a.ts); });
-      if(!l.length){ ris.appendChild(grEl('div', 'fg-intro', 'Nessuna pagina trovata.')); return; }
+      if(!l.length){ ris.appendChild(grEl('div', 'fg-intro', 'Nessun incontro trovato.')); return; }
       let ultimo = null;
       l.forEach(function(x){
         if(x.g !== ultimo){ ultimo = x.g; ris.appendChild(grEl('div', 'fg-sez', grDataLunga(x.g))); }
         const r = grEl('button', 'fg-riga'); r.type = 'button'; r.setAttribute('data-nav', '');
-        r.appendChild(grEl('span', 'fg-riga-data', (x.p ? 'p. ' + x.p : 'pagina') + (grModNome(x.m) ? ' · ' + grModNome(x.m) : '')));
-        r.appendChild(grEl('span', 'fg-riga-ant', x.t || '(senza titolo)'));
+        r.appendChild(grEl('span', 'fg-riga-data', grRiepilogoPagine(x) + (grModNome(x.m) ? ' · ' + grModNome(x.m) : '')));
+        r.appendChild(grEl('span', 'fg-riga-ant', grTitoli(x) || (x.n ? x.n : '(senza titolo)')));
         r.addEventListener('click', function(){ grVista(x); });
         ris.appendChild(r);
       });
@@ -86,15 +131,36 @@ function grMostraLista(q, mod){
     cerca.addEventListener('input', disegna);
     disegna();
   } else {
-    w.appendChild(grEl('div', 'fg-intro', 'Ancora nessuna pagina. Dopo il prossimo gruppo, aggiungi quelle che avete visto.')).style.marginTop = '16px';
+    w.appendChild(grEl('div', 'fg-intro', 'Ancora nessun incontro. Dopo il prossimo gruppo, aggiungi le pagine che avete visto.')).style.marginTop = '16px';
   }
   body.appendChild(w);
 }
 
 function grApriCollegamento(l){
   if(!l) return;
-  const i = l.indexOf(':'), tipo = l.slice(0, i), id = l.slice(i + 1);
+  const p = l.split(':'), tipo = p[0];
   if(typeof closeScheda === 'function') closeScheda();
+  if(tipo === 'fe'){
+    const def = fgDef(p[1]); if(!def) return;
+    const e = fgLista(def.id).filter(function(x){ return String(x.id) === p[2]; })[0];
+    fgApri(def.id); if(e) fgMostraForm(def, e);
+    return;
+  }
+  // fogli delle schede originali: si apre la scheda e si preme "Apri" sul foglio scelto
+  const SCHEDE = {cf:['fatti','cf_fogli','#cf-lista .foglio-item'], pc:['procontro','pc2_fogli','#pc2-lista .foglio-item']};
+  if(SCHEDE[tipo]){
+    const lista = grLeggi(SCHEDE[tipo][1]);
+    const i = lista.findIndex(function(x){ return String(x.id) === p[1]; });
+    openScheda(SCHEDE[tipo][0]);
+    setTimeout(function(){
+      const it = document.querySelectorAll('#scheda-body ' + SCHEDE[tipo][2])[i];
+      const b = it && it.querySelector('.bsec'); if(b) b.click();
+    }, 160);
+    return;
+  }
+  if(tipo === 'de'){ openScheda('diarioemo'); return; }
+  if(tipo === 'ca'){ openScheda('catena'); return; }
+  const id = p.slice(1).join(':');
   if(tipo === 'fg' && typeof fgApri === 'function') fgApri(id);
   else if(tipo === 'sc' && typeof openScheda === 'function') openScheda(id);
   else if(tipo === 'sk' && window.GUIDE_INDEX){
@@ -103,28 +169,30 @@ function grApriCollegamento(l){
   }
 }
 function grNomeCollegamento(l){
-  if(!l) return '';
-  const i = l.indexOf(':'), tipo = l.slice(0, i), id = l.slice(i + 1);
-  if(tipo === 'fg'){ const d = fgDef(id); return d ? d.t : ''; }
-  if(tipo === 'sc') return (typeof SCHEDA_TITOLI !== 'undefined' && SCHEDA_TITOLI[id]) || '';
-  if(tipo === 'sk'){ const e = (window.GUIDE_INDEX || []).filter(function(x){ return x.id === id; })[0]; return e ? e.name : ''; }
-  return '';
+  const c = grCatalogo().filter(function(x){ return x.k === l; })[0];
+  return c ? c.n : '';
 }
 
-// una pagina esistente si apre in lettura; "Modifica" per cambiarla
+// un incontro esistente si apre in lettura; "Modifica" per cambiarlo
 function grVista(x){
+  grNormItem(x);
   const body = fgCorpo(); if(!body) return;
   body.innerHTML = ''; body.scrollTop = 0;
   const w = grEl('div', 'fg-wrap');
   w.appendChild(grEl('div', 'fg-sez', grDataLunga(x.g)));
-  w.appendChild(grEl('h3', 'gr-tit', (x.p ? 'p. ' + x.p + ' · ' : '') + (x.t || '(senza titolo)')));
   if(grModNome(x.m)) w.appendChild(grEl('div', 'fg-riga-data', grModNome(x.m)));
-  if(x.n){ const n = grEl('div', 'gr-nota', x.n); w.appendChild(n); }
-  const nome = grNomeCollegamento(x.l);
-  if(nome){
-    const ap = grEl('button', 'fg-btn fg-pri', 'Apri: ' + nome); ap.type = 'button'; ap.style.marginTop = '16px';
-    ap.addEventListener('click', function(){ grApriCollegamento(x.l); });
-    w.appendChild(ap);
+  x.pp.forEach(function(y){
+    w.appendChild(grEl('h3', 'gr-tit', (y.p ? 'p. ' + y.p : 'Pagina') + (y.t ? ' · ' + y.t : '')));
+  });
+  if(x.n) w.appendChild(grEl('div', 'gr-nota', x.n));
+  const nomi = x.ll.map(function(l){ return {l:l, n:grNomeCollegamento(l)}; }).filter(function(c){ return c.n; });
+  if(nomi.length){
+    const t = grEl('div', 'fg-sez', 'Collegate nell’app'); w.appendChild(t);
+    nomi.forEach(function(c){
+      const ap = grEl('button', 'fg-btn gr-apri', c.n); ap.type = 'button';
+      ap.addEventListener('click', function(){ grApriCollegamento(c.l); });
+      w.appendChild(ap);
+    });
   }
   const az = grEl('div', 'fg-azioni');
   const del = grEl('button', 'fg-btn fg-del', 'Elimina'); del.type = 'button';
@@ -144,12 +212,33 @@ function grForm(x){
   const body = fgCorpo(); if(!body) return;
   body.innerHTML = ''; body.scrollTop = 0;
   const w = grEl('div', 'fg-wrap');
-  const dati = x || {g: grOggi(), p: '', t: '', m: '', n: '', l: ''};
+  const dati = x ? grNormItem(x) : {g: grOggi(), pp: [], n: '', m: '', ll: []};
   function campo(label, el){ const b = grEl('div', 'fg-campo'); b.appendChild(grEl('label', 'fg-lab', label)); b.appendChild(el); w.appendChild(b); return el; }
 
-  const g = grEl('input', 'fg-in'); g.type = 'date'; g.value = dati.g || grOggi(); campo('Data dell’incontro', g);
-  const p = grEl('input', 'fg-in'); p.type = 'text'; p.inputMode = 'numeric'; p.placeholder = 'es. 281'; p.value = dati.p || ''; campo('Pagina del manuale', p);
-  const t = grEl('input', 'fg-in'); t.type = 'text'; t.placeholder = 'es. Osservare e descrivere le emozioni'; t.value = dati.t || ''; campo('Titolo', t);
+  const g = grEl('input', 'fg-in fg-data'); g.type = 'date'; g.value = dati.g || grOggi(); campo('Data dell’incontro', g);
+
+  // più pagine: una riga (numero + titolo) per ciascuna
+  const righe = [];
+  const boxPagine = grEl('div', 'gr-pagine');
+  function aggiungiRiga(p, t){
+    const r = grEl('div', 'gr-pag');
+    const np = grEl('input', 'fg-in gr-pag-n'); np.type = 'text'; np.inputMode = 'numeric'; np.placeholder = 'Pag.'; np.value = p || '';
+    const nt = grEl('input', 'fg-in gr-pag-t'); nt.type = 'text'; nt.placeholder = 'Titolo della pagina'; nt.value = t || '';
+    const rm = grEl('button', 'gr-pag-x', '×'); rm.type = 'button'; rm.setAttribute('aria-label', 'Togli questa pagina');
+    rm.addEventListener('click', function(){
+      if(righe.length === 1){ np.value = ''; nt.value = ''; return; }
+      righe.splice(righe.indexOf(riga), 1); r.remove();
+    });
+    r.appendChild(np); r.appendChild(nt); r.appendChild(rm);
+    const riga = {np:np, nt:nt};
+    righe.push(riga); boxPagine.appendChild(r);
+    return np;
+  }
+  (dati.pp.length ? dati.pp : [{p:'', t:''}]).forEach(function(y){ aggiungiRiga(y.p, y.t); });
+  const piu = grEl('button', 'fg-btn gr-piu', '+ Un’altra pagina'); piu.type = 'button';
+  piu.addEventListener('click', function(){ aggiungiRiga('', '').focus(); });
+  boxPagine.appendChild(piu);
+  campo('Pagine del manuale', boxPagine);
 
   let mod = dati.m || '';
   const chips = grEl('div', 'fg-chips');
@@ -165,19 +254,45 @@ function grForm(x){
 
   const n = grEl('textarea', 'fg-in'); n.rows = 4; n.placeholder = 'Cosa è emerso, cosa vuoi ricordare…'; n.value = dati.n || ''; campo('Appunto', n);
 
-  const sel = grEl('select', 'fg-in');
-  const vuota = grEl('option', null, 'Nessuno'); vuota.value = ''; sel.appendChild(vuota);
-  function gruppo(nome, voci){
-    if(!voci.length) return;
-    const og = document.createElement('optgroup'); og.label = nome;
-    voci.forEach(function(v){ const o = grEl('option', null, v[1]); o.value = v[0]; og.appendChild(o); });
-    sel.appendChild(og);
+  // schede collegate: si cerca per nome e se ne possono aggiungere quante si vuole
+  const scelti = dati.ll.slice();
+  const box = grEl('div', 'gr-coll');
+  const sceltiEl = grEl('div', 'fg-chips');
+  const cercaC = grEl('input', 'fg-in'); cercaC.type = 'search'; cercaC.placeholder = 'Cerca un foglio compilato, una scheda…';
+  const risC = grEl('div', 'gr-coll-ris');
+  const cat = grCatalogo();
+  function disegnaScelti(){
+    sceltiEl.innerHTML = '';
+    scelti.forEach(function(k){
+      const c = grEl('button', 'fg-chip on', (grNomeCollegamento(k) || k) + '  ×'); c.type = 'button';
+      c.addEventListener('click', function(){ scelti.splice(scelti.indexOf(k), 1); disegnaScelti(); disegnaRis(); });
+      sceltiEl.appendChild(c);
+    });
+    sceltiEl.style.display = scelti.length ? '' : 'none';
   }
-  gruppo('Fogli compilabili', FG_FOGLI.map(function(f){ return ['fg:' + f.id, f.t]; }));
-  gruppo('Schede', Object.keys(typeof SCHEDA_TITOLI !== 'undefined' ? SCHEDA_TITOLI : {}).map(function(k){ return ['sc:' + k, SCHEDA_TITOLI[k]]; }));
-  gruppo('Abilità', (window.GUIDE_INDEX || []).map(function(e){ return ['sk:' + e.id, e.name]; }));
-  sel.value = dati.l || '';
-  campo('Collega a una scheda dell’app (facoltativo)', sel);
+  function disegnaRis(){
+    risC.innerHTML = '';
+    const parole = grNorm(cercaC.value).split(/\s+/).filter(Boolean);
+    if(!parole.length) return;
+    const trovati = cat.filter(function(c){
+      if(scelti.indexOf(c.k) !== -1) return false;
+      const hay = grNorm(c.n + ' ' + c.tipo + ' ' + (c.extra || ''));
+      return parole.every(function(p){ return hay.indexOf(p) !== -1; });
+    });
+    if(!trovati.length){ risC.appendChild(grEl('div', 'fg-intro', 'Nessun risultato.')); return; }
+    trovati.slice(0, 20).forEach(function(c){
+      const r = grEl('button', 'fg-riga'); r.type = 'button'; r.setAttribute('data-nav', '');
+      r.appendChild(grEl('span', 'fg-riga-data', c.tipo));
+      r.appendChild(grEl('span', 'fg-riga-ant', c.n));
+      r.addEventListener('click', function(){ scelti.push(c.k); cercaC.value = ''; disegnaScelti(); disegnaRis(); });
+      risC.appendChild(r);
+    });
+    if(trovati.length > 20) risC.appendChild(grEl('div', 'fg-intro', 'Altri ' + (trovati.length - 20) + '… scrivi di più per restringere.'));
+  }
+  cercaC.addEventListener('input', disegnaRis);
+  box.appendChild(sceltiEl); box.appendChild(cercaC); box.appendChild(risC);
+  disegnaScelti();
+  campo('Schede e fogli compilati collegati (facoltativo)', box);
 
   const az = grEl('div', 'fg-azioni');
   az.appendChild(grEl('span')).style.flex = '1';
@@ -185,10 +300,11 @@ function grForm(x){
   ann.addEventListener('click', function(){ if(x) grVista(x); else grMostraLista('', ''); });
   const sv = grEl('button', 'fg-btn fg-pri', 'Salva'); sv.type = 'button';
   sv.addEventListener('click', function(){
-    if(!p.value.trim() && !t.value.trim() && !n.value.trim()){ p.focus(); return; }
+    const pp = righe.map(function(r){ return {p: r.np.value.trim(), t: r.nt.value.trim()}; }).filter(function(y){ return y.p || y.t; });
+    if(!pp.length && !n.value.trim()){ righe[0].np.focus(); return; }
     const item = {
       id: x ? x.id : 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-      g: g.value || grOggi(), p: p.value.trim(), t: t.value.trim(), m: mod, n: n.value.trim(), l: sel.value
+      g: g.value || grOggi(), pp: pp, m: mod, n: n.value.trim(), ll: scelti.slice()
     };
     grSalva(item);
     grVista(item);
@@ -196,5 +312,5 @@ function grForm(x){
   az.appendChild(ann); az.appendChild(sv);
   w.appendChild(az);
   body.appendChild(w);
-  if(!x) setTimeout(function(){ p.focus(); }, 80);
+  if(!x) setTimeout(function(){ righe[0].np.focus(); }, 80);
 }
