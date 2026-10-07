@@ -149,7 +149,7 @@ function ricercaMount(){
   const inp = document.createElement('input');
   inp.type = 'search';
   inp.id = 'guida-cerca';
-  inp.placeholder = 'Cerca un’abilità: rabbia, crisi, sonno…';
+  inp.placeholder = 'Cerca: rabbia, crisi, sonno…';
   inp.setAttribute('aria-label', 'Cerca nella guida');
   inp.autocomplete = 'off';
   inp.addEventListener('input', function(){ rcRenderRisultati(inp.value); });
