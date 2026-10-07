@@ -179,6 +179,12 @@ function ccCampoCerca(inp, nome){
   inp.setAttribute('data-1p-ignore', '');
   inp.setAttribute('data-lpignore', 'true');
   inp.spellcheck = false;
+  // iOS propone email/password anche su questi campi perche' nella pagina c'e' il modulo di accesso:
+  // il campo resta in sola lettura finche' non lo tocchi, cosi' Safari non lo considera un campo di accesso.
+  inp.readOnly = true;
+  function sblocca(){ inp.readOnly = false; }
+  inp.addEventListener('pointerdown', sblocca); inp.addEventListener('touchstart', sblocca, {passive: true}); inp.addEventListener('focus', sblocca);
+  inp.addEventListener('blur', function(){ setTimeout(function(){ if(document.activeElement !== inp) inp.readOnly = true; }, 300); });
   const w = document.createElement('div'); w.className = 'cc-wrap';
   const x = document.createElement('button');
   x.type = 'button'; x.className = 'cc-x'; x.setAttribute('aria-label', 'Cancella'); x.setAttribute('data-nav', '');
@@ -186,7 +192,7 @@ function ccCampoCerca(inp, nome){
   function aggiorna(){ x.style.display = inp.value ? 'flex' : 'none'; }
   inp.addEventListener('input', aggiorna);
   x.addEventListener('mousedown', function(e){ e.preventDefault(); });
-  x.addEventListener('click', function(){ inp.value = ''; aggiorna(); inp.dispatchEvent(new Event('input', {bubbles: true})); inp.focus(); });
+  x.addEventListener('click', function(){ inp.value = ''; aggiorna(); inp.dispatchEvent(new Event('input', {bubbles: true})); sblocca(); inp.focus(); });
   w.appendChild(inp); w.appendChild(x); aggiorna();
   return w;
 }
