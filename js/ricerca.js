@@ -4,25 +4,36 @@
 // Usa window.GUIDE_INDEX, costruito da renderGuide(). I preferiti
 // restano su questo dispositivo (localStorage), come i post-it.
 
-function pfKey(){
-  const code = (typeof profile !== 'undefined' && profile && profile.code) ? profile.code : 'anon';
-  return 'dbt_pref_' + code;
+function pfCode(){
+  return (typeof profile !== 'undefined' && profile && profile.code) ? profile.code : 'anon';
+}
+// mappa { id: {on:true/false, ts} } : il ts serve a sincronizzare anche le stelle tolte
+function pfKey(){ return 'dbt_pref2_' + pfCode(); }
+function pfMappa(){
+  try{
+    const r = localStorage.getItem(pfKey());
+    if(r){ const m = JSON.parse(r); if(m && typeof m === 'object' && !Array.isArray(m)) return m; }
+    // migrazione dal vecchio formato (semplice elenco di id)
+    const vecchio = JSON.parse(localStorage.getItem('dbt_pref_' + pfCode()) || '[]');
+    const m = {};
+    if(Array.isArray(vecchio)) vecchio.forEach(function(id, i){ m[id] = {on:true, ts:1 + i}; });
+    return m;
+  }catch(e){ return {}; }
+}
+function pfImpostaMappa(m){
+  try{ localStorage.setItem(pfKey(), JSON.stringify(m)); }catch(e){ /* storage non disponibile */ }
 }
 function pfLista(){
-  try{
-    const a = JSON.parse(localStorage.getItem(pfKey()) || '[]');
-    return Array.isArray(a) ? a : [];
-  }catch(e){ return []; }
+  const m = pfMappa();
+  return Object.keys(m).filter(function(id){ return m[id] && m[id].on; })
+    .sort(function(a, b){ return m[a].ts - m[b].ts; });
 }
-function pfSalva(a){
-  try{ localStorage.setItem(pfKey(), JSON.stringify(a)); }catch(e){ /* storage non disponibile */ }
-}
-function pfE(id){ return pfLista().indexOf(id) !== -1; }
+function pfE(id){ const m = pfMappa(); return !!(m[id] && m[id].on); }
 function pfToggle(id){
-  const a = pfLista();
-  const i = a.indexOf(id);
-  if(i === -1) a.push(id); else a.splice(i, 1);
-  pfSalva(a);
+  const m = pfMappa();
+  m[id] = {on: !(m[id] && m[id].on), ts: Date.now()};
+  pfImpostaMappa(m);
+  if(typeof gsPianifica === 'function') gsPianifica();
   pfAggiornaStelle();
   pfRenderChip();
 }
@@ -148,6 +159,7 @@ function pfRenderChip(){
 // ── montaggio: chiamato da renderGuide() quando la guida e' costruita ──
 function ricercaMount(){
   const contenuto = document.getElementById('guida-content');
+  if(typeof gsPianifica === 'function') gsPianifica();
   if(!contenuto || document.getElementById('guida-ricerca')) { pfAggiornaStelle(); pfRenderChip(); return; }
   const zona = document.createElement('div');
   zona.id = 'guida-ricerca';

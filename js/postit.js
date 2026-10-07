@@ -38,22 +38,28 @@ function piAll(){
 function piSave(){
   try{ localStorage.setItem(piStorageKey(), JSON.stringify(piAll())); }
   catch(e){ /* storage pieno o bloccato: i post-it restano in memoria per la sessione */ }
+  if(typeof gsPianifica === 'function') gsPianifica();
 }
-function piList(key){ return piAll()[key] || []; }
+// gli appunti eliminati restano come "lapide" (d:1) per poter sincronizzare la cancellazione
+function piList(key){ return (piAll()[key] || []).filter(function(p){ return !p.d; }); }
+function piImpostaTutto(o){
+  _piCache = o; _piCacheKey = piStorageKey();
+  try{ localStorage.setItem(_piCacheKey, JSON.stringify(o)); }catch(e){}
+}
 
 function piUpsert(key, id, testo, colore){
   const all = piAll();
   const list = all[key] || (all[key] = []);
   const ex = id ? list.find(function(p){ return p.id === id; }) : null;
-  if(ex){ ex.t = testo; ex.c = colore; ex.ts = Date.now(); }
+  if(ex){ ex.t = testo; ex.c = colore; ex.ts = Date.now(); delete ex.d; }
   else list.unshift({id:'p' + Date.now().toString(36) + Math.random().toString(36).slice(2,6), t:testo, c:colore, ts:Date.now()});
   piSave();
 }
 function piRemove(key, id){
   const all = piAll();
   if(!all[key]) return;
-  all[key] = all[key].filter(function(p){ return p.id !== id; });
-  if(!all[key].length) delete all[key];
+  const p = all[key].find(function(x){ return x.id === id; });
+  if(p){ p.d = 1; p.t = ''; p.ts = Date.now(); }
   piSave();
 }
 
