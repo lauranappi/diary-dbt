@@ -1,6 +1,7 @@
 // Sottotitoli come nel documento di design
 const DC_SOTTO_MODULO = {"tol": "Quando la crisi è già in corso", "reg": "Ridurre la vulnerabilità", "inter": "Chiedere, dire no, restare in relazione", "mind": "Tornare a un momento per volta", "gen": "Piano di crisi, analisi della catena"};
 const DC_SOTTO_EMO = {"epau": "Quando la minaccia è reale e concreta", "erab": "Quando un obiettivo importante è bloccato", "etri": "Quando c'è una perdita", "ecol": "Quando ho agito contro un mio valore", "egel": "Quando rischio di perdere una relazione", "einv": "Quando altri hanno ciò che mi manca", "ever": "Quando l'esclusione è un rischio vero"};
+const PF_STAR_SVG='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.5l6-.8z" stroke-width="2" stroke-linejoin="round"/></svg>';
 const DC_CHEV = '<svg width="11" height="19" viewBox="0 0 11 19" fill="none" class="dc-chev"><path d="M2.5 2.5L8 9.5L2.5 16.5" stroke="#1B4B4A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 // Miniature disegnate: sostituiscono le emoji nelle intestazioni.
@@ -622,6 +623,7 @@ function renderGuide(){
       }
       skHdr.innerHTML='<div class="guide-skill-badge">'+sk.badge+'</div>'
         +'<div class="guide-skill-name" style="flex:1">'+sk.name+'</div>'
+        +'<button type="button" class="pf-star" data-nav data-sk="'+sk.id+'" aria-label="Aggiungi ai preferiti" aria-pressed="false">'+PF_STAR_SVG+'</button>'
         +'<svg width="19" height="11" viewBox="0 0 19 11" fill="none" id="sarr-'+sk.id+'" style="flex:none;transition:transform .18s ease"><path d="M2.5 2.5L9.5 8L16.5 2.5" stroke="var(--dc-muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       skDiv.appendChild(skHdr);
       const steps=document.createElement('div');steps.className='guide-skill-steps';steps.id='steps-'+sk.id;
@@ -641,6 +643,15 @@ function renderGuide(){
     mDiv.appendChild(body);el.appendChild(mDiv);
   });
   if(typeof piAggiornaTuttiIBadge==='function') piAggiornaTuttiIBadge();
+  // indice di ricerca e preferiti (js/ricerca.js)
+  window.GUIDE_INDEX=[];
+  MODULES.forEach(function(mod){
+    mod.skills.forEach(function(sk){
+      window.GUIDE_INDEX.push({mod:mod.id,modTitolo:mod.title,id:sk.id,badge:sk.badge,name:sk.name,desc:sk.desc||'',
+        testo:(sk.steps||[]).join(' ').replace(/<[^>]*>/g,' ')});
+    });
+  });
+  if(typeof ricercaMount==='function') ricercaMount();
 
   // Fogli di lavoro in cima al modulo: sono la parte operativa, chi apre
   // il modulo di solito cerca quelli prima della teoria.
