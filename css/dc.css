@@ -1892,3 +1892,8 @@ input:focus,textarea:focus,select:focus{outline:none}
 .pi-add{flex:none;white-space:nowrap}
 .pi-sheet.pi-vista .pi-ta{font-size:19px;line-height:1.3}
 .pi-ta{font-size:20px}
+
+/* "Compila la scheda" dentro la pagina di teoria */
+.guide-compila{margin:14px 0 6px}
+.guide-compila .guide-schede-titolo{margin:0 0 8px}
+.guide-compila .guide-scheda-link{margin-bottom:8px}

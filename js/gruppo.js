@@ -230,8 +230,8 @@ const GR_GRUPPI = [
   ['fg:m-abilita','sk:mcosa','sk:mcome','fg:m-piacevoli','fg:m-spiacevoli'], ['fg:m-fare-essere','sk:mstati'],
   ['fg:t-stop','sk:stop'], ['fg:t-accettazione','sk:accrad'], ['fg:t-bodyscan','sk:tbody'],
   ['fg:t-pensieri','sk:mpensieri'], ['fg:t-miglioramomento','sk:migliora'],
-  ['fg:i-chiedere','sk:ifermezza'], ['fg:i-validare','fg:i-autoval','sk:ivalida'], ['fg:i-dialettica','sk:idialettica'],
-  ['fg:r-funzioni','fg:r-osserva','sk:rperche'], ['fg:r-mind-emozioni','sk:memozioni'], ['fg:r-azione-opposta','sk:razione'],
+  ['fg:i-chiedere','fg:i-monitor','sk:ifermezza'], ['fg:i-validare','fg:i-autoval','sk:ivalida'], ['fg:i-dialettica','sk:idialettica'],
+  ['fg:r-funzioni','fg:r-osserva','sc:diarioemo','sk:rperche'], ['fg:r-risolvere','sk:restreme'], ['fg:m-gentilezza','sk:mdefin'], ['fg:r-mind-emozioni','sk:memozioni'], ['fg:r-azione-opposta','sk:razione'],
   ['fg:r-problem-solving','sk:rproblem'], ['fg:r-valori','sk:rvalori'], ['fg:r-mastery','sk:rmastery'],
   ['fg:r-sonno','sk:rsonno'], ['fg:r-incubi','sk:rincubi'], ['fg:r-miti','sk:rmiti']
 ];
@@ -241,6 +241,18 @@ function grTitoloBlocco(k){
   if(t === 'sc' || t === 'fg') return 'Come compilarla · ' + n;
   if(t === 'sk') return 'Dal gruppo, teoria · ' + n;
   return n;
+}
+// schede/fogli da compilare collegati a una pagina di teoria (id della pagina della guida)
+function grSchedeDa(skId){
+  const gr = GR_GRUPPI.filter(function(x){ return x.indexOf('sk:' + skId) !== -1; })[0] || [];
+  return gr.filter(function(k){ return k.indexOf('sk:') !== 0; }).map(function(k){
+    const t = k.split(':')[0], id = k.split(':').slice(1).join(':');
+    return {k:k, nome:grNomeChiave(k), apri:function(){ if(t === 'fg') fgApri(id); else openScheda(id); }};
+  });
+}
+// vero se la scheda/foglio vive gia' dentro una pagina di teoria
+function grHaTeoria(k){
+  return GR_GRUPPI.some(function(x){ return x.indexOf(k) !== -1 && x.some(function(y){ return y.indexOf('sk:') === 0; }); });
 }
 function grNomeChiave(k){
   const p = k.split(':'), id = p.slice(1).join(':');
