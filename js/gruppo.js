@@ -115,7 +115,12 @@ function grCatalogo(){
   const c = grCompilati();
   FG_FOGLI.forEach(function(f){ c.push({k:'fg:' + f.id, n:f.t, tipo:'Foglio vuoto', extra:f.t}); });
   if(typeof SCHEDA_TITOLI !== 'undefined') Object.keys(SCHEDA_TITOLI).forEach(function(k){ c.push({k:'sc:' + k, n:SCHEDA_TITOLI[k], tipo:'Scheda'}); });
-  (window.GUIDE_INDEX || []).forEach(function(e){ c.push({k:'sk:' + e.id, n:e.name, tipo:'Abilità', extra:e.badge + ' ' + e.desc}); });
+  // "Foglio di lavoro — …" della guida e' solo la spiegazione di una scheda gia' presente: non si propone
+  const DOPPIE = ['gcheck', 'gprocontro', 'gcatena'];
+  (window.GUIDE_INDEX || []).forEach(function(e){
+    if(DOPPIE.indexOf(e.id) !== -1) return;
+    c.push({k:'sk:' + e.id, n:e.name, tipo:'Teoria', extra:'abilità ' + e.badge + ' ' + e.desc});
+  });
   return c;
 }
 
