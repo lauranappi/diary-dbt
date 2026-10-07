@@ -369,6 +369,11 @@ function openScheda(name){
     pi.style.margin='20px 0 8px';
     page.appendChild(pi);
   }
+  // post-it della pagina teorica collegata (ricreati a ogni apertura)
+  if(typeof grBlocchiCorrelati==='function'){
+    Array.from(page.querySelectorAll('.gr-rel')).forEach(function(e){ e.remove(); });
+    grBlocchiCorrelati('sc:'+name).forEach(function(b){ page.appendChild(b); });
+  }
   document.getElementById('scheda-title').textContent = SCHEDA_TITOLI[name] || '';
   modal.classList.add('open');
   document.body.style.overflow='hidden';

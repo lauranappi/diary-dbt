@@ -120,7 +120,10 @@ function grCatalogo(){
 }
 
 function grCorpo(){ return document.getElementById('gruppo-content'); }
-function grMostraPagina(){ grMostraLista('', ''); }
+function grMostraPagina(){
+  if(!(window.GUIDE_INDEX && window.GUIDE_INDEX.length) && typeof renderGuide === 'function'){ try{ renderGuide(); }catch(e){} }
+  grMostraLista('', '');
+}
 
 function grEl(tag, cls, testo){ const e = document.createElement(tag); if(cls) e.className = cls; if(testo != null) e.textContent = testo; return e; }
 
@@ -213,6 +216,27 @@ function grChiavePostit(l){
   if(t === 'fe') return 'fg:' + p[1];
   return {cf:'sc:fatti', pc:'sc:procontro', de:'sc:diarioemo', ca:'sc:catena'}[t] || '';
 }
+// scheda dell'app <-> pagina teorica/foglio della guida che trattano lo stesso argomento
+const GR_GRUPPI = [['sc:fatti','sk:rcheck','sk:gcheck'], ['sc:procontro','sk:procontro','sk:gprocontro'], ['sc:dearman','sk:dearman'],
+  ['sc:give','sk:give'], ['sc:fast','sk:fast'], ['sc:abc','sk:rabc'], ['sc:sentiero','sk:isentiero'], ['sc:please','sk:rplease'],
+  ['sc:catena','sk:gcatena']];
+function grNomeChiave(k){
+  const p = k.split(':'), id = p.slice(1).join(':');
+  if(p[0] === 'sc') return (typeof SCHEDA_TITOLI !== 'undefined' && SCHEDA_TITOLI[id]) || id;
+  if(p[0] === 'sk'){ const e = (window.GUIDE_INDEX || []).filter(function(y){ return y.id === id; })[0]; return e ? e.name : id; }
+  return id;
+}
+// chiavi dei post-it dello stesso argomento (compresa quella data)
+function grChiaviCorrelate(k){
+  const gr = GR_GRUPPI.filter(function(g){ return g.indexOf(k) !== -1; })[0];
+  return gr ? gr.slice() : (k ? [k] : []);
+}
+// blocchi dei post-it "fratelli" non vuoti, per mostrare tutto su un argomento
+function grBlocchiCorrelati(k){
+  return grChiaviCorrelate(k).filter(function(x){ return x !== k && piList(x).length; }).map(function(x){
+    const b = piMount(x, 'Post-it · ' + grNomeChiave(x)); b.classList.add('gr-rel'); b.style.margin = '12px 0 4px'; return b;
+  });
+}
 function grNomeCollegamento(l){
   const c = grCatalogo().filter(function(x){ return x.k === l; })[0];
   return c ? c.n : '';
@@ -234,7 +258,9 @@ function grVista(x){
       ap.addEventListener('click', function(){ grApriCollegamento(y.l); });
       w.appendChild(ap);
       const k = grChiavePostit(y.l);
-      if(k && piList(k).length) w.appendChild(piMount(k, 'Post-it di «' + nome.split(' · ')[0] + '»'));
+      grChiaviCorrelate(k).filter(function(c){ return piList(c).length; }).forEach(function(c){
+        w.appendChild(piMount(c, 'Post-it · ' + grNomeChiave(c)));
+      });
     }
   });
   w.appendChild(piMount('gn:' + x.id, 'Appunti dai gruppi'));

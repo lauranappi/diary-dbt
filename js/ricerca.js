@@ -179,7 +179,8 @@ function ricercaMount(){
   const pref = document.createElement('div'); pref.id = 'guida-preferiti'; pref.className = 'pf-wrap';
   const ris = document.createElement('div'); ris.id = 'guida-risultati'; ris.className = 'rc-risultati'; ris.style.display = 'none';
   zona.appendChild(pref); zona.appendChild(ris);
-  contenuto.parentElement.insertBefore(zona, contenuto);
+  const carta = contenuto.parentElement.querySelector('.gr-card-top');
+  contenuto.parentElement.insertBefore(zona, carta || contenuto);
   pfAggiornaStelle();
   pfRenderChip();
 }
