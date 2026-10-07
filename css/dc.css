@@ -1858,3 +1858,10 @@ select.fg-in{appearance:none;-webkit-appearance:none;background-image:none}
 .gr-pag-sotto .gr-pag{margin-bottom:0}
 .gr-pag-sotto .gr-link{margin-top:8px;max-width:100%;white-space:normal;text-align:left}
 .gr-pag-sotto .gr-coll-ris{margin-top:6px}
+
+/* niente ombre: stile piatto. Le selezioni si vedono dal colore e dal bordo */
+*,*::before,*::after{box-shadow:none!important;text-shadow:none!important}
+.pi-dot.on{outline:2.5px solid var(--dc-petrolio);outline-offset:3px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--dc-petrolio);outline-offset:0}
+.readonly-note{border:1.5px solid var(--amber)}
+.scheda-box,#scheda-modal .scheda-box{box-shadow:none!important}
