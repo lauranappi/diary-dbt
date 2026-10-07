@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/dc.css?v=161">
+<link rel="stylesheet" href="css/dc.css?v=162">
 </head>
 <body>
 
@@ -1338,7 +1338,7 @@
       </div>
     </div>
   </div>
-  <div onclick="grApri()" class="dc-guida-scheda-fogli gr-card-top" style="margin:4px var(--dc-gap-l,16px) 0">
+  <div onclick="goPage('gruppo',null)" class="dc-guida-scheda-fogli gr-card-top" style="margin:4px var(--dc-gap-l,16px) 0">
   <div style="display:flex;flex-direction:column;gap:4px">
     <span class="dc-guida-scheda-tit" style="color:var(--dc-ink)">Diario del gruppo</span>
     <span class="dc-guida-scheda-sub" style="color:var(--dc-muted)">Le pagine viste in gruppo, da ripassare</span>
@@ -1375,6 +1375,15 @@
   <h2 class="dc-emozione-titolo" style="margin-bottom:8px">Schede emozioni</h2>
   <p style="margin:0 0 20px;font-size:13.5px;color:var(--dc-muted)">Quando corrisponde ai fatti, cosa la scatena, l'azione opposta.</p>
   <div id="emozioni-content"></div>
+</div>
+
+<!-- ══ PAGINA: DIARIO DEL GRUPPO ══ -->
+<div id="page-gruppo" class="page">
+  <button onclick="goPage('guida',null)" class="dc-tondo-indietro" aria-label="Indietro">
+    <svg width="11" height="19" viewBox="0 0 11 19" fill="none"><path d="M8 2.5L2.5 9.5L8 16.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <h2 class="dc-emozione-titolo" style="margin-bottom:8px">Diario del gruppo</h2>
+  <div id="gruppo-content"></div>
 </div>
 
 <!-- ══ PAGINA: FOGLI DI LAVORO ══ -->
@@ -1456,14 +1465,14 @@
 <script src="js/data.js?v=139"></script>
 <script src="js/config.js?v=139"></script>
 <script src="js/auth.js?v=149"></script>
-<script src="js/diary.js?v=152"></script>
+<script src="js/diary.js?v=153"></script>
 <script src="js/analytics.js?v=139"></script>
 <script src="js/pazienti.js?v=152"></script>
 <script src="js/settings.js?v=159"></script>
 <script src="js/planner.js?v=139"></script>
 <script src="js/guide.js?v=159"></script>
 <script src="js/fogligen.js?v=159"></script>
-<script src="js/gruppo.js?v=160"></script>
+<script src="js/gruppo.js?v=161"></script>
 <script src="js/postit.js?v=152"></script>
 <script src="js/ricerca.js?v=150"></script>
 <script src="js/guidasync.js?v=150"></script>

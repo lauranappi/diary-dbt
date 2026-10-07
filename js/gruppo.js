@@ -22,7 +22,9 @@ function grSalva(item){
 }
 function grElimina(id){
   const x = grTutte().find(function(y){ return y.id === id; });
-  if(x){ x.d = 1; x.ts = Date.now(); x.n = ''; x.pp = []; x.ll = []; piSave(); }
+  if(x){ x.d = 1; x.ts = Date.now(); x.n = ''; x.pp = []; x.ll = [];
+    piList('gn:' + id).forEach(function(p){ piRemove('gn:' + id, p.id); });
+    piSave(); }
 }
 function grOggi(){ const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function grDataLunga(g){
@@ -60,12 +62,24 @@ function grAmbiti(pp, ll){
   return Object.keys(conta).sort(function(a, b){ return conta[b] - conta[a]; });
 }
 function grAmbitiNomi(mm){ return (mm || []).map(grModNome).filter(Boolean).join(', '); }
+function grAmbitiPP(pp){ return grAmbiti(pp, (pp || []).map(function(y){ return y.l; }).filter(Boolean)); }
 function grNormItem(x){
   if(!x.pp) x.pp = (x.p || x.t) ? [{p: x.p || '', t: x.t || ''}] : [];
-  if(!x.ll) x.ll = x.l ? [x.l] : [];
-  if(!x.mm) x.mm = x.m ? [x.m] : grAmbiti(x.pp, x.ll);
+  // vecchi collegamenti separati: diventano righe di pagina con il collegamento
+  const ll = (x.ll && x.ll.length) ? x.ll : (x.l ? [x.l] : []);
+  if(ll.length){
+    const gia = x.pp.map(function(y){ return y.l; });
+    ll.forEach(function(l){ if(gia.indexOf(l) === -1) x.pp.push({p: '', t: grNomeCollegamento(l) || l, l: l}); });
+  }
+  x.ll = [];
+  if(!x.mm) x.mm = x.m ? [x.m] : grAmbitiPP(x.pp);
   return x;
 }
+// il vecchio campo "Appunto" diventa un post-it (una volta sola)
+function grMigraNota(x){
+  if(x && x.n){ piUpsert('gn:' + x.id, null, x.n, 0); x.n = ''; grSalva(x); }
+}
+function grPostitTesto(x){ return piList('gn:' + x.id).map(function(p){ return p.t; }).join(' '); }
 function grLista(){ return grTutte().filter(function(x){ return !x.d; }).map(grNormItem); }
 function grRiepilogoPagine(x){
   const nums = x.pp.map(function(y){ return y.p; }).filter(Boolean);
@@ -105,21 +119,16 @@ function grCatalogo(){
   return c;
 }
 
-function grApri(){
-  if(typeof _schedaAperta !== 'undefined' && _schedaAperta && typeof closeScheda === 'function') closeScheda();
-  document.getElementById('scheda-title').textContent = 'Diario del gruppo';
-  document.getElementById('scheda-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  grMostraLista('', '');
-}
+function grCorpo(){ return document.getElementById('gruppo-content'); }
+function grMostraPagina(){ grMostraLista('', ''); }
 
 function grEl(tag, cls, testo){ const e = document.createElement(tag); if(cls) e.className = cls; if(testo != null) e.textContent = testo; return e; }
 
 function grMostraLista(q, mod){
-  const body = fgCorpo(); if(!body) return;
-  body.innerHTML = ''; body.scrollTop = 0;
+  const body = grCorpo(); if(!body) return;
+  body.innerHTML = ''; window.scrollTo(0, 0);
   const w = grEl('div', 'fg-wrap');
-  w.appendChild(grEl('p', 'fg-intro', 'Le pagine che avete visto in gruppo, da ripassare quando vuoi. Aggiungile tu: un incontro può avere più pagine e più schede collegate.'));
+  w.appendChild(grEl('p', 'fg-intro', 'Le pagine che avete visto in gruppo, da ripassare quando vuoi. Aggiungile tu: scrivendo il titolo puoi anche cercare e collegare una scheda o un foglio.'));
   const nuovo = grEl('button', 'fg-btn fg-pri', '+ Aggiungi un incontro');
   nuovo.type = 'button';
   nuovo.addEventListener('click', function(){ grForm(null); });
@@ -143,7 +152,7 @@ function grMostraLista(q, mod){
       const parole = grNorm(cerca.value).split(/\s+/).filter(Boolean);
       const l = tutte.filter(function(x){
         if(mod && x.mm.indexOf(mod) === -1) return false;
-        const hay = grNorm([x.pp.map(function(y){ return y.p + ' ' + y.t; }).join(' '), x.n, grAmbitiNomi(x.mm)].join(' '));
+        const hay = grNorm([x.pp.map(function(y){ return y.p + ' ' + y.t; }).join(' '), x.n || '', grPostitTesto(x), grAmbitiNomi(x.mm)].join(' '));
         return parole.every(function(p){ return hay.indexOf(p) !== -1; });
       }).sort(function(a, b){ return (b.g || '').localeCompare(a.g || '') || (b.ts - a.ts); });
       if(!l.length){ ris.appendChild(grEl('div', 'fg-intro', 'Nessun incontro trovato.')); return; }
@@ -152,7 +161,7 @@ function grMostraLista(q, mod){
         if(x.g !== ultimo){ ultimo = x.g; ris.appendChild(grEl('div', 'fg-sez', grDataLunga(x.g))); }
         const r = grEl('button', 'fg-riga'); r.type = 'button'; r.setAttribute('data-nav', '');
         r.appendChild(grEl('span', 'fg-riga-data', grRiepilogoPagine(x) + (grAmbitiNomi(x.mm) ? ' · ' + grAmbitiNomi(x.mm) : '')));
-        r.appendChild(grEl('span', 'fg-riga-ant', grTitoli(x) || (x.n ? x.n : '(senza titolo)')));
+        r.appendChild(grEl('span', 'fg-riga-ant', grTitoli(x) || '(senza titolo)'));
         r.addEventListener('click', function(){ grVista(x); });
         ris.appendChild(r);
       });
@@ -168,7 +177,7 @@ function grMostraLista(q, mod){
 function grApriCollegamento(l){
   if(!l) return;
   const p = l.split(':'), tipo = p[0];
-  if(typeof closeScheda === 'function') closeScheda();
+  if(typeof _schedaAperta !== 'undefined' && _schedaAperta && typeof closeScheda === 'function') closeScheda();
   if(tipo === 'fe'){
     const def = fgDef(p[1]); if(!def) return;
     const e = fgLista(def.id).filter(function(x){ return String(x.id) === p[2]; })[0];
@@ -204,25 +213,22 @@ function grNomeCollegamento(l){
 
 // un incontro esistente si apre in lettura; "Modifica" per cambiarlo
 function grVista(x){
-  grNormItem(x);
-  const body = fgCorpo(); if(!body) return;
-  body.innerHTML = ''; body.scrollTop = 0;
+  grNormItem(x); grMigraNota(x);
+  const body = grCorpo(); if(!body) return;
+  body.innerHTML = ''; window.scrollTo(0, 0);
   const w = grEl('div', 'fg-wrap');
   w.appendChild(grEl('div', 'fg-sez', grDataLunga(x.g)));
   if(grAmbitiNomi(x.mm)) w.appendChild(grEl('div', 'fg-riga-data', grAmbitiNomi(x.mm)));
   x.pp.forEach(function(y){
     w.appendChild(grEl('h3', 'gr-tit', (y.p ? 'p. ' + y.p : 'Pagina') + (y.t ? ' · ' + y.t : '')));
-  });
-  if(x.n) w.appendChild(grEl('div', 'gr-nota', x.n));
-  const nomi = x.ll.map(function(l){ return {l:l, n:grNomeCollegamento(l)}; }).filter(function(c){ return c.n; });
-  if(nomi.length){
-    const t = grEl('div', 'fg-sez', 'Collegate nell’app'); w.appendChild(t);
-    nomi.forEach(function(c){
-      const ap = grEl('button', 'fg-btn gr-apri', c.n); ap.type = 'button';
-      ap.addEventListener('click', function(){ grApriCollegamento(c.l); });
+    const nome = y.l ? grNomeCollegamento(y.l) : '';
+    if(y.l && nome){
+      const ap = grEl('button', 'fg-btn gr-apri', 'Apri: ' + nome); ap.type = 'button';
+      ap.addEventListener('click', function(){ grApriCollegamento(y.l); });
       w.appendChild(ap);
-    });
-  }
+    }
+  });
+  w.appendChild(piMount('gn:' + x.id, 'Appunti dai gruppi'));
   const az = grEl('div', 'fg-azioni');
   const del = grEl('button', 'fg-btn fg-del', 'Elimina'); del.type = 'button';
   del.addEventListener('click', function(){
@@ -238,105 +244,104 @@ function grVista(x){
 }
 
 function grForm(x){
-  const body = fgCorpo(); if(!body) return;
-  body.innerHTML = ''; body.scrollTop = 0;
+  const body = grCorpo(); if(!body) return;
+  body.innerHTML = ''; window.scrollTo(0, 0);
   const w = grEl('div', 'fg-wrap');
-  const dati = x ? grNormItem(x) : {g: grOggi(), pp: [], n: '', m: '', ll: []};
+  if(x){ grNormItem(x); grMigraNota(x); }
+  const nuovoId = 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  const dati = x || {id: nuovoId, g: grOggi(), pp: []};
   function campo(label, el){ const b = grEl('div', 'fg-campo'); b.appendChild(grEl('label', 'fg-lab', label)); b.appendChild(el); w.appendChild(b); return el; }
 
   const g = grEl('input', 'fg-in fg-data'); g.type = 'date'; g.value = dati.g || grOggi(); campo('Data dell’incontro', g);
 
-  // più pagine: una riga (numero + titolo) per ciascuna
+  // una riga per pagina: numero + titolo. Scrivendo il titolo si cercano
+  // schede, fogli (anche gia' compilati) e abilita': toccandone una la riga
+  // si collega, altrimenti resta il testo libero.
   const righe = [];
   const boxPagine = grEl('div', 'gr-pagine');
-  function aggiungiRiga(p, t){
+  const cat = grCatalogo();
+  let piu = null;
+  function aggiungiRiga(p, t, l){
     const r = grEl('div', 'gr-pag');
     const np = grEl('input', 'fg-in gr-pag-n'); np.type = 'text'; np.inputMode = 'numeric'; np.placeholder = 'Pag.'; np.value = p || '';
-    const nt = grEl('input', 'fg-in gr-pag-t'); nt.type = 'text'; nt.placeholder = 'Titolo della pagina'; nt.value = t || '';
+    const nt = grEl('input', 'fg-in gr-pag-t'); nt.type = 'search'; nt.placeholder = 'Titolo, o cerca scheda / foglio…'; nt.value = t || '';
+    nt.setAttribute('autocomplete', 'off');
     const rm = grEl('button', 'gr-pag-x', '×'); rm.type = 'button'; rm.setAttribute('aria-label', 'Togli questa pagina');
+    const riga = {np: np, nt: nt, l: l || ''};
+    const sotto = grEl('div', 'gr-pag-sotto');
+    const ris = grEl('div', 'gr-coll-ris');
+    const chip = grEl('button', 'fg-chip on gr-link'); chip.type = 'button';
+    chip.addEventListener('click', function(){ riga.l = ''; disegnaChip(); aggiornaAmbito(); });
+    function disegnaChip(){
+      if(riga.l){ chip.textContent = 'Collegata: ' + (grNomeCollegamento(riga.l) || riga.l) + '  ×'; chip.style.display = ''; }
+      else chip.style.display = 'none';
+    }
+    function suggerisci(){
+      ris.innerHTML = '';
+      const parole = grNorm(nt.value).split(/\s+/).filter(Boolean);
+      if(!parole.length) return;
+      const usati = righe.map(function(y){ return y.l; });
+      const trovati = cat.filter(function(c){
+        if(usati.indexOf(c.k) !== -1) return false;
+        const hay = grNorm(c.n + ' ' + c.tipo + ' ' + (c.extra || ''));
+        return parole.every(function(q){ return hay.indexOf(q) !== -1; });
+      });
+      trovati.slice(0, 6).forEach(function(c){
+        const b = grEl('button', 'fg-riga'); b.type = 'button'; b.setAttribute('data-nav', '');
+        b.appendChild(grEl('span', 'fg-riga-data', c.tipo));
+        b.appendChild(grEl('span', 'fg-riga-ant', c.n));
+        b.addEventListener('click', function(){
+          riga.l = c.k; nt.value = c.n.split(' · ')[0].replace(' (foglio vuoto)', '');
+          ris.innerHTML = ''; disegnaChip(); aggiornaAmbito();
+        });
+        ris.appendChild(b);
+      });
+      if(trovati.length > 6) ris.appendChild(grEl('div', 'fg-intro', 'Altri ' + (trovati.length - 6) + '… scrivi di più per restringere.'));
+    }
+    nt.addEventListener('input', function(){ if(riga.l && grNorm(nt.value).length < 2) { riga.l = ''; disegnaChip(); } suggerisci(); });
     rm.addEventListener('click', function(){
-      if(righe.length === 1){ np.value = ''; nt.value = ''; return; }
-      righe.splice(righe.indexOf(riga), 1); r.remove();
+      if(righe.length === 1){ np.value = ''; nt.value = ''; riga.l = ''; ris.innerHTML = ''; disegnaChip(); aggiornaAmbito(); return; }
+      righe.splice(righe.indexOf(riga), 1); r.remove(); aggiornaAmbito();
     });
     r.appendChild(np); r.appendChild(nt); r.appendChild(rm);
-    const riga = {np:np, nt:nt};
-    righe.push(riga); if(piu) boxPagine.insertBefore(r, piu); else boxPagine.appendChild(r);
+    sotto.appendChild(r); sotto.appendChild(chip); sotto.appendChild(ris);
+    disegnaChip();
+    righe.push(riga);
+    if(piu) boxPagine.insertBefore(sotto, piu); else boxPagine.appendChild(sotto);
     return np;
   }
-  let piu = null;
-  (dati.pp.length ? dati.pp : [{p:'', t:''}]).forEach(function(y){ aggiungiRiga(y.p, y.t); });
+  (dati.pp.length ? dati.pp : [{p: '', t: '', l: ''}]).forEach(function(y){ aggiungiRiga(y.p, y.t, y.l); });
   piu = grEl('button', 'fg-btn gr-piu', '+ Un’altra pagina'); piu.type = 'button';
-  piu.addEventListener('click', function(){ aggiungiRiga('', '').focus(); });
+  piu.addEventListener('click', function(){ aggiungiRiga('', '', '').focus(); });
   boxPagine.appendChild(piu);
   campo('Pagine del manuale', boxPagine);
 
   const ambito = grEl('div', 'gr-ambito');
   w.appendChild(ambito);
-
-  const n = grEl('textarea', 'fg-in'); n.rows = 4; n.placeholder = 'Cosa è emerso, cosa vuoi ricordare…'; n.value = dati.n || ''; campo('Appunto', n);
-
-  // schede collegate: si cerca per nome e se ne possono aggiungere quante si vuole
-  const scelti = dati.ll.slice();
-  const box = grEl('div', 'gr-coll');
-  const sceltiEl = grEl('div', 'fg-chips');
-  const cercaC = grEl('input', 'fg-in'); cercaC.type = 'search'; cercaC.placeholder = 'Cerca foglio o scheda…';
-  const risC = grEl('div', 'gr-coll-ris');
-  const cat = grCatalogo();
-  function disegnaScelti(){
-    sceltiEl.innerHTML = '';
-    scelti.forEach(function(k){
-      const c = grEl('button', 'fg-chip on', (grNomeCollegamento(k) || k) + '  ×'); c.type = 'button';
-      c.addEventListener('click', function(){ scelti.splice(scelti.indexOf(k), 1); disegnaScelti(); disegnaRis(); });
-      sceltiEl.appendChild(c);
-    });
-    sceltiEl.style.display = scelti.length ? '' : 'none';
-  }
-  function disegnaRis(){
-    risC.innerHTML = '';
-    const parole = grNorm(cercaC.value).split(/\s+/).filter(Boolean);
-    if(!parole.length) return;
-    const trovati = cat.filter(function(c){
-      if(scelti.indexOf(c.k) !== -1) return false;
-      const hay = grNorm(c.n + ' ' + c.tipo + ' ' + (c.extra || ''));
-      return parole.every(function(p){ return hay.indexOf(p) !== -1; });
-    });
-    if(!trovati.length){ risC.appendChild(grEl('div', 'fg-intro', 'Nessun risultato.')); return; }
-    trovati.slice(0, 20).forEach(function(c){
-      const r = grEl('button', 'fg-riga'); r.type = 'button'; r.setAttribute('data-nav', '');
-      r.appendChild(grEl('span', 'fg-riga-data', c.tipo));
-      r.appendChild(grEl('span', 'fg-riga-ant', c.n));
-      r.addEventListener('click', function(){ scelti.push(c.k); cercaC.value = ''; disegnaScelti(); disegnaRis(); });
-      risC.appendChild(r);
-    });
-    if(trovati.length > 20) risC.appendChild(grEl('div', 'fg-intro', 'Altri ' + (trovati.length - 20) + '… scrivi di più per restringere.'));
-  }
-  cercaC.addEventListener('input', disegnaRis);
-  box.appendChild(sceltiEl); box.appendChild(cercaC); box.appendChild(risC);
-  disegnaScelti();
-  campo('Schede e fogli compilati collegati (facoltativo)', box);
-
-  // l'ambito si aggiorna da solo mentre scrivi pagine e colleghi schede
   function aggiornaAmbito(){
-    const mm = grAmbiti(righe.map(function(r){ return {p: r.np.value}; }), scelti);
+    const mm = grAmbitiPP(righe.map(function(r){ return {p: r.np.value, l: r.l}; }));
     ambito.textContent = mm.length ? 'Ambito: ' + grAmbitiNomi(mm) : '';
     ambito.style.display = mm.length ? '' : 'none';
   }
   w.addEventListener('input', aggiornaAmbito);
-  w.addEventListener('click', function(){ setTimeout(aggiornaAmbito, 0); });
   aggiornaAmbito();
 
+  // gli appunti sono i post-it, gli stessi del resto dell'app
+  w.appendChild(piMount('gn:' + dati.id, 'Appunti dai gruppi'));
+
+  function raccogli(){ return righe.map(function(r){ return {p: r.np.value.trim(), t: r.nt.value.trim(), l: r.l}; }).filter(function(y){ return y.p || y.t || y.l; }); }
   const az = grEl('div', 'fg-azioni');
   az.appendChild(grEl('span')).style.flex = '1';
   const ann = grEl('button', 'fg-btn', 'Annulla'); ann.type = 'button';
-  ann.addEventListener('click', function(){ if(x) grVista(x); else grMostraLista('', ''); });
+  ann.addEventListener('click', function(){
+    if(x) grVista(x);
+    else { piList('gn:' + dati.id).forEach(function(p){ piRemove('gn:' + dati.id, p.id); }); grMostraLista('', ''); }
+  });
   const sv = grEl('button', 'fg-btn fg-pri', 'Salva'); sv.type = 'button';
   sv.addEventListener('click', function(){
-    const pp = righe.map(function(r){ return {p: r.np.value.trim(), t: r.nt.value.trim()}; }).filter(function(y){ return y.p || y.t; });
-    if(!pp.length && !n.value.trim()){ righe[0].np.focus(); return; }
-    const item = {
-      id: x ? x.id : 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-      g: g.value || grOggi(), pp: pp, mm: grAmbiti(pp, scelti), n: n.value.trim(), ll: scelti.slice()
-    };
+    const pp = raccogli();
+    if(!pp.length && !piList('gn:' + dati.id).length){ righe[0].np.focus(); return; }
+    const item = {id: dati.id, g: g.value || grOggi(), pp: pp, mm: grAmbitiPP(pp), n: '', ll: []};
     grSalva(item);
     grVista(item);
   });
