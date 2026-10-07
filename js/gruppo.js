@@ -224,14 +224,14 @@ function grChiavePostit(l){
 // scheda dell'app <-> pagina teorica/foglio della guida che trattano lo stesso argomento
 const GR_GRUPPI = [
   ['sc:fatti','sk:rcheck','sk:gcheck'], ['sc:procontro','sk:procontro','sk:gprocontro','fg:t-impulso'],
-  ['sc:dearman','sk:dearman','fg:i-priorita'], ['sc:give','sk:give'], ['sc:fast','sk:fast'],
+  ['sc:dearman','sk:dearman','fg:i-monitor'], ['sc:give','sk:give','fg:i-monitor'], ['sc:fast','sk:fast','fg:i-monitor'],
   ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sc:sentiero','sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease'],
   ['sc:catena','sk:gcatena'], ['fg:t-crisi','sk:tcrisi'], ['sc:eventi','sk:rpositivo'],
-  ['fg:m-abilita','sk:mcosa','sk:mcome','fg:m-piacevoli','fg:m-spiacevoli'], ['fg:m-fare-essere','sk:mstati'],
+  ['fg:m-abilita','sk:mcosa','sk:mcome'], ['fg:m-fare-essere','fg:m-piacevoli','fg:m-spiacevoli','sk:mfareessere'],
   ['fg:t-stop','sk:stop'], ['fg:t-accettazione','sk:accrad'], ['fg:t-bodyscan','sk:tbody'],
   ['fg:t-pensieri','sk:mpensieri'], ['fg:t-miglioramomento','sk:migliora'],
   ['fg:i-chiedere','sk:ifermezza'], ['fg:i-validare','fg:i-autoval','sk:ivalida'], ['fg:i-dialettica','sk:idialettica'],
-  ['fg:r-funzioni','fg:r-osserva','sc:diarioemo','sk:rperche'], ['fg:r-risolvere','sk:rrisolvi'], ['fg:m-gentilezza','sk:mamorev'], ['fg:r-mind-emozioni','sk:memozioni'], ['fg:r-azione-opposta','sk:razione'],
+  ['fg:r-funzioni','sk:rperche'], ['fg:r-osserva','sk:rdescrivi'], ['fg:i-priorita','sk:ipriorita'], ['fg:r-risolvere','sk:rrisolvi'], ['fg:m-gentilezza','sk:mamorev'], ['fg:r-mind-emozioni','sk:memozioni'], ['fg:r-azione-opposta','sk:razione'],
   ['fg:r-problem-solving','sk:rproblem'], ['fg:r-valori','sk:rvalori'], ['fg:r-mastery','sk:rmastery'],
   ['fg:r-sonno','sk:rsonno'], ['fg:r-incubi','sk:rincubi'], ['fg:r-miti','sk:rmiti']
 ];

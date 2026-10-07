@@ -253,6 +253,16 @@ function renderGuide(){
           '<b>Mente saggia.</b> L\'integrazione delle due. Conosce sia i fatti sia le emozioni, e sa quando seguire l\'una o l\'altra. È la voce interiore più profonda e "giusta". Puoi accedervi con la pratica della mindfulness.',
           '<b>Nota.</b> Come trovare la mente saggia: fai un respiro profondo. Chiediti: "Nel profondo, so cosa è giusto fare?" Aspetta la risposta che sale dal centro, non dalla testa né dal cuore.'
         ]},
+       {id:'mfareessere',badge:'FARE / ESSERE',name:'Mente del fare e mente dell\'essere',
+        desc:'Bilanciare l\'agire per obiettivi con lo stare nel presente.',
+        steps:[
+          '<b>Mente del fare.</b> Discrimina, è ambiziosa e orientata agli obiettivi. I pensieri sembrano fatti sul mondo e l\'attenzione va al problem solving e al raggiungere lo scopo.',
+          '<b>Mente dell\'essere.</b> È curiosa e senza niente da fare, orientata al presente. I pensieri sono sensazioni della mente e conta l\'unicità di ogni momento, lasciando andare gli obiettivi.',
+          '<b>Mente saggia.</b> Sta in equilibrio tra le due: è il sentiero di mezzo.',
+          '<b>Mezzi efficaci.</b> Nella mente saggia lasci andare il bisogno di ottenere a tutti i costi l\'obiettivo e proprio così ti dedichi pienamente a raggiungerlo. Aumenti la consapevolezza mentre sei impegnata in ciò che fai.',
+          '<b>Come usarla.</b> Quando noti che sei troppo nel fare (sempre a risolvere) o troppo nell\'essere (ferma, senza concludere), prova a spostarti verso l\'altra: è l\'esercizio dei fogli sugli eventi piacevoli e spiacevoli.',
+          '&#x1F4D6; Manuale: Mindfulness, Scheda 9.'
+        ]},
        {id:'mcosa',badge:'COSA',name:'Osservare, Descrivere, Partecipare',
         desc:'Cosa fare quando pratichi la mindfulness.',
         steps:[
@@ -328,6 +338,20 @@ function renderGuide(){
           '<b>Comunicano agli altri.</b> Le espressioni facciali e il tono della voce trasmettono emozioni anche involontariamente. Influenzano chi ci sta intorno prima ancora che parliamo.',
           '<b>Comunicano a noi stesse.</b> Le emozioni sono segnali — ci dicono che qualcosa di importante sta succedendo. Ascoltarle (senza lasciarle controllare) è utile.',
           '⚠ <b>Attenzione:</b> le emozioni non sono fatti. "Mi sento in colpa" non significa aver sbagliato. "Ho paura" non significa che ci sia davvero un pericolo. Controlla sempre i fatti prima di agire.'
+        ]},
+       {id:'rdescrivi',badge:'DESCRIVI',name:'Modello per descrivere le emozioni',
+        desc:'Le parti di un\'emozione, dall\'evento alle conseguenze.',
+        steps:[
+          '<b>Perché descriverla.</b> Per cambiare un\'emozione bisogna prima saperla vedere. Il modello la scompone in parti, così puoi notare cosa succede e dove intervenire.',
+          '<b>Prima dell\'evento: fattori di vulnerabilità.</b> Cosa è successo prima che ti ha reso più fragile (poco sonno, fame, litigi, malessere)?',
+          '<b>Evento stimolo.</b> Cosa ha fatto partire l\'emozione? Solo i fatti, nei pochi minuti prima. Un\'emozione può essere a sua volta lo stimolo di un\'altra (la paura che accende la rabbia verso se stessi): in quel caso descrivi prima la prima.',
+          '<b>Interpretazione.</b> Pensieri, convinzioni, supposizioni e valutazioni su quell\'evento.',
+          '<b>Cambiamenti biologici e vissuto.</b> Cosa senti nel corpo e nel viso, e quali impulsi ad agire ti vengono (cosa vorresti fare o dire).',
+          '<b>Espressione.</b> Viso e corpo (espressione, postura, gesti), parole (cosa hai detto) e azioni (cosa hai fatto).',
+          '<b>Nome e intensità.</b> Dai un nome all\'emozione e una intensità da 0 a 100.',
+          '<b>Conseguenze.</b> Cosa è successo dopo: altre emozioni (emozioni secondarie), comportamenti, pensieri.',
+          '<b>Trovare le parole.</b> Il manuale ha elenchi di parole per dieci famiglie di emozioni: rabbia, disgusto, invidia, paura, gelosia, felicità, amore, tristezza, vergogna, colpa. Se non sai come chiamare quello che senti, parti da lì.',
+          '&#x1F4D6; Manuale: Regolazione emotiva, Schede 5 e 6.'
         ]},
        {id:'rmiti',badge:'MITI',name:'Miti sulle emozioni',
         desc:'Convinzioni comuni che rendono le emozioni più difficili, e come rispondere.',
@@ -463,6 +487,15 @@ function renderGuide(){
      sub:'Ottenere ciò che si vuole mantenendo le relazioni e il rispetto di sé',
      intro:'L\'efficacia interpersonale è la capacità di raggiungere i propri obiettivi nelle relazioni. Tre obiettivi spesso in tensione tra loro: ottenere ciò che vuoi (DEAR MAN), mantenere la relazione (GIVE), mantenere il rispetto di te stessa (FAST).',
      skills:[
+       {id:'ipriorita',badge:'OBIETTIVI',name:'Chiarire gli obiettivi interpersonali',
+        desc:'Tre obiettivi in ogni situazione: risultato, relazione, rispetto di sé.',
+        steps:[
+          '<b>Efficacia negli obiettivi:</b> ottenere ciò che vuoi da un\'altra persona (un tuo diritto, che faccia qualcosa, dire di no, risolvere un conflitto, farti prendere sul serio). Chiediti: quale risultato voglio da questa discussione? Cosa devo fare per ottenerlo?',
+          '<b>Efficacia nelle relazioni:</b> mantenere e migliorare il rapporto. Chiediti: come voglio che l\'altra persona si senta verso di me quando finiamo? Cosa devo fare per mantenere questo clima?',
+          '<b>Efficacia nel rispetto di sé:</b> restare in linea con i tuoi valori e sentirti capace. Chiediti: come voglio sentirmi con me stessa alla fine? Cosa devo fare per sentirmi così?',
+          '<b>Le priorità.</b> Spesso i tre obiettivi tirano in direzioni diverse: decidi quanto conta ciascuno in quella situazione, perché da questo dipende quali abilità usare.',
+          '&#x1F4D6; Manuale: Efficacia interpersonale, Scheda 4.'
+        ]},
        {id:'dearman',badge:'DEAR MAN',name:'Ottenere ciò che vuoi',
         desc:'Una sequenza per fare richieste o dire no in modo efficace.',
         steps:[
