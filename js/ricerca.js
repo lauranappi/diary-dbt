@@ -60,6 +60,26 @@ function rcNorm(t){
 }
 // nomi dei fogli/schede da compilare collegati a una pagina di teoria: cercando
 // "controlla i fatti" o "osservare e descrivere" si trova la teoria che li contiene
+// riferimento al manuale (scheda, foglio, pagina) per mostrarlo e per cercarlo
+function rcRifTesto(e){
+  if(typeof rfTesto !== 'function') return '';
+  return e._rf ? rfTesto(e._rf[0], e._rf[1], true) : (e.mod ? rfTesto('sk', e.id, true) : '');
+}
+function rcRifCerca(e){
+  if(e._rfc !== undefined) return e._rfc;
+  let t = '';
+  try{
+    if(typeof rfCerca === 'function'){
+      if(e._rf) t = rfCerca(e._rf[0], e._rf[1]);
+      else if(e.mod){
+        t = rfCerca('sk', e.id);
+        if(typeof grSchedeDa === 'function') grSchedeDa(e.id).forEach(function(x){ const p = x.k.split(':'); t += ' ' + rfCerca(p[0], p.slice(1).join(':')); });
+      }
+    }
+  }catch(err){}
+  e._rfc = rcNorm(t);
+  return e._rfc;
+}
 function rcFogli(e){
   if(e._fogli !== undefined) return e._fogli;
   let t = '';
@@ -83,24 +103,60 @@ function rcLiberi(){
       Object.keys(SCHEDA_TITOLI).forEach(function(k){
         if(grHaTeoria('sc:' + k)) return;
         l.push({id:'sc-' + k, badge:'FOGLIO', name:SCHEDA_TITOLI[k], desc:(typeof FOGLI_SOTTOTITOLO !== 'undefined' && FOGLI_SOTTOTITOLO[k]) || '',
-          modTitolo:'Foglio di lavoro', testo:'', _fogli:'', apri:function(){ openScheda(k); }});
+          modTitolo:'Foglio di lavoro', testo:'', _fogli:'', _rf:['sc', k], apri:function(){ openScheda(k); }});
       });
     }
     if(typeof FG_FOGLI !== 'undefined'){
       FG_FOGLI.forEach(function(f){
         if(grHaTeoria('fg:' + f.id)) return;
-        l.push({id:'fg-' + f.id, badge:'FOGLIO', name:f.t, desc:f.sub || '', modTitolo:'Foglio di lavoro', testo:'', _fogli:'', apri:function(){ fgApri(f.id); }});
+        l.push({id:'fg-' + f.id, badge:'FOGLIO', name:f.t, desc:f.sub || '', modTitolo:'Foglio di lavoro', testo:'', _fogli:'', _rf:['fg', f.id], apri:function(){ fgApri(f.id); }});
       });
     }
   }
   window._rcLiberi = l;
   return l;
 }
+// voci di manuale di una pagina: {tipo:'Scheda'|'Foglio di lavoro', n:'4A', pag:54}
+function rcRifVoci(e){
+  if(e._rfv) return e._rfv;
+  let v = [];
+  try{
+    if(typeof rfLista === 'function'){
+      const aggiungi = function(t, id){ rfLista(t, id).forEach(function(k){ v.push(rfVoce(k)); }); };
+      if(e._rf) aggiungi(e._rf[0], e._rf[1]);
+      else if(e.mod){
+        aggiungi('sk', e.id);
+        if(typeof grSchedeDa === 'function') grSchedeDa(e.id).forEach(function(x){ const p = x.k.split(':'); aggiungi(p[0], p.slice(1).join(':')); });
+      }
+    }
+  }catch(err){}
+  e._rfv = v; return v;
+}
+// "scheda 4a", "foglio di lavoro 9", "p. 54": filtri sul riferimento al manuale
+function rcFiltriRif(q){
+  let t = rcNorm(q), f = [];
+  t = t.replace(/\b(schede|scheda|fogli di lavoro|foglio di lavoro|fogli|foglio)\s*(\d{1,2}[a-z]?)\b/g, function(m, tipo, n){
+    f.push({tipo: tipo.indexOf('fogli') === 0 || tipo.indexOf('foglio') === 0 ? 'Foglio di lavoro' : 'Scheda', n: n.toUpperCase()}); return ' ';
+  });
+  t = t.replace(/\b(pagine|pagina|pag|pp|p)\.?\s*(\d{1,3})\b/g, function(m, x, n){ f.push({pag: +n}); return ' '; });
+  return {resto: t, f: f};
+}
+function rcRifOk(e, f){
+  const v = rcRifVoci(e);
+  return f.every(function(c){
+    return v.some(function(x){
+      if(c.pag) return x.pag === c.pag;
+      return x.tipo === c.tipo && (x.n === c.n || (/^\d+$/.test(c.n) && x.n.replace(/[A-Z]$/, '') === c.n));
+    });
+  });
+}
 function rcCerca(q){
-  const parole = rcNorm(q).split(/\s+/).filter(Boolean);
-  if(!parole.length || !window.GUIDE_INDEX) return [];
+  const fr = rcFiltriRif(q);
+  const parole = fr.resto.split(/\s+/).filter(Boolean);
+  if(!(parole.length || fr.f.length) || !window.GUIDE_INDEX) return [];
   const out = [];
   window.GUIDE_INDEX.concat(rcLiberi()).forEach(function(e){
+    if(fr.f.length && !rcRifOk(e, fr.f)) return;
     const titolo = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + rcFogli(e));
     const tutto = titolo + ' ' + rcNorm(e.testo) + ' ' + rcNorm(e.modTitolo);
     if(!parole.every(function(w){ return tutto.indexOf(w) !== -1; })) return;
@@ -109,7 +165,7 @@ function rcCerca(q){
     out.push({e:e, p:punti});
   });
   out.sort(function(a, b){ return a.p - b.p; });
-  if(!out.length && parole.length > 1){
+  if(!out.length && parole.length > 1 && !fr.f.length){
     // nessuna scheda con tutte le parole: mostra quelle con almeno una, prima chi ne ha di piu'
     window.GUIDE_INDEX.concat(rcLiberi()).forEach(function(e){
       const tutto = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + e.testo + ' ' + e.modTitolo + ' ' + rcFogli(e));
@@ -157,7 +213,7 @@ function rcRenderRisultati(q){
     const b = document.createElement('span'); b.className = 'rc-badge'; b.textContent = e.badge;
     const t = document.createElement('span'); t.className = 'rc-testo';
     const n = document.createElement('span'); n.className = 'rc-nome'; n.textContent = e.name;
-    const m = document.createElement('span'); m.className = 'rc-mod'; m.textContent = e.modTitolo;
+    const m = document.createElement('span'); m.className = 'rc-mod'; const rif = rcRifTesto(e); m.textContent = e.modTitolo + (rif ? ' \u00b7 ' + rif : '');
     t.appendChild(n); t.appendChild(m);
     r.appendChild(b); r.appendChild(t);
     r.addEventListener('click', function(){ rcApri(e); });
