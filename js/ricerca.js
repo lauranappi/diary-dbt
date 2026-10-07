@@ -60,6 +60,15 @@ function rcCerca(q){
     out.push({e:e, p:punti});
   });
   out.sort(function(a, b){ return a.p - b.p; });
+  if(!out.length && parole.length > 1){
+    // nessuna scheda con tutte le parole: mostra quelle con almeno una, prima chi ne ha di piu'
+    window.GUIDE_INDEX.forEach(function(e){
+      const tutto = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + e.testo + ' ' + e.modTitolo);
+      const n = parole.filter(function(w){ return tutto.indexOf(w) !== -1; }).length;
+      if(n) out.push({e:e, p:-n});
+    });
+    out.sort(function(a, b){ return a.p - b.p; });
+  }
   return out.map(function(x){ return x.e; });
 }
 

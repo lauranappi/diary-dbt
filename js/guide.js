@@ -80,7 +80,7 @@ function renderGuide(){
         desc:'Fermati prima di reagire d\'impulso.',
         steps:[
           '<b>S — Stop.</b> Non reagire. Congelati. Non muovere un muscolo. Le emozioni vogliono farti agire senza pensare — non lasciarle.',
-          '<b>T — fai un passo indieT​ro.</b> Prendi distanza fisica o mentale. Fai un respiro profondo. Non lasciare che i sentimenti ti spingano ad agire impulsivamente.',
+          '<b>T — fai un passo indieTro.</b> Prendi distanza fisica o mentale. Fai un respiro profondo. Non lasciare che i sentimenti ti spingano ad agire impulsivamente.',
           '<b>O — Osserva.</b> Cosa sta succedendo dentro di te (pensieri, emozioni, sensazioni) e fuori (situazione, altre persone)?',
           '<b>P — Procedi in maniera mindful.</b> Agisci con consapevolezza. Considera la situazione, le emozioni tue e altrui. Chiedi alla mente saggia: quale azione migliorerebbe la situazione? Quale la peggiorerebbe?'
         ]},
@@ -188,7 +188,7 @@ function renderGuide(){
           '<b>Mani aperte seduta:</b> sistema le mani sul grembo o sulle cosce, palmi rivolti verso l’alto, dita rilassate.',
           '<b>Quando usarlo:</b> appena ti svegli (prima di alzarti), nei momenti liberi, mentre ascolti musica, quando sei irritata, quando sei tesa.',
           '<b>Con persone difficili:</b> siediti. Respira e abbozza un sorriso. Pensa a una persona con cui sei arrabbiata. Cerca di capire cosa la rende felice o la fa soffrire. Continua finché senti un po’ di compassione e la rabbia diminuisce.',
-          '💡 Ricorda: la faccia e le mani comunicano con il cervello. Il corpo è connesso alla mente — cambiare la postura cambia davvero come ci sentiamo.'
+          '<b>Nota.</b> Ricorda: la faccia e le mani comunicano con il cervello. Il corpo è connesso alla mente — cambiare la postura cambia davvero come ci sentiamo.'
         ]},
        {id:'disponibilita',badge:'DISPONIBILITÀ',name:'Disponibilità al posto dell\'ostinazione',
        desc:'Quando ti accorgi di rifiutare il momento, di irrigidirti o di voler tenere tutto sotto controllo.',
@@ -217,7 +217,7 @@ function renderGuide(){
           '<b>Perché:</b> rifiutare la realtà non la cambia, ma trasforma il dolore in sofferenza. Il dolore è inevitabile; la sofferenza è opzionale.',
           '<b>Come praticarla:</b> osserva il pensiero "questa cosa non dovrebbe essere così". Nota la lotta interiore. Di\' a te stessa: "La realtà è questa, anche se non mi piace". Ripetilo finché senti un piccolo allentamento.',
           '<b>Orienta la mente:</b> ogni volta che la mente torna a combattere la realtà, riorientala gentilmente verso l\'accettazione. Non è un\'azione unica — è una pratica continua.',
-          '💡 L\'accettazione porta spesso prima alla tristezza, poi a una profonda calma.'
+          '<b>Nota.</b> L\'accettazione porta spesso prima alla tristezza, poi a una profonda calma.'
         ]}
      ]},
     {id:'mind',icon:'🧘',bg:'#EEF4F3',
@@ -225,13 +225,23 @@ function renderGuide(){
      sub:'Vivere consapevolmente nel momento presente',
      intro:'La mindfulness è la pratica di prestare attenzione intenzionalmente al momento presente, senza giudicarlo. Non è meditazione formale — puoi praticarla mentre fai qualsiasi cosa. Le abilità di mindfulness sono la base di tutta la DBT.',
      skills:[
+       {id:'mdefin',badge:'COS’È',name:'Cos’è la mindfulness',
+        desc:'Tre idee: presenza, niente giudizio, niente attaccamento.',
+        steps:[
+          '<b>Presenza.</b> Vivere intenzionalmente nel momento presente, uscendo dal pilota automatico e dalle abitudini per esserci davvero.',
+          '<b>Senza giudicare né rifiutare.</b> Noti le conseguenze e distingui ciò che aiuta da ciò che fa male, ma lasci andare valutazioni, evitamento e soppressione di ciò che c’è.',
+          '<b>Senza attaccarti.</b> Partecipi a ogni momento nuovo, senza aggrapparti al passato né correre al futuro.',
+          '<b>Praticarla.</b> Si può fare ovunque, mentre fai qualsiasi cosa: basta portare l’attenzione al presente, di proposito, senza giudizio.',
+          '<b>Meditare.</b> È praticare da ferma (seduta, in piedi o sdraiata). Puoi focalizzare l’attenzione (respiro, corpo, emozioni, pensieri) oppure aprirla a tutto ciò che arriva.',
+          '<b>Altre forme.</b> Preghiera contemplativa, movimento consapevole (yoga, arti marziali, danza), camminare o fare escursioni con attenzione.'
+        ]},
        {id:'mstati',badge:'STATI MENTE',name:'I tre stati della mente',
         desc:'Capire in quale stato mentale ti trovi.',
         steps:[
           '<b>Mente razionale.</b> Fredda, logica, guidata da fatti e ragione. Utile per risolvere problemi pratici. Ignora emozioni e valori — può portare a decisioni corrette ma vuote di significato.',
           '<b>Mente emotiva.</b> Calda, impulsiva, governata dai sentimenti. Le emozioni controllano pensieri e azioni. Utile per amore, creatività, connessione — pericolosa nelle crisi e per decisioni importanti.',
           '<b>Mente saggia.</b> L\'integrazione delle due. Conosce sia i fatti sia le emozioni, e sa quando seguire l\'una o l\'altra. È la voce interiore più profonda e "giusta". Puoi accedervi con la pratica della mindfulness.',
-          '💡 Come trovare la mente saggia: fai un respiro profondo. Chiediti: "Nel profondo, so cosa è giusto fare?" Aspetta la risposta che sale dal centro, non dalla testa né dal cuore.'
+          '<b>Nota.</b> Come trovare la mente saggia: fai un respiro profondo. Chiediti: "Nel profondo, so cosa è giusto fare?" Aspetta la risposta che sale dal centro, non dalla testa né dal cuore.'
         ]},
        {id:'mcosa',badge:'COSA',name:'Osservare, Descrivere, Partecipare',
         desc:'Cosa fare quando pratichi la mindfulness.',
@@ -254,7 +264,7 @@ function renderGuide(){
           '<b>Pratica la consapevolezza corporea.</b> Nota dove nel corpo senti le sensazioni dell’emozione. Sperimenta le sensazioni il più completamente possibile. Osserva quanto ci vuole perché l’emozione diminuisca.',
           '<b>Ricorda: tu non sei la tua emozione.</b> Non devi necessariamente agire su di essa. Ricorda le volte in cui ti sei sentita diversamente.',
           '<b>Pratica l’amore per la tua emozione.</b> Rispetta la tua emozione. Non giudicarla. Accettala radicalmente. Allena la tua disponibilità a sentirla.',
-          '💡 Gestire emozioni estreme: se sei al punto di rottura (sofferenza estrema, mente che si spegne), prima usa TIP o ACCETTA per ridurre l’attivazione, poi torna alla mindfulness delle emozioni.'
+          '<b>Nota.</b> Gestire emozioni estreme: se sei al punto di rottura (sofferenza estrema, mente che si spegne), prima usa TIP o ACCETTA per ridurre l’attivazione, poi torna alla mindfulness delle emozioni.'
         ]},
        {id:'mpensieri',badge:'PENSIERI ORA',name:'Mindfulness dei pensieri del momento',
         desc:'I pensieri come eventi che passano, non fatti.',
@@ -298,6 +308,19 @@ function renderGuide(){
           '<b>Comunicano a noi stesse.</b> Le emozioni sono segnali — ci dicono che qualcosa di importante sta succedendo. Ascoltarle (senza lasciarle controllare) è utile.',
           '⚠ <b>Attenzione:</b> le emozioni non sono fatti. "Mi sento in colpa" non significa aver sbagliato. "Ho paura" non significa che ci sia davvero un pericolo. Controlla sempre i fatti prima di agire.'
         ]},
+       {id:'rmiti',badge:'MITI',name:'Miti sulle emozioni',
+        desc:'Convinzioni comuni che rendono le emozioni più difficili, e come rispondere.',
+        steps:[
+          '<b>"C’è un modo giusto di sentirsi in ogni situazione."</b> Le emozioni dipendono dalla storia, dal corpo e dal contesto: persone diverse sentono cose diverse.',
+          '<b>"Far vedere che sto male è debolezza."</b> Dirlo è comunicare. Spesso è proprio ciò che permette di ricevere aiuto.',
+          '<b>"Le emozioni negative sono cattive."</b> Sono dolorose, non cattive: ti avvisano di qualcosa.',
+          '<b>"Essere emotivi vuol dire essere fuori controllo."</b> Sentire molto e scegliere cosa fare possono stare insieme.',
+          '<b>"Come mi sento dice com’è la realtà."</b> Le emozioni sono informazioni, non fatti: controlla i fatti.',
+          '<b>"Dovrei fare ciò che mi sento di fare."</b> Seguire l’impulso non è libertà. Libertà è poter scegliere l’azione.',
+          '<b>"Io sono le mie emozioni."</b> Ciò che provi cambia e passa: non ti definisce.',
+          '<b>"Le emozioni dolorose vanno ignorate."</b> Ignorarle di solito le fa crescere. Ascoltarle aiuta a capire cosa serve.',
+          '<b>Nota.</b> Prova a scrivere con un post-it la tua risposta ai miti in cui ti riconosci di più.'
+        ]},
        {id:'rcheck',badge:'CONTROLLA',name:'Controllare i fatti',
         desc:'Le emozioni rispondono ai pensieri, non solo ai fatti.',
         steps:[
@@ -314,7 +337,7 @@ function renderGuide(){
           '<b>Tristezza/depressione:</b> agisci invece di isolarti. Esci. Partecipa ad attività. Alzati. Muoviti. Non aspettare di "avere voglia" — agisci e la voglia arriva dopo.',
           '<b>Rabbia ingiustificata:</b> evita la persona o la situazione temporaneamente. Immagina comprensione per l\'altra persona. Fai qualcosa di gentile.',
           '<b>Vergogna/colpa ingiustificate:</b> non nasconderti o scusarti. Fai ciò di cui ti vergogni (se non è realmente sbagliato). Condividi con persone di fiducia.',
-          '💡 L\'azione opposta deve essere <b>completa</b> — non solo esterna ma anche interna (postura, espressione, pensieri).'
+          '<b>Nota.</b> L\'azione opposta deve essere <b>completa</b> — non solo esterna ma anche interna (postura, espressione, pensieri).'
         ]},
        {id:'rplease',badge:'PLEASE',name:'Ridurre la vulnerabilità emotiva',
         desc:'Cura del corpo, meno vulnerabilità emotiva.',
@@ -324,6 +347,29 @@ function renderGuide(){
           '<b>A — evita le sostanze che Alterano la mente.</b> Alcol e droghe aumentano la reattività emotiva e interferiscono con le abilità DBT.',
           '<b>S — Sonno bilanciato.</b> Troppo poco o troppo sonno aumenta la vulnerabilità emotiva. Mantieni un ritmo regolare.',
           '<b>E — Esercizio fisico.</b> Almeno 20 minuti al giorno di attività aerobica riduce stress, ansia e reattività emotiva.'
+        ]},
+       {id:'rsonno',badge:'SONNO',name:'Igiene del sonno',
+        desc:'Cosa fare per dormire meglio, e cosa fare quando non dormi.',
+        steps:[
+          '<b>Orari regolari.</b> Vai a letto e svegliati alla stessa ora, anche nel fine settimana. Pisolini di giorno non oltre i 10 minuti.',
+          '<b>Il letto è per dormire.</b> Evita di usarlo di giorno per tv, telefono o lettura.',
+          '<b>La sera.</b> Niente caffeina, nicotina, alcol, pasti pesanti o sport intenso a ridosso del sonno.',
+          '<b>La stanza.</b> Buia, silenziosa, fresca ma comoda. Se serve: mascherina, tappi, rumore bianco, ventilatore o coperta.',
+          '<b>Se non ti addormenti entro mezz’ora-un’ora,</b> chiediti come stai: tranquilla, ansiosa o in rimuginio? Non drammatizzare: stare sveglia non è una catastrofe e anche riposare a occhi chiusi fa bene.',
+          '<b>Se sei tranquilla ma sveglia:</b> alzati, vai in un’altra stanza e fai qualcosa di calmo, magari uno spuntino leggero. Torna a letto quando senti sonno.',
+          '<b>Se sei ansiosa o rimugini:</b> torna a letto e respira piano (inspira contando 5, espira contando 7), oppure prova il conto alla rovescia: a ogni espirazione dì mentalmente 9, poi 8, fino a 0, poi riparti da 8, e così via fino a 1.',
+          '<b>Pensieri notturni.</b> Porta l’attenzione alle sensazioni del corpo (il rimuginio spesso è una fuga da ciò che senti) e ricordati che sono "pensieri di mezzanotte": di giorno li vedrai in modo diverso.'
+        ]},
+       {id:'rincubi',badge:'INCUBI',name:'Lavorare sugli incubi ricorrenti',
+        desc:'Riscrivere un incubo e ripeterlo con il finale nuovo.',
+        steps:[
+          '<b>Prima prepara il terreno.</b> Pratica rilassamento, immaginazione piacevole e abilità di tolleranza, per essere pronta a lavorare sull’incubo.',
+          '<b>Scegli un incubo ricorrente</b> che puoi affrontare adesso. Se non ti senti pronta, rimanda.',
+          '<b>Scrivilo,</b> con vista, odori, suoni, e anche con i pensieri e le emozioni che hai nel sogno.',
+          '<b>Scegli un finale diverso,</b> che cambi la storia prima dell’evento brutto e ti lasci in pace al risveglio. Può essere anche straordinario (per esempio avere un potere che ti mette al sicuro).',
+          '<b>Scrivi l’incubo completo</b> con il nuovo finale.',
+          '<b>Ripetilo ogni sera.</b> Visualizza il sogno intero con il cambiamento, poi fai il rilassamento. Puoi ripeterlo anche di giorno.',
+          '⚠ <b>Attenzione:</b> se gli incubi riguardano esperienze molto dolorose, meglio farlo insieme alla terapeuta.'
         ]},
        {id:'rabc',badge:'ABC',name:'Il sistema ABC — panoramica',
         desc:'Le tre aree principali della regolazione emotiva a lungo termine.',
@@ -404,7 +450,7 @@ function renderGuide(){
           '<b>Fattori che la riducono:</b> non sei sicura di essere nel giusto. Non hai comunicato chiaramente in passato. La richiesta potrebbe danneggiare la relazione. L’altra persona è in difficoltà.',
           '<b>Considera la situazione:</b> è urgente? Ci sono conseguenze serie? Hai bisogno dell’altra persona in futuro?',
           '<b>Considera la relazione:</b> quant’è importante per te? Daresti o avresti dato tu questo all’altra persona se te lo chiedesse?',
-          '💡 Non esiste una risposta giusta universale. La mente saggia sa bilanciare i tuoi bisogni con la realtà della situazione.'
+          '<b>Nota.</b> Non esiste una risposta giusta universale. La mente saggia sa bilanciare i tuoi bisogni con la realtà della situazione.'
         ]},
        {id:'give',badge:'GIVE',name:'Mantenere le relazioni',
         desc:'Mantenere e rafforzare i legami.',
@@ -457,7 +503,7 @@ function renderGuide(){
           '"Rifiutare una richiesta è da egoisti." → Dire no è un diritto. Non puoi aiutare gli altri svuotandoti.',
           '"Dovrebbero sapere cosa voglio senza che io lo dica." → Gli altri non possono leggere nella tua mente. Comunicare è tuo compito.',
           '"Non posso sopportare che qualcuno si arrabbi con me." → Puoi tollerarlo. Il disappunto altrui non ti definisce.',
-          '💡 Riconoscere queste credenze è già metà del lavoro. Non devi credere ai tuoi pensieri automatici.'
+          '<b>Nota.</b> Riconoscere queste credenze è già metà del lavoro. Non devi credere ai tuoi pensieri automatici.'
         ]},
        {id:'itrova',badge:'TROVARE PERSONE',name:'Trovare le persone giuste e piacere loro',
         desc:'Come costruire nuove amicizie, un passo concreto alla volta.',
@@ -541,6 +587,24 @@ function renderGuide(){
      sub:'Analisi dei comportamenti e costruzione di una vita degna di essere vissuta',
      intro:'Questi strumenti trasversali si applicano a tutte le aree della DBT. Servono a capire come funzionano i propri comportamenti e a costruire una vita allineata con i propri valori.',
      skills:[
+       {id:'gopzioni',badge:'OPZIONI',name:'Quattro modi di rispondere a un problema',
+        desc:'Quando la vita ti mette davanti un problema, cosa puoi fare?',
+        steps:[
+          '<b>1 — Risolvere il problema.</b> Cambi la situazione, oppure la eviti, la lasci andare o ne trai il meglio possibile. Ti servono le abilità di efficacia interpersonale e il problem solving.',
+          '<b>2 — Sentirti meglio rispetto al problema.</b> Cambi (o regoli) la tua risposta emotiva. Ti servono le abilità di regolazione emotiva.',
+          '<b>3 — Tollerare il problema.</b> Accetti sia il problema sia la tua reazione, per ora. Ti servono tolleranza della sofferenza e mindfulness.',
+          '<b>4 — Restare infelice.</b> È un’opzione anche questa: quella in cui non usi abilità, e a volte le cose peggiorano.',
+          '<b>Come usarle.</b> Davanti a un problema chiediti: sto cercando di risolverlo, di sentirmi meglio, di sopportarlo, o sto restando bloccata? Poi scegli l’abilità del modulo giusto.'
+        ]},
+       {id:'gbiosoc',badge:'BIOSOCIALE',name:'Perché è così difficile gestire emozioni e azioni',
+        desc:'La teoria biosociale: sensibilità di partenza più ambiente.',
+        steps:[
+          '<b>La parte biologica: emozioni.</b> Alcune persone nascono più sensibili: colgono segnali emotivi sottili, provano emozioni più spesso, più forti e più a lungo. Le emozioni possono sembrare arrivare dal nulla e pesare come macigni.',
+          '<b>La parte biologica: impulsi.</b> Per alcune persone è più difficile frenare gli impulsi e agire dopo aver pensato. L’umore può rendere difficile organizzarsi per i propri obiettivi.',
+          '<b>Un ambiente invalidante</b> dice che le tue emozioni sono sbagliate, esagerate o strane, oppure le ignora. Spesso chi lo fa sta facendo del suo meglio: non sapeva come validare, era sotto stress o temeva di peggiorare le cose. A volte è solo poco adatto a te: un tulipano in un giardino di rose.',
+          '<b>Un ambiente inefficace</b> può rinforzare le emozioni e le azioni fuori controllo (si cede quando esplodi) oppure chiede di cambiare senza spiegare come.',
+          '<b>Cosa ne segue.</b> Non è un difetto di carattere: è un incontro tra una sensibilità di partenza e l’ambiente in cui sei cresciuta. E le abilità si possono imparare.'
+        ]},
        {id:'gcatena',badge:'CATENA',name:'Analisi della catena comportamentale',
         desc:'Capire cosa scatena un comportamento problematico e dove intervenire.',
         steps:[
