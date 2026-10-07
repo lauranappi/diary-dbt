@@ -1835,3 +1835,17 @@ textarea.fg-in{resize:vertical;min-height:84px;line-height:1.45}
 .gr-nota{margin-top:14px;font-size:15px;line-height:1.6;color:var(--dc-ink);white-space:pre-wrap;word-break:break-word}
 select.fg-in{appearance:none;-webkit-appearance:none;background-image:none}
 .fg-wrap input.fg-in[type="search"]{-webkit-appearance:none}
+
+/* diario del gruppo: campo data che non esce dal pannello, pagine multiple, collegamenti */
+.fg-wrap input.fg-data{-webkit-appearance:none;appearance:none;display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;height:50px;text-align:left;overflow:hidden}
+.fg-wrap input.fg-data::-webkit-date-and-time-value{text-align:left;margin:0;min-height:1.2em}
+.fg-wrap input.fg-data::-webkit-calendar-picker-indicator{margin:0;padding:0}
+.gr-pagine{display:flex;flex-direction:column;gap:8px}
+.gr-pag{display:flex;gap:8px;align-items:center}
+.gr-pag .gr-pag-n{flex:none;width:76px;min-width:0}
+.gr-pag .gr-pag-t{flex:1;min-width:0}
+.gr-pag-x{flex:none;width:36px;height:36px;border:0;border-radius:999px;background:var(--dc-petrolio-chiaro);color:var(--dc-petrolio);font-size:20px;cursor:pointer}
+.fg-btn.gr-piu{align-self:flex-start;margin-top:2px}
+.fg-btn.gr-apri{display:block;width:100%;text-align:left;margin-bottom:8px;padding:12px 18px;min-height:44px;height:auto;line-height:1.3}
+.gr-coll{display:flex;flex-direction:column;gap:10px}
+.gr-coll-ris{display:flex;flex-direction:column}
