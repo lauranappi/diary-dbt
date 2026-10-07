@@ -84,7 +84,6 @@ function renderGuide(){
           '<b>Usale quando</b> il dolore è intenso e non passa in fretta; quando agire sull\'onda dell\'emozione peggiorerebbe le cose; quando la mente emotiva sta prendendo il comando; quando le emozioni sono fortissime ma ciò che le ha provocate non si può cambiare adesso.',
           '<b>Non usarle per</b> i problemi di ogni giorno, per risolvere tutta la vita o per renderla degna di essere vissuta: per quello servono le altre abilità.',
           '<b>Le abilità:</b> STOP, pro e contro, TIP (cambiare la chimica del corpo), distrarsi con mente saggia ACCETTA, autoconsolarsi con i 5 sensi, migliorare il momento.',
-          '<b>Piano e diario.</b> A mente calma scrivi in anticipo i segnali che riconosci, le abilità che proverai, le persone che puoi chiamare e i motivi per andare avanti: nella crisi non si inventa. Poi segna sul diario quali abilità hai provato davvero e quanto sono servite.',
           '&#x1F4D6; Manuale: Tolleranza della sofferenza, Schede 1-3.'
         ]},
        {id:'stop',badge:'STOP',name:'Interrompi la reazione impulsiva',
@@ -499,16 +498,6 @@ function renderGuide(){
           '<b>A — sii Assertiva.</b> Non scusarti di esistere o di avere bisogni. Non scusarti di avere opinioni. Non assumere posture di inferiorità.',
           '<b>S — Segui i tuoi valori.</b> Non rinunciare ai tuoi valori per ragioni che non sono davvero importanti. Spiega il tuo punto di vista etico e mantienilo.',
           '<b>T — sii Trasparente.</b> Non mentire, non fingere di essere d\'accordo quando non lo sei, non recitare. L\'onestà protegge il rispetto di sé a lungo termine.'
-        ]},
-       {id:'imonitor',badge:'MONITORA',name:'Monitorare le abilità interpersonali',
-        desc:'Come ripercorrere una situazione relazionale con il foglio.',
-        steps:[
-          '<b>Quando.</b> Compilalo ogni volta che usi le abilità di efficacia interpersonale e anche quando avresti potuto usarle e non l\'hai fatto.',
-          '<b>Cosa è successo.</b> Scrivi l\'evento scatenante: chi ha fatto cosa a chi e con quali conseguenze.',
-          '<b>Cosa volevi.</b> Obiettivo (il risultato), relazione (cosa vuoi che l\'altro provi per te), rispetto di sé (come vuoi sentirti). Dai a ciascuno una priorità da 1 (molto importante) a 3 (poco), e segna se tra le priorità c\'è un conflitto.',
-          '<b>Cosa hai detto o fatto.</b> Spunta, voce per voce, le parti di DEAR MAN (descrivere, esprimere, affermare, rinforzare, essere mindful, disco rotto, ignorare gli attacchi, atteggiamento sicuro, negoziare), di GIVE e di FAST.',
-          '<b>Come è andata.</b> Valuta quanto hai ottenuto, come stanno la relazione e il rispetto di te, e cosa cambieresti la prossima volta.',
-          '&#x1F4D6; Manuale: Efficacia interpersonale, Foglio di lavoro 5.'
         ]},
        {id:'idialettica',badge:'DIALETTICA',name:'Pensiero dialettico',
         desc:'Stare nel paradosso: due cose opposte, entrambe vere.',
