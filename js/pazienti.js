@@ -712,7 +712,12 @@ const FOGLI_ETICHETTE = {
   catena:         {nome:'Analisi della catena', icona:'🔗'}
 };
 
+function fogliEtichetta(tipo){
+  if(tipo.indexOf('fg:')===0){ const f=fgDef(tipo.slice(3)); return {nome:f?f.t:tipo, icona:''}; }
+  return FOGLI_ETICHETTE[tipo];
+}
 function fogliRiassunto(tipo, d){
+  if(tipo.indexOf('fg:')===0){ const f=fgDef(tipo.slice(3)); return f ? fgRiassunto(f, d.v) : []; }
   if(tipo==='controllaFatti'){
     const int = d['cf-int-prima'] ? d['cf-int-prima']+(d['cf-int-dopo']?' → '+d['cf-int-dopo']:'') : '';
     return [ d['cf-emozione'] ? '<strong>'+d['cf-emozione']+'</strong>'+(int?' · intensità '+int:'') : '',
@@ -763,6 +768,21 @@ function renderPatientFogli(){
     });
   });
 
+  // fogli compilabili generici (fogligen.js)
+  const gen = fogli.generici || {};
+  Object.keys(gen).forEach(id=>{
+    if(!fgDef(id)) return;
+    (gen[id]||[]).forEach(d=>{
+      if(!d.ts) return;
+      const giorno = dk(new Date(d.ts));
+      if(patRange!==0){
+        const limite=new Date(); limite.setDate(limite.getDate()-(patRange-1));
+        if(giorno < dk(limite)) return;
+      }
+      (perGiorno[giorno] = perGiorno[giorno] || []).push({tipo:'fg:'+id, d, quando:d.ts});
+    });
+  });
+
   const giorni = Object.keys(perGiorno).sort().reverse();
   if(!giorni.length){ el.innerHTML = vuoto; return; }
 
@@ -775,7 +795,7 @@ function renderPatientFogli(){
     out+='<div style="display:flex;flex-direction:column;gap:10px">';
     out+='<span class="dc-thome-kicker">'+fmtL(giorno)+'</span>';
     voci.forEach(({tipo,d})=>{
-      const et=FOGLI_ETICHETTE[tipo];
+      const et=fogliEtichetta(tipo);
       const righe=fogliRiassunto(tipo,d);
       const anteprima=(righe[0]||'').replace(/<\/?strong>/g,'');
       const idx=window._fogliTerapCache.length;

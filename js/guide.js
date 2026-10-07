@@ -735,7 +735,7 @@ function renderGuide(){
       b.textContent=sc.label;
       b.addEventListener('click', function(ev){
         ev.preventDefault(); ev.stopPropagation();
-        openScheda(sc.page);
+        if(sc.fg) fgApri(sc.fg); else openScheda(sc.page);
       });
       wrap.appendChild(b);
     });
@@ -1218,5 +1218,23 @@ function renderFogli(){
       +'</div>'+DC_CHEV;
     el.appendChild(row);
   });
+  // fogli compilabili generici, raggruppati per modulo
+  if(typeof FG_FOGLI!=='undefined'){
+    const MODS={mind:'Mindfulness',tol:'Tolleranza della sofferenza',reg:'Regolazione emotiva',inter:'Efficacia interpersonale'};
+    Object.keys(MODS).forEach(function(m){
+      const t=document.createElement('div');
+      t.className='guide-schede-titolo'; t.style.margin='22px 0 8px'; t.textContent=MODS[m];
+      el.appendChild(t);
+      FG_FOGLI.filter(function(f){return f.mod===m;}).forEach(function(f){
+        const row=document.createElement('div');
+        row.className='dc-foglio-riga';
+        row.onclick=function(){ fgApri(f.id); };
+        row.innerHTML='<div class="dc-riga-testo"><span class="dc-riga-tit"></span><span class="dc-riga-sub"></span></div>'+DC_CHEV;
+        row.querySelector('.dc-riga-tit').textContent=f.t;
+        row.querySelector('.dc-riga-sub').textContent=f.sub;
+        el.appendChild(row);
+      });
+    });
+  }
 }
 
