@@ -1927,3 +1927,10 @@ input:focus,textarea:focus,select:focus{outline:none}
 /* Preferiti: nome per esteso (la sigla non si capiva), a capo invece di scorrere di lato */
 .pf-chips{flex-wrap:wrap;overflow:visible}
 .pf-chip{text-transform:none;letter-spacing:0;font-size:14px;text-align:left;line-height:1.25;padding:9px 14px}
+
+/* Campi di ricerca: croce per cancellare (quella di sistema e' nascosta da appearance:none) */
+.cc-wrap{position:relative;flex:1;min-width:0;display:block}
+.cc-wrap input{width:100%;box-sizing:border-box;padding-right:40px}
+.cc-wrap input::-webkit-search-cancel-button,.cc-wrap input::-webkit-search-decoration{-webkit-appearance:none;display:none}
+.cc-x{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;
+  background:var(--dc-line);color:var(--dc-petrolio);display:none;align-items:center;justify-content:center;cursor:pointer;padding:0;min-height:0}

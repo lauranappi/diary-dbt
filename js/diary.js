@@ -384,6 +384,13 @@ function openScheda(name){
   if(typeof applyReadOnlyForTerapeuta==='function') setTimeout(()=>applyReadOnlyForTerapeuta(name),60);
 }
 
+// un tocco fuori dalla scheda (sullo sfondo scuro) la chiude, come il tasto ×
+(function(){
+  const m = document.getElementById('scheda-modal');
+  if(m && !m._fuori){ m._fuori = true; m.addEventListener('click', function(e){ if(e.target === m) closeScheda(); }); }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && m && m.classList.contains('open')) closeScheda(); });
+})();
+
 function closeScheda(){
   const modal=document.getElementById('scheda-modal');
   if(!_schedaAperta){

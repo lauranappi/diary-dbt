@@ -165,6 +165,32 @@ function rcRenderRisultati(q){
   });
 }
 
+// Campo di ricerca: niente suggerimenti di email/contatti di iOS, con la
+// croce a destra per svuotarlo. Restituisce il contenitore da inserire al
+// posto dell'input.
+function ccCampoCerca(inp, nome){
+  inp.type = 'search';
+  inp.name = nome || 'cerca-app';
+  inp.autocomplete = 'off';
+  inp.setAttribute('autocorrect', 'off');
+  inp.setAttribute('autocapitalize', 'off');
+  inp.setAttribute('enterkeyhint', 'search');
+  inp.setAttribute('inputmode', 'search');
+  inp.setAttribute('data-1p-ignore', '');
+  inp.setAttribute('data-lpignore', 'true');
+  inp.spellcheck = false;
+  const w = document.createElement('div'); w.className = 'cc-wrap';
+  const x = document.createElement('button');
+  x.type = 'button'; x.className = 'cc-x'; x.setAttribute('aria-label', 'Cancella'); x.setAttribute('data-nav', '');
+  x.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  function aggiorna(){ x.style.display = inp.value ? 'flex' : 'none'; }
+  inp.addEventListener('input', aggiorna);
+  x.addEventListener('mousedown', function(e){ e.preventDefault(); });
+  x.addEventListener('click', function(){ inp.value = ''; aggiorna(); inp.dispatchEvent(new Event('input', {bubbles: true})); inp.focus(); });
+  w.appendChild(inp); w.appendChild(x); aggiorna();
+  return w;
+}
+
 // ── preferiti in cima alla guida ──
 function pfRenderChip(){
   const wrap = document.getElementById('guida-preferiti');
@@ -213,7 +239,7 @@ function ricercaMount(){
   inp.setAttribute('aria-label', 'Cerca nella guida');
   inp.autocomplete = 'off';
   inp.addEventListener('input', function(){ rcRenderRisultati(inp.value); });
-  campo.appendChild(inp);
+  campo.appendChild(ccCampoCerca(inp, 'cerca-guida'));
   zona.appendChild(campo);
   const pref = document.createElement('div'); pref.id = 'guida-preferiti'; pref.className = 'pf-wrap';
   const ris = document.createElement('div'); ris.id = 'guida-risultati'; ris.className = 'rc-risultati'; ris.style.display = 'none';

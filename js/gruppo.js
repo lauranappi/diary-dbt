@@ -168,8 +168,8 @@ function grMostraLista(q, mod){
   const tutte = grLista();
   if(tutte.length){
     const cerca = grEl('input', 'fg-in'); cerca.type = 'search'; cerca.placeholder = 'Cerca per pagina, titolo, appunto o data…'; cerca.value = q || '';
-    cerca.style.marginTop = '16px';
-    w.appendChild(cerca);
+    const cercaW = ccCampoCerca(cerca, 'cerca-gruppo'); cercaW.style.marginTop = '16px';
+    w.appendChild(cercaW);
     const ris = grEl('div', 'gr-ris'); w.appendChild(ris);
     function disegna(){
       ris.innerHTML = '';
@@ -389,10 +389,10 @@ function grForm(x){
     }
     nt.addEventListener('input', function(){ if(riga.l && grNorm(nt.value).length < 2) { riga.l = ''; disegnaChip(); } suggerisci(); });
     rm.addEventListener('click', function(){
-      if(righe.length === 1){ np.value = ''; nt.value = ''; riga.l = ''; ris.innerHTML = ''; disegnaChip(); aggiornaAmbito(); return; }
+      if(righe.length === 1){ np.value = ''; nt.value = ''; nt.dispatchEvent(new Event('input')); riga.l = ''; ris.innerHTML = ''; disegnaChip(); aggiornaAmbito(); return; }
       righe.splice(righe.indexOf(riga), 1); r.remove(); aggiornaAmbito();
     });
-    r.appendChild(np); r.appendChild(nt); r.appendChild(rm);
+    r.appendChild(np); r.appendChild(ccCampoCerca(nt, 'titolo-pagina')); r.appendChild(rm);
     sotto.appendChild(r); sotto.appendChild(chip); sotto.appendChild(ris);
     disegnaChip();
     righe.push(riga);
