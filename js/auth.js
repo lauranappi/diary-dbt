@@ -99,6 +99,14 @@ function showRecoveryScreen(){
   document.getElementById('ob-login').style.display='none';
   document.getElementById('ob-register').style.display='none';
   document.getElementById('ob-recovery').style.display='block';
+  // campo username nascosto: cosi' iOS salva la password con l'email giusta e non indovina un altro campo
+  try{
+    supabase.auth.getSession().then(function(r){
+      const u=document.getElementById('ob-rec-user');
+      const m=r&&r.data&&r.data.session&&r.data.session.user&&r.data.session.user.email;
+      if(u&&m) u.value=m;
+    });
+  }catch(e){}
   const i=document.getElementById('ob-newpwd'); if(i) setTimeout(function(){i.focus();},100);
 }
 async function doSetNewPassword(){
