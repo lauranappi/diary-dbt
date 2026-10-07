@@ -8,16 +8,20 @@ initTheme();
 // Listen for auth state changes
 supabase.auth.onAuthStateChange((event,session)=>{
   supaSession=session;
+  if(event==='PASSWORD_RECOVERY') showRecoveryScreen();
 });
 
 // Check existing session
 supabase.auth.getSession().then(({data:{session}})=>{
   supaSession=session;
-  if(session){
+  if(session && LINK_RECUPERO){
+    showRecoveryScreen();      // arrivata dal link della mail: prima si sceglie la nuova password
+  } else if(session){
     loadUserData(session.user);
   } else {
     showLoginScreen();
     selectRole('paziente');
+    mostraErroreLink();
   }
 });
 
