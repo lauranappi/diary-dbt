@@ -116,7 +116,7 @@ function grCatalogo(){
   FG_FOGLI.forEach(function(f){ c.push({k:'fg:' + f.id, n:f.t, tipo:'Foglio vuoto', extra:f.t}); });
   if(typeof SCHEDA_TITOLI !== 'undefined') Object.keys(SCHEDA_TITOLI).forEach(function(k){ c.push({k:'sc:' + k, n:SCHEDA_TITOLI[k], tipo:'Scheda'}); });
   // "Foglio di lavoro — …" della guida e' solo la spiegazione di una scheda gia' presente: non si propone
-  const DOPPIE = ['gcheck', 'gprocontro', 'gcatena'];
+  const DOPPIE = ['gprocontro', 'gcatena'];
   (window.GUIDE_INDEX || []).forEach(function(e){
     if(DOPPIE.indexOf(e.id) !== -1) return;
     c.push({k:'sk:' + e.id, n:e.name, tipo:'Teoria', extra:'abilità ' + e.badge + ' ' + e.desc});
@@ -223,7 +223,7 @@ function grChiavePostit(l){
 }
 // scheda dell'app <-> pagina teorica/foglio della guida che trattano lo stesso argomento
 const GR_GRUPPI = [
-  ['sc:fatti','sk:rcheck','sk:gcheck'], ['sc:procontro','sk:procontro','sk:gprocontro','fg:t-impulso'],
+  ['sc:fatti','sk:rcheck'], ['sc:procontro','sk:procontro','sk:gprocontro','fg:t-impulso'],
   ['sc:dearman','sk:dearman','fg:i-monitor'], ['sc:give','sk:give','fg:i-monitor'], ['sc:fast','sk:fast','fg:i-monitor'],
   ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sc:sentiero','sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease'],
   ['sc:catena','sk:gcatena'], ['fg:t-crisi','sk:tcrisi'], ['sc:eventi','sk:rpositivo'],

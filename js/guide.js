@@ -681,17 +681,6 @@ function renderGuide(){
           '<b>Passo 6:</b> Punti di intervento. Dove nella catena avresti potuto fare diversamente? Quale abilit\u00e0 usare?',
           '\U0001f4a1 Non serve a colpevolizzarti \u2014 serve a capire e pianificare come fare meglio.'
         ]},
-       {id:'gcheck',badge:'CONTROLLA I FATTI',name:'Foglio di lavoro — Controlla i fatti',
-        desc:'Capire se un\'emozione intensa corrisponde ai fatti.',
-        steps:[
-          '<b>Passo 1:</b> Qual è l’emozione che voglio cambiare? Quanto è intensa (0-5)?',
-          '<b>Passo 2:</b> Qual è l’evento che l’ha attivata? Descrivi solo i fatti osservabili — senza interpretazioni.',
-          '<b>Passo 3:</b> Quali sono i miei pensieri e interpretazioni? Considera almeno 2 interpretazioni alternative.',
-          '<b>Passo 4:</b> Sto ipotizzando una minaccia? Qual è la probabilità reale che accada?',
-          '<b>Passo 5:</b> Qual è la catastrofe che temo? Immagina di affrontarla bene.',
-          '<b>Passo 6:</b> L’emozione e la sua intensità sono commisurate ai fatti? Chiedi alla mente saggia.',
-          'Usa la pagina "Diario emozioni" nell’app per compilare questo schema in modo strutturato.'
-        ]},
        {id:'gprocontro',badge:'PRO/CONTRO ABILITÀ',name:'Foglio di lavoro — Usare le abilità?',
         desc:'Usare le abilità o cedere all\'impulso?',
         steps:[
