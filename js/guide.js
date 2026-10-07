@@ -968,9 +968,10 @@ function renderPlease(){
   grid.className='card';
   grid.style.cssText='display:flex;flex-direction:column;gap:14px';
 
-  let html='<div style="display:flex;gap:6px;padding-left:112px">';
+  // stessa struttura delle righe (etichetta 106px + gap 6px): le sigle restano sopra le caselle
+  let html='<div style="display:flex;gap:6px;align-items:center"><span style="width:106px;flex:none"></span>';
   GIORNI_LBL.forEach(g=>{
-    html+='<span style="flex:1;text-align:center;font-size:10.5px;font-weight:600;color:var(--dc-muted);opacity:.7;text-transform:uppercase">'+g+'</span>';
+    html+='<span style="flex:1;min-width:0;text-align:center;font-size:10px;font-weight:600;letter-spacing:0;color:var(--dc-muted);opacity:.7;text-transform:uppercase">'+g.slice(0,3)+'</span>';
   });
   html+='</div>';
 
