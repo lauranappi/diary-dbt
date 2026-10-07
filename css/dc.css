@@ -1870,3 +1870,19 @@ input:focus,textarea:focus,select:focus{outline:none}
 .guide-module,.dbt-skill-card,.leisure-item{border:0!important}
 .pi-dot{border-color:transparent}
 .dc-guida-scheda-fogli.gr-card-top{margin:0 0 16px}
+
+/* post-it in lettura: grande, come un vero foglietto adesivo */
+.pi-sheet-bg:has(.pi-sheet.pi-vista){align-items:center}
+.pi-sheet.pi-vista{background:transparent;border-radius:0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));max-width:460px}
+.pi-sheet.pi-vista .pi-sheet-nota{border-radius:3px;padding:28px 24px 30px;min-height:min(78vw,340px);display:flex;flex-direction:column;justify-content:center;
+  transform:rotate(-1.4deg);overflow:hidden}
+.pi-sheet.pi-vista .pi-sheet-nota::after{content:'';position:absolute;right:0;bottom:0;width:44px;height:44px;
+  background:linear-gradient(135deg,rgba(255,255,255,0) 50%,rgba(14,42,41,.14) 50%);}
+.pi-sheet.pi-vista .pi-ta{font-size:32px;line-height:1.22;min-height:200px;max-height:58vh;overflow-y:auto;color:#1b1b1b}
+.pi-sheet.pi-vista .pi-azioni{margin-top:26px;justify-content:center}
+.pi-sheet.pi-vista .pi-elimina{background:var(--dc-crema);padding:0 18px}
+.pi-sheet.pi-vista .pi-chiudi{background:var(--dc-crema)}
+/* in scrittura: foglietto piu' alto e squadrato */
+.pi-sheet-nota{border-radius:3px}
+.pi-ta{min-height:210px;font-size:28px}
+.pi-sheet textarea.pi-ta,.pi-sheet textarea.pi-ta:focus{background:transparent!important;border:0!important;outline:none!important;border-radius:0}

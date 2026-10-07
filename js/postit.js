@@ -294,6 +294,7 @@ function piCreaEditor(){
   document.addEventListener('keydown', function(ev){
     if(ev.key === 'Escape' && bg.classList.contains('open')) piChiudiEditor();
   });
+  ed.ta.addEventListener('input', piAdattaAltezza);
   return ed;
 }
 
@@ -304,6 +305,14 @@ function piModalita(modifica){
   _piEd.sheet.classList.toggle('pi-vista', !modifica);
   _piEd.del.classList.remove('conferma');
   _piEd.del.textContent = 'Elimina';
+  piAdattaAltezza();
+}
+// il campo cresce col testo, cosi' il post-it si legge tutto senza scorrere
+function piAdattaAltezza(){
+  if(!_piEd) return;
+  const t = _piEd.ta;
+  t.style.height = 'auto';
+  t.style.height = t.scrollHeight + 'px';
 }
 function piApriEditor(key, id, wrap){
   if(!_piEd) _piEd = piCreaEditor();
@@ -319,6 +328,7 @@ function piApriEditor(key, id, wrap){
   ed.bg.classList.add('open');
   document.body.classList.add('pi-aperto');
   piModalita(!p);
+  piAdattaAltezza();
   if(!p) setTimeout(function(){ ed.ta.focus(); }, 60);
 }
 function piChiudiEditor(){
