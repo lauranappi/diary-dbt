@@ -273,6 +273,7 @@ function grVista(x){
   const w = grEl('div', 'fg-wrap');
   w.appendChild(grEl('div', 'fg-sez', grDataLunga(x.g)));
   if(grAmbitiNomi(x.mm)) w.appendChild(grEl('div', 'fg-riga-data', grAmbitiNomi(x.mm)));
+  const mostrati = {};   // ogni gruppo di post-it si vede una volta sola, anche con piu' pagine collegate
   x.pp.forEach(function(y){
     w.appendChild(grEl('h3', 'gr-tit', (y.p ? 'p. ' + y.p : 'Pagina') + (y.t ? ' · ' + y.t : '')));
     const nome = y.l ? grNomeCollegamento(y.l) : '';
@@ -281,7 +282,8 @@ function grVista(x){
       ap.addEventListener('click', function(){ grApriCollegamento(y.l); });
       w.appendChild(ap);
       const k = grChiavePostit(y.l);
-      grChiaviCorrelate(k).filter(function(c){ return piList(c).length; }).forEach(function(c){
+      grChiaviCorrelate(k).filter(function(c){ return piList(c).length && !mostrati[c]; }).forEach(function(c){
+        mostrati[c] = 1;
         w.appendChild(piMount(c, grTitoloBlocco(c)));
       });
     }
