@@ -187,8 +187,8 @@ function pfRenderChip(){
     c.type = 'button';
     c.className = 'pf-chip';
     c.setAttribute('data-nav', '');
-    c.textContent = e.badge;
-    c.title = e.name;
+    c.textContent = e.name;
+    c.title = e.modTitolo || e.name;
     c.addEventListener('click', function(){ rcApri(e); });
     riga.appendChild(c);
   });
