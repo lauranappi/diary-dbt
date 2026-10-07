@@ -107,7 +107,6 @@ async function pushChan(){
     else{const err=await r.text();console.error('Push error:',r.status,err);setSt('err','Errore '+r.status+': '+err.slice(0,80));}
   }catch(e){setSt('err','Errore di rete')}
 }
-async 
 
 // ── AUTO SYNC ──
 let autoPullTimer=null;
