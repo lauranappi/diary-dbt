@@ -11,6 +11,7 @@ const _LINK_PARAMS = new URLSearchParams((location.hash||'').replace(/^#/,''));
 new URLSearchParams(location.search||'').forEach(function(v,k){ if(!_LINK_PARAMS.has(k)) _LINK_PARAMS.set(k,v); });
 const LINK_RECUPERO = _LINK_PARAMS.get('type')==='recovery';
 const LINK_ERRORE = _LINK_PARAMS.get('error_code') || _LINK_PARAMS.get('error') || null;
+const LINK_ERRORE_DESCR = _LINK_PARAMS.get('error_description') || '';
 const supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 let supaSession = null;
 
@@ -123,6 +124,11 @@ function mostraErroreLink(){
   msg.textContent=(LINK_ERRORE==='otp_expired'||LINK_ERRORE==='access_denied')
     ? 'Il link è scaduto o è già stato usato. Scrivi la tua email e tocca "Password dimenticata" per riceverne uno nuovo.'
     : 'Il link non è valido. Richiedine uno nuovo con "Password dimenticata".';
+  // dettaglio tecnico, utile per capire cosa è andato storto
+  const det=document.createElement('div');
+  det.style.cssText='font-size:11px;opacity:.7;margin-top:6px;word-break:break-word';
+  det.textContent='Dettaglio: '+LINK_ERRORE+(LINK_ERRORE_DESCR?' \u2014 '+LINK_ERRORE_DESCR.replace(/\+/g,' '):'');
+  msg.appendChild(det);
   try{history.replaceState(null,'',location.pathname);}catch(e){}
 }
 
