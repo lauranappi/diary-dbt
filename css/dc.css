@@ -1785,3 +1785,7 @@ body.pi-aperto{overflow:hidden}
 .pf-star svg{fill:none;stroke:currentColor}
 .pf-star.on{color:var(--dc-terracotta)}
 .pf-star.on svg{fill:var(--dc-senape);stroke:var(--dc-terracotta)}
+
+/* Campi dentro le schede: mai piu' larghi del loro riquadro (celle di griglia comprese) */
+#scheda-body input, #scheda-body textarea, #scheda-body select,
+.page input, .page textarea, .page select{max-width:100%;min-width:0;box-sizing:border-box}
