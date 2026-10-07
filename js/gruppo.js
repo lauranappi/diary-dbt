@@ -31,6 +31,32 @@ function grDataLunga(g){
   const d = new Date(g + 'T12:00:00');
   return isNaN(d) ? g : d.toLocaleDateString('it-IT', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
 }
+var GR_MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+function grP2(n){ return (n < 10 ? '0' : '') + n; }
+function grAnno(a){ a = parseInt(a, 10); return a < 100 ? 2000 + a : a; }
+// forme in cui una data si puo' cercare: "lunedi 5 ottobre 2026", 5/10/2026, 05/10, 2026-10-05...
+function grDateCercabili(g){
+  const d = String(g || '').split('-'); if(d.length !== 3) return '';
+  const a = d[0], m = parseInt(d[1], 10), n = parseInt(d[2], 10);
+  return ' ' + [grNorm(grDataLunga(g)), n + '/' + m + '/' + a, grP2(n) + '/' + grP2(m) + '/' + a, n + '/' + m, grP2(n) + '/' + grP2(m), g].join(' ') + ' ';
+}
+// intervalli scritti nella barra: "dal 5/10 al 12/10", "5/10 - 12/10/2026", "dal 5 al 12 ottobre"
+function grIntervallo(q){
+  const t = grNorm(q), anno = new Date().getFullYear();
+  let m = t.match(/(?:dal\s+)?(\d{1,2})[\/.](\d{1,2})(?:[\/.](\d{2,4}))?\s*(?:-|al|fino al|a)\s*(\d{1,2})[\/.](\d{1,2})(?:[\/.](\d{2,4}))?/);
+  let da, a;
+  if(m){
+    const a2 = grAnno(m[6] || m[3] || anno), a1 = grAnno(m[3] || m[6] || anno);
+    da = a1 + '-' + grP2(+m[2]) + '-' + grP2(+m[1]); a = a2 + '-' + grP2(+m[5]) + '-' + grP2(+m[4]);
+  } else {
+    m = t.match(new RegExp('(?:dal\\s+)?(\\d{1,2})\\s*(?:-|al|fino al)\\s*(\\d{1,2})\\s+(' + GR_MESI.join('|') + ')(?:\\s+(\\d{4}))?'));
+    if(!m) return null;
+    const mm = GR_MESI.indexOf(m[3]) + 1, y = m[4] || anno;
+    da = y + '-' + grP2(mm) + '-' + grP2(+m[1]); a = y + '-' + grP2(mm) + '-' + grP2(+m[2]);
+  }
+  if(da > a){ const x = da; da = a; a = x; }
+  return {da: da, a: a, resto: t.replace(m[0], ' ')};
+}
 function grModNome(m){ const x = GR_MOD.filter(function(y){ return y[0] === m; })[0]; return x ? x[1] : ''; }
 function grNorm(t){ return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
 
@@ -141,24 +167,18 @@ function grMostraLista(q, mod){
 
   const tutte = grLista();
   if(tutte.length){
-    const cerca = grEl('input', 'fg-in'); cerca.type = 'search'; cerca.placeholder = 'Cerca per pagina, titolo, appunto…'; cerca.value = q || '';
+    const cerca = grEl('input', 'fg-in'); cerca.type = 'search'; cerca.placeholder = 'Cerca per pagina, titolo, appunto o data…'; cerca.value = q || '';
     cerca.style.marginTop = '16px';
     w.appendChild(cerca);
-    const chips = grEl('div', 'fg-chips'); chips.style.marginTop = '10px';
-    [['', 'Tutte']].concat(GR_MOD).forEach(function(m){
-      const c = grEl('button', 'fg-chip' + (mod === m[0] ? ' on' : ''), m[1]); c.type = 'button'; c.setAttribute('data-nav', '');
-      c.addEventListener('click', function(){ grMostraLista(cerca.value, m[0]); });
-      chips.appendChild(c);
-    });
-    w.appendChild(chips);
     const ris = grEl('div', 'gr-ris'); w.appendChild(ris);
     function disegna(){
       ris.innerHTML = '';
-      const parole = grNorm(cerca.value).split(/\s+/).filter(Boolean);
+      const iv = grIntervallo(cerca.value);
+      const parole = (iv ? iv.resto : grNorm(cerca.value)).split(/\s+/).filter(Boolean);
       const l = tutte.filter(function(x){
-        if(mod && x.mm.indexOf(mod) === -1) return false;
-        const hay = grNorm([x.pp.map(function(y){ return y.p + ' ' + y.t; }).join(' '), x.n || '', grPostitTesto(x), grAmbitiNomi(x.mm)].join(' '));
-        return parole.every(function(p){ return hay.indexOf(p) !== -1; });
+        if(iv && ((x.g || '') < iv.da || (x.g || '') > iv.a)) return false;
+        const hay = ' ' + grNorm([x.pp.map(function(y){ return y.p + ' ' + y.t; }).join(' '), x.n || '', grPostitTesto(x), grAmbitiNomi(x.mm)].join(' ')) + grDateCercabili(x.g);
+        return parole.every(function(p){ return /\d\/\d|^\d{4}-/.test(p) ? hay.indexOf(' ' + p + ' ') !== -1 || hay.indexOf(' ' + p) !== -1 && /^\d{4}-/.test(p) : hay.indexOf(p) !== -1; });
       }).sort(function(a, b){ return (b.g || '').localeCompare(a.g || '') || (b.ts - a.ts); });
       if(!l.length){ ris.appendChild(grEl('div', 'fg-intro', 'Nessun incontro trovato.')); return; }
       let ultimo = null;
