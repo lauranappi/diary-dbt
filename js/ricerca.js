@@ -74,11 +74,33 @@ function rcFogli(e){
   e._fogli = t;
   return t;
 }
+// fogli senza una pagina di teoria nel manuale: si cercano come voci a parte
+function rcLiberi(){
+  if(window._rcLiberi) return window._rcLiberi;
+  const l = [];
+  if(typeof grHaTeoria === 'function'){
+    if(typeof SCHEDA_TITOLI !== 'undefined'){
+      Object.keys(SCHEDA_TITOLI).forEach(function(k){
+        if(grHaTeoria('sc:' + k)) return;
+        l.push({id:'sc-' + k, badge:'FOGLIO', name:SCHEDA_TITOLI[k], desc:(typeof FOGLI_SOTTOTITOLO !== 'undefined' && FOGLI_SOTTOTITOLO[k]) || '',
+          modTitolo:'Foglio di lavoro', testo:'', _fogli:'', apri:function(){ openScheda(k); }});
+      });
+    }
+    if(typeof FG_FOGLI !== 'undefined'){
+      FG_FOGLI.forEach(function(f){
+        if(grHaTeoria('fg:' + f.id)) return;
+        l.push({id:'fg-' + f.id, badge:'FOGLIO', name:f.t, desc:f.sub || '', modTitolo:'Foglio di lavoro', testo:'', _fogli:'', apri:function(){ fgApri(f.id); }});
+      });
+    }
+  }
+  window._rcLiberi = l;
+  return l;
+}
 function rcCerca(q){
   const parole = rcNorm(q).split(/\s+/).filter(Boolean);
   if(!parole.length || !window.GUIDE_INDEX) return [];
   const out = [];
-  window.GUIDE_INDEX.forEach(function(e){
+  window.GUIDE_INDEX.concat(rcLiberi()).forEach(function(e){
     const titolo = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + rcFogli(e));
     const tutto = titolo + ' ' + rcNorm(e.testo) + ' ' + rcNorm(e.modTitolo);
     if(!parole.every(function(w){ return tutto.indexOf(w) !== -1; })) return;
@@ -89,7 +111,7 @@ function rcCerca(q){
   out.sort(function(a, b){ return a.p - b.p; });
   if(!out.length && parole.length > 1){
     // nessuna scheda con tutte le parole: mostra quelle con almeno una, prima chi ne ha di piu'
-    window.GUIDE_INDEX.forEach(function(e){
+    window.GUIDE_INDEX.concat(rcLiberi()).forEach(function(e){
       const tutto = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + e.testo + ' ' + e.modTitolo + ' ' + rcFogli(e));
       const n = parole.filter(function(w){ return tutto.indexOf(w) !== -1; }).length;
       if(n) out.push({e:e, p:-n});
@@ -100,6 +122,7 @@ function rcCerca(q){
 }
 
 function rcApri(e){
+  if(typeof e.apri === 'function'){ e.apri(); return; }
   const lettura = (typeof SCHEDA_LETTURA !== 'undefined') ? SCHEDA_LETTURA[e.badge] : null;
   if(lettura && typeof openScheda === 'function'){ openScheda(lettura); return; }
   if(typeof openGuideSkill === 'function') openGuideSkill(e.mod, e.id);
