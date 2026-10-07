@@ -61,7 +61,7 @@ function grModNome(m){ const x = GR_MOD.filter(function(y){ return y[0] === m; }
 function grNorm(t){ return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
 
 // L'ambito non si sceglie: lo ricava l'app dalle schede collegate e dai numeri di pagina.
-const GR_SCHEDA_MOD = {dearman:'inter', give:'inter', fast:'inter', abc:'reg', sentiero:'mind', please:'reg',
+const GR_SCHEDA_MOD = {dearman:'inter', give:'inter', fast:'inter', abc:'reg', please:'reg',
   diarioemo:'reg', fatti:'reg', procontro:'gen', pianocrisi:'tol', catena:'gen', eventi:'reg'};
 function grModPerPagina(n){
   n = parseInt(n, 10);
@@ -242,7 +242,7 @@ function grChiavePostit(l){
 const GR_GRUPPI = [
   ['sc:fatti','sk:rcheck'], ['sc:procontro','sk:procontro','fg:t-impulso'],
   ['sc:dearman','sk:dearman','fg:i-monitor'], ['sc:give','sk:give','fg:i-monitor'], ['sc:fast','sk:fast','fg:i-monitor'],
-  ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sc:sentiero','sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease'],
+  ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease'],
   ['fg:t-crisi','sk:tcrisi'], ['sc:eventi','sk:rpositivo'],
   ['fg:m-abilita','sk:mcosa','sk:mcome'], ['fg:m-fare-essere','fg:m-piacevoli','fg:m-spiacevoli','sk:mfareessere'],
   ['fg:t-stop','sk:stop'], ['fg:t-accettazione','sk:accrad'], ['fg:t-bodyscan','sk:tbody'],
@@ -262,8 +262,8 @@ function grTitoloBlocco(k){
 // schede/fogli da compilare collegati a una pagina di teoria (id della pagina della guida)
 function grSchedeDa(skId){
   const gr = GR_GRUPPI.filter(function(x){ return x.indexOf('sk:' + skId) !== -1; })[0] || [];
-  // le schede di sola lettura (ABC, GIVE, FAST, sentiero di mezzo) non si compilano
-  const LETTURA = ['sc:abc', 'sc:give', 'sc:fast', 'sc:sentiero'];
+  // le schede di sola lettura (ABC, GIVE, FAST) non si compilano
+  const LETTURA = ['sc:abc', 'sc:give', 'sc:fast'];
   return gr.filter(function(k){ return k.indexOf('sk:') !== 0 && LETTURA.indexOf(k) === -1; }).map(function(k){
     const t = k.split(':')[0], id = k.split(':').slice(1).join(':');
     return {k:k, nome:grNomeChiave(k), apri:function(){ if(t === 'fg') fgApri(id); else openScheda(id); }};

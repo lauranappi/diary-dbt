@@ -43,8 +43,7 @@ const SCHEDE_PER_MODULO = {
 const SCHEDA_LETTURA = {
   'GIVE':              'give',
   'FAST':              'fast',
-  'ABC':               'abc',
-  'SENTIERO DI MEZZO': 'sentiero'
+  'ABC':               'abc'
 };
 
 // ════════════════════════════════════════════════════════════════
@@ -262,6 +261,17 @@ function renderGuide(){
           '<b>Mezzi efficaci.</b> Nella mente saggia lasci andare il bisogno di ottenere a tutti i costi l\'obiettivo e proprio così ti dedichi pienamente a raggiungerlo. Aumenti la consapevolezza mentre sei impegnata in ciò che fai.',
           '<b>Come usarla.</b> Quando noti che sei troppo nel fare (sempre a risolvere) o troppo nell\'essere (ferma, senza concludere), prova a spostarti verso l\'altra: è l\'esercizio dei fogli sugli eventi piacevoli e spiacevoli.',
           '&#x1F4D6; Manuale: Mindfulness, Scheda 9.'
+        ]},
+       {id:'isentiero',badge:'SENTIERO DI MEZZO',name:'Percorrere il sentiero di mezzo',
+        desc:'Trovare la sintesi tra gli opposti.',
+        steps:[
+          '<b>Sia… sia…:</b> il sentiero di mezzo non sceglie uno dei due poli, li tiene insieme. Per ogni coppia chiediti dove ti trovi: nel mezzo, o sbilanciata verso un estremo?',
+          '<b>Mente razionale e mente emotiva.</b> Sia avere il controllo del comportamento e decidere in base alla ragione, sia tenere conto dei valori e vivere le emozioni, anche forti, mentre arrivano e passano.',
+          '<b>Mente del fare e mente del nulla-da-fare.</b> Sono i due poli da tenere in equilibrio: vedi la scheda sulla mente del fare e dell\u2019essere.',
+          '<b>Vivo desiderio di cambiare il momento e accettazione radicale del momento presente.</b> Sia permetterti di desiderare fortemente qualcosa di diverso da ciò che hai ora, sia essere disposta ad accettare radicalmente ciò che c\u2019è nella tua vita adesso.',
+          '<b>Abnegazione e indulgenza verso di sé.</b> Sia vivere con sobrietà, sia soddisfare i sensi.',
+          '<b>Altro:</b> puoi aggiungere un tuo dilemma.',
+          '&#x1F4D6; Manuale: Mindfulness, Scheda 10 (Fogli di lavoro 10-10b). Per compilare: il foglio Sentiero di mezzo (10A).'
         ]},
        {id:'mcosa',badge:'COSA',name:'Osservare, Descrivere, Partecipare',
         desc:'Cosa fare quando pratichi la mindfulness.',
@@ -539,14 +549,6 @@ function renderGuide(){
           '<b>Principio 3:</b> il cambiamento è l’unica costante. Ogni momento è nuovo. Accogli il cambiamento invece di resistere.',
           '<b>Principio 4:</b> il cambiamento è transazionale. Ciò che fai influenza il tuo ambiente e viceversa. Smetti di cercare di chi sia la colpa.',
           '<b>Esempi pratici:</b> "Voglio stare da sola E voglio anche connessione." "Posso voler cambiare E aver ancora bisogno di fare meglio." Entrambe sono vere.'
-        ]},
-       {id:'isentiero',badge:'SENTIERO DI MEZZO',name:'Percorrere il sentiero di mezzo',
-        desc:'Equilibrio tra accettazione e cambiamento.',
-        steps:[
-          '<b>Accettazione e cambiamento insieme:</b> accettare la realtà non significa rinunciare al cambiamento. Anzi: l’accettazione è il primo passo verso il cambiamento efficace.',
-          '<b>Evita gli estremi:</b> osserva dove ti poni rispetto al sentiero di mezzo. Stai andando troppo verso un estremo (troppo dipendente, troppo isolata; troppo rigida, troppo cedevole)?',
-          '<b>Riprendersi dall’invalidazione:</b> quando ti senti invalidata, mantieni una posizione non difensiva. Trova ciò che ha valore nelle parole dell’altro, riconosci ciò che non ce l’ha, accetta te stessa radicalmente.',
-          'Chiedi alla mente saggia: "Sto tralasciando qualcosa? Dove c’è un nocciolo di verità nell’altra posizione?"'
         ]},
        {id:'ivalida',badge:'VALIDAZIONE',name:'Come validare gli altri (e se stesse)',
         desc:'Riconoscere che i pensieri altrui hanno senso.',
@@ -1252,7 +1254,7 @@ const FOGLI_SOTTOTITOLO = {
   pianocrisi:'Segnali, abilita\', persone, motivi',
   catena:'Dall\'evento alle soluzioni',
   eventi:'Elenco per categorie',
-  give:'Sola lettura', fast:'Sola lettura', abc:'Sola lettura', sentiero:'Sola lettura'
+  give:'Sola lettura', fast:'Sola lettura', abc:'Sola lettura'
 };
 function renderFogli(){
   const el=document.getElementById('fogli-content');
