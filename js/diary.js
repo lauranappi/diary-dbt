@@ -274,7 +274,7 @@ function tapHome(el){
 // Le schede e le abilita' sono materiale di riferimento: il terapeuta le
 // legge, non le compila. I suoi dati non finirebbero da nessuna parte utile.
 const PAGINE_CONSULTAZIONE = ['please','diarioemo','pianocrisi','catena','eventi',
-                              'dearman','give','fast','abc','sentiero','guida','abilita','oggi','fatti','procontro'];
+                              'dearman','give','fast','abc','guida','abilita','oggi','fatti','procontro'];
 
 function applyReadOnlyForTerapeuta(name){
   if(typeof profile==='undefined' || profile.role!=='terapeuta') return;
@@ -331,7 +331,7 @@ function applyReadOnlyForTerapeuta(name){
 // funzionare. Alla chiusura torna al suo posto.
 const SCHEDA_TITOLI = {
   dearman:'Copione DEAR MAN', give:'Relazione — GIVE', fast:'Rispetto di sé — FAST',
-  abc:'ABC — Costruisci emozioni positive', sentiero:'Sentiero di mezzo',
+  abc:'ABC — Costruisci emozioni positive',
   please:'Checklist PLEASE', diarioemo:'Diario delle emozioni',
   fatti:'Controlla i fatti', procontro:"Pro e contro dell'usare le abilità",
   pianocrisi:'Piano di crisi', catena:'Analisi della catena',
@@ -414,7 +414,7 @@ function openScheda(name){
   page.style.display='block';
   // appunti personali anche dentro le schede (un blocco per scheda, creato una volta)
   if(typeof piMount==='function' && !page.querySelector('.pi-wrap[data-pi-key="sc:'+name+'"]')){
-    const pi=piMount('sc:'+name, ['abc','give','fast','sentiero'].indexOf(name)!==-1 ? 'Le mie note' : 'Note per compilarla');
+    const pi=piMount('sc:'+name, ['abc','give','fast'].indexOf(name)!==-1 ? 'Le mie note' : 'Note per compilarla');
     pi.style.margin='20px 0 8px';
     page.appendChild(pi);
   }

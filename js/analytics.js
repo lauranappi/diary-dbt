@@ -59,7 +59,7 @@ const MODULO_DI_ABILITA = {
   "give": "inter",
   "fast": "inter",
   "idialettica": "inter",
-  "isentiero": "inter",
+  "isentiero": "mind",
   "ivalida": "inter",
   "imiti": "inter",
   "stop": "tol",
