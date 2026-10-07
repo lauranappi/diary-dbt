@@ -223,7 +223,7 @@ const GR_GRUPPI = [
   ['sc:fatti','sk:rcheck'], ['sc:procontro','sk:procontro','fg:t-impulso'],
   ['sc:dearman','sk:dearman','fg:i-monitor'], ['sc:give','sk:give','fg:i-monitor'], ['sc:fast','sk:fast','fg:i-monitor'],
   ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sc:sentiero','sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease'],
-  ['sc:catena','sk:gcatena'], ['fg:t-crisi','sk:tcrisi'], ['sc:eventi','sk:rpositivo'],
+  ['fg:t-crisi','sk:tcrisi'], ['sc:eventi','sk:rpositivo'],
   ['fg:m-abilita','sk:mcosa','sk:mcome'], ['fg:m-fare-essere','fg:m-piacevoli','fg:m-spiacevoli','sk:mfareessere'],
   ['fg:t-stop','sk:stop'], ['fg:t-accettazione','sk:accrad'], ['fg:t-bodyscan','sk:tbody'],
   ['fg:t-pensieri','sk:mpensieri'], ['fg:t-miglioramomento','sk:migliora'],

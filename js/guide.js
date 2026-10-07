@@ -98,7 +98,7 @@ function renderGuide(){
         desc:'Cambia la fisiologia del corpo in pochi minuti.',
         steps:[
           '<b>T — Temperatura.</b> Immergi il viso in acqua fredda (min 10°C) trattenendo il fiato per 30 secondi, oppure applica un impacco freddo sugli occhi e guance. Il "riflesso da immersione" rallenta il battito cardiaco e calma il sistema nervoso.',
-          '<b>I — esercizio fisico Intenso.</b> Corri, salta, fai squat per almeno 20 minuti. Consuma l\'energia fisica accumulata dalle emozioni intense.',
+          '<b>I — esercizio fisico Intenso.</b> Corri, salta, fai squat, anche solo per un breve periodo. Consuma l\'energia fisica accumulata dalle emozioni intense.',
           '<b>P — Placa la respirazione.</b> Respira profondamente con la pancia. Inspira per 5 secondi, espira per 7 secondi. L\'espirazione più lunga attiva il sistema parasimpatico (calma).',
           '<b>P — rilassamento muscolare Progressivo.</b> Contrai ogni gruppo muscolare per 5-6 sec inspirando, poi rilascia espirando e dì "Rilassati". Inizia dai piedi e sali fino al viso.',
           '⚠ <b>Attenzione:</b> consulta il medico prima di usare TIP se hai problemi cardiaci, prendi farmaci betabloccanti, o hai disturbi alimentari.'
@@ -147,7 +147,7 @@ function renderGuide(){
         desc:'Calma il corpo in pochi minuti quando l\'emozione è fortissima.',
         steps:[
           '<b>Perché funziona.</b> Viso nell\'acqua fredda con il respiro trattenuto: il corpo reagisce come in un\'immersione. Il battito rallenta e questo aiuta a regolare l\'emozione. L\'effetto può iniziare dopo 15-30 secondi.',
-          '<b>Come.</b> Riempi una bacinella di acqua fredda (non ghiacciata), oppure appoggia sugli occhi e sulle guance un sacchetto chiuso con acqua fredda. Trattieni il respiro per qualche secondo.',
+          '<b>Come.</b> Riempi una bacinella di acqua fredda (non ghiacciata), oppure appoggia sugli occhi e sulle guance un sacchetto chiuso con acqua fredda. Trattieni il respiro per circa 30 secondi.',
           '<b>Stai ferma.</b> Funziona meglio seduta e tranquilla: muoverti o farti distrarre ne riduce l\'effetto.',
           '<b>Quando usarla.</b> Emozioni molto forti e dolorose, oppure quando l\'impulso a farti del male o a fare qualcosa di pericoloso è fortissimo.',
           '⚠ <b>Attenzione:</b> l\'acqua molto fredda rallenta il cuore. Se hai problemi cardiaci o altre condizioni, se prendi farmaci per il battito o betabloccanti, parlane prima con il medico. Non usare acqua ghiacciata se il freddo ti dà reazioni negative.'
@@ -296,15 +296,13 @@ function renderGuide(){
           '<b>Gioca con i tuoi pensieri.</b> Ripetili ad alta voce più volte velocemente. Cantali. Immagina i pensieri come parole di un clown o come un bel colore che attraversa la mente. Prova ad amarli.'
         ]},
        {id:'mrespiro',badge:'RESPIRO',name:'Mindfulness del respiro',
-        desc:'Il respiro come ancora al momento presente.',
+        desc:'Il respiro come oggetto di osservazione (Scheda 4A del manuale).',
         steps:[
-          '<b>Posizione:</b> siediti comodamente o sdraiati. Chiudi gli occhi o abbassa lo sguardo. Rilassa le spalle.',
-          '<b>Osserva il ventre:</b> quando inspiri, lascia che il ventre si sollevi. Quando espiri, nota prima il ventre, poi il petto scendere. Non forzare.',
-          '<b>Nota le pause:</b> c’è una pausa naturale quando i polmoni sono pieni, e una quando sono vuoti. Osservale senza trattenerle.',
-          '<b>Naso:</b> chiudi la bocca e respira dal naso. Nota la sensazione dell’aria nelle narici — più fresca in entrata, più calda in uscita.',
-          '<b>Se la mente vaga:</b> è normale. Nota che sei andata altrove, e riporta gentilmente l’attenzione al respiro — senza giudicarti.',
-          '<b>Durata:</b> anche solo 3-5 respirazioni consapevoli cambiano lo stato del sistema nervoso. 5-10 minuti al giorno costruiscono l’abilità nel tempo.',
-          '&#x1F4A1; Non si tratta di svuotare la mente — si tratta di notare quando vaga e tornare. Questo è il muscolo che si allena.'
+          '<b>Osserva il ventre:</b> senti il ventre che si solleva e si abbassa con il respiro.',
+          '<b>Nota le pause:</b> osserva le pause tra l\'inspirazione e l\'espirazione.',
+          '<b>Osserva il naso:</b> nota la sensazione dell\'aria che entra e che esce dalle narici.',
+          '<b>Se la mente vaga:</b> nota che è andata altrove e riporta l\'attenzione al respiro, senza giudicarti.',
+          '&#x1F4D6; Manuale: Mindfulness, Scheda 4A (idee per praticare l\'osservazione).'
         ]},
        {id:'mamorev',badge:'GENTILEZZA',name:'Praticare l\'amorevole gentilezza',
         desc:'Aumentare affetto e compassione, prima verso di sé.',
@@ -369,7 +367,7 @@ function renderGuide(){
        {id:'rcheck',badge:'CONTROLLA',name:'Controllare i fatti',
         desc:'Le emozioni rispondono ai pensieri, non solo ai fatti.',
         steps:[
-          '<b>Identifica l\'emozione</b> che vuoi cambiare. Come si chiama? Quanto è intensa (0-5)?',
+          '<b>Identifica l\'emozione</b> che vuoi cambiare. Come si chiama? Quanto è intensa (0-100)?',
           '<b>Identifica l\'evento scatenante.</b> Cosa è successo esattamente? Descrivi i fatti puri, senza interpretazioni.',
           '<b>Controlla le interpretazioni.</b> Stai assumendo cose che non sai per certo? Stai leggendo la mente degli altri? Considera interpretazioni alternative.',
           '<b>Valuta la minaccia.</b> Stai ipotizzando una catastrofe? Qual è la probabilità reale che accada?',
@@ -464,13 +462,14 @@ function renderGuide(){
           '⚠ Non cercare di usare abilità complesse al punto di rottura — non funzionerà e ti farà sentire più in fallimento. Prima calma il sistema nervoso.'
         ]},
        {id:'rrisolvi',badge:'NON FUNZIONA',name:'Quando le abilità non funzionano',
-        desc:'Cinque controlli per capire perché non stai migliorando.',
+        desc:'Sei controlli per capire perché non stai migliorando.',
         steps:[
           '<b>1 — Controlla la tua sensibilità biologica.</b> Sei più vulnerabile del solito? Hai malattie o disagi fisici non curati, squilibri nel mangiare, nel sonno, nell\'esercizio, con le sostanze? Hai preso le medicine prescritte? Lavora sulle abilità PLEASE e riprova.',
           '<b>2 — Controlla le abilità.</b> Hai provato un\'abilità che poteva funzionare? Hai seguito le istruzioni alla lettera? Ripassa, prova altre abilità, chiedi aiuto al terapeuta e riprova.',
           '<b>3 — Controlla i rinforzi.</b> Le tue emozioni comunicano qualcosa di importante, ti motivano, confermano chi sei o ti fanno stare bene? Se sì: allenati a comunicare con le abilità interpersonali, cerca nuovi motivi che ti spingano, pratica l\'autovalidazione e fai un pro e contro del cambiare le emozioni.',
-          '<b>4 — Controlla l\'impegno.</b> Stai dedicando abbastanza tempo ed energie? Se no: pro e contro del lavorare sodo sulle abilità, accettazione radicale e disponibilità, partecipare e agire con efficacia.',
+          '<b>4 — Controlla l\'umore e l\'impegno.</b> Stai dedicando abbastanza tempo ed energie? Se no: pro e contro del lavorare sodo sulle abilità, accettazione radicale e disponibilità, partecipare e agire con efficacia.',
           '<b>5 — Controlla se sei sovraccarica.</b> Sei troppo scossa per usare abilità complicate? Se il problema si può risolvere subito, fai problem solving; altrimenti mindfulness delle emozioni del momento. Se è troppo forte per ragionare, passa alle abilità di crisi.',
+          '<b>6 — Controlla che i miti sulle emozioni non ti ostacolino.</b> Ci sono miti giudicanti ("alcune emozioni sono stupide", "c\'è un modo giusto di sentirsi") o la convinzione "io sono le mie emozioni"? Se sì: controlla i fatti, confuta i miti, pratica il pensiero non giudicante.',
           '&#x1F4D6; Manuale: Regolazione emotiva, Scheda 24.'
         ]},
        {id:'rpositivo',badge:'POSITIVO',name:'Costruire emozioni positive',
@@ -591,7 +590,7 @@ function renderGuide(){
         steps:[
           '<b>Distruttiva o interferente?</b> Una relazione distruttiva rovina la sicurezza, l\'autostima o la serenità tua o dell\'altra persona. Una interferente ti ostacola negli obiettivi, nel godere della vita o nelle altre relazioni.',
           '<b>Decidi in mente saggia.</b> Mai in mente emotiva.',
-          '<b>Se la relazione è importante e non distruttiva,</b> e c\'è speranza, prova prima il problema solving per ripararla.',
+          '<b>Se la relazione è importante e non distruttiva,</b> e non ci sono motivi per sperare che non migliori, prova prima il problema solving per ripararla.',
           '<b>Prepara con anticipo.</b> Allenati a risolvere i problemi e a chiudere prima che sia tardi. Sii diretta: usa DEAR MAN, GIVE e FAST.',
           '<b>Se ami la persona sbagliata,</b> pratica l\'azione opposta all\'amore.',
           '⚠ <b>Prima di tutto la tua sicurezza.</b> Se subisci abusi gravi o la tua vita è a rischio, chiama il 1522 (numero antiviolenza, gratuito) o un centro antiviolenza vicino a te, per costruire un piano di sicurezza con professioniste. Ci sono anche i centri della rete D.i.Re (direcontrolaviolenza.it).'
@@ -669,28 +668,7 @@ function renderGuide(){
           '<b>Un ambiente inefficace</b> può rinforzare le emozioni e le azioni fuori controllo (si cede quando esplodi) oppure chiede di cambiare senza spiegare come.',
           '<b>Cosa ne segue.</b> Non è un difetto di carattere: è un incontro tra una sensibilità di partenza e l’ambiente in cui sei cresciuta. E le abilità si possono imparare.'
         ]},
-       {id:'gcatena',badge:'CATENA',name:'Analisi della catena comportamentale',
-        desc:'Capire cosa scatena un comportamento problematico e dove intervenire.',
-        steps:[
-          '<b>Cos\u2019\u00e8:</b> una sequenza passo-passo di eventi, pensieri, emozioni e azioni che porta a un comportamento problematico.',
-          '<b>Passo 1:</b> Descrivi il comportamento problematico in modo specifico.',
-          '<b>Passo 2:</b> Fattore di vulnerabilit\u00e0. Cosa ti rendeva pi\u00f9 vulnerabile? (Poco sonno, fame, conflitto, stanchezza...)',
-          '<b>Passo 3:</b> Evento scatenante. Cosa ha innescato la catena?',
-          '<b>Passo 4:</b> Mappa la catena: pensieri, emozioni, azioni passo per passo fino al comportamento problematico.',
-          '<b>Passo 5:</b> Conseguenze immediate e a lungo termine.',
-          '<b>Passo 6:</b> Punti di intervento. Dove nella catena avresti potuto fare diversamente? Quale abilit\u00e0 usare?',
-          '\U0001f4a1 Non serve a colpevolizzarti \u2014 serve a capire e pianificare come fare meglio.'
-        ]},
-       {id:'gvita',badge:'VITA DEGNA',name:'Costruire una vita degna di essere vissuta',
-        desc:'Una vita che vale la pena, sui tuoi valori.',
-        steps:[
-          'Una vita degna di essere vissuta \u00e8 diversa per ognuno. Non perfetta \u2014 ma con abbastanza significato, connessione e soddisfazione da valere la pena.',
-          '<b>Identifica i tuoi valori:</b> cosa \u00e8 davvero importante per te? Relazioni? Lavoro? Creativit\u00e0? Salute? Integrit\u00e0?',
-          '<b>Identifica gli ostacoli:</b> comportamenti problematici, emozioni intense, relazioni difficili.',
-          '<b>Usa tutte le abilit\u00e0 DBT</b> ogni giorno, non solo nelle crisi.',
-          '<b>Piccoli passi ogni giorno</b> verso la vita che vuoi. L\u2019accumulo nel tempo crea cambiamento.',
-          '\U0001f4a1 La DBT non \u00e8 solo per le crisi \u2014 \u00e8 per costruire una vita che senti tua.'
-        ]}
+
      ]}
   ];
 
