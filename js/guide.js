@@ -698,7 +698,7 @@ function renderGuide(){
           steps.appendChild(row);
         });
         // post-it: appunti personali presi durante i gruppi (js/postit.js)
-        if(typeof piMount==='function'){ steps.appendChild(piMount('sk:'+sk.id,'Appunti dai gruppi')); if(typeof grBlocchiCorrelati==='function') grBlocchiCorrelati('sk:'+sk.id).forEach(function(b){ steps.appendChild(b); }); }
+        if(typeof piMount==='function'){ steps.appendChild(piMount('sk:'+sk.id,'Appunti dal gruppo')); if(typeof grBlocchiCorrelati==='function') grBlocchiCorrelati('sk:'+sk.id).forEach(function(b){ steps.appendChild(b); }); }
       }
       skDiv.appendChild(steps);body.appendChild(skDiv);
     });

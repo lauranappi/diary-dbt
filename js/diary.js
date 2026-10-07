@@ -365,7 +365,7 @@ function openScheda(name){
   page.style.display='block';
   // appunti personali anche dentro le schede (un blocco per scheda, creato una volta)
   if(typeof piMount==='function' && !page.querySelector('.pi-wrap[data-pi-key="sc:'+name+'"]')){
-    const pi=piMount('sc:'+name,'Appunti dai gruppi');
+    const pi=piMount('sc:'+name,'Note per compilarla');
     pi.style.margin='20px 0 8px';
     page.appendChild(pi);
   }
