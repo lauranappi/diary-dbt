@@ -49,6 +49,25 @@
     </div>
   </div>
 
+  <!-- PANNELLO NUOVA PASSWORD (dopo il link della mail) -->
+  <div id="ob-recovery" class="dc-onboard-wrap" style="display:none">
+    <h1 class="dc-onboard-h1">Nuova password</h1>
+    <p class="dc-onboard-sub">Scegline una nuova: poi sei dentro.</p>
+    <div class="dc-onboard-card">
+      <div class="ob-field">
+        <label>Nuova password</label>
+        <input type="password" id="ob-newpwd" placeholder="Min. 6 caratteri" autocomplete="new-password" style="width:100%;box-sizing:border-box"/>
+      </div>
+      <div class="ob-field">
+        <label>Ripetila</label>
+        <input type="password" id="ob-newpwd2" placeholder="Ripeti la password" autocomplete="new-password" style="width:100%;box-sizing:border-box"
+          onkeydown="if(event.key==='Enter')doSetNewPassword()"/>
+      </div>
+      <div id="ob-recovery-msg" style="font-size:12px;margin-bottom:8px;color:var(--dc-muted);min-height:16px"></div>
+      <button class="bpri" style="width:100%;margin-top:.25rem" onclick="doSetNewPassword()">Salva password</button>
+    </div>
+  </div>
+
   <!-- PANNELLO REGISTRAZIONE -->
   <div id="ob-register" class="dc-onboard-wrap" style="display:none">
     <h1 class="dc-onboard-h1">Registrati</h1>
@@ -1428,7 +1447,7 @@
 
 <script src="js/data.js?v=139"></script>
 <script src="js/config.js?v=139"></script>
-<script src="js/auth.js?v=139"></script>
+<script src="js/auth.js?v=144"></script>
 <script src="js/diary.js?v=139"></script>
 <script src="js/analytics.js?v=139"></script>
 <script src="js/pazienti.js?v=139"></script>
@@ -1438,7 +1457,7 @@
 <script src="js/postit.js?v=140"></script>
 <script src="js/ricerca.js?v=143"></script>
 <script src="js/forms.js?v=139"></script>
-<script src="js/init.js?v=139"></script>
+<script src="js/init.js?v=144"></script>
 
 
 

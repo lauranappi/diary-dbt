@@ -4,6 +4,13 @@
 // ══════════════════════════════════════════
 // SUPABASE AUTH
 // ══════════════════════════════════════════
+// Il link della mail arriva con parametri nell'indirizzo (#access_token=...&type=recovery
+// oppure #error=...&error_code=otp_expired). Si leggono subito, prima che il client
+// Supabase ripulisca l'indirizzo.
+const _LINK_PARAMS = new URLSearchParams((location.hash||'').replace(/^#/,''));
+new URLSearchParams(location.search||'').forEach(function(v,k){ if(!_LINK_PARAMS.has(k)) _LINK_PARAMS.set(k,v); });
+const LINK_RECUPERO = _LINK_PARAMS.get('type')==='recovery';
+const LINK_ERRORE = _LINK_PARAMS.get('error_code') || _LINK_PARAMS.get('error') || null;
 const supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 let supaSession = null;
 
@@ -77,9 +84,46 @@ async function doResetPassword(){
   const email=document.getElementById('ob-email').value.trim();
   const msg=document.getElementById('ob-login-msg');
   if(!email){msg.style.color='var(--red)';msg.textContent='Inserisci prima la tua email.';return;}
-  const {error}=await supabase.auth.resetPasswordForEmail(email);
+  // senza redirectTo Supabase usa l'indirizzo impostato nel progetto (di solito
+  // localhost): il link nella mail porterebbe a una pagina di errore.
+  const tornaA=new URL('./',location.href).href;
+  const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:tornaA});
   if(error){msg.style.color='var(--red)';msg.textContent=error.message;return;}
-  msg.style.color='var(--teal)';msg.textContent='✓ Email di reset inviata!';
+  msg.style.color='var(--teal)';msg.textContent='✓ Email inviata! Apri il link dallo stesso telefono, entro un\u2019ora.';
+}
+
+// ── Nuova password dopo il link ricevuto per email ──
+function showRecoveryScreen(){
+  showLoginScreen();
+  document.getElementById('ob-login').style.display='none';
+  document.getElementById('ob-register').style.display='none';
+  document.getElementById('ob-recovery').style.display='block';
+  const i=document.getElementById('ob-newpwd'); if(i) setTimeout(function(){i.focus();},100);
+}
+async function doSetNewPassword(){
+  const a=document.getElementById('ob-newpwd').value;
+  const b=document.getElementById('ob-newpwd2').value;
+  const msg=document.getElementById('ob-recovery-msg');
+  if(a.length<6){msg.style.color='var(--red)';msg.textContent='La password deve avere almeno 6 caratteri.';return;}
+  if(a!==b){msg.style.color='var(--red)';msg.textContent='Le due password non coincidono.';return;}
+  msg.style.color='var(--muted)';msg.textContent='Salvataggio…';
+  const {data,error}=await supabase.auth.updateUser({password:a});
+  if(error){msg.style.color='var(--red)';msg.textContent=error.message||'Non sono riuscita a salvare la password.';return;}
+  msg.style.color='var(--teal)';msg.textContent='✓ Password cambiata!';
+  try{history.replaceState(null,'',location.pathname);}catch(e){}
+  const sess=(await supabase.auth.getSession()).data.session;
+  supaSession=sess;
+  setTimeout(function(){ loadUserData((sess&&sess.user)||data.user); },500);
+}
+// Link scaduto o già usato: spiega cosa fare invece di lasciare una pagina vuota
+function mostraErroreLink(){
+  if(!LINK_ERRORE) return;
+  const msg=document.getElementById('ob-login-msg'); if(!msg) return;
+  msg.style.color='var(--red)';
+  msg.textContent=(LINK_ERRORE==='otp_expired'||LINK_ERRORE==='access_denied')
+    ? 'Il link è scaduto o è già stato usato. Scrivi la tua email e tocca "Password dimenticata" per riceverne uno nuovo.'
+    : 'Il link non è valido. Richiedine uno nuovo con "Password dimenticata".';
+  try{history.replaceState(null,'',location.pathname);}catch(e){}
 }
 
 async function loadUserData(user){
@@ -164,6 +208,7 @@ function showLoginScreen(){
   document.documentElement.classList.remove('app-mode');
   document.getElementById('ob-login').style.display='block';
   document.getElementById('ob-register').style.display='none';
+  const rec=document.getElementById('ob-recovery'); if(rec) rec.style.display='none';
 }
 
 function enterApp(){
