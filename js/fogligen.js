@@ -256,7 +256,7 @@ function fgMostraLista(def){
     });
   }
   body.appendChild(w);
-  if(typeof piMount === 'function') body.appendChild(piMount('fg:' + def.id, 'Appunti dai gruppi'));
+  if(typeof piMount === 'function'){ body.appendChild(piMount('fg:' + def.id, 'Appunti dai gruppi')); if(typeof grBlocchiCorrelati === 'function') grBlocchiCorrelati('fg:' + def.id).forEach(function(b){ body.appendChild(b); }); }
   const pi = body.querySelector('.pi-wrap'); if(pi) pi.style.margin = '20px 0 24px';
 }
 
