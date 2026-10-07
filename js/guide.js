@@ -1208,33 +1208,34 @@ function renderFogli(){
   const el=document.getElementById('fogli-content');
   if(!el)return;
   el.innerHTML='';
-  Object.keys(SCHEDA_TITOLI).forEach(function(key){
+  // tutti i fogli, vecchi e nuovi, raggruppati per modulo
+  const MODS=[['mind','Mindfulness'],['tol','Tolleranza della sofferenza'],['reg','Regolazione emotiva'],['inter','Efficacia interpersonale'],['gen','Generali']];
+  const VECCHI_MOD={sentiero:'mind', pianocrisi:'tol', please:'reg', fatti:'reg', diarioemo:'reg', eventi:'reg', abc:'reg',
+    dearman:'inter', give:'inter', fast:'inter', procontro:'gen', catena:'gen'};
+  function riga(titolo,sotto,fn){
     const row=document.createElement('div');
     row.className='dc-foglio-riga';
-    row.onclick=function(){ openScheda(key); };
-    row.innerHTML='<div class="dc-riga-testo">'
-      +'<span class="dc-riga-tit">'+SCHEDA_TITOLI[key]+'</span>'
-      +'<span class="dc-riga-sub">'+(FOGLI_SOTTOTITOLO[key]||'')+'</span>'
-      +'</div>'+DC_CHEV;
-    el.appendChild(row);
-  });
-  // fogli compilabili generici, raggruppati per modulo
-  if(typeof FG_FOGLI!=='undefined'){
-    const MODS={mind:'Mindfulness',tol:'Tolleranza della sofferenza',reg:'Regolazione emotiva',inter:'Efficacia interpersonale'};
-    Object.keys(MODS).forEach(function(m){
-      const t=document.createElement('div');
-      t.className='guide-schede-titolo'; t.style.margin='22px 0 8px'; t.textContent=MODS[m];
-      el.appendChild(t);
-      FG_FOGLI.filter(function(f){return f.mod===m;}).forEach(function(f){
-        const row=document.createElement('div');
-        row.className='dc-foglio-riga';
-        row.onclick=function(){ fgApri(f.id); };
-        row.innerHTML='<div class="dc-riga-testo"><span class="dc-riga-tit"></span><span class="dc-riga-sub"></span></div>'+DC_CHEV;
-        row.querySelector('.dc-riga-tit').textContent=f.t;
-        row.querySelector('.dc-riga-sub').textContent=f.sub;
-        el.appendChild(row);
-      });
-    });
+    row.onclick=fn;
+    row.innerHTML='<div class="dc-riga-testo"><span class="dc-riga-tit"></span><span class="dc-riga-sub"></span></div>'+DC_CHEV;
+    row.querySelector('.dc-riga-tit').textContent=titolo;
+    row.querySelector('.dc-riga-sub').textContent=sotto||'';
+    return row;
   }
+  MODS.forEach(function(m){
+    const voci=[];
+    Object.keys(SCHEDA_TITOLI).forEach(function(key){
+      if((VECCHI_MOD[key]||'gen')===m[0]) voci.push(riga(SCHEDA_TITOLI[key],FOGLI_SOTTOTITOLO[key]||'',function(){ openScheda(key); }));
+    });
+    if(typeof FG_FOGLI!=='undefined'){
+      FG_FOGLI.filter(function(f){return f.mod===m[0];}).forEach(function(f){
+        voci.push(riga(f.t,f.sub,function(){ fgApri(f.id); }));
+      });
+    }
+    if(!voci.length) return;
+    const t=document.createElement('div');
+    t.className='guide-schede-titolo fg-mod'; t.textContent=m[1];
+    el.appendChild(t);
+    voci.forEach(function(v){ el.appendChild(v); });
+  });
 }
 

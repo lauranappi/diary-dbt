@@ -307,6 +307,7 @@ function fgMostraForm(def, entry){
     del.addEventListener('click', function(){
       if(!del.classList.contains('conferma')){ del.classList.add('conferma'); del.textContent = 'Eliminare davvero?'; return; }
       fgSalvaLista(def.id, fgLista(def.id).filter(function(x){ return x.id !== entry.id; }));
+      fgTomb('fg_' + def.id, entry.id);
       if(typeof sincronizzaFogli === 'function') sincronizzaFogli();
       fgMostraLista(def);
     });
@@ -345,3 +346,95 @@ function fgMostraForm(def, entry){
     (SCHEDE_PER_MODULO[nome[f.mod]] = SCHEDE_PER_MODULO[nome[f.mod]] || []).push({fg:f.id, label:f.t});
   });
 })();
+
+
+// ════════════════════════════════════════════════════════════════
+// RIPRISTINO DEI FOGLI DA SUPABASE
+// ════════════════════════════════════════════════════════════════
+// I fogli compilati partono gia' verso la riga su Supabase (raccogliFogli).
+// Qui li si riporta anche SU un altro dispositivo: unione per id, e
+// "lapidi" per le cancellazioni (altrimenti un foglio eliminato qui
+// tornerebbe da un dispositivo che lo ha ancora).
+function fgTombLista(){
+  try{ const o = JSON.parse(localStorage.getItem(ukey('fogli_del')) || '{}'); return (o && typeof o === 'object') ? o : {}; }
+  catch(e){ return {}; }
+}
+function fgTomb(lista, id){
+  const o = fgTombLista(); o[lista + ':' + id] = Date.now();
+  const limite = Date.now() - 90 * 86400000;
+  Object.keys(o).forEach(function(k){ if(o[k] < limite) delete o[k]; });
+  try{ localStorage.setItem(ukey('fogli_del'), JSON.stringify(o)); }catch(e){}
+}
+function fgCancellati(){ return fgTombLista(); }
+
+function fgUnisciRemoto(remoto){
+  if(!remoto || typeof remoto !== 'object') return false;
+  if(typeof profile === 'undefined' || !profile || profile.role !== 'paziente') return false;
+  const lapidi = fgTombLista();
+  const remLapidi = remoto.cancellati || {};
+  let lapidiCambiate = false;
+  Object.keys(remLapidi).forEach(function(k){
+    if(!lapidi[k] || remLapidi[k] > lapidi[k]){ lapidi[k] = remLapidi[k]; lapidiCambiate = true; }
+  });
+  if(lapidiCambiate){ try{ localStorage.setItem(ukey('fogli_del'), JSON.stringify(lapidi)); }catch(e){} }
+  let cambiato = false;
+  function unisci(chiave, remLista){
+    if(!Array.isArray(remLista)) return;
+    let loc;
+    try{ loc = JSON.parse(localStorage.getItem(ukey(chiave)) || '[]'); }catch(e){ loc = []; }
+    if(!Array.isArray(loc)) loc = [];
+    const per = {};
+    loc.forEach(function(e){ if(e && e.id != null) per[e.id] = e; });
+    const senzaId = loc.filter(function(e){ return !(e && e.id != null); });
+    let mod = false;
+    remLista.forEach(function(e){
+      if(!e || e.id == null) return;
+      if(lapidi[chiave + ':' + e.id]) return;
+      const l = per[e.id];
+      if(!l){ per[e.id] = e; mod = true; }
+      else if((e.m || 0) > (l.m || 0)){ per[e.id] = e; mod = true; }
+    });
+    // un elemento cancellato altrove sparisce anche qui
+    Object.keys(per).forEach(function(id){ if(lapidi[chiave + ':' + id]){ delete per[id]; mod = true; } });
+    if(!mod) return;
+    const out = Object.keys(per).map(function(id){ return per[id]; });
+    out.sort(function(a, b){ return (new Date(b.ts || b.data || 0)) - (new Date(a.ts || a.data || 0)); });
+    try{ localStorage.setItem(ukey(chiave), JSON.stringify(out.concat(senzaId))); cambiato = true; }catch(e){}
+  }
+  unisci('cf_fogli', remoto.controllaFatti);
+  unisci('pc2_fogli', remoto.proContro);
+  unisci('diario_emo', remoto.diarioEmozioni);
+  unisci('catena_list', remoto.catena);
+  const gen = remoto.generici || {};
+  // tutti i fogli noti, anche se mancano da remoto: serve a recepire le cancellazioni
+  FG_FOGLI.forEach(function(f){ unisci('fg_' + f.id, gen[f.id] || []); });
+  // piano di crisi: documento unico, si ripristina solo se qui e' vuoto
+  try{
+    const loc = JSON.parse(localStorage.getItem(ukey('piano_crisi')) || '{}');
+    const rem = remoto.pianoCrisi;
+    if(rem && typeof rem === 'object' && Object.keys(rem).some(function(k){ return rem[k]; }) && !Object.keys(loc).some(function(k){ return loc[k]; })){
+      localStorage.setItem(ukey('piano_crisi'), JSON.stringify(rem)); cambiato = true;
+    }
+  }catch(e){}
+  // se il pannello dei fogli e' aperto, si aggiorna
+  if(cambiato && typeof _fgIdAperto !== 'undefined' && _fgIdAperto && document.getElementById('scheda-modal').classList.contains('open')){
+    const body = document.getElementById('scheda-body');
+    if(body && body.querySelector('.fg-wrap .fg-riga, .fg-wrap .fg-btn.fg-pri') && !body.querySelector('.fg-campo')){
+      const d = fgDef(_fgIdAperto); if(d) fgMostraLista(d);
+    }
+  }
+  return cambiato;
+}
+
+// Prima di ogni salvataggio verso Supabase si riportano qui i fogli gia' presenti,
+// cosi' un dispositivo "vuoto" non cancella quelli degli altri.
+async function fgPrePull(){
+  try{
+    if(typeof channel === 'undefined' || !channel || typeof profile === 'undefined' || profile.role !== 'paziente') return;
+    const r = await fetch(SUPA_URL + '/rest/v1/diary_data?code=eq.' + encodeURIComponent(channel) + '&select=data', {headers: getAuthHeaders()});
+    if(!r.ok) return;
+    const rows = await r.json();
+    const rem = rows && rows[0] && rows[0].data;
+    if(rem && rem.fogli) fgUnisciRemoto(rem.fogli);
+  }catch(e){ /* senza rete si procede col salvataggio normale */ }
+}

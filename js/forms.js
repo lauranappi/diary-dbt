@@ -300,6 +300,7 @@ function cfRenderLista(){
     const del=document.createElement('button'); del.className='bsec'; del.textContent='Elimina';
     del.onclick=()=>{
       if(!confirm('Eliminare questo foglio?')) return;
+      if(typeof fgTomb==='function') fgTomb('cf_fogli', d.id);
       const l2=JSON.parse(localStorage.getItem(ukey('cf_fogli'))||'[]').filter(x=>x.id!==d.id);
       localStorage.setItem(ukey('cf_fogli'), JSON.stringify(l2));
       cfRenderLista();
@@ -361,6 +362,7 @@ function pcbRenderLista(){
     const del=document.createElement('button'); del.className='bsec'; del.textContent='Elimina';
     del.onclick=()=>{
       if(!confirm('Eliminare questo foglio?')) return;
+      if(typeof fgTomb==='function') fgTomb('pc2_fogli', d.id);
       const l2=JSON.parse(localStorage.getItem(ukey('pc2_fogli'))||'[]').filter(x=>x.id!==d.id);
       localStorage.setItem(ukey('pc2_fogli'), JSON.stringify(l2));
       pcbRenderLista();
@@ -384,7 +386,8 @@ function raccogliFogli(){
     proContro:      leggi('pc2_fogli'),
     diarioEmozioni: leggi('diario_emo'),
     catena:         leggi('catena_list'),
-    generici:       (typeof fgRaccogli==='function' ? fgRaccogli() : {})
+    generici:       (typeof fgRaccogli==='function' ? fgRaccogli() : {}),
+    cancellati:     (typeof fgCancellati==='function' ? fgCancellati() : {})
   };
 }
 

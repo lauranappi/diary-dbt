@@ -8,7 +8,7 @@
 // seguono la sincronizzazione privata, mai la riga della terapeuta.
 
 const GR_CHIAVE = 'grp:pagine';
-const GR_MOD = [['mind','Mindfulness'],['tol','Tolleranza'],['reg','Regolazione emotiva'],['inter','Interpersonale'],['gen','Altro']];
+const GR_MOD = [['mind','Mindfulness'],['tol','Tolleranza'],['reg','Regolazione emotiva'],['inter','Interpersonale'],['gen','Generale']];
 
 function grTutte(){ const a = piAll(); return a[GR_CHIAVE] || (a[GR_CHIAVE] = []); }
 // un incontro puo' avere piu' pagine (pp) e piu' collegamenti (ll); i vecchi
@@ -32,9 +32,38 @@ function grDataLunga(g){
 function grModNome(m){ const x = GR_MOD.filter(function(y){ return y[0] === m; })[0]; return x ? x[1] : ''; }
 function grNorm(t){ return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
 
+// L'ambito non si sceglie: lo ricava l'app dalle schede collegate e dai numeri di pagina.
+const GR_SCHEDA_MOD = {dearman:'inter', give:'inter', fast:'inter', abc:'reg', sentiero:'mind', please:'reg',
+  diarioemo:'reg', fatti:'reg', procontro:'gen', pianocrisi:'tol', catena:'gen', eventi:'reg'};
+function grModPerPagina(n){
+  n = parseInt(n, 10);
+  if(!(n > 0)) return '';
+  if(n <= 44) return 'gen';        // introduzione, obiettivi, teoria
+  if(n <= 112) return 'mind';
+  if(n <= 199) return 'inter';
+  if(n <= 316) return 'reg';
+  if(n <= 420) return 'tol';
+  return '';
+}
+function grModPerCollegamento(l){
+  const p = String(l || '').split(':'), t = p[0];
+  if(t === 'fg' || t === 'fe'){ const d = fgDef(p[1]); return d ? d.mod : ''; }
+  if(t === 'sc') return GR_SCHEDA_MOD[p.slice(1).join(':')] || '';
+  if(t === 'sk'){ const e = (window.GUIDE_INDEX || []).filter(function(y){ return y.id === p.slice(1).join(':'); })[0]; return e ? e.mod : ''; }
+  return {cf:'reg', pc:'gen', de:'reg', ca:'gen'}[t] || '';
+}
+// ambiti ordinati per frequenza: schede collegate e pagine pesano uguale
+function grAmbiti(pp, ll){
+  const conta = {};
+  (pp || []).forEach(function(y){ const m = grModPerPagina(y.p); if(m) conta[m] = (conta[m] || 0) + 1; });
+  (ll || []).forEach(function(l){ const m = grModPerCollegamento(l); if(m) conta[m] = (conta[m] || 0) + 1; });
+  return Object.keys(conta).sort(function(a, b){ return conta[b] - conta[a]; });
+}
+function grAmbitiNomi(mm){ return (mm || []).map(grModNome).filter(Boolean).join(', '); }
 function grNormItem(x){
   if(!x.pp) x.pp = (x.p || x.t) ? [{p: x.p || '', t: x.t || ''}] : [];
   if(!x.ll) x.ll = x.l ? [x.l] : [];
+  if(!x.mm) x.mm = x.m ? [x.m] : grAmbiti(x.pp, x.ll);
   return x;
 }
 function grLista(){ return grTutte().filter(function(x){ return !x.d; }).map(grNormItem); }
@@ -113,8 +142,8 @@ function grMostraLista(q, mod){
       ris.innerHTML = '';
       const parole = grNorm(cerca.value).split(/\s+/).filter(Boolean);
       const l = tutte.filter(function(x){
-        if(mod && x.m !== mod) return false;
-        const hay = grNorm([x.pp.map(function(y){ return y.p + ' ' + y.t; }).join(' '), x.n, grModNome(x.m)].join(' '));
+        if(mod && x.mm.indexOf(mod) === -1) return false;
+        const hay = grNorm([x.pp.map(function(y){ return y.p + ' ' + y.t; }).join(' '), x.n, grAmbitiNomi(x.mm)].join(' '));
         return parole.every(function(p){ return hay.indexOf(p) !== -1; });
       }).sort(function(a, b){ return (b.g || '').localeCompare(a.g || '') || (b.ts - a.ts); });
       if(!l.length){ ris.appendChild(grEl('div', 'fg-intro', 'Nessun incontro trovato.')); return; }
@@ -122,7 +151,7 @@ function grMostraLista(q, mod){
       l.forEach(function(x){
         if(x.g !== ultimo){ ultimo = x.g; ris.appendChild(grEl('div', 'fg-sez', grDataLunga(x.g))); }
         const r = grEl('button', 'fg-riga'); r.type = 'button'; r.setAttribute('data-nav', '');
-        r.appendChild(grEl('span', 'fg-riga-data', grRiepilogoPagine(x) + (grModNome(x.m) ? ' · ' + grModNome(x.m) : '')));
+        r.appendChild(grEl('span', 'fg-riga-data', grRiepilogoPagine(x) + (grAmbitiNomi(x.mm) ? ' · ' + grAmbitiNomi(x.mm) : '')));
         r.appendChild(grEl('span', 'fg-riga-ant', grTitoli(x) || (x.n ? x.n : '(senza titolo)')));
         r.addEventListener('click', function(){ grVista(x); });
         ris.appendChild(r);
@@ -180,7 +209,7 @@ function grVista(x){
   body.innerHTML = ''; body.scrollTop = 0;
   const w = grEl('div', 'fg-wrap');
   w.appendChild(grEl('div', 'fg-sez', grDataLunga(x.g)));
-  if(grModNome(x.m)) w.appendChild(grEl('div', 'fg-riga-data', grModNome(x.m)));
+  if(grAmbitiNomi(x.mm)) w.appendChild(grEl('div', 'fg-riga-data', grAmbitiNomi(x.mm)));
   x.pp.forEach(function(y){
     w.appendChild(grEl('h3', 'gr-tit', (y.p ? 'p. ' + y.p : 'Pagina') + (y.t ? ' · ' + y.t : '')));
   });
@@ -231,26 +260,18 @@ function grForm(x){
     });
     r.appendChild(np); r.appendChild(nt); r.appendChild(rm);
     const riga = {np:np, nt:nt};
-    righe.push(riga); boxPagine.appendChild(r);
+    righe.push(riga); if(piu) boxPagine.insertBefore(r, piu); else boxPagine.appendChild(r);
     return np;
   }
+  let piu = null;
   (dati.pp.length ? dati.pp : [{p:'', t:''}]).forEach(function(y){ aggiungiRiga(y.p, y.t); });
-  const piu = grEl('button', 'fg-btn gr-piu', '+ Un’altra pagina'); piu.type = 'button';
+  piu = grEl('button', 'fg-btn gr-piu', '+ Un’altra pagina'); piu.type = 'button';
   piu.addEventListener('click', function(){ aggiungiRiga('', '').focus(); });
   boxPagine.appendChild(piu);
   campo('Pagine del manuale', boxPagine);
 
-  let mod = dati.m || '';
-  const chips = grEl('div', 'fg-chips');
-  GR_MOD.forEach(function(m){
-    const c = grEl('button', 'fg-chip' + (mod === m[0] ? ' on' : ''), m[1]); c.type = 'button'; c.setAttribute('data-nav', '');
-    c.addEventListener('click', function(){
-      mod = (mod === m[0]) ? '' : m[0];
-      chips.querySelectorAll('.fg-chip').forEach(function(z){ z.classList.toggle('on', z === c && mod === m[0]); });
-    });
-    chips.appendChild(c);
-  });
-  campo('Modulo', chips);
+  const ambito = grEl('div', 'gr-ambito');
+  w.appendChild(ambito);
 
   const n = grEl('textarea', 'fg-in'); n.rows = 4; n.placeholder = 'Cosa è emerso, cosa vuoi ricordare…'; n.value = dati.n || ''; campo('Appunto', n);
 
@@ -258,7 +279,7 @@ function grForm(x){
   const scelti = dati.ll.slice();
   const box = grEl('div', 'gr-coll');
   const sceltiEl = grEl('div', 'fg-chips');
-  const cercaC = grEl('input', 'fg-in'); cercaC.type = 'search'; cercaC.placeholder = 'Cerca un foglio compilato, una scheda…';
+  const cercaC = grEl('input', 'fg-in'); cercaC.type = 'search'; cercaC.placeholder = 'Cerca foglio o scheda…';
   const risC = grEl('div', 'gr-coll-ris');
   const cat = grCatalogo();
   function disegnaScelti(){
@@ -294,6 +315,16 @@ function grForm(x){
   disegnaScelti();
   campo('Schede e fogli compilati collegati (facoltativo)', box);
 
+  // l'ambito si aggiorna da solo mentre scrivi pagine e colleghi schede
+  function aggiornaAmbito(){
+    const mm = grAmbiti(righe.map(function(r){ return {p: r.np.value}; }), scelti);
+    ambito.textContent = mm.length ? 'Ambito: ' + grAmbitiNomi(mm) : '';
+    ambito.style.display = mm.length ? '' : 'none';
+  }
+  w.addEventListener('input', aggiornaAmbito);
+  w.addEventListener('click', function(){ setTimeout(aggiornaAmbito, 0); });
+  aggiornaAmbito();
+
   const az = grEl('div', 'fg-azioni');
   az.appendChild(grEl('span')).style.flex = '1';
   const ann = grEl('button', 'fg-btn', 'Annulla'); ann.type = 'button';
@@ -304,7 +335,7 @@ function grForm(x){
     if(!pp.length && !n.value.trim()){ righe[0].np.focus(); return; }
     const item = {
       id: x ? x.id : 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-      g: g.value || grOggi(), pp: pp, m: mod, n: n.value.trim(), ll: scelti.slice()
+      g: g.value || grOggi(), pp: pp, mm: grAmbiti(pp, scelti), n: n.value.trim(), ll: scelti.slice()
     };
     grSalva(item);
     grVista(item);
