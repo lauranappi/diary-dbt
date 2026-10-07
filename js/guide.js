@@ -76,6 +76,17 @@ function renderGuide(){
      sub:'Sopravvivere alle crisi senza peggiorare la situazione',
      intro:'Queste abilità servono quando provi un dolore intenso che non puoi alleviare subito, quando agiresti sulla spinta delle emozioni ma questo peggiorerebbe la situazione, o quando la mente emotiva minaccia di prendere il sopravvento. Non sono per i problemi quotidiani — sono per le crisi.',
      skills:[
+       {id:'tcrisi',badge:'CRISI',name:'Sopravvivere alla crisi: quando usarle',
+        desc:'A cosa servono le abilità di crisi e quando (non) usarle.',
+        steps:[
+          '<b>A cosa servono.</b> Aiutano a restare a galla quando il dolore, gli impulsi o le emozioni sono troppo forti e la situazione non si può sistemare subito. L\'obiettivo è attraversare il momento senza peggiorarlo, non risolvere tutto.',
+          '<b>Sei in crisi quando</b> la situazione è molto stressante, dura poco e ti mette sotto pressione perché si risolva subito.',
+          '<b>Usale quando</b> il dolore è intenso e non passa in fretta; quando agire sull\'onda dell\'emozione peggiorerebbe le cose; quando la mente emotiva sta prendendo il comando; quando le emozioni sono fortissime ma ciò che le ha provocate non si può cambiare adesso.',
+          '<b>Non usarle per</b> i problemi di ogni giorno, per risolvere tutta la vita o per renderla degna di essere vissuta: per quello servono le altre abilità.',
+          '<b>Le abilità:</b> STOP, pro e contro, TIP (cambiare la chimica del corpo), distrarsi con mente saggia ACCETTA, autoconsolarsi con i 5 sensi, migliorare il momento.',
+          '<b>Piano e diario.</b> A mente calma scrivi in anticipo i segnali che riconosci, le abilità che proverai, le persone che puoi chiamare e i motivi per andare avanti: nella crisi non si inventa. Poi segna sul diario quali abilità hai provato davvero e quanto sono servite.',
+          '&#x1F4D6; Manuale: Tolleranza della sofferenza, Schede 1-3.'
+        ]},
        {id:'stop',badge:'STOP',name:'Interrompi la reazione impulsiva',
         desc:'Fermati prima di reagire d\'impulso.',
         steps:[
@@ -286,6 +297,17 @@ function renderGuide(){
           '<b>Durata:</b> anche solo 3-5 respirazioni consapevoli cambiano lo stato del sistema nervoso. 5-10 minuti al giorno costruiscono l’abilità nel tempo.',
           '&#x1F4A1; Non si tratta di svuotare la mente — si tratta di notare quando vaga e tornare. Questo è il muscolo che si allena.'
         ]},
+       {id:'mamorev',badge:'GENTILEZZA',name:'Praticare l\'amorevole gentilezza',
+        desc:'Aumentare affetto e compassione, prima verso di sé.',
+        steps:[
+          '<b>Cos\'è.</b> Una pratica di mindfulness per far crescere amore e compassione: prima verso se stessa, poi verso le persone care, gli amici, chi ti ha fatto arrabbiare, chi è in difficoltà e infine tutti gli esseri viventi. Protegge dal giudizio, dalla cattiveria e dall\'ostilità, verso di te e verso gli altri.',
+          '<b>Come funziona.</b> È simile a una preghiera: mandi buoni desideri a una persona recitandoli nella mente, concentrandoti sul significato di ogni parola.',
+          '<b>1 — Scegli la persona.</b> Parti da te. Se è troppo difficile, scegli qualcuno che ami già. Non scegliere chi non vorresti trattare con gentilezza.',
+          '<b>2 — Mettiti comoda.</b> Seduta, in piedi o sdraiata, respira piano e a fondo, con i palmi aperti, e porta la persona al centro della mente.',
+          '<b>3 — Ripeti le frasi</b> lentamente, per esempio «Che io possa essere felice», «Che io possa essere in pace», «Che io possa stare in salute», «Che io possa essere al sicuro». Se arrivano pensieri che distraggono, notali e riporta gentilmente la mente alle frasi. Continua finché ti senti immersa nella gentilezza.',
+          '<b>4 — Allarga il cerchio</b> gradualmente: cari, amici, persone con cui sei arrabbiata, persone difficili, nemici, tutti gli esseri viventi. Cambia solo il soggetto: «Che Marco possa essere in pace».',
+          '&#x1F4D6; Manuale: Mindfulness, Scheda 8.'
+        ]},
        {id:'msaggio',badge:'MENTE SAGGIA',name:'Come praticare la mente saggia',
         desc:'Esercizi concreti per accedere alla propria mente saggia.',
         steps:[
@@ -418,6 +440,16 @@ function renderGuide(){
           '<b>Step 3 — Abilità di regolazione emotiva:</b> solo quando sei più stabile, torna a usare le abilità più complesse (controlla i fatti, azione opposta ecc.).',
           '⚠ Non cercare di usare abilità complesse al punto di rottura — non funzionerà e ti farà sentire più in fallimento. Prima calma il sistema nervoso.'
         ]},
+       {id:'rrisolvi',badge:'NON FUNZIONA',name:'Quando le abilità non funzionano',
+        desc:'Cinque controlli per capire perché non stai migliorando.',
+        steps:[
+          '<b>1 — Controlla la tua sensibilità biologica.</b> Sei più vulnerabile del solito? Hai malattie o disagi fisici non curati, squilibri nel mangiare, nel sonno, nell\'esercizio, con le sostanze? Hai preso le medicine prescritte? Lavora sulle abilità PLEASE e riprova.',
+          '<b>2 — Controlla le abilità.</b> Hai provato un\'abilità che poteva funzionare? Hai seguito le istruzioni alla lettera? Ripassa, prova altre abilità, chiedi aiuto al terapeuta e riprova.',
+          '<b>3 — Controlla i rinforzi.</b> Le tue emozioni comunicano qualcosa di importante, ti motivano, confermano chi sei o ti fanno stare bene? Se sì: allenati a comunicare con le abilità interpersonali, cerca nuovi motivi che ti spingano, pratica l\'autovalidazione e fai un pro e contro del cambiare le emozioni.',
+          '<b>4 — Controlla l\'impegno.</b> Stai dedicando abbastanza tempo ed energie? Se no: pro e contro del lavorare sodo sulle abilità, accettazione radicale e disponibilità, partecipare e agire con efficacia.',
+          '<b>5 — Controlla se sei sovraccarica.</b> Sei troppo scossa per usare abilità complicate? Se il problema si può risolvere subito, fai problem solving; altrimenti mindfulness delle emozioni del momento. Se è troppo forte per ragionare, passa alle abilità di crisi.',
+          '&#x1F4D6; Manuale: Regolazione emotiva, Scheda 24.'
+        ]},
        {id:'rpositivo',badge:'POSITIVO',name:'Costruire emozioni positive',
         desc:'Costruisci attivamente le emozioni positive.',
         steps:[
@@ -467,6 +499,16 @@ function renderGuide(){
           '<b>A — sii Assertiva.</b> Non scusarti di esistere o di avere bisogni. Non scusarti di avere opinioni. Non assumere posture di inferiorità.',
           '<b>S — Segui i tuoi valori.</b> Non rinunciare ai tuoi valori per ragioni che non sono davvero importanti. Spiega il tuo punto di vista etico e mantienilo.',
           '<b>T — sii Trasparente.</b> Non mentire, non fingere di essere d\'accordo quando non lo sei, non recitare. L\'onestà protegge il rispetto di sé a lungo termine.'
+        ]},
+       {id:'imonitor',badge:'MONITORA',name:'Monitorare le abilità interpersonali',
+        desc:'Come ripercorrere una situazione relazionale con il foglio.',
+        steps:[
+          '<b>Quando.</b> Compilalo ogni volta che usi le abilità di efficacia interpersonale e anche quando avresti potuto usarle e non l\'hai fatto.',
+          '<b>Cosa è successo.</b> Scrivi l\'evento scatenante: chi ha fatto cosa a chi e con quali conseguenze.',
+          '<b>Cosa volevi.</b> Obiettivo (il risultato), relazione (cosa vuoi che l\'altro provi per te), rispetto di sé (come vuoi sentirti). Dai a ciascuno una priorità da 1 (molto importante) a 3 (poco), e segna se tra le priorità c\'è un conflitto.',
+          '<b>Cosa hai detto o fatto.</b> Spunta, voce per voce, le parti di DEAR MAN (descrivere, esprimere, affermare, rinforzare, essere mindful, disco rotto, ignorare gli attacchi, atteggiamento sicuro, negoziare), di GIVE e di FAST.',
+          '<b>Come è andata.</b> Valuta quanto hai ottenuto, come stanno la relazione e il rispetto di te, e cosa cambieresti la prossima volta.',
+          '&#x1F4D6; Manuale: Efficacia interpersonale, Foglio di lavoro 5.'
         ]},
        {id:'idialettica',badge:'DIALETTICA',name:'Pensiero dialettico',
         desc:'Stare nel paradosso: due cose opposte, entrambe vere.',
