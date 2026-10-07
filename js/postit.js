@@ -166,11 +166,19 @@ function piCreaEditor(){
     +   '<textarea class="pi-ta" maxlength="' + PI_MAX_CARATTERI + '" placeholder="Cosa è emerso nel gruppo?" aria-label="Testo del post-it"></textarea>'
     +   '<div class="pi-conta"></div>'
     + '</div>'
+    + '<div class="pi-tools" role="toolbar" aria-label="Inserisci simboli">'
+    +   '<button type="button" class="pi-tool" data-ins="→ " aria-label="Freccia a destra">→</button>'
+    +   '<button type="button" class="pi-tool" data-ins="↓ " aria-label="Freccia in basso">↓</button>'
+    +   '<button type="button" class="pi-tool" data-ins="↳ " aria-label="Freccia a squadra">↳</button>'
+    +   '<button type="button" class="pi-tool pi-tool-el" data-el="1" aria-label="Elenco puntato">• Elenco</button>'
+    + '</div>'
     + '<div class="pi-colori" role="radiogroup" aria-label="Colore"></div>'
     + '<div class="pi-azioni">'
     +   '<button type="button" class="pi-btn pi-elimina">Elimina</button>'
     +   '<span style="flex:1"></span>'
     +   '<button type="button" class="pi-btn pi-annulla">Annulla</button>'
+    +   '<button type="button" class="pi-btn pi-chiudi">Chiudi</button>'
+    +   '<button type="button" class="pi-btn pi-modifica">Modifica</button>'
     +   '<button type="button" class="pi-btn pi-salva">Salva</button>'
     + '</div>'
     + '</div>';
@@ -210,8 +218,59 @@ function piCreaEditor(){
     if(d) scegli(+d.dataset.c);
   });
   ed.ta.addEventListener('input', aggiornaConta);
+
+  // simboli rapidi e elenchi puntati: inseriti dove si trova il cursore
+  function inserisci(txt){
+    const ta = ed.ta, a = ta.selectionStart, b = ta.selectionEnd;
+    ta.value = ta.value.slice(0, a) + txt + ta.value.slice(b);
+    ta.selectionStart = ta.selectionEnd = a + txt.length;
+    aggiornaConta(); ta.focus();
+  }
+  function elenco(){
+    const ta = ed.ta, pos = ta.selectionStart;
+    const inizio = ta.value.lastIndexOf('\n', pos - 1) + 1;
+    const riga = ta.value.slice(inizio);
+    if(/^• /.test(riga)){          // gia' puntata: la toglie
+      ta.value = ta.value.slice(0, inizio) + ta.value.slice(inizio + 2);
+      ta.selectionStart = ta.selectionEnd = Math.max(inizio, pos - 2);
+    } else {
+      ta.value = ta.value.slice(0, inizio) + '• ' + ta.value.slice(inizio);
+      ta.selectionStart = ta.selectionEnd = pos + 2;
+    }
+    aggiornaConta(); ta.focus();
+  }
+  bg.querySelector('.pi-tools').addEventListener('pointerdown', function(ev){
+    if(ev.target.closest('.pi-tool')) ev.preventDefault();   // la tastiera resta aperta
+  });
+  bg.querySelector('.pi-tools').addEventListener('click', function(ev){
+    const t = ev.target.closest('.pi-tool'); if(!t || ed.ta.readOnly) return;
+    if(t.dataset.el) elenco(); else inserisci(t.dataset.ins);
+  });
+  // a capo dentro un elenco: continua con il pallino; a capo su pallino vuoto: esce dall'elenco
+  ed.ta.addEventListener('keydown', function(ev){
+    if(ev.key !== 'Enter' || ed.ta.readOnly) return;
+    const ta = ed.ta, pos = ta.selectionStart;
+    const inizio = ta.value.lastIndexOf('\n', pos - 1) + 1;
+    const riga = ta.value.slice(inizio, pos);
+    if(!/^• /.test(riga)) return;
+    ev.preventDefault();
+    if(riga === '• '){
+      ta.value = ta.value.slice(0, inizio) + ta.value.slice(pos);
+      ta.selectionStart = ta.selectionEnd = inizio;
+    } else {
+      ta.value = ta.value.slice(0, pos) + '\n• ' + ta.value.slice(ta.selectionEnd);
+      ta.selectionStart = ta.selectionEnd = pos + 3;
+    }
+    aggiornaConta();
+  });
   bg.addEventListener('click', function(ev){ if(ev.target === bg) piChiudiEditor(); });
   bg.querySelector('.pi-annulla').addEventListener('click', piChiudiEditor);
+  bg.querySelector('.pi-chiudi').addEventListener('click', piChiudiEditor);
+  bg.querySelector('.pi-modifica').addEventListener('click', function(){
+    piModalita(true);
+    ed.ta.focus();
+    try{ ed.ta.setSelectionRange(ed.ta.value.length, ed.ta.value.length); }catch(e){}
+  });
   bg.querySelector('.pi-salva').addEventListener('click', function(){
     const t = ed.ta.value.trim();
     if(t) piUpsert(ed.key, ed.id, t, ed.colore);
@@ -238,6 +297,14 @@ function piCreaEditor(){
   return ed;
 }
 
+// Un post-it esistente si apre in sola lettura; "Modifica" abilita la scrittura.
+function piModalita(modifica){
+  if(!_piEd) return;
+  _piEd.ta.readOnly = !modifica;
+  _piEd.sheet.classList.toggle('pi-vista', !modifica);
+  _piEd.del.classList.remove('conferma');
+  _piEd.del.textContent = 'Elimina';
+}
 function piApriEditor(key, id, wrap){
   if(!_piEd) _piEd = piCreaEditor();
   const ed = _piEd;
@@ -251,7 +318,8 @@ function piApriEditor(key, id, wrap){
   ed.del.textContent = 'Elimina';
   ed.bg.classList.add('open');
   document.body.classList.add('pi-aperto');
-  setTimeout(function(){ ed.ta.focus(); }, 60);
+  piModalita(!p);
+  if(!p) setTimeout(function(){ ed.ta.focus(); }, 60);
 }
 function piChiudiEditor(){
   if(!_piEd) return;

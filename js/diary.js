@@ -358,9 +358,16 @@ function openScheda(name){
   page._segnaposto = document.createComment('scheda '+name);
   page.parentElement.insertBefore(page._segnaposto, page);
 
+  Array.from(body.children).forEach(function(c){ if(!c.classList.contains('page')) c.remove(); });
   body.appendChild(page);
   page.classList.add('active');
   page.style.display='block';
+  // appunti personali anche dentro le schede (un blocco per scheda, creato una volta)
+  if(typeof piMount==='function' && !page.querySelector('.pi-wrap[data-pi-key="sc:'+name+'"]')){
+    const pi=piMount('sc:'+name,'Appunti dai gruppi');
+    pi.style.margin='20px 0 8px';
+    page.appendChild(pi);
+  }
   document.getElementById('scheda-title').textContent = SCHEDA_TITOLI[name] || '';
   modal.classList.add('open');
   document.body.style.overflow='hidden';
