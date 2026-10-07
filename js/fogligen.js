@@ -220,7 +220,8 @@ function fgApri(id){
   document.getElementById('scheda-title').textContent = def.t;
   document.getElementById('scheda-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
-  fgMostraLista(def);
+  // si apre subito il modulo vuoto; l'elenco dei compilati e' un link in alto
+  if(fgSolaLettura()) fgMostraLista(def); else fgMostraForm(def, null, true);
 }
 function fgDataBreve(ts){
   return new Date(ts).toLocaleDateString('it-IT', {day:'numeric', month:'short', year:'numeric'});
@@ -256,11 +257,15 @@ function fgMostraLista(def){
     });
   }
   body.appendChild(w);
+  fgNote(body, def);
+}
+// post-it del foglio (e quelli della teoria collegata), in fondo sia all'elenco sia al modulo
+function fgNote(body, def){
   if(typeof piMount === 'function'){ body.appendChild(piMount('fg:' + def.id, 'Note per compilarlo')); if(typeof grBlocchiCorrelati === 'function') grBlocchiCorrelati('fg:' + def.id).forEach(function(b){ body.appendChild(b); }); }
   const pi = body.querySelector('.pi-wrap'); if(pi) pi.style.margin = '20px 0 24px';
 }
 
-function fgMostraForm(def, entry){
+function fgMostraForm(def, entry, diretto){
   const body = fgCorpo(); if(!body) return;
   body.innerHTML = '';
   body.scrollTop = 0;
@@ -268,6 +273,13 @@ function fgMostraForm(def, entry){
   const w = document.createElement('div'); w.className = 'fg-wrap';
   const dati = (entry && entry.v) || {};
   const campi = {};
+  const nComp = fgLista(def.id).length;
+  if(diretto && nComp){
+    const lk = document.createElement('button'); lk.type = 'button'; lk.className = 'fg-btn fg-elenco'; lk.setAttribute('data-nav', '');
+    lk.textContent = 'I miei fogli compilati (' + nComp + ')';
+    lk.addEventListener('click', function(){ fgMostraLista(def); });
+    w.appendChild(lk);
+  }
   def.c.forEach(function(f){
     if(f.h){ const h = document.createElement('div'); h.className = 'fg-sez'; h.textContent = f.h; w.appendChild(h); return; }
     const blocco = document.createElement('div'); blocco.className = 'fg-campo';
@@ -301,7 +313,7 @@ function fgMostraForm(def, entry){
   });
   const az = document.createElement('div'); az.className = 'fg-azioni';
   const ind = document.createElement('button'); ind.type = 'button'; ind.className = 'fg-btn'; ind.textContent = ro ? 'Indietro' : 'Annulla';
-  ind.addEventListener('click', function(){ fgMostraLista(def); });
+  ind.addEventListener('click', function(){ if(diretto && typeof closeScheda === 'function') closeScheda(); else fgMostraLista(def); });
   if(entry && !ro){
     const del = document.createElement('button'); del.type = 'button'; del.className = 'fg-btn fg-del'; del.textContent = 'Elimina';
     del.addEventListener('click', function(){
@@ -336,6 +348,7 @@ function fgMostraForm(def, entry){
   }
   w.appendChild(az);
   body.appendChild(w);
+  fgNote(body, def);
 }
 
 // ── collegamenti: moduli della guida e pagina "Fogli di lavoro" ──
