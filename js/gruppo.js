@@ -230,6 +230,13 @@ const GR_GRUPPI = [
   ['fg:r-problem-solving','sk:rproblem'], ['fg:r-valori','sk:rvalori'], ['fg:r-mastery','sk:rmastery'],
   ['fg:r-sonno','sk:rsonno'], ['fg:r-incubi','sk:rincubi'], ['fg:r-miti','sk:rmiti']
 ];
+// titolo del blocco: dice a cosa servono quei post-it (compilare la scheda, oppure appunti di teoria dal gruppo)
+function grTitoloBlocco(k){
+  const t = k.split(':')[0], n = grNomeChiave(k);
+  if(t === 'sc' || t === 'fg') return 'Come compilarla · ' + n;
+  if(t === 'sk') return 'Dal gruppo, teoria · ' + n;
+  return n;
+}
 function grNomeChiave(k){
   const p = k.split(':'), id = p.slice(1).join(':');
   if(p[0] === 'sc') return (typeof SCHEDA_TITOLI !== 'undefined' && SCHEDA_TITOLI[id]) || id;
@@ -245,7 +252,7 @@ function grChiaviCorrelate(k){
 // blocchi dei post-it "fratelli" non vuoti, per mostrare tutto su un argomento
 function grBlocchiCorrelati(k){
   return grChiaviCorrelate(k).filter(function(x){ return x !== k && piList(x).length; }).map(function(x){
-    const b = piMount(x, 'Post-it · ' + grNomeChiave(x)); b.classList.add('gr-rel'); b.style.margin = '12px 0 4px'; return b;
+    const b = piMount(x, grTitoloBlocco(x)); b.classList.add('gr-rel'); b.style.margin = '12px 0 4px'; return b;
   });
 }
 function grNomeCollegamento(l){
@@ -265,16 +272,16 @@ function grVista(x){
     w.appendChild(grEl('h3', 'gr-tit', (y.p ? 'p. ' + y.p : 'Pagina') + (y.t ? ' · ' + y.t : '')));
     const nome = y.l ? grNomeCollegamento(y.l) : '';
     if(y.l && nome){
-      const ap = grEl('button', 'fg-btn gr-apri', 'Apri: ' + nome); ap.type = 'button';
+      const ap = grEl('button', 'fg-btn gr-apri', (/^(sc|cf|pc|de|ca):/.test(y.l) ? 'Apri la scheda: ' : /^(fg|fe):/.test(y.l) ? 'Apri il foglio: ' : 'Apri: ') + nome); ap.type = 'button';
       ap.addEventListener('click', function(){ grApriCollegamento(y.l); });
       w.appendChild(ap);
       const k = grChiavePostit(y.l);
       grChiaviCorrelate(k).filter(function(c){ return piList(c).length; }).forEach(function(c){
-        w.appendChild(piMount(c, 'Post-it · ' + grNomeChiave(c)));
+        w.appendChild(piMount(c, grTitoloBlocco(c)));
       });
     }
   });
-  w.appendChild(piMount('gn:' + x.id, 'Appunti dai gruppi'));
+  w.appendChild(piMount('gn:' + x.id, 'Appunti presi in gruppo'));
   const az = grEl('div', 'fg-azioni');
   const del = grEl('button', 'fg-btn fg-del', 'Elimina'); del.type = 'button';
   del.addEventListener('click', function(){
@@ -373,7 +380,7 @@ function grForm(x){
   aggiornaAmbito();
 
   // gli appunti sono i post-it, gli stessi del resto dell'app
-  w.appendChild(piMount('gn:' + dati.id, 'Appunti dai gruppi'));
+  w.appendChild(piMount('gn:' + dati.id, 'Appunti presi in gruppo'));
 
   function raccogli(){ return righe.map(function(r){ return {p: r.np.value.trim(), t: r.nt.value.trim(), l: r.l}; }).filter(function(y){ return y.p || y.t || y.l; }); }
   const az = grEl('div', 'fg-azioni');
