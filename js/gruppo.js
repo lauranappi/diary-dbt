@@ -262,7 +262,9 @@ function grTitoloBlocco(k){
 // schede/fogli da compilare collegati a una pagina di teoria (id della pagina della guida)
 function grSchedeDa(skId){
   const gr = GR_GRUPPI.filter(function(x){ return x.indexOf('sk:' + skId) !== -1; })[0] || [];
-  return gr.filter(function(k){ return k.indexOf('sk:') !== 0; }).map(function(k){
+  // le schede di sola lettura (ABC, GIVE, FAST, sentiero di mezzo) non si compilano
+  const LETTURA = ['sc:abc', 'sc:give', 'sc:fast', 'sc:sentiero'];
+  return gr.filter(function(k){ return k.indexOf('sk:') !== 0 && LETTURA.indexOf(k) === -1; }).map(function(k){
     const t = k.split(':')[0], id = k.split(':').slice(1).join(':');
     return {k:k, nome:grNomeChiave(k), apri:function(){ if(t === 'fg') fgApri(id); else openScheda(id); }};
   });

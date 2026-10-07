@@ -348,6 +348,55 @@ const SCHEDA_RENDER = {
 };
 let _schedaAperta=null;
 
+// Schede con piu' fogli compilabili: come i fogli di lavoro, si apre prima l'elenco di quelli
+// salvati (con la riga che spiega la scheda) e il modulo compare con "+ Nuovo foglio".
+const SC_LISTA_PRIMA = {fatti:'cf-lista', procontro:'pc2-lista', diarioemo:'de-lista', catena:'ca-lista'};
+const SC_SALVA = {fatti:'cfSalva', procontro:'pcbSalva', diarioemo:'deSalva', catena:'caSalva'};
+function scListaPrima(name){
+  const listaId = SC_LISTA_PRIMA[name]; if(!listaId) return;
+  scAvvolgiSalva();
+  const page = document.getElementById('page-' + name), lista = document.getElementById(listaId);
+  if(!page || !lista || (typeof profile !== 'undefined' && profile.role === 'terapeuta')) return;
+  let elenco = lista; while(elenco.parentElement && elenco.parentElement !== page) elenco = elenco.parentElement;
+  const hero = page.querySelector('.page-hero');
+  const resto = Array.from(page.children).filter(function(c){
+    return c !== elenco && c !== hero && !c.classList.contains('sc-barra') && !c.classList.contains('pi-wrap') && !c.classList.contains('gr-rel');
+  });
+  Array.from(page.querySelectorAll(':scope > .sc-barra')).forEach(function(e){ e.remove(); });
+  const barra = document.createElement('div'); barra.className = 'sc-barra';
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'fg-btn fg-pri'; b.setAttribute('data-nav', '');
+  barra.appendChild(b);
+  (hero || page.firstChild).insertAdjacentElement(hero ? 'afterend' : 'beforebegin', barra);
+  function modo(m){
+    page._modo = m;
+    resto.forEach(function(c){ c.style.display = m === 'form' ? '' : 'none'; });
+    elenco.style.display = m === 'lista' ? '' : 'none';
+    b.textContent = m === 'lista' ? '+ Nuovo foglio' : '\u2190 I miei fogli';
+    const sb = document.getElementById('scheda-body'); if(sb) sb.scrollTop = 0;
+  }
+  page._setModo = modo;
+  b.addEventListener('click', function(){
+    if(page._modo === 'lista'){ const nuovo = {fatti:'cfNuovo', procontro:'pcbNuovo', diarioemo:'deNuovo', catena:'caNuovo'}[name]; if(window[nuovo]) window[nuovo](); modo('form'); }
+    else modo('lista');
+  });
+  if(!lista._apri){ lista._apri = true; lista.addEventListener('click', function(e){ const x = e.target.closest && e.target.closest('button'); if(x && x.textContent.trim() === 'Apri') setTimeout(function(){ if(page._setModo) page._setModo('form'); }, 0); }); }
+  modo('lista');
+}
+// dopo un salvataggio andato a buon fine si torna all'elenco (forms.js si carica dopo: si avvolge alla prima apertura)
+function scAvvolgiSalva(){
+  if(scAvvolgiSalva._fatto) return; scAvvolgiSalva._fatto = true;
+  Object.keys(SC_SALVA).forEach(function(name){
+    const fn = SC_SALVA[name], orig = window[fn]; if(typeof orig !== 'function') return;
+    window[fn] = function(){
+      const l = document.getElementById(SC_LISTA_PRIMA[name]), prima = l ? l.innerHTML : '';
+      const r = orig.apply(this, arguments);
+      const p = document.getElementById('page-' + name);
+      if(l && p && p._setModo && l.innerHTML !== prima) p._setModo('lista');
+      return r;
+    };
+  });
+}
+
 function openScheda(name){
   const page=document.getElementById('page-'+name);
   const modal=document.getElementById('scheda-modal');
@@ -365,7 +414,7 @@ function openScheda(name){
   page.style.display='block';
   // appunti personali anche dentro le schede (un blocco per scheda, creato una volta)
   if(typeof piMount==='function' && !page.querySelector('.pi-wrap[data-pi-key="sc:'+name+'"]')){
-    const pi=piMount('sc:'+name,'Note per compilarla');
+    const pi=piMount('sc:'+name, ['abc','give','fast','sentiero'].indexOf(name)!==-1 ? 'Le mie note' : 'Note per compilarla');
     pi.style.margin='20px 0 8px';
     page.appendChild(pi);
   }
@@ -379,7 +428,7 @@ function openScheda(name){
   document.body.style.overflow='hidden';
   _schedaAperta=name;
 
-  if(SCHEDA_RENDER[name]) setTimeout(SCHEDA_RENDER[name],30);
+  if(SCHEDA_RENDER[name]) setTimeout(function(){ SCHEDA_RENDER[name](); scListaPrima(name); },30);
   setTimeout(()=>{ body.scrollTop=0; },20);
   if(typeof applyReadOnlyForTerapeuta==='function') setTimeout(()=>applyReadOnlyForTerapeuta(name),60);
 }

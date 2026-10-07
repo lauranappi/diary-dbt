@@ -34,10 +34,22 @@ const FG_FOGLI = [
   intro:'La mente del fare risolve, organizza, agisce. La mente dell’essere sente e sta. Serve l’equilibrio.',
   c:[_T('sit','Situazione'), _R('quale','Quale mente prevaleva?',['Del fare','Dell’essere','Un mix']),
      _A('segnale','Da cosa te ne sei accorta?'), _A('bil','Cosa hai fatto per bilanciare?'), _A('esito','Com’è andata?')]},
- {id:'m-sentiero', mod:'mind', t:'Sentiero di mezzo', sub:'Due cose vere insieme',
-  intro:'Cerca il punto di incontro tra due posizioni che sembrano opposte.',
-  c:[_T('sit','Situazione'), _T('polo1','Primo polo (es. cedere sempre)'), _T('polo2','Secondo polo (es. non cedere mai)'),
-     _A('vero','Cosa c’è di vero in entrambi?'), _A('passo','Un passo verso il centro'), _A('esito','Com’è andata?')]},
+ {id:'m-sentiero', mod:'mind', t:'Sentiero di mezzo', sub:'Osservare se stessi nel sentiero di mezzo',
+  intro:'Foglio 10A: renditi conto di dove ti poni rispetto all\u2019equilibrio, scegli un dilemma e decidi una o due cose specifiche da fare nella prossima settimana.',
+  c:[_C('dilemma','Per quale dilemma della mente saggia lavori? (uno solo)',['Mente razionale / mente emotiva','Mente del fare / mente del nulla-da-fare','Desiderio vivo di cambiare il momento / accettazione radicale di ciò che è','Abnegazione / indulgenza verso di sé']),
+     _H('Dove ti poni'),
+     _A('dove','Verso quale estremo sei troppo sbilanciata, la maggior parte del tempo?'),
+     _H('Cosa fai in eccesso e in difetto'),
+     _A('troppo','Cosa fai troppo? Descrivilo in modo dettagliato'),
+     _A('poco','Cosa fai troppo poco?'),
+     _H('Controlla i fatti'),
+     _A('fatti','Riscrivi le due risposte in modo aderente ai fatti, senza giudizi (\u201cbuono\u201d, \u201ccattivo\u201d) né interpretazioni'),
+     _H('Per la prossima settimana'),
+     _A('azioni','Una (o al massimo due) cose molto specifiche da fare per avvicinarti all\u2019equilibrio'),
+     _H('Alla fine della settimana'),
+     _A('fatto','Descrivi cosa hai fatto'),
+     _T('efficacia','Quanto è stato efficace? Da 1 (per nulla) a 5 (molto)'),
+     _A('sagge','Elenca le cose sagge che hai fatto questa settimana')]},
  {id:'m-gentilezza', mod:'mind', t:'Amorevole gentilezza', sub:'Auguri a te e agli altri',
   intro:'Rivolgi frasi di buon augurio a te, a una persona cara, a una persona neutra, a una difficile.',
   c:[_C('per','Per chi hai praticato?',['Me stessa','Una persona cara','Una persona neutra','Una persona difficile']),
@@ -220,8 +232,7 @@ function fgApri(id){
   document.getElementById('scheda-title').textContent = def.t;
   document.getElementById('scheda-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
-  // si apre subito il modulo vuoto; l'elenco dei compilati e' un link in alto
-  if(fgSolaLettura()) fgMostraLista(def); else fgMostraForm(def, null, true);
+  fgMostraLista(def);
 }
 function fgDataBreve(ts){
   return new Date(ts).toLocaleDateString('it-IT', {day:'numeric', month:'short', year:'numeric'});
@@ -265,7 +276,7 @@ function fgNote(body, def){
   const pi = body.querySelector('.pi-wrap'); if(pi) pi.style.margin = '20px 0 24px';
 }
 
-function fgMostraForm(def, entry, diretto){
+function fgMostraForm(def, entry){
   const body = fgCorpo(); if(!body) return;
   body.innerHTML = '';
   body.scrollTop = 0;
@@ -273,13 +284,6 @@ function fgMostraForm(def, entry, diretto){
   const w = document.createElement('div'); w.className = 'fg-wrap';
   const dati = (entry && entry.v) || {};
   const campi = {};
-  const nComp = fgLista(def.id).length;
-  if(diretto && nComp){
-    const lk = document.createElement('button'); lk.type = 'button'; lk.className = 'fg-btn fg-elenco'; lk.setAttribute('data-nav', '');
-    lk.textContent = 'I miei fogli compilati (' + nComp + ')';
-    lk.addEventListener('click', function(){ fgMostraLista(def); });
-    w.appendChild(lk);
-  }
   def.c.forEach(function(f){
     if(f.h){ const h = document.createElement('div'); h.className = 'fg-sez'; h.textContent = f.h; w.appendChild(h); return; }
     const blocco = document.createElement('div'); blocco.className = 'fg-campo';
@@ -313,7 +317,7 @@ function fgMostraForm(def, entry, diretto){
   });
   const az = document.createElement('div'); az.className = 'fg-azioni';
   const ind = document.createElement('button'); ind.type = 'button'; ind.className = 'fg-btn'; ind.textContent = ro ? 'Indietro' : 'Annulla';
-  ind.addEventListener('click', function(){ if(diretto && typeof closeScheda === 'function') closeScheda(); else fgMostraLista(def); });
+  ind.addEventListener('click', function(){ fgMostraLista(def); });
   if(entry && !ro){
     const del = document.createElement('button'); del.type = 'button'; del.className = 'fg-btn fg-del'; del.textContent = 'Elimina';
     del.addEventListener('click', function(){
