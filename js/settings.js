@@ -72,6 +72,7 @@ async function pushChan(){
   if(!SUPA_URL||!SUPA_KEY){setSt('err','Configura Supabase nelle impostazioni');return;}
   setSt('spin','Sincronizzazione...');
   try{
+    if(typeof fgPrePull==='function') await fgPrePull();
     lastPushTs=Date.now();
     // Try POST with upsert via Prefer header
     const payload={
@@ -127,6 +128,11 @@ async function silentPull(){
     const rows=await r.json();
     if(!rows||!rows.length)return;
     const remote=rows[0].data;
+    // fogli compilati: si riportano anche su questo dispositivo
+    let fogliCambiati=false;
+    if(remote&&remote.fogli&&typeof fgUnisciRemoto==='function'){
+      try{ fogliCambiati=fgUnisciRemoto(remote.fogli); }catch(e){ console.warn('ripristino fogli',e); }
+    }
     if(!remote||!remote.entries)return;
     const remoteTs=remote.ts||0;
     let changed=false;
