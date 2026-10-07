@@ -697,6 +697,22 @@ function renderGuide(){
           row.innerHTML='<div class="guide-step-n">'+(i+1)+'</div><div class="guide-step-text">'+step+'</div>';
           steps.appendChild(row);
         });
+        // la scheda da compilare sta dentro la teoria, non in una lista a parte
+        if(typeof grSchedeDa==='function'){
+          const sd=grSchedeDa(sk.id);
+          if(sd.length){
+            const bx=document.createElement('div');bx.className='guide-compila';
+            const tt=document.createElement('div');tt.className='guide-schede-titolo';tt.textContent='Compila la scheda';
+            bx.appendChild(tt);
+            sd.forEach(function(s){
+              const b=document.createElement('button');b.type='button';b.className='guide-scheda-link';b.setAttribute('data-nav','');
+              b.textContent=s.nome;
+              b.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();s.apri();});
+              bx.appendChild(b);
+            });
+            steps.appendChild(bx);
+          }
+        }
         // post-it: appunti personali presi durante i gruppi (js/postit.js)
         if(typeof piMount==='function'){ steps.appendChild(piMount('sk:'+sk.id,'Appunti dal gruppo')); if(typeof grBlocchiCorrelati==='function') grBlocchiCorrelati('sk:'+sk.id).forEach(function(b){ steps.appendChild(b); }); }
       }
@@ -725,7 +741,12 @@ function renderGuide(){
     const wrap=document.createElement('div');
     wrap.className='guide-schede-modulo';
     wrap.innerHTML='<div class="guide-schede-titolo">Fogli di lavoro</div>';
-    SCHEDE_PER_MODULO[modId].forEach(function(sc){
+    const senzaTeoria=SCHEDE_PER_MODULO[modId].filter(function(sc){
+      return !(typeof grHaTeoria==='function' && grHaTeoria(sc.fg?'fg:'+sc.fg:'sc:'+sc.page));
+    });
+    if(!senzaTeoria.length) return;
+    wrap.firstChild.textContent='Altri fogli di lavoro';
+    senzaTeoria.forEach(function(sc){
       const b=document.createElement('button');
       b.type='button';
       b.className='guide-scheda-link';
@@ -904,7 +925,16 @@ function openGuideSkill(moduleId,skillId){
           steps.classList.add('open');
           if(sarr)sarr.style.transform='rotate(180deg)';
         }
-        if(steps)steps.scrollIntoView({behavior:'smooth',block:'center'});
+        // il cambio pagina riporta in cima (anche in ritardo, su iOS): si
+        // scorre alla sezione piu' volte, senza animazione, finche' resta
+        const vai=()=>{
+          const box=steps&&steps.closest('.guide-skill');
+          if(!box) return;
+          const y=box.getBoundingClientRect().top+(window.scrollY||document.body.scrollTop||0)-76;
+          window.scrollTo(0,Math.max(0,y));
+          if(document.body.scrollTop!==undefined && Math.abs((document.body.scrollTop||0)-y)>4) document.body.scrollTop=Math.max(0,y);
+        };
+        [0,120,350,800].forEach(t=>setTimeout(vai,t));
       },150);
     }
   },100);
