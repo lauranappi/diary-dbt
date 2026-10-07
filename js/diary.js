@@ -360,13 +360,14 @@ function scListaPrima(name){
   let elenco = lista; while(elenco.parentElement && elenco.parentElement !== page) elenco = elenco.parentElement;
   const hero = page.querySelector('.page-hero');
   const resto = Array.from(page.children).filter(function(c){
-    return c !== elenco && c !== hero && !c.classList.contains('sc-barra') && !c.classList.contains('pi-wrap') && !c.classList.contains('gr-rel');
+    return c !== elenco && c !== hero && !c.classList.contains('sc-barra') && !c.classList.contains('sc-intro') && !c.classList.contains('rf-riga') && !c.classList.contains('pi-wrap') && !c.classList.contains('gr-rel');
   });
   Array.from(page.querySelectorAll(':scope > .sc-barra')).forEach(function(e){ e.remove(); });
   const barra = document.createElement('div'); barra.className = 'sc-barra';
   const b = document.createElement('button'); b.type = 'button'; b.className = 'fg-btn fg-pri'; b.setAttribute('data-nav', '');
   barra.appendChild(b);
-  (hero || page.firstChild).insertAdjacentElement(hero ? 'afterend' : 'beforebegin', barra);
+  const ultimo = Array.from(page.querySelectorAll(':scope > .sc-intro, :scope > .rf-riga')).pop() || hero;
+  (ultimo || page.firstChild).insertAdjacentElement(ultimo ? 'afterend' : 'beforebegin', barra);
   function modo(m){
     page._modo = m;
     resto.forEach(function(c){ c.style.display = m === 'form' ? '' : 'none'; });
@@ -412,6 +413,22 @@ function openScheda(name){
   body.appendChild(page);
   page.classList.add('active');
   page.style.display='block';
+  // riferimento al manuale (scheda e pagina)
+  Array.from(page.querySelectorAll(':scope > .rf-riga, :scope > .sc-intro')).forEach(function(e){ e.remove(); });
+  {
+    const h=page.querySelector(':scope > .page-hero');
+    const righe=[];
+    // la riga che spiega la scheda (nel titolo, che dentro la finestra e' nascosto), come nei fogli
+    const sub=h && h.children.length ? h.children[h.children.length-1] : null;
+    if(sub && sub.textContent.trim() && h.children.length>1){
+      const it=document.createElement('p');it.className='fg-intro sc-intro';it.textContent=sub.textContent.trim();righe.push(it);
+    }
+    if(typeof rfTesto==='function' && rfTesto('sc',name)){
+      const rg=document.createElement('div');rg.className='rf-riga';rg.textContent='\u{1F4D6} Manuale: '+rfTesto('sc',name);righe.push(rg);
+    }
+    let prec=h;
+    righe.forEach(function(r){ if(prec) prec.insertAdjacentElement('afterend',r); else page.insertBefore(r,page.firstChild); prec=r; });
+  }
   // appunti personali anche dentro le schede (un blocco per scheda, creato una volta)
   if(typeof piMount==='function' && !page.querySelector('.pi-wrap[data-pi-key="sc:'+name+'"]')){
     const pi=piMount('sc:'+name, ['abc','give','fast'].indexOf(name)!==-1 ? 'Le mie note' : 'Note per compilarla');

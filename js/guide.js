@@ -714,7 +714,10 @@ function renderGuide(){
       skDiv.appendChild(skHdr);
       const steps=document.createElement('div');steps.className='guide-skill-steps';steps.id='steps-'+sk.id;
       if(!pagLettura){
-        sk.steps.forEach(function(step,i){
+        // dove si trova nel manuale (scheda e pagina stampata): sostituisce i rimandi scritti a mano
+        const rif=(typeof rfTesto==='function')?rfTesto('sk',sk.id):'';
+        if(rif){const rg=document.createElement('div');rg.className='rf-riga';rg.textContent='\u{1F4D6} Manuale: '+rif;steps.appendChild(rg);}
+        sk.steps.filter(function(st){return st.indexOf('&#x1F4D6;')!==0;}).forEach(function(step,i){
           const row=document.createElement('div');row.className='guide-step';
           row.innerHTML='<div class="guide-step-n">'+(i+1)+'</div><div class="guide-step-text">'+step+'</div>';
           steps.appendChild(row);
@@ -1276,11 +1279,17 @@ function renderFogli(){
   MODS.forEach(function(m){
     const voci=[];
     Object.keys(SCHEDA_TITOLI).forEach(function(key){
-      if((VECCHI_MOD[key]||'gen')===m[0]) voci.push(riga(SCHEDA_TITOLI[key],FOGLI_SOTTOTITOLO[key]||'',function(){ openScheda(key); }));
+      // le schede di sola lettura (ABC, GIVE, FAST) non sono fogli da compilare
+      if(['abc','give','fast'].indexOf(key)!==-1) return;
+      if((VECCHI_MOD[key]||'gen')===m[0]){
+        const rf=(typeof rfTesto==='function')?rfTesto('sc',key,true):'';
+        voci.push(riga(SCHEDA_TITOLI[key],[FOGLI_SOTTOTITOLO[key]||'',rf].filter(Boolean).join(' \u00b7 '),function(){ openScheda(key); }));
+      }
     });
     if(typeof FG_FOGLI!=='undefined'){
       FG_FOGLI.filter(function(f){return f.mod===m[0];}).forEach(function(f){
-        voci.push(riga(f.t,f.sub,function(){ fgApri(f.id); }));
+        const rf=(typeof rfTesto==='function')?rfTesto('fg',f.id,true):'';
+        voci.push(riga(f.t,[f.sub,rf].filter(Boolean).join(' \u00b7 '),function(){ fgApri(f.id); }));
       });
     }
     if(!voci.length) return;

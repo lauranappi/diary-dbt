@@ -447,6 +447,12 @@ function fgApri(id){
 function fgDataBreve(ts){
   return new Date(ts).toLocaleDateString('it-IT', {day:'numeric', month:'short', year:'numeric'});
 }
+// "Manuale: Foglio di lavoro 4A, p. 42" sotto il titolo
+function fgRif(def){
+  const t = (typeof rfTesto === 'function') ? rfTesto('fg', def.id) : '';
+  if(!t) return null;
+  const d = document.createElement('div'); d.className = 'rf-riga'; d.textContent = '\u{1F4D6} Manuale: ' + t; return d;
+}
 function fgMostraLista(def){
   const body = fgCorpo(); if(!body) return;
   body.innerHTML = '';
@@ -456,6 +462,7 @@ function fgMostraLista(def){
   const intro = document.createElement('p');
   intro.className = 'fg-intro'; intro.textContent = def.intro;
   w.appendChild(intro);
+  const rf = fgRif(def); if(rf) w.appendChild(rf);
   if(!fgSolaLettura()){
     const nuovo = document.createElement('button');
     nuovo.type = 'button'; nuovo.className = 'fg-btn fg-pri'; nuovo.textContent = '+ Nuovo foglio';
@@ -494,6 +501,7 @@ function fgMostraForm(def, entry){
   const w = document.createElement('div'); w.className = 'fg-wrap';
   const dati = (entry && entry.v) || {};
   const campi = {};
+  const rf2 = fgRif(def); if(rf2) w.appendChild(rf2);
   def.c.forEach(function(f){
     if(f.h){ const h = document.createElement('div'); h.className = 'fg-sez'; h.textContent = f.h; w.appendChild(h); return; }
     const blocco = document.createElement('div'); blocco.className = 'fg-campo';

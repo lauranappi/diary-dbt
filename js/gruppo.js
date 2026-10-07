@@ -139,10 +139,10 @@ function grCompilati(){
 }
 function grCatalogo(){
   const c = grCompilati();
-  FG_FOGLI.forEach(function(f){ c.push({k:'fg:' + f.id, n:f.t, tipo:'Foglio vuoto', extra:f.t}); });
-  if(typeof SCHEDA_TITOLI !== 'undefined') Object.keys(SCHEDA_TITOLI).forEach(function(k){ c.push({k:'sc:' + k, n:SCHEDA_TITOLI[k], tipo:'Scheda'}); });
+  FG_FOGLI.forEach(function(f){ c.push({k:'fg:' + f.id, n:f.t, tipo:'Foglio vuoto', extra:f.t + ' ' + (typeof rfCerca === 'function' ? rfCerca('fg', f.id) : '')}); });
+  if(typeof SCHEDA_TITOLI !== 'undefined') Object.keys(SCHEDA_TITOLI).forEach(function(k){ c.push({k:'sc:' + k, n:SCHEDA_TITOLI[k], tipo:'Scheda', extra:(typeof rfCerca === 'function' ? rfCerca('sc', k) : '')}); });
   (window.GUIDE_INDEX || []).forEach(function(e){
-    c.push({k:'sk:' + e.id, n:e.name, tipo:'Teoria', extra:'abilità ' + e.badge + ' ' + e.desc});
+    c.push({k:'sk:' + e.id, n:e.name, tipo:'Teoria', extra:'abilità ' + e.badge + ' ' + e.desc + ' ' + (typeof rfCerca === 'function' ? rfCerca('sk', e.id) : '')});
   });
   return c;
 }
@@ -242,7 +242,7 @@ function grChiavePostit(l){
 const GR_GRUPPI = [
   ['sc:fatti','sk:rcheck'], ['sc:procontro','sk:procontro','fg:t-impulso'],
   ['sc:dearman','sk:dearman','fg:i-monitor'], ['sc:give','sk:give','fg:i-monitor'], ['sc:fast','sk:fast','fg:i-monitor'],
-  ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease'],
+  ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease','fg:r-vulnerabilita'],
   ['fg:t-crisi','sk:tcrisi'], ['sc:eventi','sk:rpositivo'],
   ['fg:m-abilita','sk:mcosa','sk:mcome'], ['fg:m-fare-essere','fg:m-piacevoli','fg:m-spiacevoli','sk:mfareessere'],
   ['fg:t-stop','sk:stop'], ['fg:t-accettazione','sk:accrad'], ['fg:t-bodyscan','sk:tbody'],
