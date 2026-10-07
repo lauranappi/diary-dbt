@@ -58,12 +58,28 @@ document.addEventListener('click', function(ev){
 function rcNorm(t){
   return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 }
+// nomi dei fogli/schede da compilare collegati a una pagina di teoria: cercando
+// "controlla i fatti" o "osservare e descrivere" si trova la teoria che li contiene
+function rcFogli(e){
+  if(e._fogli !== undefined) return e._fogli;
+  let t = '';
+  try{
+    if(typeof grSchedeDa === 'function'){
+      grSchedeDa(e.id).forEach(function(s){
+        t += ' ' + s.nome;
+        if(s.k.indexOf('fg:') === 0 && typeof fgDef === 'function'){ const d = fgDef(s.k.slice(3)); if(d) t += ' ' + (d.sub || ''); }
+      });
+    }
+  }catch(err){}
+  e._fogli = t;
+  return t;
+}
 function rcCerca(q){
   const parole = rcNorm(q).split(/\s+/).filter(Boolean);
   if(!parole.length || !window.GUIDE_INDEX) return [];
   const out = [];
   window.GUIDE_INDEX.forEach(function(e){
-    const titolo = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc);
+    const titolo = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + rcFogli(e));
     const tutto = titolo + ' ' + rcNorm(e.testo) + ' ' + rcNorm(e.modTitolo);
     if(!parole.every(function(w){ return tutto.indexOf(w) !== -1; })) return;
     // chi ha tutte le parole nel titolo viene prima
@@ -74,7 +90,7 @@ function rcCerca(q){
   if(!out.length && parole.length > 1){
     // nessuna scheda con tutte le parole: mostra quelle con almeno una, prima chi ne ha di piu'
     window.GUIDE_INDEX.forEach(function(e){
-      const tutto = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + e.testo + ' ' + e.modTitolo);
+      const tutto = rcNorm(e.badge + ' ' + e.name + ' ' + e.desc + ' ' + e.testo + ' ' + e.modTitolo + ' ' + rcFogli(e));
       const n = parole.filter(function(w){ return tutto.indexOf(w) !== -1; }).length;
       if(n) out.push({e:e, p:-n});
     });
