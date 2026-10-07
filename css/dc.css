@@ -1862,6 +1862,11 @@ select.fg-in{appearance:none;-webkit-appearance:none;background-image:none}
 /* niente ombre: stile piatto. Le selezioni si vedono dal colore e dal bordo */
 *,*::before,*::after{box-shadow:none!important;text-shadow:none!important}
 .pi-dot.on{outline:2.5px solid var(--dc-petrolio);outline-offset:3px}
-input:focus,textarea:focus,select:focus{outline:2px solid var(--dc-petrolio);outline-offset:0}
+input:focus,textarea:focus,select:focus{outline:none}
 .readonly-note{border:1.5px solid var(--amber)}
 .scheda-box,#scheda-modal .scheda-box{box-shadow:none!important}
+
+/* card senza bordo; il Diario del gruppo ha la stessa larghezza delle card dei moduli */
+.guide-module,.dbt-skill-card,.leisure-item{border:0!important}
+.pi-dot{border-color:transparent}
+.dc-guida-scheda-fogli.gr-card-top{margin:0 0 16px}

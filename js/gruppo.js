@@ -217,12 +217,23 @@ function grChiavePostit(l){
   return {cf:'sc:fatti', pc:'sc:procontro', de:'sc:diarioemo', ca:'sc:catena'}[t] || '';
 }
 // scheda dell'app <-> pagina teorica/foglio della guida che trattano lo stesso argomento
-const GR_GRUPPI = [['sc:fatti','sk:rcheck','sk:gcheck'], ['sc:procontro','sk:procontro','sk:gprocontro'], ['sc:dearman','sk:dearman'],
-  ['sc:give','sk:give'], ['sc:fast','sk:fast'], ['sc:abc','sk:rabc'], ['sc:sentiero','sk:isentiero'], ['sc:please','sk:rplease'],
-  ['sc:catena','sk:gcatena']];
+const GR_GRUPPI = [
+  ['sc:fatti','sk:rcheck','sk:gcheck'], ['sc:procontro','sk:procontro','sk:gprocontro','fg:t-impulso'],
+  ['sc:dearman','sk:dearman','fg:i-priorita'], ['sc:give','sk:give'], ['sc:fast','sk:fast'],
+  ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sc:sentiero','sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease'],
+  ['sc:catena','sk:gcatena'], ['sc:pianocrisi','fg:t-crisi'], ['sc:eventi','sk:rpositivo'],
+  ['fg:m-abilita','sk:mcosa','sk:mcome','fg:m-piacevoli','fg:m-spiacevoli'], ['fg:m-fare-essere','sk:mstati'],
+  ['fg:t-stop','sk:stop'], ['fg:t-accettazione','sk:accrad'], ['fg:t-bodyscan','sk:tbody'],
+  ['fg:t-pensieri','sk:mpensieri'], ['fg:t-miglioramomento','sk:migliora'],
+  ['fg:i-chiedere','sk:ifermezza'], ['fg:i-validare','fg:i-autoval','sk:ivalida'], ['fg:i-dialettica','sk:idialettica'],
+  ['fg:r-funzioni','fg:r-osserva','sk:rperche'], ['fg:r-mind-emozioni','sk:memozioni'], ['fg:r-azione-opposta','sk:razione'],
+  ['fg:r-problem-solving','sk:rproblem'], ['fg:r-valori','sk:rvalori'], ['fg:r-mastery','sk:rmastery'],
+  ['fg:r-sonno','sk:rsonno'], ['fg:r-incubi','sk:rincubi'], ['fg:r-miti','sk:rmiti']
+];
 function grNomeChiave(k){
   const p = k.split(':'), id = p.slice(1).join(':');
   if(p[0] === 'sc') return (typeof SCHEDA_TITOLI !== 'undefined' && SCHEDA_TITOLI[id]) || id;
+  if(p[0] === 'fg'){ const d = fgDef(id); return d ? d.t : id; }
   if(p[0] === 'sk'){ const e = (window.GUIDE_INDEX || []).filter(function(y){ return y.id === id; })[0]; return e ? e.name : id; }
   return id;
 }
