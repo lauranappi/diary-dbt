@@ -115,7 +115,7 @@ const FG_FOGLI = [
      _A('vero','Cosa c’è di vero in entrambe?'), _A('sintesi','Una sintesi possibile')]},
 
  // ── REGOLAZIONE EMOTIVA ──
- {id:'r-funzioni', mod:'reg', t:'Cosa fanno le emozioni per me', sub:'Messaggio, motivazione, comunicazione',
+ {id:'r-funzioni', mod:'reg', t:'Capire cosa fanno le emozioni per me', sub:'Messaggio, motivazione, comunicazione',
   intro:'Le emozioni servono: capire a cosa serve aiuta a non combatterle.',
   c:[_T('emo','Emozione'), _A('msg','Che messaggio mi dà?'), _A('mot','A cosa mi spinge?'), _A('com','Cosa comunica agli altri?')]},
  {id:'r-osserva', mod:'reg', t:'Osservare e descrivere le emozioni', sub:'Il modello completo, dall\u2019evento agli effetti',
