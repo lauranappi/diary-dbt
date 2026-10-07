@@ -771,7 +771,7 @@ html[data-pagina="home"] .dc-card{padding:clamp(14px, 2.4dvh, 18px)}
    stato restilizzato, usava ancora le variabili vecchie di app.css.
    Valori letterali dal prototipo (pannelloAperto).
    ══════════════════════════════════════════════════════════════════ */
-.scheda-modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(14,42,41,.46)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
+.scheda-modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(14,42,41,.46)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center;padding:1rem 0 0}
 .scheda-modal.open{display:flex}
 .scheda-box{
   background: var(--dc-bg);
@@ -1798,7 +1798,7 @@ body.pi-aperto{overflow:hidden}
 .pi-sheet.pi-vista .pi-ta{cursor:default}
 
 /* fogli compilabili generici (fogligen.js) */
-.fg-wrap{padding:0 22px 8px}
+.fg-wrap{padding:0 0 8px}
 .fg-intro{margin:0 0 16px;font-size:14px;line-height:1.55;color:var(--dc-muted)}
 .fg-sez{margin:20px 0 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dc-muted)}
 .fg-campo{margin-bottom:16px}
@@ -1826,3 +1826,12 @@ textarea.fg-in{resize:vertical;min-height:84px;line-height:1.45}
 .pi-sheet.pi-vista .pi-tools{display:none}
 .fg-wrap input.fg-in, .fg-wrap textarea.fg-in{background:var(--dc-bianco,#fff);border:1.5px solid var(--dc-linea,#d9d4c7);border-radius:14px;padding:12px 14px;box-shadow:none;outline:0}
 .fg-wrap input.fg-in:focus, .fg-wrap textarea.fg-in:focus{border-color:var(--dc-petrolio)}
+
+/* pannello in basso: sul bordo inferiore dello schermo, con l'area sicura dell'iPhone */
+.scheda-body{padding-bottom:calc(26px + env(safe-area-inset-bottom,0px))!important}
+
+/* diario del gruppo */
+.gr-tit{margin:4px 0 6px;font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--dc-ink);line-height:1.2}
+.gr-nota{margin-top:14px;font-size:15px;line-height:1.6;color:var(--dc-ink);white-space:pre-wrap;word-break:break-word}
+select.fg-in{appearance:none;-webkit-appearance:none;background-image:none}
+.fg-wrap input.fg-in[type="search"]{-webkit-appearance:none}

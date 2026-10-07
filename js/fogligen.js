@@ -257,7 +257,7 @@ function fgMostraLista(def){
   }
   body.appendChild(w);
   if(typeof piMount === 'function') body.appendChild(piMount('fg:' + def.id, 'Appunti dai gruppi'));
-  const pi = body.querySelector('.pi-wrap'); if(pi) pi.style.margin = '20px 22px 24px';
+  const pi = body.querySelector('.pi-wrap'); if(pi) pi.style.margin = '20px 0 24px';
 }
 
 function fgMostraForm(def, entry){
