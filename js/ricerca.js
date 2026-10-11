@@ -178,6 +178,10 @@ function rcCerca(q){
 }
 
 function rcApri(e){
+  // su iOS il tocco su un risultato non toglie il fuoco dal campo di ricerca:
+  // la tastiera resta "aperta" sotto la pagina nuova e i tocchi non arrivano
+  // piu' (si scorre ma non si clicca). Si toglie il fuoco prima di cambiare.
+  try{ if(document.activeElement && document.activeElement.blur) document.activeElement.blur(); }catch(_){}
   if(typeof e.apri === 'function'){ e.apri(); return; }
   const lettura = (typeof SCHEDA_LETTURA !== 'undefined') ? SCHEDA_LETTURA[e.badge] : null;
   if(lettura && typeof openScheda === 'function'){ openScheda(lettura); return; }
