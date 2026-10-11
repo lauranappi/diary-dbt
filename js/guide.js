@@ -982,7 +982,7 @@ function openGuideSkill(moduleId,skillId){
     steps.classList.add('open');
     if(sarr)sarr.style.transform='rotate(180deg)';
   }
-  if(steps) window._saltaTop=Date.now()+700;   // i ritorni in cima di goPage non devono annullare lo scorrimento
+  if(steps) window._saltaTop=Date.now()+1100;   // i ritorni in cima di goPage non devono annullare lo scorrimento
   apriModuloPagina(moduleId);
   if(!steps) return;
   // il cambio pagina riporta in cima (anche in ritardo, su iOS): si scorre
@@ -990,13 +990,15 @@ function openGuideSkill(moduleId,skillId){
   const vai=()=>{
     const box=steps.closest('.guide-skill');
     if(!box) return;
+    box.style.scrollMarginTop='76px';
+    try{ box.scrollIntoView({block:'start',behavior:'instant'}); }catch(_){}   // funziona qualunque sia il contenitore che scorre
     const y=box.getBoundingClientRect().top+(window.scrollY||document.body.scrollTop||0)-76;
     window.scrollTo(0,Math.max(0,y));
     if(document.body.scrollTop!==undefined && Math.abs((document.body.scrollTop||0)-y)>4) document.body.scrollTop=Math.max(0,y);
   };
   vai();
   requestAnimationFrame(vai);
-  [120,300].forEach(t=>setTimeout(vai,t));
+  [120,350,800,1200].forEach(t=>setTimeout(vai,t));
 }
 
 
