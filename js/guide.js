@@ -314,6 +314,16 @@ function renderGuide(){
           '<b>Se la mente vaga:</b> nota che è andata altrove e riporta l\'attenzione al respiro, senza giudicarti.',
           '&#x1F4D6; Manuale: Mindfulness, Scheda 4A (idee per praticare l\'osservazione).'
         ]},
+       {id:'mcavalca',badge:'IMPULSO',name:'Cavalcare l’impulso',
+        desc:'Osservare un impulso come un’onda, senza agirlo (Scheda 4A del manuale, Osservare gli impulsi; ripresa nella Scheda 20 di Tolleranza della sofferenza).',
+        steps:[
+          '<b>Quando.</b> Quando senti l’impellenza di fare qualcosa di impulsivo.',
+          '<b>Cavalca l’impulso.</b> Immagina che gli impulsi siano onde e di essere su una tavola da surf: stai sopra l’onda mentre arriva. Osservalo andare e venire, aumentare, diminuire e infine sparire.',
+          '<b>Nota dove si trova l’impulso nel corpo.</b> Analizza tutto il corpo e notane le sensazioni.',
+          '<b>Nota l’impulso a evitare</b> qualcuno o qualcosa.',
+          '<b>Con il cibo:</b> quando mastichi, nota quando compare l’impulso a inghiottire.',
+          '<b>Per il craving</b> (Tolleranza della sofferenza, Scheda 20): “surfa l’impulso” cavalcando le onde dei tuoi impulsi, e abbinalo a immagini o odori alternativi per ridurre il craving. Nel Foglio 18 puoi segnare di aver cavalcato l’impulso.'
+        ]},
        {id:'mamorev',badge:'GENTILEZZA',name:'Praticare l\'amorevole gentilezza',
         desc:'Aumentare affetto e compassione, prima verso di sé.',
         steps:[
@@ -550,6 +560,16 @@ function renderGuide(){
           '<b>Principio 4:</b> il cambiamento è transazionale. Ciò che fai influenza il tuo ambiente e viceversa. Smetti di cercare di chi sia la colpa.',
           '<b>Esempi pratici:</b> "Voglio stare da sola E voglio anche connessione." "Posso voler cambiare E aver ancora bisogno di fare meglio." Entrambe sono vere.'
         ]},
+       {id:'iopposti',badge:'OPPOSTI',name:'Opposti dialettici: cavartela da sola E avere legami',
+        desc:'Posizioni opposte che possono essere entrambe vere (Schede 16A e 16B).',
+        steps:[
+          '<b>Scheda 16A — esempi di posizioni opposte che possono essere entrambe vere.</b> Puoi voler cambiare e fare del tuo meglio E avere ancora bisogno di impegnarti di più. Sei duro, difficile E sei amichevole. Puoi essere indipendente E cercare aiuto. Vuoi stare da sola E vuoi tenere legami con gli altri. Puoi condividere alcuni aspetti di te E mantenerne altri riservati. <b>Vuoi cavartela da sola E vuoi mantenere legami con gli altri.</b> Puoi essere in compagnia E essere solo.',
+          '<b>Ancora dalla 16A.</b> Puoi essere poco inserita in un gruppo E perfettamente adattata in un altro (un tulipano in un giardino di rose può essere anche un tulipano in un giardino di tulipani). Puoi accettarti così come sei E voler cambiare. A volte hai bisogno di controllo E di tollerare le emozioni. Puoi avere validi motivi per credere in ciò che credi E essere nel torto. Qualcuno può avere buoni motivi per aspettarsi qualcosa da te E tu buoni motivi per dire di no.',
+          '<b>E ancora.</b> Può esserci il sole E può piovere. Puoi essere furibonda con qualcuno E amarlo e rispettarlo (e lo stesso con te stessa). Puoi avere dissapori con qualcuno E anche essergli amica. Puoi essere in disaccordo con certe regole E seguirle. Puoi capire perché qualcuno si sente o si comporta in un certo modo E disapprovare il suo comportamento e chiedergli di cambiarlo. C’è anche uno spazio per scriverne di tuoi.',
+          '<b>Scheda 16B — importanti posizioni opposte da bilanciare.</b> Accettare la realtà E adoperarsi per cambiarla. Validare se stessi e gli altri E riconoscere gli errori. Lavorare E riposarsi. Fare ciò che è necessario E fare ciò che si desidera. Adoperarsi per migliorare E accettarsi esattamente come si è. Risolvere i problemi E accettare i problemi. Regolare le emozioni E accettare le emozioni.',
+          '<b>Ancora dalla 16B.</b> Padroneggiare qualcosa con le proprie forze E chiedere aiuto. Indipendenza E dipendenza. Apertura E riservatezza. Fiducia E diffidenza. Guardare e osservare E partecipare. Prendere dagli altri E dare agli altri. Concentrarsi su di sé E concentrarsi sugli altri. Anche qui ci sono righe libere per aggiungere i tuoi opposti.',
+          '<b>Come usarle.</b> Quando ti senti bloccata in un “o questo o quello”, cerca la coppia che somiglia alla tua situazione e prova a tenere insieme i due lati con una E, al posto di una O.'
+        ]},
        {id:'ivalida',badge:'VALIDAZIONE',name:'Come validare gli altri (e se stesse)',
         desc:'Riconoscere che i pensieri altrui hanno senso.',
         steps:[
@@ -559,6 +579,19 @@ function renderGuide(){
           '<b>Livello 4: Comprendere.</b> Cerca di capire come si sente e perché — data la sua storia, il suo stato, gli eventi attuali.',
           '<b>Validare se stesse:</b> riconosci le tue emozioni come valide. "Mi sento così e ha senso che mi senta così, dato quello che sta succedendo."',
           '<b>Importante:</b> validazione non significa essere d’accordo. Non validare ciò che in effetti non ha valore.'
+        ]},
+       {id:'iautoval',badge:'AUTOVALIDAZIONE',name:'Riprendersi dall’invalidazione e validare se stessi',
+        desc:'Come reagire quando qualcuno ti invalida, senza difenderti e senza punirti (Schede 19 e 19A).',
+        steps:[
+          '<b>L’invalidazione può essere utile e dolorosa insieme.</b> È utile quando corregge errori importanti (la tua lettura dei fatti non regge) e quando ti fa crescere perché ascolti altri punti di vista.',
+          '<b>È dolorosa quando</b> sei ignorata o ripetutamente fraintesa, quando ciò che fai viene letto o interpretato in modo improprio, quando fatti importanti della tua vita sono ignorati o negati, quando ti trattano in modo ingiusto, quando non ti credono pur essendo sincera, o quando le tue esperienze vengono banalizzate o negate.',
+          '<b>Non metterti sulla difensiva: controlla i fatti.</b> Controlla TUTTI i fatti per vedere se la tua risposta ha valore, e controllali con qualcuno di cui ti fidi per validare ciò che ha valore. Riconosci quando la tua risposta non ha senso né valore, e adoperati per cambiare pensieri, commenti o azioni non validi (smetti anche di lamentarti: di rado aiuta).',
+          '<b>Lascia andare le frasi autogiudicanti</b> con l’azione opposta. Ricordati che tutti i comportamenti hanno una causa e che stai facendo del tuo meglio. Sii compassionevole con te stessa e allenati a consolarti.',
+          '<b>Ammetti che fa male</b> essere invalidata, anche quando l’altra persona ha ragione. Riconosci quando le tue reazioni hanno senso e valore in quella situazione. Anche quando la tua risposta ha valore, essere invalidata di rado è una catastrofe completa.',
+          '<b>Cerca sostegno e accetta.</b> Descrivi ciò che vivi a persone che possono sostenerti, compiangi il dolore di un’invalidazione traumatica e della sofferenza che ha creato, e pratica l’accettazione radicale della persona che ti invalida.',
+          '<b>Valida te stessa esattamente come vorresti validare qualcun altro.</b>',
+          '<b>Riconoscere l’autovalidazione (Scheda 19A).</b> Quando qualcuno ti invalida, la risposta più efficace è: descrivere la tua esperienza, il tuo punto di vista, la tua emozione o azione in termini di fatti; essere disponibile a essere nel torto quando l’altro non è d’accordo (controllando i fatti); far valere le tue opinioni se sono corrette o ragionevoli; accettare che faccia male essere invalidata e sentirne il dolore; ricordarti, se sbagli, che sei un essere umano e gli esseri umani sbagliano; rispondere a te stessa con comprensione e compassione, ricordando che ogni risposta ha una causa e ha senso se ne esplori le ragioni abbastanza a fondo.',
+          '<b>Le risposte che non aiutano:</b> darti della stupida o sminuirti, esasperare l’altro e difendere a oltranza il tuo punto di vista anche se potrebbe essere errato, dare per certo che la tua esperienza sia sbagliata e arrenderti, buttarti sulla rabbia e darti dello smidollato se ti senti triste o abbandonata, darti la colpa e punirti o evitare chi conosce i tuoi errori, considerarti “merce avariata” e arrenderti alla vergogna.'
         ]},
        {id:'imiti',badge:'CREDENZE',name:'Credenze che ostacolano le relazioni',
         desc:'I pensieri automatici che ti ostacolano nelle relazioni.',
@@ -596,6 +629,17 @@ function renderGuide(){
           '<b>Prepara con anticipo.</b> Allenati a risolvere i problemi e a chiudere prima che sia tardi. Sii diretta: usa DEAR MAN, GIVE e FAST.',
           '<b>Se ami la persona sbagliata,</b> pratica l\'azione opposta all\'amore.',
           '⚠ <b>Prima di tutto la tua sicurezza.</b> Se subisci abusi gravi o la tua vita è a rischio, chiama il 1522 (numero antiviolenza, gratuito) o un centro antiviolenza vicino a te, per costruire un piano di sicurezza con professioniste. Ci sono anche i centri della rete D.i.Re (direcontrolaviolenza.it).'
+        ]},
+       {id:'iamore',badge:'AMORE',name:'Azione opposta all’amore (e riconoscere come chiudere una relazione)',
+        desc:'Quando ami la persona sbagliata, e come scegliere in mente saggia se chiudere (Scheda 13A, con le Schede 13 e 11).',
+        steps:[
+          '<b>Quando si usa.</b> L’amore corrisponde ai fatti quando amare una persona, un animale o un oggetto aumenta la qualità di vita tua o di chi ti sta a cuore, oppure aumenta le tue possibilità di raggiungere i tuoi obiettivi. Quando il tuo amore non è giustificato dai fatti o non è efficace (per esempio ami la persona sbagliata), fai l’opposto delle spinte all’azione che ti dà.',
+          '<b>Azioni opposte all’amore.</b> 1) Evita la persona (o l’animale, o l’oggetto) che ami. 2) Distraiti dai pensieri su di lei. 3) Quando arrivano i pensieri amorosi, ripensa ai motivi per cui l’amore non è giustificato, ripetendoti i “contro” dell’amare.',
+          '<b>Azioni diametralmente opposte.</b> 4) Evita il contatto con tutto ciò che te la ricorda: foto, lettere, messaggi ed e-mail, oggetti, ricordi, posti in cui siete stati insieme o che avreste voluto visitare insieme, posti dove sai di trovarla. Non seguirla, non aspettarla e non cercarla. 5) Smetti di esprimere amore per quella persona, anche con gli amici, e smetti i comportamenti amichevoli (per esempio togli l’amicizia sui social). 6) Cambia postura ed espressione quando le sei vicino: non sporgerti verso di lei, non avvicinarti fino a toccarla, non guardarla e non lanciarle occhiate.',
+          '<b>Scheda 13A: riconoscere come chiudere le relazioni.</b> La scheda propone otto coppie di affermazioni (A e B) tra cui scegliere la risposta più efficace. Le risposte più efficaci, in base alla Scheda 13, sono queste:',
+          '<b>1.</b> Se una relazione minaccia la tua integrità o il tuo benessere fisico è distruttiva e dovresti considerare di uscirne (non è colpa tua). <b>2.</b> La maggior parte delle relazioni richiede capacità di risolvere problemi per funzionare: la difficoltà da sola non è un motivo per chiudere. <b>3.</b> Se sei innamorata di qualcuno che non ti ama, pratica l’azione opposta all’amore (DEAR MAN non serve a farti amare). <b>4.</b> Per decidere se chiudere, fai un pro e contro (la scheda non stampa la soluzione di questa coppia; il pro e contro compare nel Foglio 10).',
+          '<b>5.</b> Esci dalla mente emotiva ed entra nella mente saggia, e solo allora valuta se restare o chiudere. <b>6.</b> Se sarà difficile chiudere una relazione distruttiva, gestisci in anticipo. <b>7.</b> In una relazione violenta cerca l’aiuto di professionisti per uscirne. <b>8.</b> Se ti senti costantemente invalidata in una relazione, probabilmente la relazione è distruttiva.',
+          '⚠ <b>Prima di tutto la tua sicurezza.</b> Se subisci abusi gravi o la tua vita è a rischio, chiama il 1522 (numero antiviolenza, gratuito) o un centro antiviolenza vicino a te, prima di interrompere la relazione.'
         ]}
      ]},
     {id:'dip',icon:'🔗',bg:'#F6EFE3',

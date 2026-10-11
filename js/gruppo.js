@@ -244,11 +244,11 @@ const GR_GRUPPI = [
   ['sc:dearman','sk:dearman','fg:i-monitor'], ['sc:give','sk:give','fg:i-monitor'], ['sc:fast','sk:fast','fg:i-monitor'],
   ['sc:abc','sk:rabc','fg:r-vulnerabilita'], ['sk:isentiero','fg:m-sentiero'], ['sc:please','sk:rplease','fg:r-vulnerabilita'],
   ['fg:t-crisi','sk:tcrisi'], ['sc:eventi','sk:rpositivo'],
-  ['fg:m-abilita','sk:mcosa','sk:mcome'], ['fg:m-fare-essere','fg:m-piacevoli','fg:m-spiacevoli','sk:mfareessere'],
+  ['fg:m-abilita','sk:mcosa','sk:mcome','sk:mcavalca'], ['fg:m-fare-essere','fg:m-piacevoli','fg:m-spiacevoli','sk:mfareessere'],
   ['fg:t-stop','sk:stop'], ['fg:t-accettazione','sk:accrad'], ['fg:t-bodyscan','sk:tbody'],
   ['fg:t-pensieri','sk:mpensieri'], ['fg:t-miglioramomento','sk:migliora'],
-  ['fg:i-chiedere','sk:ifermezza'], ['fg:i-validare','fg:i-autoval','sk:ivalida'], ['fg:i-dialettica','sk:idialettica'],
-  ['fg:r-funzioni','sk:rperche'], ['fg:r-osserva','sk:rdescrivi'], ['fg:i-priorita','sk:ipriorita'], ['fg:r-risolvere','sk:rrisolvi'], ['fg:m-gentilezza','sk:mamorev'], ['fg:r-mind-emozioni','sk:memozioni'], ['fg:r-azione-opposta','sk:razione'],
+  ['fg:i-chiedere','sk:ifermezza'], ['fg:i-validare','fg:i-autoval','sk:ivalida','sk:iautoval'], ['fg:i-dialettica','sk:idialettica','sk:iopposti'],
+  ['fg:r-funzioni','sk:rperche'], ['fg:r-osserva','sk:rdescrivi'], ['fg:i-priorita','sk:ipriorita'], ['fg:r-risolvere','sk:rrisolvi'], ['fg:m-gentilezza','sk:mamorev'], ['fg:r-mind-emozioni','sk:memozioni'], ['fg:r-azione-opposta','sk:razione','sk:iamore'],
   ['fg:r-problem-solving','sk:rproblem'], ['fg:r-valori','sk:rvalori'], ['fg:r-mastery','sk:rmastery'],
   ['fg:r-sonno','sk:rsonno'], ['fg:r-incubi','sk:rincubi'], ['fg:r-miti','sk:rmiti']
 ];
