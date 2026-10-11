@@ -214,6 +214,7 @@ function goPage(name,btn){
   if(name==='attivita'){buildSuggest();curPlan=new Date();plannerData={mattina:[],pomeriggio:[],sera:[]};updPlanDL();renderPlanner();}
   if(name==='pazienti')renderPatients();
   if(name==='please'){renderPlease();}
+  if(name==='preferiti' && typeof pfRenderPagina==='function') pfRenderPagina();
   if(name==='diarioemo'){deRenderLista();}
   if(name==='pianocrisi'){pcCarica();}
   if(name==='catena'){caRenderLista();}
