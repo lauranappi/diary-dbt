@@ -970,33 +970,35 @@ function showDaySummary(k,d){
 }
 
 function openGuideSkill(moduleId,skillId){
-  // Prima assicura che la Guida sia gia' stata costruita (renderGuide()
-  // e' chiamata solo al primo arrivo su quella pagina): senza, il
-  // modulo/passo cercati potrebbero non esistere ancora nel documento.
-  goPage('guida',null);
-  setTimeout(()=>{
-    apriModuloPagina(moduleId);
-    if(skillId){
-      setTimeout(()=>{
-        const steps=document.getElementById('steps-'+skillId);
-        const sarr=document.getElementById('sarr-'+skillId);
-        if(steps&&!steps.classList.contains('open')){
-          steps.classList.add('open');
-          if(sarr)sarr.style.transform='rotate(180deg)';
-        }
-        // il cambio pagina riporta in cima (anche in ritardo, su iOS): si
-        // scorre alla sezione piu' volte, senza animazione, finche' resta
-        const vai=()=>{
-          const box=steps&&steps.closest('.guide-skill');
-          if(!box) return;
-          const y=box.getBoundingClientRect().top+(window.scrollY||document.body.scrollTop||0)-76;
-          window.scrollTo(0,Math.max(0,y));
-          if(document.body.scrollTop!==undefined && Math.abs((document.body.scrollTop||0)-y)>4) document.body.scrollTop=Math.max(0,y);
-        };
-        [0,120,350,800].forEach(t=>setTimeout(vai,t));
-      },150);
-    }
-  },100);
+  // La Guida si costruisce al primo arrivo: se il modulo non c'e' ancora
+  // si passa da li' una volta sola; altrimenti si va dritti alla pagina
+  // (prima si passava sempre dalla Guida, e si vedevano gli scatti).
+  if(!document.getElementById('body-'+moduleId)) goPage('guida',null);
+  // la sezione si apre PRIMA di cambiare pagina, cosi' l'altezza e' gia'
+  // quella finale quando si scorre
+  const steps=skillId ? document.getElementById('steps-'+skillId) : null;
+  const sarr=skillId ? document.getElementById('sarr-'+skillId) : null;
+  if(steps&&!steps.classList.contains('open')){
+    steps.classList.add('open');
+    if(sarr)sarr.style.transform='rotate(180deg)';
+  }
+  const pag=document.getElementById('page-modulo');
+  if(steps && pag) pag.style.visibility='hidden';   // niente salti visibili
+  apriModuloPagina(moduleId);
+  if(!steps) return;
+  // il cambio pagina riporta in cima (anche in ritardo, su iOS): si scorre
+  // alla sezione piu' volte, senza animazione, poi si mostra la pagina
+  const vai=()=>{
+    const box=steps.closest('.guide-skill');
+    if(!box) return;
+    const y=box.getBoundingClientRect().top+(window.scrollY||document.body.scrollTop||0)-76;
+    window.scrollTo(0,Math.max(0,y));
+    if(document.body.scrollTop!==undefined && Math.abs((document.body.scrollTop||0)-y)>4) document.body.scrollTop=Math.max(0,y);
+  };
+  vai();
+  requestAnimationFrame(vai);
+  [120,300].forEach(t=>setTimeout(vai,t));
+  setTimeout(()=>{ if(pag) pag.style.visibility=''; },320);
 }
 
 
