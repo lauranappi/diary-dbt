@@ -167,6 +167,7 @@ function updPill(k){
 }
 
 function goPage(name,btn){
+  try{ if(document.activeElement && document.activeElement!==document.body && document.activeElement.blur) document.activeElement.blur(); }catch(_){}   // niente tastiera/fuoco rimasti da una pagina all'altra (iOS)
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ni,.bn-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
