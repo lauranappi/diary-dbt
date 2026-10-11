@@ -1214,7 +1214,21 @@ function renderEmozioni(){
 // la pagina, con la stessa tecnica di openScheda() - un commento
 // segnaposto per sapere dove rimetterlo quando si torna indietro.
 // ══════════════════════════════════════════════════════════════════
+// rimette al loro posto i moduli rimasti aperti dentro la pagina (se si
+// esce senza passare dal tasto Indietro, per esempio dalla barra in basso)
+function ripristinaModuliAperti(){
+  document.querySelectorAll('.guide-module-body.open').forEach(body=>{
+    if(body._segnaposto && body._segnaposto.parentElement){
+      body._segnaposto.parentElement.insertBefore(body, body._segnaposto);
+      body._segnaposto.remove();
+    }
+    body._segnaposto=null;
+    body.classList.remove('open');
+    body.style.display='';
+  });
+}
 function apriModuloPagina(id){
+  ripristinaModuliAperti();
   const body=document.getElementById('body-'+id);
   const corpo=document.getElementById('modulo-corpo');
   if(!body||!corpo) return;
@@ -1222,37 +1236,33 @@ function apriModuloPagina(id){
   // la pagina nuova il fratello precedente non e' piu' la riga della
   // lista, quindi cercarlo dopo restituiva sempre niente.
   const riga=body.previousElementSibling;
-  const titolo = riga ? riga.querySelector('.dc-riga-tit').textContent : '';
+  const tit=riga ? riga.querySelector('.dc-riga-tit') : null;
+  const titolo = tit ? tit.textContent : '';
   body._segnaposto=document.createComment('modulo '+id);
   body.parentElement.insertBefore(body._segnaposto, body);
   corpo.appendChild(body);
   body.classList.add('open');
   body.style.display='block';
   const miniMod=MINIATURA_MODULO[id];
-  document.getElementById('modulo-ill').src=miniMod||'';
-  document.getElementById('modulo-ill').style.display=miniMod?'':'none';
-  document.getElementById('modulo-titolo').textContent = titolo;
+  const ill=document.getElementById('modulo-ill');
+  if(ill){ ill.src=miniMod||''; ill.style.display=miniMod?'':'none'; }
+  const mt=document.getElementById('modulo-titolo');
+  if(mt) mt.textContent = titolo;
   goPage('modulo',null);
 }
 function chiudiModuloPagina(){
-  document.querySelectorAll('.guide-module-body.open').forEach(body=>{
-    if(body._segnaposto){
-      body._segnaposto.parentElement.insertBefore(body, body._segnaposto);
-      body._segnaposto.remove();
-      body._segnaposto=null;
-    }
-    body.classList.remove('open');
-    body.style.display='';
-  });
+  ripristinaModuliAperti();
   goPage('guida',null);
 }
 
 function apriEmozionePagina(id){
+  ripristinaModuliAperti();
   const body=document.getElementById('ebody-'+id);
   const corpo=document.getElementById('emozione-corpo');
   if(!body||!corpo) return;
   const riga=body.previousElementSibling;
-  const titolo = riga ? riga.querySelector('.dc-riga-tit').textContent : '';
+  const tit=riga ? riga.querySelector('.dc-riga-tit') : null;
+  const titolo = tit ? tit.textContent : '';
   body._segnaposto=document.createComment('emozione '+id);
   body.parentElement.insertBefore(body._segnaposto, body);
   corpo.appendChild(body);
