@@ -178,23 +178,27 @@ function rcCerca(q){
 }
 
 function rcApriOra(e){
-  if(typeof e.apri === 'function'){ e.apri(); return; }
-  const lettura = (typeof SCHEDA_LETTURA !== 'undefined') ? SCHEDA_LETTURA[e.badge] : null;
-  if(lettura && typeof openScheda === 'function'){ openScheda(lettura); return; }
-  if(typeof openGuideSkill === 'function') openGuideSkill(e.mod, e.id);
+  // Prima si chiude la ricerca (campo vuoto, risultati nascosti, Guida di
+  // nuovo visibile): poi si apre la pagina come quando la tocchi dalla Guida.
+  // Prima il contenuto veniva spostato da un blocco nascosto e su iOS la
+  // pagina nuova non rispondeva piu' ai tocchi.
+  const inp = document.getElementById('guida-cerca');
+  if(inp){ inp.value = ''; inp.dispatchEvent(new Event('input', {bubbles: true})); }
+  if(typeof rcRenderRisultati === 'function') rcRenderRisultati('');
+  const finisci = function(){
+    if(typeof e.apri === 'function'){ e.apri(); return; }
+    const lettura = (typeof SCHEDA_LETTURA !== 'undefined') ? SCHEDA_LETTURA[e.badge] : null;
+    if(lettura && typeof openScheda === 'function'){ openScheda(lettura); return; }
+    if(typeof openGuideSkill === 'function') openGuideSkill(e.mod, e.id);
+  };
+  // un attimo perche' il browser ridisegni la Guida prima del cambio pagina
+  requestAnimationFrame(function(){ requestAnimationFrame(finisci); });
 }
 function rcApri(e){
-  // Su iOS il tocco su un risultato lascia la tastiera aperta sul campo di
-  // ricerca: se la pagina cambia e scorre mentre la tastiera si chiude, l'area
-  // dei tocchi resta sfasata (si scorre ma non si clicca, nemmeno Indietro).
-  // Si toglie il fuoco e si apre solo a tastiera chiusa.
   const a = document.activeElement;
   if(a && a !== document.body && /^(INPUT|TEXTAREA)$/.test(a.tagName)){
     try{ a.blur(); }catch(_){}
-    setTimeout(function(){
-      window.scrollTo(0, window.scrollY || 0);   // riallinea l'area dei tocchi
-      rcApriOra(e);
-    }, 380);
+    setTimeout(function(){ rcApriOra(e); }, 380);
     return;
   }
   rcApriOra(e);
