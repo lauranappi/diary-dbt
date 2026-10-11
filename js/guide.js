@@ -982,6 +982,7 @@ function openGuideSkill(moduleId,skillId){
     steps.classList.add('open');
     if(sarr)sarr.style.transform='rotate(180deg)';
   }
+  if(steps) window._saltaTop=Date.now()+700;   // i ritorni in cima di goPage non devono annullare lo scorrimento
   apriModuloPagina(moduleId);
   if(!steps) return;
   // il cambio pagina riporta in cima (anche in ritardo, su iOS): si scorre

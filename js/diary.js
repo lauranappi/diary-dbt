@@ -2,6 +2,7 @@
 // in modo asincrono dopo il cambio pagina, quindi insistiamo su piu' fronti
 // e in piu' momenti.
 function scrollPageTop(){
+  if(window._saltaTop && Date.now()<window._saltaTop) return;   // si sta scorrendo a una sezione precisa
   const els = [document.scrollingElement, document.documentElement, document.body,
                document.querySelector('.main'), document.getElementById('app')];
   els.forEach(el => { if(el && el.scrollTop) el.scrollTop = 0; });
