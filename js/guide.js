@@ -982,8 +982,6 @@ function openGuideSkill(moduleId,skillId){
     steps.classList.add('open');
     if(sarr)sarr.style.transform='rotate(180deg)';
   }
-  const pag=document.getElementById('page-modulo');
-  if(steps && pag) pag.style.visibility='hidden';   // niente salti visibili
   apriModuloPagina(moduleId);
   if(!steps) return;
   // il cambio pagina riporta in cima (anche in ritardo, su iOS): si scorre
@@ -998,7 +996,6 @@ function openGuideSkill(moduleId,skillId){
   vai();
   requestAnimationFrame(vai);
   [120,300].forEach(t=>setTimeout(vai,t));
-  setTimeout(()=>{ if(pag) pag.style.visibility=''; },320);
 }
 
 
