@@ -177,15 +177,27 @@ function rcCerca(q){
   return out.map(function(x){ return x.e; });
 }
 
-function rcApri(e){
-  // su iOS il tocco su un risultato non toglie il fuoco dal campo di ricerca:
-  // la tastiera resta "aperta" sotto la pagina nuova e i tocchi non arrivano
-  // piu' (si scorre ma non si clicca). Si toglie il fuoco prima di cambiare.
-  try{ if(document.activeElement && document.activeElement.blur) document.activeElement.blur(); }catch(_){}
+function rcApriOra(e){
   if(typeof e.apri === 'function'){ e.apri(); return; }
   const lettura = (typeof SCHEDA_LETTURA !== 'undefined') ? SCHEDA_LETTURA[e.badge] : null;
   if(lettura && typeof openScheda === 'function'){ openScheda(lettura); return; }
   if(typeof openGuideSkill === 'function') openGuideSkill(e.mod, e.id);
+}
+function rcApri(e){
+  // Su iOS il tocco su un risultato lascia la tastiera aperta sul campo di
+  // ricerca: se la pagina cambia e scorre mentre la tastiera si chiude, l'area
+  // dei tocchi resta sfasata (si scorre ma non si clicca, nemmeno Indietro).
+  // Si toglie il fuoco e si apre solo a tastiera chiusa.
+  const a = document.activeElement;
+  if(a && a !== document.body && /^(INPUT|TEXTAREA)$/.test(a.tagName)){
+    try{ a.blur(); }catch(_){}
+    setTimeout(function(){
+      window.scrollTo(0, window.scrollY || 0);   // riallinea l'area dei tocchi
+      rcApriOra(e);
+    }, 380);
+    return;
+  }
+  rcApriOra(e);
 }
 
 function rcRenderRisultati(q){
