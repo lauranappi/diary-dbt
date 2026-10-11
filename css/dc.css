@@ -1977,3 +1977,17 @@ input:focus,textarea:focus,select:focus{outline:none}
 
 /* riferimento al manuale (scheda / foglio e pagina stampata) */
 .rf-riga{margin:0 0 12px;font-size:12.5px;font-weight:600;color:var(--dc-muted);line-height:1.4}
+
+/* ── preferiti: una riga nella Guida e una pagina a parte ── */
+#page-preferiti{padding:48px 20px 120px}
+.pf-sotto{margin:0 0 14px;font-size:var(--dc-size-corpo-s);color:var(--dc-muted);line-height:1.45}
+.pf-sotto:empty{display:none}
+.pf-apri{border:0}
+.pf-apri .rc-testo{flex:1}
+.pf-apri-stella{flex:none;color:var(--dc-senape,#C9A24B);font-size:20px;line-height:1}
+.pf-apri-freccia{flex:none;color:var(--dc-muted);font-size:24px;line-height:1}
+.pf-riga{display:flex;align-items:stretch;gap:8px}
+.pf-riga .rc-riga{flex:1;min-width:0}
+.pf-togli{flex:none;width:48px;border:0;border-radius:var(--dc-radius-riga);background:var(--dc-surface);cursor:pointer;
+  color:var(--dc-senape,#C9A24B);font-size:20px;display:flex;align-items:center;justify-content:center}
+.pf-togli:active{background:var(--dc-senape-chiara)}

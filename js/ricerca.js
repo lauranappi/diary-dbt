@@ -275,32 +275,65 @@ function ccCampoCerca(inp, nome){
 
 // ── preferiti in cima alla guida ──
 function pfRenderChip(){
+  // nella Guida resta una sola riga: i preferiti stanno in una pagina a parte
   const wrap = document.getElementById('guida-preferiti');
-  if(!wrap || !window.GUIDE_INDEX) return;
-  const ids = pfLista();
-  const abil = ids.map(function(id){
+  if(window.GUIDE_INDEX){
+    if(wrap){
+      const n = pfAbilita().length;
+      wrap.innerHTML = '';
+      if(!n){ wrap.style.display = 'none'; }
+      else{
+        wrap.style.display = '';
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'rc-riga pf-apri'; b.setAttribute('data-nav', '');
+        b.innerHTML = '<span class="pf-apri-stella">\u2605</span><span class="rc-testo"><span class="rc-nome">I tuoi preferiti</span><span class="rc-mod">' + n + (n === 1 ? ' abilit\u00e0 salvata' : ' abilit\u00e0 salvate') + '</span></span><span class="pf-apri-freccia">\u203a</span>';
+        b.addEventListener('click', function(){ goPage('preferiti', null); });
+        wrap.appendChild(b);
+      }
+    }
+  }
+  pfRenderPagina();
+}
+function pfAbilita(){
+  if(!window.GUIDE_INDEX) return [];
+  return pfLista().map(function(id){
     return window.GUIDE_INDEX.filter(function(e){ return e.id === id; })[0];
   }).filter(Boolean);
-  wrap.innerHTML = '';
-  if(!abil.length){ wrap.style.display = 'none'; return; }
-  wrap.style.display = '';
-  const tit = document.createElement('div');
-  tit.className = 'pf-titolo';
-  tit.textContent = 'I tuoi preferiti';
-  wrap.appendChild(tit);
-  const riga = document.createElement('div');
-  riga.className = 'pf-chips';
+}
+// la pagina con tutti i preferiti (si aggiorna anche togliendo una stella)
+function pfRenderPagina(){
+  const lista = document.getElementById('preferiti-lista');
+  if(!lista) return;
+  const abil = pfAbilita();
+  const sotto = document.getElementById('preferiti-sotto');
+  if(sotto) sotto.textContent = abil.length ? 'Tocca un\u2019abilit\u00e0 per aprirla, la stella per toglierla dai preferiti.' : '';
+  lista.innerHTML = '';
+  if(!abil.length){
+    const v = document.createElement('div');
+    v.className = 'rc-vuoto';
+    v.textContent = 'Non hai ancora preferiti. Tocca la stella accanto a un\u2019abilit\u00e0 per salvarla qui.';
+    lista.appendChild(v);
+    return;
+  }
   abil.forEach(function(e){
-    const c = document.createElement('button');
-    c.type = 'button';
-    c.className = 'pf-chip';
-    c.setAttribute('data-nav', '');
-    c.textContent = e.name;
-    c.title = e.modTitolo || e.name;
-    c.addEventListener('click', function(){ rcApri(e); });
-    riga.appendChild(c);
+    const riga = document.createElement('div');
+    riga.className = 'pf-riga';
+    const r = document.createElement('button');
+    r.type = 'button'; r.className = 'rc-riga'; r.setAttribute('data-nav', '');
+    const bd = document.createElement('span'); bd.className = 'rc-badge'; bd.textContent = e.badge;
+    const t = document.createElement('span'); t.className = 'rc-testo';
+    const n = document.createElement('span'); n.className = 'rc-nome'; n.textContent = e.name;
+    const m = document.createElement('span'); m.className = 'rc-mod'; const rif = rcRifTesto(e); m.textContent = e.modTitolo + (rif ? ' \u00b7 ' + rif : '');
+    t.appendChild(n); t.appendChild(m);
+    r.appendChild(bd); r.appendChild(t);
+    r.addEventListener('click', function(){ rcApri(e); });
+    const x = document.createElement('button');
+    x.type = 'button'; x.className = 'pf-togli'; x.setAttribute('data-nav', ''); x.setAttribute('aria-label', 'Togli dai preferiti');
+    x.textContent = '\u2605';
+    x.addEventListener('click', function(){ pfToggle(e.id); });
+    riga.appendChild(r); riga.appendChild(x);
+    lista.appendChild(riga);
   });
-  wrap.appendChild(riga);
 }
 
 // ── montaggio: chiamato da renderGuide() quando la guida e' costruita ──
