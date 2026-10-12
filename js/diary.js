@@ -17,17 +17,23 @@ function sel(b,on){
   if(on){b.classList.add('on');b.style.background='var(--dc-hero)';b.style.borderColor='var(--dc-hero)';b.style.color='var(--dc-hero-ink)';}
   else{b.classList.remove('on');b.style.background='';b.style.borderColor='';b.style.color='';}
 }
+// toccare di nuovo il bottone gia' scelto lo deseleziona (prima non si poteva piu' togliere)
+function scegli(gruppo,cls,b){
+  const era=b.classList.contains('on');
+  gruppo.querySelectorAll('.'+cls).forEach(x=>sel(x,false));
+  if(!era) sel(b,true);
+}
 function mkScale(id,max){
   const el=document.getElementById('s-'+id);if(!el)return;el.innerHTML='';
-  for(let i=0;i<=max;i++){const b=document.createElement('button');b.className='sb';b.textContent=i;b.onclick=()=>{el.querySelectorAll('.sb').forEach(x=>sel(x,false));sel(b,true)};el.appendChild(b)}
+  for(let i=0;i<=max;i++){const b=document.createElement('button');b.className='sb';b.textContent=i;b.onclick=()=>scegli(el,'sb',b);el.appendChild(b)}
 }
 function mkScaleRap(){
   const el=document.getElementById('s-rap');if(!el)return;el.innerHTML='';
-  for(let i=0;i<=5;i++){const b=document.createElement('button');b.className='sb';b.textContent=i===5?'5+':i;b.dataset.v=i;b.onclick=()=>{el.querySelectorAll('.sb').forEach(x=>sel(x,false));sel(b,true)};el.appendChild(b)}
+  for(let i=0;i<=5;i++){const b=document.createElement('button');b.className='sb';b.textContent=i===5?'5+':i;b.dataset.v=i;b.onclick=()=>scegli(el,'sb',b);el.appendChild(b)}
 }
 function mkToggle(id){
   const el=document.getElementById('t-'+id);if(!el)return;el.innerHTML='';
-  ['Sì','No'].forEach(v=>{const b=document.createElement('button');b.className='tb';b.textContent=v;b.dataset.v=v;b.onclick=()=>{el.querySelectorAll('.tb').forEach(x=>sel(x,false));sel(b,true)};el.appendChild(b)});
+  ['Sì','No'].forEach(v=>{const b=document.createElement('button');b.className='tb';b.textContent=v;b.dataset.v=v;b.onclick=()=>scegli(el,'tb',b);el.appendChild(b)});
 }
 function buildScales(){
   S5.concat(SCBDI).forEach(id=>mkScale(id,5));
@@ -110,15 +116,15 @@ async function saveDay(){
     ||Object.values(currentData.toggles||{}).some(v=>v!=null)
     ||Object.values(currentData.texts||{}).some(v=>v&&v.trim())
     ||Object.keys(currentData.skills||{}).length>0;
-  if(!hasData&&Object.keys(existing).length>0){
-    showToast('t1');showToast('t2');
-    return;
-  }
+  // un giorno gia' salvato si puo' anche svuotare: salvando senza risposte i valori
+  // tolti restano tolti (prima il salvataggio veniva ignorato). Le abilita' spuntate
+  // dalla pagina Abilita' non stanno nel modulo e restano com'erano.
+  if(!Object.keys(currentData.skills||{}).length) currentData.skills=existing.skills||{};
   allData[key]={...existing,...currentData};
   if(existing.planner)allData[key].planner=existing.planner;
   allData[key].savedAt=new Date().toISOString();
   svLS();updPill(key);showToast('t1');showToast('t2');
-  if(key===dk(new Date()) && typeof pnSegnaCompilato==='function' && !isDayEmpty(allData[key])) pnSegnaCompilato();
+  if(key===dk(new Date()) && typeof pnSegnaCompilato==='function') pnSegnaCompilato(!isDayEmpty(allData[key]));
   if(channel)await pushChan();
 }
 function showToast(id){
