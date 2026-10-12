@@ -1986,8 +1986,5 @@ input:focus,textarea:focus,select:focus{outline:none}
 .pf-apri .rc-testo{flex:1}
 .pf-apri-stella{flex:none;color:var(--dc-senape,#C9A24B);font-size:20px;line-height:1}
 .pf-apri-freccia{flex:none;color:var(--dc-muted);font-size:24px;line-height:1}
-.pf-riga{display:flex;align-items:stretch;gap:8px}
-.pf-riga .rc-riga{flex:1;min-width:0}
-.pf-togli{flex:none;width:48px;border:0;border-radius:var(--dc-radius-riga);background:var(--dc-surface);cursor:pointer;
-  color:var(--dc-senape,#C9A24B);font-size:20px;display:flex;align-items:center;justify-content:center}
-.pf-togli:active{background:var(--dc-senape-chiara)}
+#preferiti-lista{display:block}
+#preferiti-lista .guide-skill{margin-bottom:10px}
