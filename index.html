@@ -1257,6 +1257,10 @@
         <div><div class="setting-label">Orario promemoria</div></div>
         <input type="time" id="notif-time" value="21:00" class="time-input" onchange="saveSettings()"/>
       </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Prova</div><div id="notif-stato" class="setting-desc" style="display:none"></div></div>
+        <button type="button" onclick="pnProva()" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);font-size:13px;font-weight:600;cursor:pointer;color:inherit;flex:none">Invia una prova</button>
+      </div>
     </div>
 
 
@@ -1427,16 +1431,17 @@
 
 <script src="js/data.js?v=139"></script>
 <script src="js/config.js?v=139"></script>
-<script src="js/auth.js?v=149"></script>
-<script src="js/diary.js?v=166"></script>
+<script src="js/auth.js?v=150"></script>
+<script src="js/diary.js?v=167"></script>
 <script src="js/analytics.js?v=142"></script>
 <script src="js/pazienti.js?v=152"></script>
-<script src="js/settings.js?v=159"></script>
+<script src="js/settings.js?v=160"></script>
 <script src="js/planner.js?v=139"></script>
 <script src="js/riferimenti.js?v=4"></script>
 <script src="js/guide.js?v=181"></script>
 <script src="js/fogligen.js?v=167"></script>
 <script src="js/gruppo.js?v=182"></script>
+<script src="js/push.js?v=2"></script>
 <script src="js/postit.js?v=153"></script>
 <script src="js/ricerca.js?v=165"></script>
 <script src="js/guidasync.js?v=150"></script>

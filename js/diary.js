@@ -118,6 +118,7 @@ async function saveDay(){
   if(existing.planner)allData[key].planner=existing.planner;
   allData[key].savedAt=new Date().toISOString();
   svLS();updPill(key);showToast('t1');showToast('t2');
+  if(key===dk(new Date()) && typeof pnSegnaCompilato==='function' && !isDayEmpty(allData[key])) pnSegnaCompilato();
   if(channel)await pushChan();
 }
 function showToast(id){
