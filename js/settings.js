@@ -204,6 +204,7 @@ function showDiaryNotification(){
 // (fallback per quando il timer non gira perché l'app era chiusa)
 function checkNotifOnOpen(){
   if(!settings.notifOn||Notification.permission!=='granted')return;
+  if(localStorage.getItem('dbt_push_attivo')==='1')return;   // ci pensa gia' il promemoria push: niente doppione
   const [hh,mm]=(settings.notifTime||'21:00').split(':').map(Number);
   const now=new Date();
   const todayKey=dk(now);
@@ -222,6 +223,7 @@ function checkNotifOnOpen(){
 // Schedula il timer per oggi (funziona se l'app rimane aperta)
 function scheduleNotif(){
   if(!('Notification' in window)||Notification.permission!=='granted')return;
+  if(localStorage.getItem('dbt_push_attivo')==='1')return;   // ci pensa gia' il promemoria push
   if(notifTimer){clearTimeout(notifTimer);notifTimer=null;}
   const [hh,mm]=(settings.notifTime||'21:00').split(':').map(Number);
   const now=new Date();

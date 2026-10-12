@@ -62,6 +62,7 @@ async function pnAggiorna(attivo){
       }
       if(s) await s.unsubscribe();
     }catch(e){ console.warn('[PUSH] disattivazione', e); }
+    try{ localStorage.removeItem('dbt_push_attivo'); }catch(_){}
     pnStato('');
     return true;
   }
