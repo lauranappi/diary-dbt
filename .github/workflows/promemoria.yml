@@ -1,0 +1,27 @@
+name: Promemoria diario
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'   # ogni 15 minuti (orario UTC, l'ora vera la decide ogni persona)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  invia:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Installa web-push
+        run: npm install --prefix scripts
+      - name: Invia i promemoria
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          VAPID_PUBLIC: ${{ secrets.VAPID_PUBLIC }}
+          VAPID_PRIVATE: ${{ secrets.VAPID_PRIVATE }}
+        run: node scripts/invia-promemoria.js

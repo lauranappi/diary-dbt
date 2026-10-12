@@ -39,7 +39,7 @@ async function saveSettings(){
     if(tcInput)profile.terapeutaCode=tcInput.value.trim().toLowerCase()||null;
   }
   svLS();showToast('t-set');
-  if(settings.notifOn)scheduleNotif();
+  if(settings.notifOn){scheduleNotif();if(typeof pnAggiorna==='function')pnAggiorna(true);}
   startAutoPull();
   await pushChan();
 }
@@ -47,10 +47,10 @@ function toggleNotif(cb){
   if(cb.checked){
     if(!('Notification' in window)){alert('Notifiche non supportate su questo browser.');cb.checked=false;return}
     Notification.requestPermission().then(p=>{
-      if(p==='granted'){settings.notifOn=true;svLS();scheduleNotif();}
+      if(p==='granted'){settings.notifOn=true;svLS();scheduleNotif();if(typeof pnAggiorna==='function')pnAggiorna(true);}
       else{cb.checked=false;alert('Permesso notifiche negato. Attivale dalle impostazioni del browser/telefono.')}
     });
-  }else{settings.notifOn=false;svLS()}
+  }else{settings.notifOn=false;svLS();if(typeof pnAggiorna==='function')pnAggiorna(false);}
 }
 // doLogout moved to auth section above
 function confirmReset(){

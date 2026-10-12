@@ -381,6 +381,7 @@ function initApp(){
   if(settings.notifOn){
     scheduleNotif();
     checkNotifOnOpen();
+    if(typeof pnAggiorna==='function') pnAggiorna(true);
   }
   // Ricontrolla ogni volta che l'utente torna sull'app da background
   document.addEventListener('visibilitychange',()=>{
