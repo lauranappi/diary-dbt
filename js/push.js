@@ -93,15 +93,15 @@ async function pnAggiorna(attivo){
     return false;
   }
 }
-// diario di oggi compilato: il server non manda il promemoria
-async function pnSegnaCompilato(){
+// diario di oggi compilato (o di nuovo vuoto): dice al server se mandare il promemoria
+async function pnSegnaCompilato(si){
   try{
     if(!pnSupportato() || !(settings && settings.notifOn) || !supaSession || !supaSession.user) return;
     const s = await pnIscrizione(false);
     if(!s) return;
     await fetch(SUPA_URL + '/rest/v1/push_iscrizioni?endpoint=eq.' + encodeURIComponent(s.endpoint), {
       method: 'PATCH', headers: Object.assign({}, getAuthHeaders(), {'Prefer': 'return=minimal'}),
-      body: JSON.stringify({compilato_il: pnOggi()})
+      body: JSON.stringify({compilato_il: si === false ? null : pnOggi()})
     });
   }catch(e){ console.warn('[PUSH] compilato', e); }
 }
