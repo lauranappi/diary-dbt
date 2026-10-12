@@ -1263,6 +1263,7 @@ function renderEmozioni(){
 // rimette al loro posto i moduli rimasti aperti dentro la pagina (se si
 // esce senza passare dal tasto Indietro, per esempio dalla barra in basso)
 function ripristinaModuliAperti(){
+  if(typeof pfRipristina==='function') pfRipristina();
   document.querySelectorAll('.guide-module-body.open').forEach(body=>{
     if(body._segnaposto && body._segnaposto.parentElement){
       body._segnaposto.parentElement.insertBefore(body, body._segnaposto);

@@ -300,40 +300,40 @@ function pfAbilita(){
     return window.GUIDE_INDEX.filter(function(e){ return e.id === id; })[0];
   }).filter(Boolean);
 }
-// la pagina con tutti i preferiti (si aggiorna anche togliendo una stella)
+// la pagina con tutti i preferiti: le abilita' sono quelle vere della Guida,
+// spostate qui (come si fa per i moduli) e rimesse al loro posto uscendo,
+// quindi si aprono sul posto con i loro passi, schede e appunti
+function pfRipristina(){
+  document.querySelectorAll('#preferiti-lista .guide-skill').forEach(function(sk){
+    const seg = sk._pfSeg;
+    if(seg && seg.parentNode){ seg.parentNode.insertBefore(sk, seg); seg.remove(); }
+    sk._pfSeg = null;
+  });
+}
 function pfRenderPagina(){
   const lista = document.getElementById('preferiti-lista');
   if(!lista) return;
+  pfRipristina();
   const abil = pfAbilita();
   const sotto = document.getElementById('preferiti-sotto');
-  if(sotto) sotto.textContent = abil.length ? 'Tocca un\u2019abilit\u00e0 per aprirla, la stella per toglierla dai preferiti.' : '';
+  if(sotto) sotto.textContent = abil.length ? 'Tocca un\u2019abilit\u00e0 per aprirla. La stella la toglie dai preferiti.' : '';
   lista.innerHTML = '';
-  if(!abil.length){
+  let n = 0;
+  abil.forEach(function(e){
+    const st = document.getElementById('steps-' + e.id);
+    const sk = st && st.closest('.guide-skill');
+    if(!sk) return;
+    sk._pfSeg = document.createComment('preferito ' + e.id);
+    sk.parentNode.insertBefore(sk._pfSeg, sk);
+    lista.appendChild(sk);
+    n++;
+  });
+  if(!n){
     const v = document.createElement('div');
     v.className = 'rc-vuoto';
     v.textContent = 'Non hai ancora preferiti. Tocca la stella accanto a un\u2019abilit\u00e0 per salvarla qui.';
     lista.appendChild(v);
-    return;
   }
-  abil.forEach(function(e){
-    const riga = document.createElement('div');
-    riga.className = 'pf-riga';
-    const r = document.createElement('button');
-    r.type = 'button'; r.className = 'rc-riga'; r.setAttribute('data-nav', '');
-    const bd = document.createElement('span'); bd.className = 'rc-badge'; bd.textContent = e.badge;
-    const t = document.createElement('span'); t.className = 'rc-testo';
-    const n = document.createElement('span'); n.className = 'rc-nome'; n.textContent = e.name;
-    const m = document.createElement('span'); m.className = 'rc-mod'; const rif = rcRifTesto(e); m.textContent = e.modTitolo + (rif ? ' \u00b7 ' + rif : '');
-    t.appendChild(n); t.appendChild(m);
-    r.appendChild(bd); r.appendChild(t);
-    r.addEventListener('click', function(){ rcApri(e); });
-    const x = document.createElement('button');
-    x.type = 'button'; x.className = 'pf-togli'; x.setAttribute('data-nav', ''); x.setAttribute('aria-label', 'Togli dai preferiti');
-    x.textContent = '\u2605';
-    x.addEventListener('click', function(){ pfToggle(e.id); });
-    riga.appendChild(r); riga.appendChild(x);
-    lista.appendChild(riga);
-  });
 }
 
 // ── montaggio: chiamato da renderGuide() quando la guida e' costruita ──
