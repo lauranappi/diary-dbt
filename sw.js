@@ -67,7 +67,7 @@ self.addEventListener('notificationclick', e => {
 self.addEventListener('push', e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch (_) {}
-  e.waitUntil(self.registration.showNotification(d.title || 'Diary Card DBT', {
+  e.waitUntil(self.registration.showNotification(d.title || 'Marea', {
     body: d.body || 'Non dimenticare di compilare la tua diary card di oggi! \u{1F4D3}',
     icon: './icon-192.png',
     badge: './icon-192.png',

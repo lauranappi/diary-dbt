@@ -47,7 +47,7 @@ async function main() {
     if (!scaduto || it.ultimo_invio === t.oggi || it.compilato_il === t.oggi) { saltate++; continue; }
     try {
       await webpush.sendNotification(it.subscription, JSON.stringify({
-        title: 'Diary Card DBT',
+        title: 'Marea',
         body: 'Non dimenticare di compilare la tua diary card di oggi! \u{1F4D3}'
       }), { TTL: 3600 });
       await fetch(SUPABASE_URL + '/rest/v1/push_iscrizioni?endpoint=eq.' + encodeURIComponent(it.endpoint), {

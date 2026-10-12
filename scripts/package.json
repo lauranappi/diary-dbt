@@ -1,5 +1,5 @@
 {
-  "name": "diary-dbt-promemoria",
+  "name": "marea-promemoria",
   "private": true,
   "version": "1.0.0",
   "dependencies": { "web-push": "3.6.7" }

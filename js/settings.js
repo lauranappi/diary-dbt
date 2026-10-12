@@ -194,9 +194,9 @@ function showDiaryNotification(){
     renotify:false
   };
   if(navigator.serviceWorker&&navigator.serviceWorker.controller){
-    navigator.serviceWorker.ready.then(reg=>reg.showNotification('Diary Card DBT',opts));
+    navigator.serviceWorker.ready.then(reg=>reg.showNotification('Marea',opts));
   } else if(Notification.permission==='granted'){
-    new Notification('Diary Card DBT',opts);
+    new Notification('Marea',opts);
   }
 }
 
